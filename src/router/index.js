@@ -1,13 +1,15 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Landing from '@/components/Main'
+import Vue from "vue";
+import Router from "vue-router";
+import Homepage from "@/components/homepage";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  routes: [{
-    path: '/',
-    name: 'Main',
-    component: Main
-  }]
-})
+  routes: [
+    {
+      path: "/",
+      name: "homepage",
+      component: Homepage
+    }
+  ]
+});
