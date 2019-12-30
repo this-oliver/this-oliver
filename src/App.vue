@@ -1,27 +1,19 @@
 <template>
   <div id="app">
-    <b-navbar id="navigation" class="body-text" toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">Olivermanzi</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item href="#">Personal 🤠</b-nav-item>
-          <b-nav-item href="#">School 🎓</b-nav-item>
-          <b-nav-item href="#">Work 💼</b-nav-item>
-          <b-nav-item href="#">Hobby 🗃</b-nav-item>
-        </b-navbar-nav>
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">SWE</b-dropdown-item>
-            <b-dropdown-item href="#">FR</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-    <b-container>
+    <b-container fluid>
+      <b-row id="navigation">
+        <b-col>
+          <div>
+            <ul>
+              <li id="brand">Olivermanzi</li>
+              <li>Personal</li>
+              <li>Work</li>
+              <li>School</li>
+              <li>Hobby</li>
+            </ul>
+          </div>
+        </b-col>
+      </b-row>
       <b-row id="content" class="body-text">
         <b-col>
           content
@@ -43,23 +35,49 @@ export default {
 
 <style>
 #app {
-  text-align: center;
   position: relative;
   min-height: 100vh;
+
+  background-color: black;
 }
 
 #content {
+  min-height: 115vh;
   padding-bottom: 15vh;
+
+  color: white;
+  background-color: black;
 }
 
 #footer {
   position: absolute;
   bottom: 0;
   height: 15vh;
+  width: 100%;
+
+  color: white;
+  background-color: rgba(0, 0, 0, 0.911);
 }
 
 #navigation {
   font-family: Andale Mono;
+  color: white;
+}
+
+#navigation #brand {
+  font-size: 2em;
+  margin: 0vh 3vw 0vh 1vw;
+}
+
+#navigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#navigation li {
+  font-size: 1.5em;
+  display: inline;
 }
 
 .title-text {
@@ -67,5 +85,16 @@ export default {
 }
 
 .body-text {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@media only screen and (max-width: 600px) {
+  #navigation #brand {
+    font-size: 1em;
+    margin: 0vh 1vw 0vh 0.5vw;
+  }
+  #navigation li {
+    font-size: 0.8em;
+  }
 }
 </style>
