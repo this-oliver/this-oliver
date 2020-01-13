@@ -16,12 +16,11 @@
       </b-row>
       <b-row id="content" class="body-text">
         <b-col>
-          content
           <router-view />
         </b-col>
       </b-row>
       <b-row id="footer">
-        <b-col>Oliver Manzi &hearts;</b-col>
+        <b-col id="copyright">Oliver Manzi 🤠</b-col>
       </b-row>
     </b-container>
   </div>
@@ -42,8 +41,7 @@ export default {
 }
 
 #content {
-  min-height: 115vh;
-  padding-bottom: 15vh;
+  min-height: 100vh;
 
   color: white;
   background-color: black;
@@ -57,6 +55,10 @@ export default {
 
   color: white;
   background-color: rgba(0, 0, 0, 0.911);
+}
+
+#copyright {
+  text-align: center;
 }
 
 #navigation {
