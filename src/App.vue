@@ -77,6 +77,7 @@ export default {
 
 #navigation li {
   font-size: 1.5em;
+  margin-right: 4vw;
   display: inline;
 }
 
@@ -95,6 +96,7 @@ export default {
   }
   #navigation li {
     font-size: 0.8em;
+    margin-right: 1vw;
   }
 }
 </style>
