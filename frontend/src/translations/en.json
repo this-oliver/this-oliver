@@ -3,5 +3,8 @@
 		"title": "Navigation",
 		"about": "About Me",
 		"admin": "Admin"
+	},
+	"footer": {
+		"title": "Footer"
 	}
 }

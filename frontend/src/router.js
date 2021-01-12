@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import I18n from "./i18n";
-import { handleLocale } from "./helpers/router-helper";
+import I18n from "./locale";
+import { ROUTES, handleLocale } from "./helpers/router-helper";
 import { scrollToTop } from "./helpers/mixins";
 
 Vue.use(Router);
