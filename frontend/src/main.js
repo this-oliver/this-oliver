@@ -6,6 +6,8 @@ import i18n from "./i18n";
 import Bootstrap from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+require("./assets/css/fonts.css");
+require("./assets/css/theme.css");
 
 Vue.config.productionTip = false;
 

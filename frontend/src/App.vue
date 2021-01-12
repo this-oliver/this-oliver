@@ -1,7 +1,15 @@
 <template>
-	<div id="app">
-		<img alt="Vue logo" src="./assets/image/logo.png" />
-		<HelloWorld msg="Welcome to Your Vue.js App" />
+	<div :id="theme" class="app">
+		<HelloWorld msg="Weeelcome to Your Vue.js App" />
+		hey
+		<b-button @click="toggleTheme">
+			<span v-if="darkTheme">
+				🌞
+			</span>
+			<span v-else>
+				🌚
+			</span>
+		</b-button>
 	</div>
 </template>
 
@@ -13,16 +21,20 @@ export default {
 	components: {
 		HelloWorld,
 	},
+	data: function() {
+		return {
+			darkTheme: false,
+		};
+	},
+	computed: {
+		theme: function() {
+			return this.darkTheme ? "dark-theme" : "light-theme";
+		},
+	},
+	methods: {
+		toggleTheme: function() {
+			this.darkTheme = !this.darktheme;
+		},
+	},
 };
 </script>
-
-<style>
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
-}
-</style>
