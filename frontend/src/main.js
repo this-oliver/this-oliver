@@ -6,6 +6,7 @@ import Locale from "./locale";
 import Bootstrap from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+require("./assets/css/app.css");
 require("./assets/css/fonts.css");
 require("./assets/css/theme.css");
 
