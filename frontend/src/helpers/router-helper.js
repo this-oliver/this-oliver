@@ -1,10 +1,10 @@
-import Locale from "../locale";
+import I18n from "../I18n";
 
 /**
  * Returns router names
  */
 export const ROUTES = {
-	landing: "landing",
+	landing: "landing"
 };
 
 /**
@@ -20,7 +20,7 @@ export const handleLocale = function(to, from, next) {
 
 	// checks if lang param is valid
 	let validLocaleFlag = false;
-	Locale.availableLocales.forEach((locale) => {
+	I18n.availableLocales.forEach(locale => {
 		if (locale == language) {
 			validLocaleFlag = true;
 			return;
@@ -30,10 +30,10 @@ export const handleLocale = function(to, from, next) {
 	//if lang param is invalid, set it to locale and continue routing
 	if (!validLocaleFlag) {
 		let params = to.params;
-		params.locale = process.env.VUE_APP_I18n_LOCALE || Locale.locale;
+		params.locale = process.env.VUE_APP_I18n_LOCALE || I18n.locale;
 		return next({ name: to.name, params: params });
 	} else {
-		Locale.locale = language;
-		return next({ params: { lang: Locale.locale } });
+		I18n.locale = language;
+		return next({ params: { locale: I18n.locale } });
 	}
 };

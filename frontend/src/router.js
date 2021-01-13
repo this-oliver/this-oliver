@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import I18n from "./locale";
+import I18n from "./I18n";
 import { ROUTES, handleLocale } from "./helpers/router-helper";
 import { scrollToTop } from "./helpers/mixins";
 
@@ -14,7 +14,7 @@ const router = new Router({
 	routes: [
 		{
 			path: "/",
-			redirect: `/${I18n.locale}`,
+			redirect: `/${I18n.locale}`
 		},
 		{
 			path: "/:locale",
@@ -23,22 +23,22 @@ const router = new Router({
 			component: {
 				render(c) {
 					return c("router-view");
-				},
+				}
 			},
 			children: [
 				{
-					path: "router",
+					path: "",
 					name: ROUTES.landing,
-					component: Landing,
-				},
-			],
-		},
-	],
+					component: Landing
+				}
+			]
+		}
+	]
 });
 
 router.beforeEach((to, from, next) => {
-	handleLocale(to, from, next);
 	scrollToTop();
+	handleLocale(to, from, next);
 });
 
 export default router;
