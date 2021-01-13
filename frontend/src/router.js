@@ -5,9 +5,12 @@ import I18n from "./locale";
 import { ROUTES, handleLocale } from "./helpers/router-helper";
 import { scrollToTop } from "./helpers/mixins";
 
+import Landing from "./components/landing";
+
 Vue.use(Router);
 
 const router = new Router({
+	mode: "history",
 	routes: [
 		{
 			path: "/",
@@ -22,13 +25,19 @@ const router = new Router({
 					return c("router-view");
 				},
 			},
-			children: [],
+			children: [
+				{
+					path: "router",
+					name: ROUTES.landing,
+					component: Landing,
+				},
+			],
 		},
 	],
 });
 
-router.beforeEach((to, from, next) => {
-	handleLocale(to, from, next);
+router.beforeEach(() => {
+	//handleLocale(to, from, next);
 	scrollToTop();
 });
 
