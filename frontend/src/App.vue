@@ -1,39 +1,50 @@
 <template>
-	<div :id="theme" class="app">
-		<b-navbar :variant="bootstrapTheme" :type="bootstrapTheme">
+	<div :id="`app ${theme}`">
+		<b-navbar :variant="bootstrapTheme" :type="bootstrapTheme" toggleable="sm">
 			<b-navbar-brand>
 				Oliver Manzi
 			</b-navbar-brand>
 
 			<b-navbar-toggle target="nav" />
 			<b-collapse id="nav" is-nav>
-				<b-navbar-nav align="end">
-					<b-nav-form>
-						<b-button @click="toggleTheme">
-							<span v-if="darkTheme">
-								🌞
-							</span>
-							<span v-else>
-								🌚
-							</span>
-						</b-button>
-					</b-nav-form>
+				<b-navbar-nav class="ml-auto" align="end">
+					<b-navbar-brand @click="toggleTheme">
+						<span v-if="darkTheme">
+							🌞
+						</span>
+						<span v-else>
+							🌚
+						</span>
+					</b-navbar-brand>
 				</b-navbar-nav>
 			</b-collapse>
 		</b-navbar>
-		<HelloWorld msg="Weeelcome to Your Vue.js App" />
-		hey
+
+		<b-container fluid>
+			<b-row id="content" align-h="center" align-v="stretch">
+				<b-col cols="12">
+					<router-view></router-view>
+				</b-col>
+			</b-row>
+
+			<b-row id="foot">
+				<b-col cols="auto">
+					Github
+				</b-col>
+				<b-col cols="auto">
+					Linked
+				</b-col>
+				<b-col cols="auto">
+					FetchQr
+				</b-col>
+			</b-row>
+		</b-container>
 	</div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
 	name: "App",
-	components: {
-		HelloWorld,
-	},
 	data: function() {
 		return {
 			darkTheme: false,

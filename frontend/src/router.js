@@ -36,8 +36,8 @@ const router = new Router({
 	],
 });
 
-router.beforeEach(() => {
-	//handleLocale(to, from, next);
+router.beforeEach((to, from, next) => {
+	handleLocale(to, from, next);
 	scrollToTop();
 });
 
