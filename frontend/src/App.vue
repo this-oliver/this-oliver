@@ -40,7 +40,7 @@
       <b-col cols="12">
         <b-row align-h="center">
           <b-col
-            class="mx-1 my-1"
+            class="mx-2 my-1"
             cols="auto"
             v-for="item in getFooterItems"
             :key="item.link">
@@ -58,7 +58,10 @@
           <b-col
             class="my-1"
             cols="auto">
-            <small>{{ $t("footer.copyright", {year: getYear}) }}</small>
+            <small>
+              <a>🤠</a> 
+              Oliver Manzi [{{ getYear }}]
+            </small>
           </b-col>
         </b-row>
       </b-col>

@@ -21,7 +21,7 @@ module.exports = {
 				return options;
 			});
 		config.plugin("html").tap((args) => {
-			args[0].title = "Fetch";
+			args[0].title = "Oliver Manzi";
 			return args;
 		});
 	},
