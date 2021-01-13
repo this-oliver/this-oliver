@@ -5,6 +5,7 @@
 		"admin": "Admin"
 	},
 	"footer": {
-		"title": "Footer"
+		"title": "Footer",
+		"copyright": " 🤠 Oliver Manzi {year}"
 	}
 }

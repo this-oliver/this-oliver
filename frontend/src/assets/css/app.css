@@ -1,21 +1,17 @@
-#app {
-	position: relative;
-	min-height: 100vh;
-}
-
 #content {
-	min-height: 100vh;
-	margin-bottom: 30vh;
-	padding-bottom: 15vh; /* Footer height */
+	width: 100%;
+	min-height: 90vh;
+	
+	margin-bottom: 5vh;
+	padding-bottom: 5vh; /* Footer height */
 }
 
 #foot {
-	left: 0;
 	bottom: 0;
-	position: absolute;
+	position: relative;
 
 	width: 100%;
-	min-height: 30vh; /* Footer height */
+	min-height: 5vh; /* Footer height */
 }
 
 /* source of code^: https://www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/ */

@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 require("./assets/css/app.css");
 require("./assets/css/fonts.css");
-require("./assets/css/theme.css");
+require("./assets/css/themes.css");
 
 Vue.config.productionTip = false;
 
@@ -16,7 +16,7 @@ Vue.config.productionTip = false;
 Vue.use(Bootstrap);
 
 new Vue({
-	I18n,
+	i18n: I18n,
 	router: Router,
 	render: h => h(App)
 }).$mount("#app");
