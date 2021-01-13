@@ -1,0 +1,11 @@
+{
+	"navigation": {
+		"title": "Navigation",
+		"about": "About Me",
+		"admin": "Admin"
+	},
+	"footer": {
+		"title": "Footer",
+		"copyright": " 🤠 Oliver Manzi {year}"
+	}
+}
