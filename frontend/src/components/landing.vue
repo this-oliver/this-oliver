@@ -5,8 +5,8 @@
         class="mt-5"
         cols="auto">
         <b-button
-          :to="resumeRoute"
-          :variant="getBootstrapInverseTheme">
+          :variant="getBootstrapInverseTheme"
+          @click="goToLanding">
           {{ $t("landing.clickMe") }} 🎁
         </b-button>
       </b-col>
@@ -18,10 +18,10 @@
 	import { ROUTES } from "../helpers/router-helper";
 	export default {
 		name: "Landing",
-		data: function(){
-			return {
-				resumeRoute: ROUTES.resume
-			};
+		methods: {
+			goToLanding: function(){
+				this.goTo(ROUTES.landing, this);
+			}
 		}
 	};
 </script>
