@@ -55,7 +55,7 @@
               pill
               :variant="getBootstrapInverseTheme"
               @click="toggleTheme">
-              <span v-if="darkTheme">
+              <span v-if="isDarkTheme">
                 ☀️
               </span>
               <span v-else>
@@ -126,7 +126,7 @@
 		},
 		computed: {
 			getMyName: function(){
-				return `${this.darkTheme? "Olivier":"Oliver"} Manzi`;
+				return `${this.isDarkTheme? "Olivier":"Oliver"} Manzi`;
 			},
 			getYear: function(){
 				return `2020 - ${getCurrentYear()}`;
@@ -135,17 +135,17 @@
 				return [
 					{
 						title: "Github",
-						src: this.darkTheme? require("./assets/images/footer/github_light.png") : require("./assets/images/footer/github_dark.png"),
+						src: this.isDarkTheme? require("./assets/images/footer/github_light.png") : require("./assets/images/footer/github_dark.png"),
 						link: "https://github.com/olivermanzi"
 					},
 					{
 						title: "LinkedIn",
-						src: this.darkTheme? require("./assets/images/footer/linkedin_light.png") : require("./assets/images/footer/linkedin_dark.png"),
+						src: this.isDarkTheme? require("./assets/images/footer/linkedin_light.png") : require("./assets/images/footer/linkedin_dark.png"),
 						link: "https://www.linkedin.com/in/oliver-manzi/"
 					},
 					{
 						title: "FetchQr",
-						src: this.darkTheme? require("./assets/images/footer/fetch_light.png") : require("./assets/images/footer/fetch_dark.png"),
+						src: this.isDarkTheme? require("./assets/images/footer/fetch_light.png") : require("./assets/images/footer/fetch_dark.png"),
 						link: "https://fetchqr.com"
 					},
 				];
@@ -153,10 +153,10 @@
 		},
 		methods: {
 			goToResume: function(){
-				this.goTo(ROUTES.resume, this);
+				this.goTo(ROUTES.resume);
 			},
 			goToLanding: function(){
-				this.goTo(ROUTES.landing, this);
+				this.goTo(ROUTES.landing);
 			}
 		}
 	};

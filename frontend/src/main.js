@@ -1,6 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
 import Router from "./router";
+import Store from "./data/store";
+import {mixin} from "./mixin";
 
 import I18n from "./I18n";
 import Bootstrap from "bootstrap-vue";
@@ -9,18 +11,16 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 require("./assets/css/app.css");
 require("./assets/css/fonts.css");
 require("./assets/css/themes.css");
-import {mixin} from "./mixin";
 
 Vue.config.productionTip = false;
 
-// plugins
+// plugins and mixins
 Vue.use(Bootstrap);
-
-//mixins
 Vue.mixin(mixin);
 
 new Vue({
 	i18n: I18n,
+	store: Store,
 	router: Router,
 	render: h => h(App)
 }).$mount("#app");
