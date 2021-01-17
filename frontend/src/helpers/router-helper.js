@@ -4,7 +4,14 @@ import I18n from "../I18n";
  * Returns router names
  */
 export const ROUTES = {
-	landing: "landing"
+	landing: "landing",
+	about: "about",
+	work: "work",
+	school:"school",
+	projects: "projects",
+	journal:"journal",
+	resume: "resume",
+	wip: "wip"
 };
 
 /**

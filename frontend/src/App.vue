@@ -3,8 +3,11 @@
     <b-navbar
       :variant="getBootstrapTheme"
       :type="getBootstrapTheme"
-      toggleable="sm">
-      <b-navbar-brand class="brand">
+      toggleable="sm"
+      sticky>
+      <b-navbar-brand
+        class="brand"
+        @click="goToLanding">
         {{ getMyName }}
       </b-navbar-brand>
 
@@ -12,14 +15,53 @@
       <b-collapse
         id="nav"
         is-nav>
+        <!-- nav links -->
         <b-navbar-nav
           class="ml-auto"
           align="end">
-          <b-nav-form>
-            <b-form-checkbox
-              switch
-              size="lg"
-              v-model="darkTheme" />
+          <b-nav-form
+            class="mx-2"
+            v-for="item in navigationItems"
+            :key="item.title">
+            <b-link
+              class="simple-link"
+              :to="item.route">
+              {{ item.title }}
+            </b-link>
+          </b-nav-form>
+          <b-nav-form
+            class="mx-2">
+            <a
+              class="simple-link"
+              @click="goToResume">
+              {{ $t("nav.resume") + " 📑 " }}
+            </a>
+          </b-nav-form>
+        </b-navbar-nav>
+        
+        <!-- nav actions -->
+        <b-navbar-nav
+          class="ml-auto"
+          align="end">
+          <b-nav-form class="mx-2">
+            <b-dropdown
+              :text="$i18n.locale"
+              :variant="getBootstrapTheme"
+              no-caret
+              disabled />
+          </b-nav-form>
+          <b-nav-form class="mx-2">
+            <b-button
+              pill
+              :variant="getBootstrapInverseTheme"
+              @click="toggleTheme">
+              <span v-if="darkTheme">
+                ☀️
+              </span>
+              <span v-else>
+                🌘
+              </span>
+            </b-button>
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
@@ -40,7 +82,7 @@
       <b-col cols="12">
         <b-row align-h="center">
           <b-col
-            class="mx-1 my-1"
+            class="mx-2 my-1"
             cols="auto"
             v-for="item in getFooterItems"
             :key="item.link">
@@ -58,7 +100,10 @@
           <b-col
             class="my-1"
             cols="auto">
-            <small>{{ $t("footer.copyright", {year: getYear}) }}</small>
+            <small class="bold-text">
+              <a>🤠</a> 
+              Oliver Manzi [{{ getYear }}]
+            </small>
           </b-col>
         </b-row>
       </b-col>
@@ -68,23 +113,23 @@
 
 <script>
 	import {getCurrentYear} from "./helpers/time-helper";
+	import {getNavigationItems} from "./helpers/navigation-helper";
+	import {ROUTES} from "./helpers/router-helper";
+
 	export default {
 		name: "App",
 		data: function() {
 			return {
-				darkTheme: false,
-				showOlivier: false
+				showOlivier: false,
+				navigationItems: getNavigationItems()
 			};
 		},
 		computed: {
 			getMyName: function(){
-				return `${this.showOlivier? "Olivier":"Oliver"} Manzi`;
+				return `${this.darkTheme? "Olivier":"Oliver"} Manzi`;
 			},
-			getTheme: function() {
-				return this.darkTheme ? "dark-theme" : "light-theme";
-			},
-			getBootstrapTheme: function() {
-				return this.darkTheme ? "dark" : "light";
+			getYear: function(){
+				return `2020 - ${getCurrentYear()}`;
 			},
 			getFooterItems: function(){
 				return [
@@ -104,26 +149,15 @@
 						link: "https://fetchqr.com"
 					},
 				];
-			},
-			getYear: function(){
-				return `2020 - ${getCurrentYear()}`;
 			}
 		},
 		methods: {
-			toggleTheme: function() {
-				this.darkTheme = !this.darkTheme;
+			goToResume: function(){
+				this.goTo(ROUTES.resume, this);
 			},
-			randomlyShowOlivier: function(){
-				const MAX_SECONDS = 5; //seconds
-				let randomSecond = 2000; //milliseconds
-				setInterval(()=>{
-					this.showOlivier = !this.showOlivier;
-					this.randomSecond = Math.floor(Math.random() * Math.floor(MAX_SECONDS)) + 1; // add one so that it is never zero
-				}, randomSecond);
+			goToLanding: function(){
+				this.goTo(ROUTES.landing, this);
 			}
-		},
-		created: function(){
-			this.randomlyShowOlivier();
 		}
 	};
 </script>
