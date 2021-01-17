@@ -6,7 +6,7 @@
         cols="auto">
         <b-button
           :variant="getBootstrapInverseTheme"
-          @click="goToLanding">
+          @click="goToResume">
           {{ $t("landing.clickMe") }} 🎁
         </b-button>
       </b-col>
@@ -19,8 +19,8 @@
 	export default {
 		name: "Landing",
 		methods: {
-			goToLanding: function(){
-				this.goTo(ROUTES.landing, this);
+			goToResume: function(){
+				this.goTo(ROUTES.resume);
 			}
 		}
 	};
