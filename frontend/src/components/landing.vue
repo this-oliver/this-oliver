@@ -11,11 +11,7 @@
             class="mx-1"
             v-for="description in descriptions"
             :key="description.enum"
-            :variant="
-              isDarkTheme
-                ? getDarkVariant(description.variant)
-                : description.variant
-            "
+            :variant="(currentDescription.enum == description.enum) ? getActiveVariant(description.variant) : description.variant"
             @click="currentDescription = description">
             {{ description.button }}
           </b-button>
@@ -69,13 +65,9 @@
 			goToResume: function() {
 				this.goTo(ROUTES.resume);
 			},
-			getDarkVariant: function(variant) {
-				switch (variant) {
-				case "outline-dark":
-					return "outline-light";
-				default:
-					return variant;
-				}
+			getActiveVariant: function(variant) {
+				let removeOutline = variant.substring(8, variant.length);
+				return removeOutline;
 			},
 			getSanitizedHtml: function(html) {
 				return sanitizeHtml(html);
