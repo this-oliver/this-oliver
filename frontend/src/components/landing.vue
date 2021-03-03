@@ -11,7 +11,11 @@
             class="mx-1"
             v-for="description in descriptions"
             :key="description.enum"
-            :variant="(currentDescription.enum == description.enum) ? getActiveVariant(description.variant) : description.variant"
+            :variant="
+              currentDescription.enum == description.enum
+                ? getActiveVariant(description.variant)
+                : description.variant
+            "
             @click="currentDescription = description">
             {{ description.button }}
           </b-button>
@@ -22,7 +26,9 @@
       class="mx-3 my-3"
       align-h="center">
       <b-col cols="auto">
-        <span v-html="getSanitizedHtml(currentDescription.text)" />
+        <p class="bio-text">
+          {{ currentDescription.text }}
+        </p>
       </b-col>
     </b-row>
   </div>
@@ -36,7 +42,7 @@
 	const SHORT = {
 		enum: "SHORT",
 		text:
-			"Hi, my name is Oliver and I'm building this resume so that job recruiters can see how competenet and ambitous I am. I like solving problems and learning from my mistakes. <hr/> I read somewhere that job recruiters love people with core beliefs so here goes: I think sustainability should be at the forefront of everything we should be doing.",
+			"Hi, my name is Oliver and I'm building this resume so that job recruiters can see how competenet and ambitous I am. I like solving problems and learning from my mistakes. I read somewhere that job recruiters love people with core beliefs so here goes: I think sustainability should be at the forefront of everything we should be doing.",
 		button: "short",
 		variant: "outline-primary"
 	};
@@ -75,3 +81,9 @@
 		}
 	};
 </script>
+
+<style>
+.bio-text {
+	text-align: justify;
+}
+</style>
