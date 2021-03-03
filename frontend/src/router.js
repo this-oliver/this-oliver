@@ -7,7 +7,7 @@ import { scrollToTop } from "./mixin";
 
 import Landing from "./components/landing";
 import Resume from "./components/resume";
-import WorkInProgress from "./components/work-in-progress";
+import WorkInProgress from "./components/wip-card";
 
 Vue.use(Router);
 
