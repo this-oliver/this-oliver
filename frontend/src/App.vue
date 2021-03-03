@@ -25,7 +25,7 @@
             :key="item.title">
             <b-link
               class="simple-link"
-              :to="item.route">
+              :to="{name: item.route}">
               {{ item.title }}
             </b-link>
           </b-nav-form>
