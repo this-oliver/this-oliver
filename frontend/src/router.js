@@ -5,8 +5,10 @@ import I18n from "./I18n";
 import { ROUTES, handleLocale } from "./helpers/router-helper";
 import { scrollToTop } from "./mixin";
 
-import Landing from "./components/landing";
-import Resume from "./components/resume";
+// public
+import Landing from "./components/public/landing";
+import Resume from "./components/public/resume";
+
 import WorkInProgress from "./components/wip-card";
 
 Vue.use(Router);
