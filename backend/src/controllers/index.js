@@ -1,25 +1,31 @@
-const router = require("express").Router();
-const bodyParser = require("body-parser");
+const Router = require("express").Router();
+const BodyParser = require("body-parser");
 
 const Auth = require("./auth");
 const User = require("./user");
 
-router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
+Router.use(BodyParser.urlencoded({ extended: false }));
+Router.use(BodyParser.json());
 
 const BaseRoute = "/api";
 
-router.get("/", (req, res) => {
+Router.get("/", (req, res) => {
 	return res.status(200).send("welcome to olivermanzi's api");
 });
 
-router.get(BaseRoute, (req, res) => {
+Router.get(BaseRoute, (req, res) => {
 	return res.status(200).send("root");
 });
 
 /* ROUTES */
 //* Authentication
-router.post(BaseRoute + "/auth/register", Auth.registerUser);
-router.post(BaseRoute + "/auth/login", Auth.loginUser);
+Router.post(BaseRoute + "/auth/login", Auth.loginUser);
 
-module.exports = router;
+//* Users
+Router.post(BaseRoute + "/users", User.postUser);
+Router.get(BaseRoute + "/users", User.getAllUsers);
+Router.get(BaseRoute + "/users/:id", User.getSingleUser);
+Router.patch(BaseRoute + "/users/:id", User.patchUser);
+Router.delete(BaseRoute + "/users/:id", User.deleteUser);
+
+module.exports = Router;
