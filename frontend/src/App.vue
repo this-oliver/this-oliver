@@ -1,5 +1,5 @@
 <template>
-  <div :id="getTheme">
+  <div :id="`${getTheme} container`">
     <b-navbar
       :variant="getBootstrapTheme"
       :type="getBootstrapTheme"
@@ -68,7 +68,7 @@
     </b-navbar>
 
     <b-row
-      id="content"
+      id="content-wrap"
       align-h="center"
       align-v="stretch">
       <b-col cols="12">
