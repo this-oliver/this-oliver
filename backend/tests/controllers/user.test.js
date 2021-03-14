@@ -68,7 +68,7 @@ describe("User in MiddleWare", function () {
 		it("get user by id should return 200 and user", async function () {
 			let factoryUser = Factory.models.createUsers();
 			let user = await UserSchema.create(factoryUser);
-			let token = await TokenHelper.getToken(user._id);
+			let token = TokenHelper.getToken(user._id);
 			let response = await request
 				.get("/api/users/" + user._id)
 				.set("Authorization", `bearer ${token}`)
@@ -81,7 +81,7 @@ describe("User in MiddleWare", function () {
 		it("get all users should return 200 and array of users", async function () {
 			let factoryUsers = Factory.models.createUsers(5);
 			let users = await UserSchema.create(factoryUsers);
-			let token = await TokenHelper.getToken(users[0]._id);
+			let token = TokenHelper.getToken(users[0]._id);
 			let response = await request
 				.get("/api/users/")
 				.set("Authorization", `bearer ${token}`)

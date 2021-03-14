@@ -51,7 +51,7 @@ exports.patchUser = async function (req, res) {
 	let patch = req.body;
 
 	try {
-		let decoded = await TokenHelper.verifyToken(
+		let decoded = TokenHelper.verifyToken(
 			req.headers.authorization.split(" ")[1]
 		);
 

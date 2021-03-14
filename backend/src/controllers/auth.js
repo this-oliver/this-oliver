@@ -10,7 +10,7 @@ exports.loginUser = async function (req, res, next) {
 
 	try {
 		user = await User.login(data.email, data.password);
-		token = await TokenHelper.getToken(user._id);
+		token = TokenHelper.getToken(user._id);
 	} catch (error) {
 		res.status(error.status || 500).send(error.message);
 		return next();
@@ -25,9 +25,7 @@ exports.resetPassword = async function (req, res, next) {
 	let newPassword = req.body.newPassword;
 
 	try {
-		let user = await TokenHelper.verifyToken(
-			req.headers.authorization.split(" ")[1]
-		);
+		let user = TokenHelper.verifyToken(req.headers.authorization.split(" ")[1]);
 		await User.changePassword(user._id, oldPassword, newPassword);
 	} catch (error) {
 		res.status(error.status || 500).send(error.message);
