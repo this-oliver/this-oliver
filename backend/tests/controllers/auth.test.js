@@ -28,7 +28,7 @@ describe("Authentication in Middleware", function () {
 		await UserSchema.deleteMany({});
 	});
 
-	describe("Login user", function () {
+	describe("[USER LOGIN]", function () {
 		beforeEach(async function () {
 			await UserSchema.deleteMany({});
 		});
