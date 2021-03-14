@@ -3,72 +3,95 @@ const User = require("../data/user");
 // helpers
 const TokenHelper = require("../helpers/token");
 
-exports.getAllUsers = async function (req, res, next) {
+exports.postUser = async function (req, res, next) {
+	let data = req.body;
+	let user = null;
+
+	try {
+		user = await User.postUser(data.name, data.email, data.password);
+	} catch (error) {
+		return res.status(error.status).send(error.message);
+	}
+
+	return res.status(201).send(user);
+};
+
+exports.getAllUsers = async function (req, res) {
 	let users = null;
 
 	try {
 		users = await User.getAllUsers();
 	} catch (error) {
-		res.status(error.status || 500).send(error.message);
-		return next();
+		return res.status(error.status).send(error.message);
 	}
 
-	res.status(200).send(users);
-	return next();
+	return res.status(200).send(users);
 };
 
-exports.getSingleUser = async function (req, res, next) {
+exports.getSingleUser = async function (req, res) {
 	let user = null;
+	let id = req.params.id;
 
 	try {
-		let id = req.params.id;
 		user = await User.getSingleUser(id);
 	} catch (error) {
-		res.status(error.status || 500).send(error.message);
-		return next();
+		return res.status(error.status).send(error.message);
 	}
 
 	if (user === null) {
-		res.status(404).send(`user ${id} not found`);
+		return res.status(404).send(`user ${id} not found`);
 	} else {
-		res.status(200).send(user);
+		return res.status(200).send(user);
 	}
-	return next();
 };
 
-exports.patchUser = async function (req, res, next) {
-	let id = null;
+exports.patchUser = async function (req, res) {
+	let id = req.params.id;
 	let user = null;
 	let patch = req.body;
 
 	try {
-		id = TokenHelper.verifyToken(req.headers.authorization.split(" ")[1]);
+		let decoded = TokenHelper.verifyToken(
+			req.headers.authorization.split(" ")[1]
+		);
+
+		if (id !== decoded.data) {
+			throw {
+				status: 401,
+				message: "invalid credentials",
+			};
+		}
 	} catch (error) {
-		return res.status(error.status || 400).send(error.message);
+		return res.status(error.status).send(error.message);
 	}
 
 	try {
-		user = await User.getSingleUser(id);
-		user = await User.updateUser(user._id, patch);
+		user = await User.updateUser(id, patch);
 	} catch (error) {
-		return res.status(error.status || 400).send(error.message);
+		return res.status(error.status).send(error.message);
 	}
 
-	res.status(200).send(user);
-	return next();
+	return res.status(200).send(user);
 };
 
-exports.deleteUser = async function (req, res, next) {
-	let id = null;
+exports.deleteUser = async function (req, res) {
+	let id = req.params.id;
 
 	try {
-		id = TokenHelper.verifyToken(req.headers.authorization.split(" ")[1]);
-		await User.deleteUser(id);
-	} catch (error) {
-		res.status(error.status || 500).send(error.message);
-		return next();
-	}
+		let decoded = TokenHelper.verifyToken(
+			req.headers.authorization.split(" ")[1]
+		);
 
-	res.status(203).send(`deleted ${id}`);
-	return next();
+		if (id !== decoded.data) {
+			throw {
+				status: 401,
+				message: "invalid credentials",
+			};
+		}
+
+		await User.deleteUser(id);
+		return res.status(200).send(`deleted ${id}`);
+	} catch (error) {
+		return res.status(error.status).send(error.message);
+	}
 };

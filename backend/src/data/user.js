@@ -10,13 +10,13 @@ exports.login = async (email, password) => {
 		if (user == null) {
 			throw {
 				status: 404,
-				message: "Invalid email",
+				message: "invalid login details",
 			};
 		}
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: "error login:" + error.message || error,
+			message: error.message || error,
 		};
 	}
 
@@ -25,14 +25,13 @@ exports.login = async (email, password) => {
 		if (!isMatch) {
 			throw {
 				status: 404,
-				message: "Failed login",
+				message: "invalid token",
 			};
 		}
 	} catch (error) {
-		console.log(error);
 		throw {
 			status: error.status || 400,
-			message: "error matching credentials:" + error.message || error,
+			message: error.message || error,
 		};
 	}
 
@@ -41,7 +40,7 @@ exports.login = async (email, password) => {
 
 exports.postUser = async (name, email, password) => {
 	try {
-		let user = User.create(
+		let user = await User.create(
 			new User({
 				name: name,
 				email: email,
@@ -49,11 +48,12 @@ exports.postUser = async (name, email, password) => {
 			})
 		);
 
-		return Promise.resolve({ name: user.name, email: user.email });
+		let result = this.getSingleUser(user._id);
+		return Promise.resolve(result);
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: "Error posting user:" + error.message || error,
+			message: error.message || error,
 		};
 	}
 };
@@ -64,10 +64,9 @@ exports.getAllUsers = async () => {
 	try {
 		users = await User.find({}, "-password -salt");
 	} catch (error) {
-		console.log(error);
 		throw {
 			status: error.status || 400,
-			message: "error getting all users:" + error.message || error,
+			message: error.message || error,
 		};
 	}
 	return Promise.resolve(users);
@@ -76,12 +75,11 @@ exports.getAllUsers = async () => {
 exports.getSingleUser = async (id) => {
 	let user = null;
 	try {
-		user = await User.findOne({ _id: id }).select("-salt -password");
+		user = await User.findOne({ _id: id }, "-salt -password").exec();
 	} catch (error) {
-		console.log(error);
 		throw {
-			status: error.status || 400,
-			message: "error getting single user:" + error.message || error,
+			status: error.status,
+			message: error.message || error,
 		};
 	}
 	return Promise.resolve(user);
@@ -100,8 +98,9 @@ exports.updateUser = async (id, patch) => {
 			};
 
 		if (patch.email && patch.email !== user.email) {
-			let isUniqueEmail = true; //TODO validate unique emails
-			if (isUniqueEmail == false) {
+			let emailExists = await User.findOne({ email: patch.email }).exec();
+
+			if (emailExists) {
 				throw {
 					status: 404,
 					message: `${patch.email} already exists`,
@@ -113,13 +112,11 @@ exports.updateUser = async (id, patch) => {
 
 		user.name = patch.name || user.name;
 		user.updated = new Date().getTime();
-
 		user = await user.save();
 	} catch (error) {
-		console.log(error);
 		throw {
-			status: error.status || 400,
-			message: "error updating user:" + error.message || error,
+			status: error.status,
+			message: error.message || error,
 		};
 	}
 
@@ -144,8 +141,8 @@ exports.updateUserPassword = async (userId, oldPwd, newPwd) => {
 		user = await User.findOne({ _id: userId });
 	} catch (error) {
 		throw {
-			status: error.status || 400,
-			message: "error updating password:" + error.message || error,
+			status: error.status,
+			message: error.message || error,
 		};
 	}
 
@@ -165,8 +162,8 @@ exports.deleteUser = async (id) => {
 		await user.remove();
 	} catch (error) {
 		throw {
-			status: error.status || 400,
-			message: "error deleting user:" + error.message || error,
+			status: error.status,
+			message: error.message || error,
 		};
 	}
 
