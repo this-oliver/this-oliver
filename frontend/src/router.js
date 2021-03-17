@@ -6,10 +6,10 @@ import { ROUTES, handleLocale } from "./helpers/router-helper";
 import { scrollToTop } from "./mixin";
 
 // pages
-import LandingPage from "./pages/landing-page";
-import ResumePage from "./pages/resume-page";
-import UserPage from "./pages/user-page";
-import WipPage from "./components/wip-card";
+import LandingPage from "./pages/LandingPage";
+import ResumePage from "./pages/ResumePage";
+import UserPage from "./pages/UserPage";
+import WipPage from "./components/WipCard";
 
 Vue.use(Router);
 
@@ -46,7 +46,7 @@ const router = new Router({
 					component: UserPage,
 				},
 				{
-					path: "wip",
+					path: "*",
 					name: ROUTES.wip,
 					component: WipPage
 				},

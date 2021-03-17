@@ -66,8 +66,8 @@
 
     <b-row
       id="foot"
-      class="mx-1 my-1"
-      align-h="around">
+      class="my-1"
+      align-h="between">
       <b-col
         sm="11"
         md="4">
@@ -143,10 +143,10 @@
 		},
 		methods: {
 			goToResume: function(){
-				this.goTo(ROUTES.public.resume);
+				this.goTo(ROUTES.user.resume);
 			},
 			goToLanding: function(){
-				this.goTo(ROUTES.public.landing);
+				this.goTo(ROUTES.user.landing);
 			}
 		}
 	};

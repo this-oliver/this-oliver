@@ -76,7 +76,7 @@
 		},
 		methods: {
 			goToResume: function() {
-				this.goTo(ROUTES.resume);
+				this.goTo(ROUTES.user.resume);
 			},
 			getActiveVariant: function(variant) {
 				let removeOutline = variant.substring(8, variant.length);

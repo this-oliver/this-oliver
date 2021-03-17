@@ -2,7 +2,7 @@
   <div>
     <b-row align-h="center">
       <b-col
-        sm="11"
+        sm="12"
         md="10">
         <markdown-form />
       </b-col>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import MarkdownFormVue from "../components/markdown-form.vue";
+	import MarkdownFormVue from "../components/MarkdownForm.vue";
 	export default {
 		name:"UserPage",
 		components:{
@@ -19,5 +19,3 @@
 		}
 	};
 </script>
-
-MarkdownForm
