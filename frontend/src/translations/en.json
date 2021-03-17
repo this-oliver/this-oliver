@@ -14,7 +14,14 @@
 	},
 	"adminPage":{
 		"title":"admin",
+		"userForm": {
+			"title":"user form",
+			"name":"name",
+			"promptName":"enter name...",
+			"bio":"bio"
+		},
 		"bioForm":{
+			"title":"bio form",
 			"shortBio":"short bio",
 			"longBio":"long bio",
 			"promptBio":"enter bio here..."
