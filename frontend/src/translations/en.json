@@ -17,7 +17,7 @@
 		"bioForm":{
 			"shortBio":"short bio",
 			"longBio":"long bio",
-			"promptBio":"enter bio"
+			"promptBio":"enter bio here..."
 		}
 	},
 	"footer": {
