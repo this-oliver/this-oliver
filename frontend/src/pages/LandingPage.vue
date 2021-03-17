@@ -23,7 +23,7 @@
       </b-col>
     </b-row>
     <b-row
-      class="mx-1 my-3"
+      class="my-3"
       align-h="center">
       <b-col
         sm="10"

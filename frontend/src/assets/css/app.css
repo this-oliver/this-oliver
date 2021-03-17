@@ -1,29 +1,16 @@
 #container{
-	position: relative;
+	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
-	max-width: 100vw;
 }
 
-#content-wrap {
-	padding-bottom: 5vh; /* Footer height */
+#content{
+	flex: 1;
 }
 
-#foot {
-	position: absolute;
-	bottom: 0;
-	width: 100vw;
-	min-height: 4vh; /* Footer height */
+#footer{
+	padding-top: 5vh;
+	min-height: 3vh;
 }
 
-@media only screen and (max-width: 600px) {
-  #container-wrap{
-		padding-bottom: 5vh;
-	}
-
-	#foot{
-		position: relative;
-		min-height: 5vh;
-	}
-}
-
-/* source of code^: https://www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/ */
+/* source of code^: https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
