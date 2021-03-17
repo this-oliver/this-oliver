@@ -15,10 +15,10 @@
       <b-collapse
         id="nav"
         is-nav>
-        <!-- nav links -->
         <b-navbar-nav
           class="ml-auto"
           align="end">
+          <!-- links -->
           <b-nav-form
             class="mx-2"
             v-for="item in navigationItems"
@@ -29,20 +29,7 @@
               {{ item.title }}
             </b-link>
           </b-nav-form>
-          <b-nav-form
-            class="mx-2">
-            <a
-              class="simple-link"
-              @click="goToResume">
-              {{ $t("nav.resume") + " 📑 " }}
-            </a>
-          </b-nav-form>
-        </b-navbar-nav>
-        
-        <!-- nav actions -->
-        <b-navbar-nav
-          class="ml-auto"
-          align="end">
+          <!-- locale -->
           <b-nav-form class="mx-2">
             <b-dropdown
               :text="$i18n.locale"
@@ -50,6 +37,7 @@
               no-caret
               disabled />
           </b-nav-form>
+          <!-- theme -->
           <b-nav-form class="mx-2">
             <b-button
               pill
@@ -78,11 +66,14 @@
 
     <b-row
       id="foot"
-      align-h="center">
-      <b-col cols="12">
+      class="mx-1 my-1"
+      align-h="around">
+      <b-col
+        sm="11"
+        md="4">
         <b-row align-h="center">
           <b-col
-            class="mx-2 my-1"
+            class="mx-1"
             cols="auto"
             v-for="item in getFooterItems"
             :key="item.link">
@@ -96,16 +87,15 @@
             </a>
           </b-col>
         </b-row>
-        <b-row align-h="center">
-          <b-col
-            class="my-1"
-            cols="auto">
-            <small class="bold-text">
-              <a>🤠</a> 
-              Oliver Manzi [{{ getYear }}]
-            </small>
-          </b-col>
-        </b-row>
+      </b-col>
+
+      <b-col
+        class="my-1"
+        cols="auto">
+        <small class="bold-text">
+          <a>🤠</a> 
+          Oliver Manzi [{{ getYear }}]
+        </small>
       </b-col>
     </b-row>
   </div>
@@ -153,10 +143,10 @@
 		},
 		methods: {
 			goToResume: function(){
-				this.goTo(ROUTES.resume);
+				this.goTo(ROUTES.public.resume);
 			},
 			goToLanding: function(){
-				this.goTo(ROUTES.landing);
+				this.goTo(ROUTES.public.landing);
 			}
 		}
 	};

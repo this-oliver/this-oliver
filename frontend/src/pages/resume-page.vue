@@ -27,13 +27,13 @@
 <script>
 	import pdf from "vue-pdf";
 	export default {
-		name: "Resume",
+		name: "ResumePage",
 		components:{
 			"pdf": pdf
 		},
 		data: function(){
 			return {
-				resumeUrl: require("../../assets/docs/resume.pdf")
+				resumeUrl: require("../assets/docs/resume.pdf")
 			};
 		},
 	};

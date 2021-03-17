@@ -5,11 +5,11 @@ import I18n from "./I18n";
 import { ROUTES, handleLocale } from "./helpers/router-helper";
 import { scrollToTop } from "./mixin";
 
-// public
-import Landing from "./components/public/landing";
-import Resume from "./components/public/resume";
-
-import WorkInProgress from "./components/wip-card";
+// pages
+import LandingPage from "./pages/landing-page";
+import ResumePage from "./pages/resume-page";
+import UserPage from "./pages/user-page";
+import WipPage from "./components/wip-card";
 
 Vue.use(Router);
 
@@ -32,19 +32,24 @@ const router = new Router({
 			children: [
 				{
 					path: "/",
-					name: ROUTES.landing,
-					component: Landing
+					name: ROUTES.user.landing,
+					component: LandingPage
 				},
 				{
 					path: "resume",
-					name: ROUTES.resume,
-					component: Resume
+					name: ROUTES.user.resume,
+					component: ResumePage
+				},
+				{
+					path: "admin",
+					name: ROUTES.admin.profile,
+					component: UserPage,
 				},
 				{
 					path: "wip",
 					name: ROUTES.wip,
-					component: WorkInProgress
-				},	
+					component: WipPage
+				},
 			]
 		}
 	]

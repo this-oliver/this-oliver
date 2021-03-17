@@ -38,10 +38,10 @@
 
 <script>
 	import { mapGetters } from "vuex";
-	import { ROUTES } from "../../helpers/router-helper";
+	import { ROUTES } from "../helpers/router-helper";
 	
 	import Marked from "marked";
-	import { sanitizeHtml } from "../../helpers/security-helper";
+	import { sanitizeHtml } from "../helpers/security-helper";
 
 	const SHORT = {
 		enum: "SHORT",
@@ -59,7 +59,7 @@
 	};
 
 	export default {
-		name: "Landing",
+		name: "LandingPage",
 		data: function() {
 			return {
 				descriptions: [SHORT, LONG],

@@ -9,9 +9,16 @@
 		"admin": "admin",
 		"resume": "resume"
 	},
-	"landing":{
-		"title":"landing",
-		"clickMe":"click me"
+	"landingPage":{
+		"title":"landing"
+	},
+	"adminPage":{
+		"title":"admin",
+		"bioForm":{
+			"shortBio":"short bio",
+			"longBio":"long bio",
+			"promptBio":"enter bio"
+		}
 	},
 	"footer": {
 		"title": "footer"
@@ -23,6 +30,10 @@
 		"title":"form",
 		"actions":{
 			"title": "actions",
+			"post":"post",
+			"update":"update",
+			"delete":"delete",
+			"preview":"preview",
 			"download": "download"
 		}
 	}
