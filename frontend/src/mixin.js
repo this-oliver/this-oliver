@@ -31,21 +31,21 @@ export const mixin = {
 /**
  * scrolls view to the top of screen if user enters sub-component
  */
-export const scrollToTop = function() {
+export function scrollToTop() {
 	window.scrollTo(0, 0);
-};
+}
 
 /**
  * pushes router to route with routename
  * @param {String} routeName 
  */
-export const goTo = function(routeName) {
+export function goTo(routeName) {
 	if (Router.currentRoute.name != routeName) {
 		Router.push({
 			name: routeName
 		});
 	}
-};
+}
 
 /**
  * 
@@ -53,34 +53,23 @@ export const goTo = function(routeName) {
  * @param {String} message 
  * @param {Date} time 
  */
-export const toastAnnouncement = function(title, message, time) {
+export function toastAnnouncement(title, message, time) {
 	// Use a shorter name for this.$createElement
 	const h = this.$createElement;
 	const elementId = "ANNOUNCEMENT-TOAST";
 
 	// Create the message
-	const messageNode = h("div", [
-		h("p", { class: "mr-2" }, message),
-	]);
+	const messageNode = h("div", [h("p", { class: "mr-2" }, message)]);
 
 	// Create the title
 	const titleNode = h(
 		"div",
 		{
-			class: [
-				"d-flex",
-				"flex-grow-1",
-				"align-items-baseline",
-				"mr-2"
-			]
+			class: ["d-flex", "flex-grow-1", "align-items-baseline", "mr-2"]
 		},
 		[
 			h("strong", { class: "mr-2" }, `📬 ${title}`),
-			h(
-				"small",
-				{ class: "ml-auto text-italics" },
-				time
-			)
+			h("small", { class: "ml-auto text-italics" }, time)
 		]
 	);
 
@@ -93,14 +82,14 @@ export const toastAnnouncement = function(title, message, time) {
 		appendToast: true,
 		toaster: "b-toaster-bottom-full"
 	});
-};
+}
 
 /**
  * Toasts success
  * @param {String} title 
  * @param {String} message 
  */
-export const toastSuccess= function(title, message) {
+export function toastSuccess(title, message) {
 	this.$bvToast.toast(message, {
 		title: title,
 		solid: true,
@@ -108,14 +97,14 @@ export const toastSuccess= function(title, message) {
 		variant: "success",
 		toaster: "b-toaster-top-center"
 	});
-};
+}
 
 /**
  * Toasts error
  * @param {String} title 
  * @param {String} message 
  */
-export const toastError = function(title, message) {
+export function toastError(title, message) {
 	this.$root.$bvToast.toast(message, {
 		title: title,
 		solid: true,
@@ -123,4 +112,4 @@ export const toastError = function(title, message) {
 		variant: "danger",
 		toaster: "b-toaster-bottom-center"
 	});
-};
+}
