@@ -1,0 +1,47 @@
+[
+	{
+		"name": "milestone",
+		"color": "0052cc"
+	},
+	{
+		"name": "task",
+		"color": "009800"
+	},
+	{
+		"name": "feature",
+		"color": "009800"
+	},
+	{
+		"name": "bug",
+		"color": "e11d21"
+	},
+	{
+		"name": "duplicate",
+		"color": "dddddd"
+	},
+	{
+		"name": "wontfix",
+		"color": "dddddd"
+	},
+	{
+		"name": "discuss",
+		"color": "eb6420"
+	},
+	{
+		"name": "question",
+		"color": "fad8c7"
+	},
+	{
+		"name": "frontend",
+		"color": "036ffc"
+	},
+	{
+		"name": "backend",
+		"color": "00a100"
+	},
+	{
+		"name": "high priority",
+		"color": "ff0d00",
+    "description":"of the utmost importance"
+	}
+]
