@@ -7,13 +7,13 @@ import {scrollToTop} from "./mixin";
 import ROUTES from "./enums/router-enums";
 
 // pages
+import AuthPage from "./pages/AuthPage";
+import AdminPage from "./pages/AdminPage";
 import LandingPage from "./pages/LandingPage";
 import ResumePage from "./pages/ResumePage";
 import UserPage from "./pages/UserPage";
-import AuthPage from "./pages/AuthPage";
 
 // components
-import UserForm from "./components/forms/UserForm";
 import WipCard from "./components/cards/WipCard";
 
 Vue.use(Router);
@@ -47,7 +47,7 @@ const router = new Router({
 				},
 				{
 					path: "admin",
-					component: UserPage,
+					component: AdminPage,
 					children: [
 						{
 							path: "/",
@@ -57,8 +57,7 @@ const router = new Router({
 						{
 							path: "profile",
 							name: ROUTES.admin.profile,
-							component: UserForm,
-							props: { editMode: true },
+							component: UserPage,
 							beforeEnter: checkAuthorized
 						}
 					]
