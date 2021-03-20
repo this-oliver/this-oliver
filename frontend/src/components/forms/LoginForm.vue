@@ -41,7 +41,7 @@
 
 <script>
 	import {mapActions} from "vuex";
-	import {isEmail} from "../helpers/validator-helper";
+	import {isEmail} from "../../helpers/validator-helper";
 	export default {
 		name: "LoginForm",
 		props:{

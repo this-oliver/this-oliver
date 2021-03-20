@@ -108,7 +108,7 @@
 <script>
 	import {getCurrentYear} from "./helpers/time-helper";
 	import {getNavigationItems} from "./helpers/navigation-helper";
-	import {ROUTES} from "./enums/router-enums";
+	import ROUTES from "./enums/router-enums";
 
 	export default {
 		name: "App",

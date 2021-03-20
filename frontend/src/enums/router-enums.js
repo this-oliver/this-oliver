@@ -1,7 +1,7 @@
 /**
  * Returns router names
  */
-export const ROUTES = {
+const ROUTES = {
 	// public
 	user:{
 		landing: "landing",
@@ -17,3 +17,5 @@ export const ROUTES = {
 	},
 	wip: "wip",
 };
+
+export default ROUTES;

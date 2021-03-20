@@ -1,77 +1,92 @@
 <template>
   <div>
-    <b-row
-      class="my-2"
-      align-h="center">
+    <b-row align-h="around">
       <b-col
-        class="mt-5"
-        cols="auto">
-        <b-button-group>
-          <b-button
-            class="mx-1"
-            v-for="description in descriptions"
-            :key="description.enum"
-            :variant="
-              currentDescription.enum == description.enum
-                ? getActiveVariant(description.variant)
-                : description.variant
-            "
-            @click="currentDescription = description">
-            {{ description.button }}
-          </b-button>
-        </b-button-group>
-      </b-col>
-    </b-row>
-    <b-row
-      class="my-3"
-      align-h="center">
-      <b-col
-        sm="10"
+        class="mt-3"
+        sm="11"
         md="6">
-        <div
-          class="bio-text"
-          v-html="getMarkdown" />
+        <span class="sub-header">{{ $t("landingPage.about") }}</span>
+        <b-row>
+          <b-col cols="12">
+            <bio-card
+              :short="user.bio.short"
+              :long="user.bio.long" />
+          </b-col>
+        </b-row>
+      </b-col>
+      <b-col
+        class="mt-3"
+        sm="11"
+        md="4">
+        <b-row>
+          <!-- work -->
+          <b-col cols="12">
+            <span class="sub-header mb-2">{{ $t("landingPage.work") }}</span>
+            <b-row>
+              <b-col
+                cols="12"
+                v-for="job in jobs"
+                :key="job.title">
+                <job-card
+                  class="mt-1"
+                  :title="job.title"
+                  :org="job.org"
+                  :start-year="job.startYear"
+                  :end-year="job.endYear"
+                  :description="job.description"
+                  :short-mode="true" />
+              </b-col>
+            </b-row>
+          </b-col>
+          <!-- education -->
+          <b-col
+            class="mt-3"
+            cols="12">
+            <span class="sub-header mb-2">{{ $t("landingPage.education") }}</span>
+            <b-row>
+              <b-col
+                cols="12"
+                v-for="education in educations"
+                :key="education.title">
+                <education-card
+                  class="mt-1"
+                  :title="education.title"
+                  :org="education.org"
+                  :start-year="education.startYear"
+                  :end-year="education.endYear"
+                  :description="education.description"
+                  :short-mode="true" />
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
-	import { ROUTES } from "../enums/router-enums";
-	
-	import { sanitizeHtml, getMarkdown } from "../helpers/markdown-helper";
+	import BioCardVue from "../components/cards/BioCard.vue";
+	import EducationCardVue from "../components/cards/EducationCard.vue";
+	import JobCardVue from "../components/cards/JobCard.vue";
 
-	const SHORT = {
-		enum: "SHORT",
-		text:
-			"Hi, my name is **Oliver** and I'm building this resume so that job recruiters can see how competenet and ambitous I am.\nI like solving problems and learning from my mistakes. I read somewhere that job recruiters love people with core beliefs so here goes: I think sustainability should be at the forefront of everything we should be doing.",
-		button: "short",
-		variant: "outline-primary"
-	};
-	const LONG = {
-		enum: "LONG",
-		text:
-			"I studied Software Engineering at the University of Gothenburg (2017-2020) where I learnt how to build object oriented sofware like a Java library system (in the terminal), taught a car to parallel park in arduino & c++ , taught another car how to manuver through an intersection filled with other cars and road signs (using object-detection, docker and c++) all while coding with people that would become good friends and collegues. <hr/> Shortly afterwards, the * scary music * Covid-19 pandemic hit the world stage and I decided it was just the right time to feed my curioisty, so I began studying a one-year masters program on Entreprenurship and Innovation Management at the Royal Institue of Technology (or KTH) for short. So far, I'm learning how to coordinate resources to exploit opportunities that bring real value to as many stakeholders as possible... but on a much smaller scale since I can't really meet with all my classmates because of online-learning.",
-		button: "long",
-		variant: "outline-danger"
-	};
+	import { mapGetters } from "vuex";
+	import ROUTES from "../enums/router-enums";
 
 	export default {
 		name: "LandingPage",
-		data: function() {
-			return {
-				descriptions: [SHORT, LONG],
-				currentDescription: SHORT
-			};
+		components:{
+			"bio-card": BioCardVue,
+			"education-card":EducationCardVue,
+			"job-card":JobCardVue
 		},
 		computed: {
 			...mapGetters({
-				isDarkTheme: "theme/isDarkTheme"
+				user: "user/getUser",
+				jobs: "user/getJobs",
+				educations: "user/getEducations",
+				isDarkTheme: "theme/isDarkTheme",
 			}),
-			getMarkdown: function(){
-				return getMarkdown(this.currentDescription.text);
-			}
 		},
 		methods: {
 			goToResume: function() {
@@ -80,9 +95,6 @@
 			getActiveVariant: function(variant) {
 				let removeOutline = variant.substring(8, variant.length);
 				return removeOutline;
-			},
-			getSanitizedHtml: function(html) {
-				return sanitizeHtml(html);
 			}
 		}
 	};

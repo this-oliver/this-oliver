@@ -4,7 +4,7 @@ import Router from "vue-router";
 import i18n from "./i18n";
 import Store from "./data/store";
 import {scrollToTop} from "./mixin";
-import { ROUTES } from "./enums/router-enums";
+import ROUTES from "./enums/router-enums";
 
 // pages
 import LandingPage from "./pages/LandingPage";
@@ -13,8 +13,8 @@ import UserPage from "./pages/UserPage";
 import AuthPage from "./pages/AuthPage";
 
 // components
-import UserForm from "./components/UserForm";
-import WipCard from "./components/WipCard";
+import UserForm from "./components/forms/UserForm";
+import WipCard from "./components/cards/WipCard";
 
 Vue.use(Router);
 

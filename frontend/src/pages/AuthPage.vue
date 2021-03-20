@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import LoginFormVue from "../components/LoginForm.vue";
+	import LoginFormVue from "../components/forms/LoginForm.vue";
 	export default {
 		name:"AuthPage",
 		components:{

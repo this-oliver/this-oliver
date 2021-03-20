@@ -10,7 +10,10 @@
 		"resume": "resume"
 	},
 	"landingPage": {
-		"title": "landing"
+		"title": "landing",
+		"about":"🤠 about me",
+		"education":"🎓 education",
+		"work":"💼 work"
 	},
 	"authPage": {
 		"title": "authentication",
@@ -36,6 +39,18 @@
 			"longBio": "long bio",
 			"promptBio": "enter bio here..."
 		}
+	},
+	"bioCard":{
+		"actions":{
+			"short":"short",
+			"long":"long"
+		}
+	},
+	"educationCard":{
+		"presentYear":"present"
+	},
+	"jobCard":{
+		"presentYear":"present"
 	},
 	"footer": {
 		"title": "footer"
