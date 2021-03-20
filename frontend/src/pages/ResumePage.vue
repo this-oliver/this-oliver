@@ -8,7 +8,7 @@
         <pdf :src="resumeUrl" />
       </b-col>
       <b-col
-        class="mx-1 mt-2"
+        class="mt-2"
         sm="2"
         md="1">
         <a
@@ -27,7 +27,7 @@
 <script>
 	import pdf from "vue-pdf";
 	export default {
-		name: "Resume",
+		name: "ResumePage",
 		components:{
 			"pdf": pdf
 		},

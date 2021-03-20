@@ -1,4 +1,5 @@
-import htmlSanitizer from "sanitize-html";
+import HtmlSanitizer from "sanitize-html";
+import Marked from "marked";
 
 export const sanitizeHtml = (dirtyHtml) =>{
 	let options = {
@@ -13,5 +14,9 @@ export const sanitizeHtml = (dirtyHtml) =>{
 			"hr",
 		]
 	};
-	return htmlSanitizer(dirtyHtml, options);
+	return HtmlSanitizer(dirtyHtml, options);
+};
+
+export const getMarkdown = (text) =>{
+	return Marked(text);
 };
