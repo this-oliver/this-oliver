@@ -5,14 +5,18 @@
         class="mt-5"
         sm="8"
         md="4">
-        <router-view />
+        <login-form />
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
+	import LoginFormVue from "../components/LoginForm.vue";
 	export default {
 		name:"AuthPage",
+		components:{
+			"login-form":LoginFormVue
+		}
 	};
 </script>
