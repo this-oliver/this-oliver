@@ -78,7 +78,8 @@
 			getSanitizedHtml: function(html) {
 				return sanitizeHtml(html);
 			}
-		}
+		},
+
 	};
 </script>
 
