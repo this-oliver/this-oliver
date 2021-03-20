@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import I18n from "./I18n";
+import i18n from "./i18n";
+import Store from "./data/store";
 import {scrollToTop} from "./mixin";
 import { ROUTES } from "./enums/router-enums";
 
@@ -12,7 +13,6 @@ import UserPage from "./pages/UserPage";
 import AuthPage from "./pages/AuthPage";
 
 // components
-import LoginForm from "./components/LoginForm";
 import UserForm from "./components/UserForm";
 import WipCard from "./components/WipCard";
 
@@ -23,7 +23,7 @@ const router = new Router({
 	routes: [
 		{
 			path: "/",
-			redirect: `/${I18n.locale}`
+			redirect: `/${i18n.locale}`
 		},
 		{
 			path: "/:locale/",
@@ -46,26 +46,20 @@ const router = new Router({
 					component: ResumePage
 				},
 				{
-					path: "auth",
-					component: AuthPage,
+					path: "admin",
+					component: UserPage,
 					children: [
 						{
 							path: "/",
 							name: ROUTES.auth.login,
-							component: LoginForm
-						}
-					]
-				},
-				{
-					path: "admin",
-					component: UserPage,
-					beforeEnter: checkAuthorized,
-					children: [
+							component: AuthPage
+						},
 						{
-							path: "/",
+							path: "profile",
 							name: ROUTES.admin.profile,
 							component: UserForm,
-							props: { editMode: true }
+							props: { editMode: true },
+							beforeEnter: checkAuthorized
 						}
 					]
 				},
@@ -83,5 +77,87 @@ router.beforeEach((to, from, next) => {
 	scrollToTop();
 	handleLocale(to, from, next);
 });
+
+// router helpers
+/**
+ * handles user locale
+ * @param {*} to
+ * @param {*} from
+ * @param {*} next
+ */
+function handleLocale(to, from, next) {
+	let language = to.params.locale;
+
+	if (!language) language = process.env.VUE_APP_i18n_FALLBACK_LOCALE;
+
+	// checks if lang param is valid
+	let validLocaleFlag = false;
+	i18n.availableLocales.forEach(locale => {
+		if (locale == language) {
+			validLocaleFlag = true;
+			return;
+		}
+	});
+
+	//if lang param is invalid, set it to locale and continue routing
+	if (!validLocaleFlag) {
+		let params = to.params;
+		params.locale = process.env.VUE_APP_i18n_LOCALE || i18n.locale;
+		return next({ name: to.name, params: params });
+	} else {
+		i18n.locale = language;
+		return next({ params: { locale: i18n.locale } });
+	}
+}
+
+/**
+ * checks whether user is authorized
+ * @param {*} to 
+ * @param {*} from 
+ * @param {*} next
+ */
+async function checkAuthorized(to, from, next) {
+	/* if client is going to business side, make sure 
+	they have business access priveleges or higher and 
+	the same for admin side*/
+
+	let matched = to.matched;
+	let adminMode = false;
+
+	let WildCard = {
+		name: ROUTES.wip
+	};
+	let LoginPage = {
+		name: ROUTES.auth.login
+	};
+
+	for (let i = 0; i < matched.length; i++) {
+		let route = matched[i];
+
+		if (route.components.default.name === "UserPage") {
+			adminMode = true;
+			break;
+		}
+	}
+
+	try {
+		let hasAccess = Store.getters["auth/getLoginStatus"];
+		let authenticated = await Store.dispatch("auth/authenticate");
+
+		if (adminMode === true) {
+			if (authenticated === true && hasAccess === true) {
+				return next();
+			} else {
+				await Store.dispatch("auth/logout");
+				return next(LoginPage);
+			}
+		}
+
+		return next(WildCard);
+	} catch (error) {
+		next(WildCard);
+	}
+}
+
 
 export default router;
