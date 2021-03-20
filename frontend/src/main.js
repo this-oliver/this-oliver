@@ -4,7 +4,7 @@ import Router from "./router";
 import Store from "./data/store";
 import {mixin} from "./mixin";
 
-import I18n from "./I18n";
+import i18n from "./i18n";
 import Bootstrap from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -19,7 +19,7 @@ Vue.use(Bootstrap);
 Vue.mixin(mixin);
 
 new Vue({
-	i18n: I18n,
+	i18n: i18n,
 	store: Store,
 	router: Router,
 	render: h => h(App)
