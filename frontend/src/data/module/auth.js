@@ -1,6 +1,6 @@
 import {login} from "../api/auth";
 
-import i18n from "../../I18n";
+import i18n from "../../i18n";
 import {toastError} from "../../mixin";
 import {verifyToken} from "../../helpers/token-helper";
 import {setCache, getCache, enums} from "../../helpers/cache-helper";

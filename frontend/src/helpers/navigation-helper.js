@@ -1,5 +1,5 @@
-import i18n from "../I18n";
-import {ROUTES} from "../helpers/router-helper";
+import i18n from "../i18n";
+import {ROUTES} from "../enums/router-enums";
 
 export let getNavigationItems = () =>{
 	return [

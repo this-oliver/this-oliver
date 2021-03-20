@@ -3,7 +3,7 @@ import Router from "vue-router";
 
 import I18n from "./I18n";
 import {scrollToTop} from "./mixin";
-import { ROUTES, checkAuthorized, handleLocale } from "./helpers/router-helper";
+import { ROUTES } from "./enums/router-enums";
 
 // pages
 import LandingPage from "./pages/LandingPage";

@@ -38,7 +38,7 @@
 
 <script>
 	import { mapGetters } from "vuex";
-	import { ROUTES } from "../helpers/router-helper";
+	import { ROUTES } from "../enums/router-enums";
 	
 	import { sanitizeHtml, getMarkdown } from "../helpers/markdown-helper";
 
