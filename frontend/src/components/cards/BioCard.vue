@@ -8,14 +8,14 @@
           <b-button 
             class="mx-1"
             size="sm"
-            variant="outline-primary"
+            :variant="(shortBio)?`primary`:`outline-primary`"
             @click="shortBio = true">
             {{ $t("bioCard.actions.short") }}
           </b-button>
           <b-button 
             class="mx-1"
             size="sm"
-            variant="outline-danger"
+            :variant="(shortBio)?`outline-danger`:`danger`"
             @click="shortBio = false">
             {{ $t("bioCard.actions.long") }}
           </b-button>
