@@ -40,8 +40,7 @@
 	import { mapGetters } from "vuex";
 	import { ROUTES } from "../helpers/router-helper";
 	
-	import Marked from "marked";
-	import { sanitizeHtml } from "../helpers/security-helper";
+	import { sanitizeHtml, getMarkdown } from "../helpers/markdown-helper";
 
 	const SHORT = {
 		enum: "SHORT",
@@ -71,7 +70,7 @@
 				isDarkTheme: "theme/isDarkTheme"
 			}),
 			getMarkdown: function(){
-				return Marked(this.currentDescription.text);
+				return getMarkdown(this.currentDescription.text);
 			}
 		},
 		methods: {

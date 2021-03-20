@@ -2,8 +2,9 @@
   <div>
     <b-row align-h="center">
       <b-col
-        sm="12"
-        md="11">
+        class="mt-5"
+        sm="8"
+        md="4">
         <router-view />
       </b-col>
     </b-row>
@@ -12,6 +13,6 @@
 
 <script>
 	export default {
-		name:"UserPage"
+		name:"AuthPage",
 	};
 </script>

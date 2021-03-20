@@ -2,14 +2,19 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import I18n from "./I18n";
-import { ROUTES, handleLocale } from "./helpers/router-helper";
-import { scrollToTop } from "./mixin";
+import {scrollToTop} from "./mixin";
+import { ROUTES, checkAuthorized, handleLocale } from "./helpers/router-helper";
 
 // pages
 import LandingPage from "./pages/LandingPage";
 import ResumePage from "./pages/ResumePage";
 import UserPage from "./pages/UserPage";
-import WipPage from "./components/WipCard";
+import AuthPage from "./pages/AuthPage";
+
+// components
+import LoginForm from "./components/LoginForm";
+import UserForm from "./components/UserForm";
+import WipCard from "./components/WipCard";
 
 Vue.use(Router);
 
@@ -41,15 +46,34 @@ const router = new Router({
 					component: ResumePage
 				},
 				{
+					path: "auth",
+					component: AuthPage,
+					children: [
+						{
+							path: "/",
+							name: ROUTES.auth.login,
+							component: LoginForm
+						}
+					]
+				},
+				{
 					path: "admin",
-					name: ROUTES.admin.profile,
 					component: UserPage,
+					beforeEnter: checkAuthorized,
+					children: [
+						{
+							path: "/",
+							name: ROUTES.admin.profile,
+							component: UserForm,
+							props: { editMode: true }
+						}
+					]
 				},
 				{
 					path: "*",
 					name: ROUTES.wip,
-					component: WipPage
-				},
+					component: WipCard
+				}
 			]
 		}
 	]

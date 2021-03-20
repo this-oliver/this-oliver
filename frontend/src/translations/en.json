@@ -5,43 +5,71 @@
 		"work": "work",
 		"school": "school",
 		"projects": "projects",
-		"journal":"journal",
+		"journal": "journal",
 		"admin": "admin",
 		"resume": "resume"
 	},
-	"landingPage":{
-		"title":"landing"
+	"landingPage": {
+		"title": "landing"
 	},
-	"adminPage":{
-		"title":"admin",
+	"authPage": {
+		"title": "authentication",
+		"loginForm": {
+			"title": "login form",
+			"email": "email",
+			"promptEmail": "enter email...",
+			"password": "password",
+			"promptPassword": "enter password..."
+		}
+	},
+	"adminPage": {
+		"title": "admin",
 		"userForm": {
-			"title":"user form",
-			"name":"name",
-			"promptName":"enter name...",
-			"bio":"bio"
+			"title": "user form",
+			"name": "name",
+			"promptName": "enter name...",
+			"bio": "bio"
 		},
-		"bioForm":{
-			"title":"bio form",
-			"shortBio":"short bio",
-			"longBio":"long bio",
-			"promptBio":"enter bio here..."
+		"bioForm": {
+			"title": "bio form",
+			"shortBio": "short bio",
+			"longBio": "long bio",
+			"promptBio": "enter bio here..."
 		}
 	},
 	"footer": {
 		"title": "footer"
 	},
-	"wip":{
-		"title":"Work in progress... come back soon!"
+	"wip": {
+		"title": "Work in progress... come back soon!"
 	},
-	"form":{
-		"title":"form",
-		"actions":{
+	"form": {
+		"title": "form",
+		"actions": {
 			"title": "actions",
-			"post":"post",
-			"update":"update",
-			"delete":"delete",
-			"preview":"preview",
-			"download": "download"
+			"post": "post",
+			"update": "update",
+			"delete": "delete",
+			"preview": "preview",
+			"download": "download",
+			"login": "login"
+		}
+	},
+	"error": {
+		"title": "error",
+		"api": {
+			"title": "api error",
+			"request": {
+				"get": "could not get {name}",
+				"post": "could not post {name}",
+				"patch": "could not update {name}",
+				"delete": "could not delete {name}",
+				"noConnection": "no connection to server"
+			}
+		},
+		"auth": {
+			"title": "auth error",
+			"login": "invalid login credentials"
 		}
 	}
 }
