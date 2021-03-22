@@ -39,4 +39,5 @@ body{
 
 .simple-link:hover {
 	color: red;
+	cursor: pointer;
 }

@@ -2,61 +2,77 @@
 	"nav": {
 		"title": "navigation",
 		"about": "about me",
-		"work": "work",
-		"school": "school",
+		"jobs": "jobs",
+		"education": "education",
 		"projects": "projects",
 		"journal": "journal",
 		"admin": "admin",
 		"resume": "resume"
 	},
-	"landingPage": {
-		"title": "landing",
-		"about":"🤠 about me",
-		"education":"🎓 education",
-		"work":"💼 work"
+	"pages": {
+		"user": {
+			"title": "user",
+			"about": "🤠 about me",
+			"education": "🎓 education",
+			"jobs": "💼 jobs"
+		},
+		"auth": {
+			"title": "authentication"
+		},
+		"admin": {
+			"title": "admin"
+		}
 	},
-	"authPage": {
-		"title": "authentication",
-		"loginForm": {
+	"cards": {
+		"bio": {
+			"actions": {
+				"short": "short",
+				"long": "long"
+			}
+		},
+		"education": {
+			"presentYear": "present"
+		},
+		"job": {
+			"presentYear": "present"
+		},
+		"wip": {
+			"title": "Work in progress... come back soon!"
+		}
+	},
+	"forms": {
+		"bio": {
+			"title": "bio form",
+			"short": "short bio",
+			"long": "long bio",
+			"promptBio": "enter bio here..."
+		},
+		"experience": {
+			"title": "experience form",
+			"experienceTitle": "title",
+			"org": "org",
+			"years": "years",
+			"startYear": "start year",
+			"endYear": "end year",
+			"description": "description",
+			"type": "type"
+		},
+		"login": {
 			"title": "login form",
 			"email": "email",
 			"promptEmail": "enter email...",
 			"password": "password",
 			"promptPassword": "enter password..."
-		}
-	},
-	"adminPage": {
-		"title": "admin",
-		"userForm": {
+		},
+		"user": {
 			"title": "user form",
 			"name": "name",
 			"promptName": "enter name...",
 			"bio": "bio"
-		},
-		"bioForm": {
-			"title": "bio form",
-			"shortBio": "short bio",
-			"longBio": "long bio",
-			"promptBio": "enter bio here..."
 		}
-	},
-	"bioCard":{
-		"actions":{
-			"short":"short",
-			"long":"long"
-		}
-	},
-	"educationCard":{
-		"presentYear":"present"
-	},
-	"jobCard":{
-		"presentYear":"present"
 	},
 	"footer": {
 		"title": "footer"
-	},
-	"wip": {
-		"title": "Work in progress... come back soon!"
 	},
 	"form": {
 		"title": "form",
@@ -67,6 +83,7 @@
 			"delete": "delete",
 			"preview": "preview",
 			"download": "download",
+			"back": "back",
 			"login": "login"
 		}
 	},
@@ -85,6 +102,12 @@
 		"auth": {
 			"title": "auth error",
 			"login": "invalid login credentials"
+		},
+		"user": {
+			"title":"user request error"
+		},
+		"experience": {
+			"title":"experience request error"
 		}
 	}
 }

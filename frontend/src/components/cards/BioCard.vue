@@ -10,14 +10,14 @@
             size="sm"
             :variant="(shortBio)?`primary`:`outline-primary`"
             @click="shortBio = true">
-            {{ $t("bioCard.actions.short") }}
+            {{ $t("cards.bio.actions.short") }}
           </b-button>
           <b-button 
             class="mx-1"
             size="sm"
             :variant="(shortBio)?`outline-danger`:`danger`"
             @click="shortBio = false">
-            {{ $t("bioCard.actions.long") }}
+            {{ $t("cards.bio.actions.long") }}
           </b-button>
         </b-button-group>
       </b-col>

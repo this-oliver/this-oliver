@@ -33,7 +33,7 @@
 		},
 		data: function(){
 			return {
-				resumeUrl: require("../assets/docs/resume.pdf")
+				resumeUrl: require("../../assets/docs/resume.pdf")
 			};
 		},
 	};

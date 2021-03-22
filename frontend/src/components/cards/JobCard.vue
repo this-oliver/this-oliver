@@ -7,10 +7,14 @@
       <b-col cols="10">
         <b-row>
           <b-col cols="12">
-            <b>{{ title }}</b>
+            <b>{{ job.title }}</b>
           </b-col>
           <b-col cols="12">
-            <small><b>{{ org }} ({{ startYear }}-{{ endYear }})</b></small>
+            <small>
+              <b>
+                {{ `${job.org} (${job.startYear}-${getEndYear})` }}
+              </b>
+            </small>
           </b-col>
           <b-col cols="12">
             <small>
@@ -19,6 +23,20 @@
             </small>
           </b-col>
         </b-row>
+      </b-col>
+    </b-row>
+    <b-row
+      v-if="editMode"
+      align-h="end">
+      <b-col
+        v-if="editMode"
+        sm="auto"
+        md="auto">
+        <span
+          class="simple-link"
+          @click="update">
+          {{ $t("form.actions.update") }}
+        </span>
       </b-col>
     </b-row>
   </div>
@@ -30,35 +48,23 @@
 	export default {
 		name: "JobCard",
 		props: {
+			job: {
+				type: Object,
+				required: true
+			},
+			editMode: {
+				type: Boolean,
+				default: false
+			},
 			shortMode: {
 				type: Boolean,
 				default: true
-			},
-			title: {
-				type: String,
-				required: true
-			},
-			org: {
-				type: String,
-				required: true
-			},
-			startYear: {
-				type: Number,
-				required: true
-			},
-			endYear: {
-				type: Number,
-				default: i18n.t("jobCard.presentYear")
-			},
-			description: {
-				type: String,
-				required: true
 			}
 		},
 		computed: {
 			getDescription: function() {
 				const MAX_LENGTH = 40;
-				let description = this.description;
+				let description = this.job.description;
 
 				if (this.shortMode == true) {
 					let shortDescription = description.substr(0, MAX_LENGTH);
@@ -66,6 +72,23 @@
 				} else {
 					return getMarkdown(description);
 				}
+			},
+			getEndYear: function() {
+				let endYear = this.job.endYear;
+				return endYear ? endYear : i18n.t("cards.job.presentYear");
+			}
+		},
+		methods:{
+			update: function(){
+				this.$router.push(
+					{ 
+						name: this.ROUTES.admin.experienceUpdate, 
+						params: { 
+							title: this.job.title.replaceAll(" ", "-"),
+							experience: this.job
+						}
+					}
+				);
 			}
 		}
 	};

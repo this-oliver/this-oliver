@@ -1,12 +1,16 @@
-import {mapGetters, mapMutations} from "vuex";
 import Router from "./router";
+import {mapGetters, mapMutations} from "vuex";
+
+import ROUTES from "./enums/router-enums";
 
 /**
  * returns mixin
  */
 export const mixin = {
 	data: function() {
-		return {};
+		return {
+			ROUTES: ROUTES
+		};
 	},
 	computed: {
 		...mapGetters({

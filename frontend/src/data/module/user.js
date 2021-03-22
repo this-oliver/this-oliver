@@ -1,5 +1,15 @@
-import { setCache, getCache, enums as CachEnums } from "../../helpers/cache-helper";
+import { getUser, patchUser } from "../api/user";
+import ExperienceModule from "./userExperience.js";
+
+import i18n from "../../i18n";
+import { toastError } from "../../mixin";
 import TYPES from "../../enums/experience-enums";
+
+import {
+	setCache,
+	getCache,
+	enums as CachEnums
+} from "../../helpers/cache-helper";
 
 const user = {
 	name: "Olivier Manzi",
@@ -13,7 +23,7 @@ const user = {
 		{
 			title: "software engineering",
 			org: "gothenburg university",
-			type: TYPES.school,
+			type: TYPES.education,
 			startYear: 2017,
 			endYear: 2020,
 			description:
@@ -22,11 +32,11 @@ const user = {
 		{
 			title: "entreprenurship and innovation",
 			org: "kth",
-			type: TYPES.school,
+			type: TYPES.education,
 			startYear: 2020,
 			endYear: 2021,
 			description:
-			"pretty much a management course with a sprinkle of entrepreneuship"
+				"pretty much a management course with a sprinkle of entrepreneuship"
 		},
 		{
 			title: "software engineering intern",
@@ -49,32 +59,68 @@ const state = {
 const getters = {
 	getUser: state => state.user,
 	getEducations: state =>
-		state.user.experiences.filter(
-			experience => experience.type == TYPES.school
-		),
+		state.user.experiences.filter(experience => experience.type == TYPES.education),
 	getJobs: state =>
-		state.user.experiences.filter(
-			experience => experience.type == TYPES.job
-		),
-	getArticles: state => state.articles
+		state.user.experiences.filter(experience => experience.type == TYPES.job)
 };
 
 const mutations = {
 	setUser: (state, user) => {
 		state.user = user;
 		setCache(CachEnums.USER, user);
-	},
-	setArticles: (state, articles) => {
-		state.articles = articles;
 	}
 };
 
 const actions = {
-	initUser: (context, user)=> {
+	initUser: (context, user) => {
 		context.commit("setuser", user);
 	},
-	getArticles: async ()=> {},
-	resetUser: ()=>{}
+	getUser: async (context) =>{
+		try {
+			let token = context.rootGetters["auth/getToken"];
+			let id = context.getters["user"]._id;
+			let response = await getUser(id, token);
+			let user = response.data;
+			context.commit("setUser", user);
+			return response;
+		} catch (error) {
+			if (error.response) {
+				toastError(
+					i18n.t("error.user.title"),
+					`${i18n.t("error.api.request.get", { name: "user" })}: ${error.response.data}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
+	patchUser: async (context, { name, email, short, long }) => {
+		try {
+			let response = await patchUser(name, email, short, long);
+			let user = response.data;
+			context.commit("setUser", user);
+		} catch (error) {
+			if (error.response) {
+				toastError(
+					i18n.t("error.user.title"),
+					`${i18n.t("error.api.request.patch", { name: "user" })}: ${error.response.data}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
+	resetUser: context => {
+		context.commit("setUser", null);
+	}
+};
+
+const modules = {
+	experiences: ExperienceModule
 };
 
 export default {
@@ -82,5 +128,6 @@ export default {
 	state,
 	getters,
 	mutations,
-	actions
+	actions,
+	modules
 };

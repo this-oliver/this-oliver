@@ -9,7 +9,11 @@ const ROUTES = {
 	},
 	//admin
 	admin: {
-		profile:"user",
+		profile:"admin-user",
+		bio:"admin-bio",
+		experiences:"admin-experiences",
+		experienceCreate:"admin-experience-create",
+		experienceUpdate:"admin-experience-update",
 	},
 	//other
 	auth:{
