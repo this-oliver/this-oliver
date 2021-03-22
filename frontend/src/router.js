@@ -3,18 +3,20 @@ import Router from "vue-router";
 
 import i18n from "./i18n";
 import Store from "./data/store";
-import {scrollToTop} from "./mixin";
+import { scrollToTop } from "./mixin";
 import ROUTES from "./enums/router-enums";
 
 // pages
-import LandingPage from "./pages/LandingPage";
-import ResumePage from "./pages/ResumePage";
-import UserPage from "./pages/UserPage";
-import AuthPage from "./pages/AuthPage";
+import AuthPage from "./components/pages/AuthPage";
+import AdminPage from "./components/pages/AdminPage";
+import UserPage from "./components/pages/UserPage";
+import ResumePage from "./components/pages/ResumePage";
+import WipPage from "./components/pages/WipPage";
 
-// components
-import UserForm from "./components/forms/UserForm";
-import WipCard from "./components/cards/WipCard";
+// views and other
+import ExperiencesView from "./components/views/ExperiencesView";
+import BioForm from "./components/forms/BioForm";
+import ExperienceForm from "./components/forms/ExperienceForm";
 
 Vue.use(Router);
 
@@ -38,7 +40,7 @@ const router = new Router({
 				{
 					path: "/",
 					name: ROUTES.user.landing,
-					component: LandingPage
+					component: UserPage
 				},
 				{
 					path: "resume",
@@ -46,27 +48,51 @@ const router = new Router({
 					component: ResumePage
 				},
 				{
+					path: "auth",
+					name: ROUTES.auth.login,
+					component: AuthPage
+				},
+				{
 					path: "admin",
-					component: UserPage,
+					component: AdminPage,
+					beforeEnter: checkAuthorized,
 					children: [
 						{
 							path: "/",
-							name: ROUTES.auth.login,
-							component: AuthPage
+							name: ROUTES.admin.profile,
+							component: UserPage,
+							props: { editMode: true }
 						},
 						{
-							path: "profile",
-							name: ROUTES.admin.profile,
-							component: UserForm,
-							props: { editMode: true },
-							beforeEnter: checkAuthorized
+							path: "bio",
+							name: ROUTES.admin.bio,
+							component: BioForm,
+							props: { editMode: true }
+						},
+						{
+							path: "experiences",
+							name: ROUTES.admin.experiences,
+							component: ExperiencesView,
+							props: { editMode: true }
+						},
+						{
+							path: "experiences/create",
+							name: ROUTES.admin.experienceCreate,
+							component: ExperienceForm,
+							props: { editMode: false }
+						},
+						{
+							path: "experiences/:title/update",
+							name: ROUTES.admin.experienceUpdate,
+							component: ExperienceForm,
+							props: { default: true, editMode: true }
 						}
 					]
 				},
 				{
 					path: "*",
 					name: ROUTES.wip,
-					component: WipCard
+					component: WipPage
 				}
 			]
 		}
@@ -112,13 +138,13 @@ function handleLocale(to, from, next) {
 
 /**
  * checks whether user is authorized
- * @param {*} to 
- * @param {*} from 
+ * @param {*} to
+ * @param {*} from
  * @param {*} next
  */
 async function checkAuthorized(to, from, next) {
-	/* if client is going to business side, make sure 
-	they have business access priveleges or higher and 
+	/* if client is going to business side, make sure
+	they have business access priveleges or higher and
 	the same for admin side*/
 
 	let matched = to.matched;
@@ -158,6 +184,5 @@ async function checkAuthorized(to, from, next) {
 		next(WildCard);
 	}
 }
-
 
 export default router;

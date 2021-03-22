@@ -10,3 +10,12 @@ export let verifyToken = token => {
 	let decoded = JWT.verify(token, SECRET);
 	return decoded;
 };
+
+/**
+ * returns header with auth token 
+ * @param {String} token 
+ * @returns {Object}
+ */
+export let config = token => {
+	return { headers: { Authorization: `Bearer ${token}` } };
+};

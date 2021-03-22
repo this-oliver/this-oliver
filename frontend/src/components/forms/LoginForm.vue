@@ -3,7 +3,7 @@
     <b-form>
       <b-form-group
         class="input-field"
-        :label="`${$t('authPage.loginForm.email')}:`">
+        :label="`${$t('forms.login.email')}:`">
         <b-form-input
           v-model="form.email"
           type="email"
@@ -12,7 +12,7 @@
 
       <b-form-group
         class="input-field"
-        :label="`${$t('authPage.loginForm.password')}:`">
+        :label="`${$t('forms.login.password')}:`">
         <b-form-input
           v-model="form.password"
           type="password"

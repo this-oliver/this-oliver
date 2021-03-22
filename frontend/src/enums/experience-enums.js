@@ -3,7 +3,9 @@
  */
 const TYPES = {
 	job:"job",
-	school:"school"
+	education:"education",
+	projects:"projects",
+	other:"other"
 };
 
 export default TYPES;

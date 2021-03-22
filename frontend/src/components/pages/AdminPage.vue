@@ -12,6 +12,6 @@
 
 <script>
 	export default {
-		name:"UserPage"
+		name:"AdminPage"
 	};
 </script>
