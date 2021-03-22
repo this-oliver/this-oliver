@@ -165,17 +165,16 @@ async function checkAuthorized(to, from, next) {
 	};
 
 	for (let i = 0; i < matched.length; i++) {
+		
 		let route = matched[i];
-
 		if (route.components.default.name === "AdminPage") {
 			adminMode = true;
-			break;
 		}
 	}
 
-	let hasAccess = Store.getters["auth/getLoginStatus"];
 	let isAuthenticated = await Store.dispatch("auth/authenticate");
-
+	let hasAccess = Store.getters["auth/getLoginStatus"];
+	
 	try {
 		if (adminMode === true) {
 			if (isAuthenticated === true && hasAccess === true) {

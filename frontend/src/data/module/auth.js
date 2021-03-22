@@ -32,6 +32,18 @@ const mutations = {
 };
 
 const actions = {
+	authenticate: context => {
+		try {
+			let token = context.state.token;
+			verifyToken(token);	
+			context.commit("setLoginStatus", true);
+			return true;
+		} catch (error) {
+			toastError(i18n.t("error.auth.title"), error);
+			context.dispatch("logout");
+			return false;
+		}
+	},
 	login: async (context, { email, password }) => {
 		await context.dispatch("user/reset", null, {root: true});
 		try {
@@ -83,18 +95,6 @@ const actions = {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
 	},
-	authenticate: context => {
-		let token = context.state.token;
-
-		try {
-			verifyToken(token).data;	
-		} catch (error) {
-			context.dispatch("logout");
-			return false;
-		}
-		context.commit("setLoginStatus", true);
-		return true;
-	}
 };
 
 export default {

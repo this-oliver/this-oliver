@@ -91,12 +91,15 @@
             </b-col>
           </b-row>
         </b-col>
+
         <b-col
           class="my-1"
-          sm="4"
-          md="3">
+          sm="auto"
+          md="auto">
           <small class="bold-text">
-            <a>🤠</a> 
+            <router-link :to="{ name: ROUTES.admin.profile }">
+              🤠
+            </router-link>
             Oliver Manzi [{{ getYear }}]
           </small>
         </b-col>
