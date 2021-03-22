@@ -111,7 +111,8 @@ exports.updateUser = async (id, patch) => {
 		}
 
 		user.name = patch.name || user.name;
-		user.updated = new Date().getTime();
+		user.bio.short = patch.bio.short || user.bio.short;
+		user.bio.long = patch.bio.long || user.bio.long;
 		user = await user.save();
 	} catch (error) {
 		throw {

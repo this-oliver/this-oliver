@@ -79,7 +79,7 @@
           v-if="editMode"
           block
           variant="warning"
-          @click="update(null, null, form.short, form.long)">
+          @click="update({name: null, email: null, short: form.short, long: form.long})">
           {{ $t("form.actions.update") }}
         </b-button>
         <b-button

@@ -82,7 +82,7 @@ const actions = {
 	getUser: async (context) =>{
 		try {
 			let token = context.rootGetters["auth/getToken"];
-			let id = context.getters["user"]._id;
+			let id = context.state.user._id;
 			let response = await getUser(id, token);
 			let user = response.data;
 			context.commit("setUser", user);
@@ -103,7 +103,7 @@ const actions = {
 	patchUser: async (context, { name, email, short, long }) => {
 		try {
 			let token = context.rootGetters["auth/getToken"];
-			let id = context.getters["user"]._id;
+			let id = context.state.user._id;
 			let response = await patchUser(id, name, email, short, long, token);
 			let user = response.data;
 			context.commit("setUser", user);
@@ -111,6 +111,7 @@ const actions = {
 			Router.push({name: ROUTES.admin.profile});
 			return user;
 		} catch (error) {
+			console.log({vError: error});
 			if (error.response) {
 				toastError(
 					i18n.t("error.user.title"),
