@@ -2,9 +2,11 @@ import { getUser, patchUser } from "../api/user";
 import ExperienceModule from "./userExperience.js";
 
 import i18n from "../../i18n";
+import Router from "../../router";
 import { toastError } from "../../mixin";
-import TYPES from "../../enums/experience-enums";
 
+import ROUTES from "../../enums/router-enums";
+import TYPES from "../../enums/experience-enums";
 import {
 	setCache,
 	getCache,
@@ -52,16 +54,18 @@ const user = {
 const namespaced = true;
 
 const state = {
-	user: null || user || getCache(CachEnums.USER),
+	user: getCache(CachEnums.USER) || user || null,
 	articles: []
 };
 
 const getters = {
 	getUser: state => state.user,
-	getEducations: state =>
-		state.user.experiences.filter(experience => experience.type == TYPES.education),
-	getJobs: state =>
-		state.user.experiences.filter(experience => experience.type == TYPES.job)
+	getEducations: state => {
+		return state.user.experiences ? state.user.experiences.filter(experience => experience.type == TYPES.education): [];
+	},
+	getJobs: state =>{
+		return state.user.experiences? state.user.experiences.filter(experience => experience.type == TYPES.job) : [];
+	}
 };
 
 const mutations = {
@@ -73,7 +77,7 @@ const mutations = {
 
 const actions = {
 	initUser: (context, user) => {
-		context.commit("setuser", user);
+		context.commit("setUser", user);
 	},
 	getUser: async (context) =>{
 		try {
@@ -82,7 +86,7 @@ const actions = {
 			let response = await getUser(id, token);
 			let user = response.data;
 			context.commit("setUser", user);
-			return response;
+			return user;
 		} catch (error) {
 			if (error.response) {
 				toastError(
@@ -98,9 +102,14 @@ const actions = {
 	},
 	patchUser: async (context, { name, email, short, long }) => {
 		try {
-			let response = await patchUser(name, email, short, long);
+			let token = context.rootGetters["auth/getToken"];
+			let id = context.getters["user"]._id;
+			let response = await patchUser(id, name, email, short, long, token);
 			let user = response.data;
 			context.commit("setUser", user);
+			
+			Router.push({name: ROUTES.admin.profile});
+			return user;
 		} catch (error) {
 			if (error.response) {
 				toastError(
@@ -114,7 +123,7 @@ const actions = {
 			}
 		}
 	},
-	resetUser: context => {
+	reset: context => {
 		context.commit("setUser", null);
 	}
 };

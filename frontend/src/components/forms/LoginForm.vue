@@ -7,7 +7,8 @@
         <b-form-input
           v-model="form.email"
           type="email"
-          :state="this.email" />
+          :state="validateEmail"
+          :placeholder="$t('forms.login.promptEmail')" />
       </b-form-group>
 
       <b-form-group
@@ -16,6 +17,7 @@
         <b-form-input
           v-model="form.password"
           type="password"
+          :placeholder="$t('forms.login.promptPassword')"
           @keyup.enter="login" />
       </b-form-group>
 
@@ -25,8 +27,8 @@
           cols="auto">
           <b-button
             variant="outline-primary"
-            :disabled="!this.email || loading"
-            @click="login(email, password)">
+            :disabled="!validateForm || loading"
+            @click="login({email: form.email, password: form.password})">
             {{ $t("form.actions.login") }}
             <b-spinner
               v-if="loading"
@@ -50,20 +52,24 @@
 				default: false
 			}
 		},
-		computed: {
-			email: function() {
-				let email = this.form.email;
-				return email.length == 0 ? null : isEmail(email);
-			},
-		},
 		data: function() {
 			return {
 				loading: false,
 				form: {
-					email: "",
-					password: ""
+					email: null,
+					password: null
 				}
 			};
+		},
+		computed: {
+			validateEmail: function() {
+				let email = this.form.email;
+				if(!email) return null;
+				return email.length == 0 ? null : isEmail(email);
+			},
+			validateForm: function(){
+				return this.validateEmail;
+			}
 		},
 		methods: {
 			...mapActions({

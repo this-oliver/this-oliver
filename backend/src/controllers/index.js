@@ -20,12 +20,13 @@ Router.get(BaseRoute, (req, res) => {
 /* ROUTES */
 //* Authentication
 Router.post(BaseRoute + "/auth/login", Auth.loginUser);
+Router.post(BaseRoute + "/auth/register", User.postUser);
+Router.patch(BaseRoute + "/auth/password", Auth.resetPassword);
 
-//* Users
+//* Oliver - it's all about me baby 🤠
 Router.post(BaseRoute + "/users", User.postUser);
-Router.get(BaseRoute + "/users", User.getAllUsers);
 Router.get(BaseRoute + "/users/:id", User.getSingleUser);
+Router.get(BaseRoute + "/users", User.getAllUsers);
 Router.patch(BaseRoute + "/users/:id", User.patchUser);
-Router.delete(BaseRoute + "/users/:id", User.deleteUser);
 
 module.exports = Router;

@@ -12,6 +12,10 @@ let user = new Schema(
 		name: { type: String, required: true },
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
+		bio: {
+			short: { type: String, default: " " },
+			long: { type: String, default: " " },
+		},
 		salt: { type: String },
 	},
 	{ timestamps: true }

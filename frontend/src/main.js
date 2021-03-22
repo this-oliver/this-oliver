@@ -4,6 +4,9 @@ import Router from "./router";
 import Store from "./data/store";
 import {mixin} from "./mixin";
 
+import Axios from "axios";
+import VueAxios from "vue-axios";
+
 import i18n from "./i18n";
 import Bootstrap from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
@@ -18,9 +21,17 @@ Vue.config.productionTip = false;
 Vue.use(Bootstrap);
 Vue.mixin(mixin);
 
-new Vue({
+// api - axios
+Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
+Vue.use(VueAxios, Axios);
+
+const vm = new Vue({
 	i18n: i18n,
 	store: Store,
 	router: Router,
 	render: h => h(App)
 }).$mount("#app");
+
+export let getVm = () => {
+	return vm;
+};

@@ -68,6 +68,12 @@
 			"title": "user form",
 			"name": "name",
 			"promptName": "enter name...",
+			"email": "email",
+			"promptEmail": "enter email...",
+			"password": "password",
+			"password2": "password check",
+			"promptPassword": "enter password...",
+			"promptPassword2": "enter password again...",
 			"bio": "bio"
 		}
 	},
