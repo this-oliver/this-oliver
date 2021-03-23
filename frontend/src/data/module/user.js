@@ -24,6 +24,7 @@ const state = {
 
 const getters = {
 	getUser: state => state.user,
+	getXp: state => state.user.experiences,
 	getEducations: state => {
 		if(state.user.experiences){
 			return state.user.experiences.filter(experience => experience.type == EXPERIENCE.education);

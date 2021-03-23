@@ -2,24 +2,24 @@
   <div>
     <b-row>
       <b-col cols="1">
-        📓
+        <span class="sub-header">{{ getXpEmoji(xp.type) }}</span>
       </b-col>
       <b-col cols="10">
         <b-row>
           <b-col cols="12">
-            <b>{{ education.title }}</b>
+            <b>{{ xp.title }}</b>
           </b-col>
           <b-col cols="12">
             <small>
               <b>
-                {{ `${education.org} (${education.startYear}-${getEndYear})` }}
+                {{ `${xp.org} (${xp.startYear}-${getEndYear})` }}
               </b>
             </small>
           </b-col>
-          <b-col cols="12">
+          <b-col
+            cols="12">
             <small>
-              ->
-              <span v-html="getDescription" />
+              <span v-html="getDesc" />
             </small>
           </b-col>
         </b-row>
@@ -44,7 +44,7 @@
         md="auto">
         <span
           class="simple-link"
-          @click="deleteXp(education._id)">
+          @click="deleteXp(xp._id)">
           {{ $t("form.actions.delete") }}
         </span>
       </b-col>
@@ -54,12 +54,13 @@
 
 <script>
 	import i18n from "../../i18n";
-	import { getMarkdown } from "../../helpers/markdown-helper";
 	import { mapActions } from "vuex";
+	import EXPERIENCES from "../../enums/experience-enums";
+	import { getMarkdown } from "../../helpers/markdown-helper";
 	export default {
-		name: "EducationCard",
+		name: "ExperienceCard",
 		props: {
-			education: {
+			xp: {
 				type: Object,
 				required: true
 			},
@@ -72,22 +73,20 @@
 				default: true
 			}
 		},
+		data: function(){
+			return {
+				showMore: false
+			};
+		},
 		computed: {
-			getDescription: function() {
-				const MAX_LENGTH = 40;
-				let description = this.education.description;
-
-				if (this.shortMode == true) {
-					let shortDescription = description.substr(0, MAX_LENGTH);
-					return `${shortDescription}...`;
-				} else {
-					return getMarkdown(description);
-				}
+			getDesc: function() {
+				let description = this.xp.description;
+				return getMarkdown(`-> ${description}`);
 			},
 			getEndYear: function() {
-				let endYear = this.education.endYear;
-				return endYear ? endYear : i18n.t("cards.education.presentYear");
-			}
+				let endYear = this.xp.endYear;
+				return endYear ? endYear : i18n.t("cards.xp.presentYear");
+			},
 		},
 		methods:{
 			...mapActions({
@@ -98,12 +97,24 @@
 					{ 
 						name: this.ROUTES.admin.experienceUpdate, 
 						params: { 
-							title: this.education.title.replaceAll(" ", "-"),
-							experience: this.education
+							title: this.xp.title.replaceAll(" ", "-"),
+							experience: this.xp
 						}
 					}
 				);
-			}
+			},
+			getXpEmoji: function(type){
+				switch (type) {
+				case EXPERIENCES.job:
+					return "💼";
+				case EXPERIENCES.education:
+					return "🎓";
+				case EXPERIENCES.projects:
+					return "💡";
+				default:
+					return "🧪";
+				}
+			},
 		}
 	};
 </script>

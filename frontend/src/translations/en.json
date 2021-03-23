@@ -26,12 +26,6 @@
 		},
 		"experience":{
 			"title":"🧪 experiences"
-		},
-		"education":{
-			"title":"🎓 education"
-		},
-		"jobs": {
-			"title":"💼 jobs"
 		}
 	},
 	"cards": {
@@ -41,11 +35,10 @@
 				"long": "long"
 			}
 		},
-		"education": {
-			"presentYear": "present"
-		},
-		"job": {
-			"presentYear": "present"
+		"xp": {
+			"presentYear": "present",
+			"more": "more",
+			"less": "less"
 		},
 		"wip": {
 			"title": "work in progress... come back soon!"
