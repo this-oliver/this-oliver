@@ -10,6 +10,7 @@ const Oliver = {
 	},
 	experiences: [
 		{
+			_id: 1,
 			title: "software engineering",
 			org: "gothenburg university",
 			type: EXPERIENCE.education,
@@ -19,6 +20,7 @@ const Oliver = {
 				"read books, learnt how to code, made some cars parallel park themselves and took part in a shit ton of hackathons"
 		},
 		{
+			_id: 2,
 			title: "entreprenurship and innovation",
 			org: "kth",
 			type: EXPERIENCE.education,
@@ -28,6 +30,7 @@ const Oliver = {
 				"pretty much a management course with a sprinkle of entrepreneuship"
 		},
 		{
+			_id: 3,
 			title: "software engineering intern",
 			org: "aptiv",
 			type: EXPERIENCE.job,

@@ -34,6 +34,15 @@
             </b-nav-form>
             <!-- locale -->
             <b-nav-form class="mx-2">
+              <span
+                v-if="inAdminMode"
+                class="simple-link"
+                @click="logout">
+                {{ `${$t("form.actions.logout")} ✌️` }}
+              </span>
+            </b-nav-form>
+            <!-- locale -->
+            <b-nav-form class="mx-2">
               <b-dropdown
                 :text="$i18n.locale"
                 :variant="getBootstrapTheme"
@@ -122,6 +131,7 @@
 	import {getCurrentYear} from "./helpers/time-helper";
 	import {getNavigationItems} from "./helpers/navigation-helper";
 	import ROUTES from "./enums/router-enums";
+	import { mapActions } from "vuex";
 
 	export default {
 		name: "App",
@@ -160,9 +170,25 @@
 						link: "https://fetchqr.com"
 					},
 				];
+			},
+			inAdminMode: function(){
+				let route = this.$route;
+				let matched = route.matched;
+				let adminMode = false;
+				
+				for (let i = 0; i < matched.length; i++) {
+					let currentRoute = matched[i];
+					if (currentRoute.components.default.name === "AdminPage") {
+						adminMode = true;
+					}
+				}
+				return adminMode;
 			}
 		},
 		methods: {
+			...mapActions({
+				logout: "auth/logout"
+			}),
 			goToResume: function(){
 				this.goTo(ROUTES.user.resume);
 			},

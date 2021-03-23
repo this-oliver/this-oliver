@@ -5,19 +5,26 @@
         class="sub-header"
         sm="auto"
         md="auto">
-        {{ $t("pages.user.education") }}
+        {{ $t("views.education.title") }}
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="educations.length > 0">
       <b-col
         cols="12"
         v-for="education in educations"
-        :key="education.title">
+        :key="education._id">
         <education-card
           class="mt-1"
           :education="education"
           :short-mode="true"
           :edit-mode="editMode" />
+      </b-col>
+    </b-row>
+    <b-row
+      v-else
+      align-h="center">
+      <b-col cols="auto">
+        ...
       </b-col>
     </b-row>
   </div>

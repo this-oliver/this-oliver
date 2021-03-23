@@ -1,5 +1,5 @@
 import { getSingleUser, getAllUsers, patchUser } from "../api/user";
-import ExperienceModule from "./userExperience.js";
+import ExperienceModule from "./xp.js";
 
 import i18n from "../../i18n";
 import Router from "../../router";
@@ -127,7 +127,7 @@ const actions = {
 };
 
 const modules = {
-	experiences: ExperienceModule
+	xp: ExperienceModule
 };
 
 export default {

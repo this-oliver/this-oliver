@@ -11,16 +11,27 @@
 	},
 	"pages": {
 		"user": {
-			"title": "user",
-			"about": "🤠 about me",
-			"education": "🎓 education",
-			"jobs": "💼 jobs"
+			"title": "user"
 		},
 		"auth": {
 			"title": "authentication"
 		},
 		"admin": {
 			"title": "admin"
+		}
+	},
+	"views":{
+		"about":{
+			"title":"🤠 about me"
+		},
+		"experience":{
+			"title":"🧪 experiences"
+		},
+		"education":{
+			"title":"🎓 education"
+		},
+		"jobs": {
+			"title":"💼 jobs"
 		}
 	},
 	"cards": {
@@ -37,7 +48,7 @@
 			"presentYear": "present"
 		},
 		"wip": {
-			"title": "Work in progress... come back soon!"
+			"title": "work in progress... come back soon!"
 		}
 	},
 	"forms": {
@@ -90,7 +101,8 @@
 			"preview": "preview",
 			"download": "download",
 			"back": "back",
-			"login": "login"
+			"login": "login",
+			"logout": "logout"
 		}
 	},
 	"error": {

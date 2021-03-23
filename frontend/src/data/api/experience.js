@@ -22,8 +22,11 @@ export let postExperience = async (
 
 	try {
 		let response = await axios.post(`/users/${userId}/experiences`, data, Config(token));
-		if (response.status == 200) return Promise.resolve(response);
-		return Promise.reject(response);
+		if (response.status == 201){ 
+			return response;
+		}else{
+			throw response;
+		}
 	} catch (error) {
 		return Promise.reject(error);
 	}
@@ -50,8 +53,11 @@ export let patchExperience = async (
 
 	try {
 		let response = await axios.patch(`/experiences/${id}`, data, Config(token));
-		if (response.status == 200) return Promise.resolve(response);
-		return Promise.reject(response);
+		if (response.status == 200) {
+			return response;
+		} else {
+			throw response;
+		}
 	} catch (error) {
 		return Promise.reject(error);
 	}
@@ -63,8 +69,12 @@ export let deleteExperience = async (
 ) => {
 	try {
 		let response = await axios.delete(`/experiences/${id}`, Config(token));
-		if (response.status == 203) return Promise.resolve(response);
-		return Promise.reject(response);
+		
+		if (response.status == 203) {
+			return response;
+		} else {
+			throw response;
+		}
 	} catch (error) {
 		return Promise.reject(error);
 	}

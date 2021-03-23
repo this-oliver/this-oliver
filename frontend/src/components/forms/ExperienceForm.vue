@@ -230,9 +230,9 @@
 		},
 		methods:{
 			...mapActions({
-				postExperience: "user/experiences/postExperience",
-				patchExperience: "user/experiences/patchExperience",
-				deleteExperience: "user/experiences/deleteExperience",
+				postExperience: "user/xp/postExperience",
+				patchExperience: "user/xp/patchExperience",
+				deleteExperience: "user/xp/deleteExperience",
 			}),
 			getMarkDown: function(text){
 				if(text){

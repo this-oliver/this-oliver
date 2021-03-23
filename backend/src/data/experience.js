@@ -46,9 +46,9 @@ exports.postExperience = async (
 	}
 };
 
-exports.getAllExperiences = () => {
+exports.getAllExperiences = async () => {
 	try {
-		return ExperienceSchema.find();
+		return await ExperienceSchema.find().exec();
 	} catch (error) {
 		throw {
 			status: 400,
@@ -57,9 +57,9 @@ exports.getAllExperiences = () => {
 	}
 };
 
-exports.getSingleExperience = (id) => {
+exports.getSingleExperience = async (id) => {
 	try {
-		let xp = ExperienceSchema.findById(id);
+		let xp = await ExperienceSchema.findById(id).exec();
 
 		if (!xp) {
 			throw {
@@ -79,7 +79,7 @@ exports.getSingleExperience = (id) => {
 
 exports.updateExperience = async (id, patch) => {
 	try {
-		let xp = this.getSingleExperience(id);
+		let xp = await this.getSingleExperience(id);
 
 		xp.title = patch.title || xp.title;
 		xp.org = patch.org || xp.org;

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-row
-      align-h="end"
-      v-if="editMode">
-      <b-col cols="auto">
+    <b-row align-h="end">
+      <b-col
+        v-if="editMode"
+        cols="auto">
         <router-link
           class="simple-link"
           :to="{ name: ROUTES.admin.experienceCreate }">
@@ -16,9 +16,6 @@
         <jobs-view
           :jobs="jobs"
           :edit-mode="editMode" />
-      </b-col>
-      <b-col cols="11">
-        <hr>
       </b-col>
       <b-col cols="12">
         <education-view

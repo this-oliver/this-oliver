@@ -5,19 +5,26 @@
         class="sub-header"
         sm="auto"
         md="auto">
-        {{ $t("pages.user.jobs") }}
+        {{ $t("views.jobs.title") }}
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="jobs.length > 0">
       <b-col
         cols="12"
         v-for="job in jobs"
-        :key="job.title">
+        :key="job._id">
         <job-card
           class="mt-1"
           :job="job"
           :short-mode="true"
           :edit-mode="editMode" />
+      </b-col>
+    </b-row>
+    <b-row
+      v-else
+      align-h="center">
+      <b-col cols="auto">
+        ...
       </b-col>
     </b-row>
   </div>

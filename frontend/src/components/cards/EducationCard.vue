@@ -38,6 +38,16 @@
           {{ $t("form.actions.update") }}
         </span>
       </b-col>
+      <b-col
+        v-if="editMode"
+        sm="auto"
+        md="auto">
+        <span
+          class="simple-link"
+          @click="deleteXp(education._id)">
+          {{ $t("form.actions.delete") }}
+        </span>
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -45,6 +55,7 @@
 <script>
 	import i18n from "../../i18n";
 	import { getMarkdown } from "../../helpers/markdown-helper";
+	import { mapActions } from "vuex";
 	export default {
 		name: "EducationCard",
 		props: {
@@ -79,6 +90,9 @@
 			}
 		},
 		methods:{
+			...mapActions({
+				deleteXp: "user/xp/deleteExperience"
+			}),
 			update: function(){
 				this.$router.push(
 					{ 

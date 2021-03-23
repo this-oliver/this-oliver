@@ -91,9 +91,12 @@ const actions = {
 			}
 		}
 	},
-	logout: context => {
+	logout: async context => {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
+		await context.dispatch("user/reset", null, { root: true });
+
+		Router.push({ name: ROUTES.user.landing });
 	},
 };
 

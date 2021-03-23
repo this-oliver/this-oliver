@@ -11,7 +11,7 @@ let experience = new Schema(
 		endYear: { type: Number },
 		description: { type: String, required: true },
 		type: { type: String, required: true },
-		author: [{ type: Schema.Types.ObjectId, ref: "user" }],
+		author: { type: Schema.Types.ObjectId, ref: "user" },
 	},
 	{ timestamps: true }
 );

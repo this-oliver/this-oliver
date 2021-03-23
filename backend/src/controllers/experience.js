@@ -42,7 +42,6 @@ exports.getSingleExperience = function (req, res) {
 };
 
 exports.patchExperience = async function (req, res) {
-	let userId = req.params.userId;
 	let xpId = req.params.xpId;
 	let patch = req.body;
 
@@ -79,9 +78,9 @@ exports.deleteExperience = async function (req, res) {
 			req.headers.authorization.split(" ")[1]
 		);
 
-		let xp = ExperienceData.getSingleExperience(xpId);
+		let xp = await ExperienceData.getSingleExperience(xpId);
 
-		if (xp.author !== decoded.data) {
+		if (xp.author != decoded.data) {
 			throw {
 				status: 401,
 				message: "invalid credentials",
