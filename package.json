@@ -1,27 +1,51 @@
 {
-  "name": "olivermanzi",
-  "version": "1.0.0",
-  "description": "personal website",
-  "main": "index.js",
-  "scripts": {
-    "start": "npm run backend",
-    "frontend": "cd ./frontend && npm start",
-    "frontend-dev": "cd ./frontend && npm run dev",
-    "backend": "cd ./backend && npm start",
-    "backend-dev": "cd ./backend && npm run dev"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/olivermanzi/olivermanzi.git"
-  },
-  "keywords": [
-    "website",
-    "diy"
-  ],
-  "author": "@olivermanzi <olivermanzi.dev@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/olivermanzi/olivermanzi/issues"
-  },
-  "homepage": "https://github.com/olivermanzi/olivermanzi#readme"
+	"name": "olivermanzi",
+	"version": "1.0.0",
+	"description": "personal website",
+	"author": "@olivermanzi <olivermanzi.dev@gmail.com>",
+	"bugs": {
+		"url": "https://github.com/olivermanzi/olivermanzi/issues"
+	},
+	"homepage": "olivermanzi.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/olivermanzi/olivermanzi.git"
+	},
+	"scripts": {
+		"dev": "vue-cli-service serve",
+		"build": "vue-cli-service build",
+		"lint": "vue-cli-service lint"
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"bootstrap-vue": "^2.21.2",
+		"core-js": "^3.9.1",
+		"jsonwebtoken": "^8.5.1",
+		"marked": "^2.0.1",
+		"moment": "^2.29.1",
+		"sanitize-html": "^2.3.2",
+		"vue": "^2.6.11",
+		"vue-axios": "^3.2.4",
+		"vue-i18n": "^8.22.3",
+		"vue-pdf": "^4.2.0",
+		"vue-router": "^3.4.9",
+		"vuex": "^3.6.0"
+	},
+	"devDependencies": {
+		"@vue/cli-plugin-babel": "~4.5.0",
+		"@vue/cli-plugin-eslint": "~4.5.0",
+		"@vue/cli-service": "~4.5.0",
+		"babel-eslint": "^10.1.0",
+		"eslint": "^6.7.2",
+		"eslint-plugin-vue": "^7.0.0-beta.4",
+		"vue-template-compiler": "^2.6.11"
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	],
+	"engines": {
+		"node": "12.16.2"
+	}
 }
