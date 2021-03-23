@@ -34,6 +34,15 @@
             </b-nav-form>
             <!-- locale -->
             <b-nav-form class="mx-2">
+              <span
+                v-if="inAdminMode"
+                class="simple-link"
+                @click="logout">
+                {{ `${$t("form.actions.logout")} ✌️` }}
+              </span>
+            </b-nav-form>
+            <!-- locale -->
+            <b-nav-form class="mx-2">
               <b-dropdown
                 :text="$i18n.locale"
                 :variant="getBootstrapTheme"
@@ -59,6 +68,16 @@
       </b-navbar>
 
       <b-row
+        v-if="loading"
+        id="content"
+        align-h="center"
+        align-v="stretch">
+        <b-col cols="auto">
+          <b-spinner />
+        </b-col>
+      </b-row>
+      <b-row
+        v-else
         id="content"
         align-h="center"
         align-v="stretch">
@@ -91,12 +110,15 @@
             </b-col>
           </b-row>
         </b-col>
+
         <b-col
           class="my-1"
-          sm="4"
-          md="3">
+          sm="auto"
+          md="auto">
           <small class="bold-text">
-            <a>🤠</a> 
+            <router-link :to="{ name: ROUTES.admin.profile }">
+              🤠
+            </router-link>
             Oliver Manzi [{{ getYear }}]
           </small>
         </b-col>
@@ -109,11 +131,13 @@
 	import {getCurrentYear} from "./helpers/time-helper";
 	import {getNavigationItems} from "./helpers/navigation-helper";
 	import ROUTES from "./enums/router-enums";
+	import { mapActions } from "vuex";
 
 	export default {
 		name: "App",
 		data: function() {
 			return {
+				loading: false,
 				showOlivier: false,
 				navigationItems: getNavigationItems()
 			};
@@ -146,15 +170,36 @@
 						link: "https://fetchqr.com"
 					},
 				];
+			},
+			inAdminMode: function(){
+				let route = this.$route;
+				let matched = route.matched;
+				let adminMode = false;
+				
+				for (let i = 0; i < matched.length; i++) {
+					let currentRoute = matched[i];
+					if (currentRoute.components.default.name === "AdminPage") {
+						adminMode = true;
+					}
+				}
+				return adminMode;
 			}
 		},
 		methods: {
+			...mapActions({
+				logout: "auth/logout"
+			}),
 			goToResume: function(){
 				this.goTo(ROUTES.user.resume);
 			},
 			goToLanding: function(){
 				this.goTo(ROUTES.user.landing);
 			}
+		},
+		created: async function(){
+			this.loading = true;
+			await this.$store.dispatch("user/initUser");
+			this.loading = false;
 		}
 	};
 </script>

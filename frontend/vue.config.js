@@ -1,5 +1,5 @@
 module.exports = {
-	chainWebpack: (config) => {
+	chainWebpack: config => {
 		// rules
 		config.module
 			.rule("vue")
@@ -39,16 +39,16 @@ module.exports = {
 			"/api": {
 				target: process.env.VUE_APP_API,
 				secure: false,
-				changeOrigin: true,
-			},
-		},
+				changeOrigin: true
+			}
+		}
 	},
 	pluginOptions: {
 		i18n: {
 			locale: "en",
 			fallbackLocale: "en",
 			localeDir: "locales",
-			enableInSFC: true,
-		},
-	},
+			enableInSFC: true
+		}
+	}
 };

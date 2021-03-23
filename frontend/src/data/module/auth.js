@@ -1,7 +1,11 @@
 import {login} from "../api/auth";
+import {postUser} from "../api/user";
 
 import i18n from "../../i18n";
+import Router from "../../router";
 import {toastError} from "../../mixin";
+
+import ROUTES from "../../enums/router-enums";
 import {verifyToken} from "../../helpers/token-helper";
 import {setCache, getCache, enums} from "../../helpers/cache-helper";
 
@@ -28,11 +32,32 @@ const mutations = {
 };
 
 const actions = {
-	login: async (context, { email, password }) => {
-		let response = null;
-
+	authenticate: context => {
 		try {
-			response = await login(email, password);
+			let token = context.state.token;
+			verifyToken(token);	
+			context.commit("setLoginStatus", true);
+			return true;
+		} catch (error) {
+			toastError(i18n.t("error.auth.title"), error);
+			context.dispatch("logout");
+			return false;
+		}
+	},
+	login: async (context, { email, password }) => {
+		await context.dispatch("user/reset", null, {root: true});
+		try {
+			let response = await login(email, password);
+			let token = response.data.token;
+			let user = response.data.user;
+
+			context.commit("setToken", token);
+			context.commit("setLoginStatus", true);
+			context.commit("user/setUser", user, { root: true });
+			
+			Router.push({name: ROUTES.admin.profile});
+			
+			return user;
 		} catch (error) {
 			if (error.response) {
 				toastError(
@@ -45,31 +70,34 @@ const actions = {
 				toastError(i18n.t("error.title"), error);
 			}
 		}
-
-		let token = response.data.token;
-		let user = response.data.user;
-
-		context.commit("setToken", token);
-		context.commit("setLoginStatus", true);
-		context.dispatch("user/initUser", user, { root: true });
-		return Promise.resolve(response);
 	},
-	logout: context => {
+	register: async (context, { name, email, password }) => {
+		await context.dispatch("user/reset", null, { root: true });
+		try {
+			let response = await postUser(name, email, password, null, null);
+			let user = response.data.user;
+			Router.push({name: ROUTES.auth.login});
+			return user;
+		} catch (error) {
+			if (error.response) {
+				toastError(
+					i18n.t("error.auth.title"),
+					`${i18n.t("error.api.request.post", { name: "user" })}: ${error.response.data}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
+	logout: async context => {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
-	},
-	authenticate: context => {
-		let token = context.state.token;
+		await context.dispatch("user/reset", null, { root: true });
 
-		try {
-			verifyToken(token).data;	
-		} catch (error) {
-			context.dispatch("logout");
-			return false;
-		}
-		context.commit("setLoginStatus", true);
-		return true;
-	}
+		Router.push({ name: ROUTES.user.landing });
+	},
 };
 
 export default {

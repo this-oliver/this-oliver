@@ -11,16 +11,21 @@
 	},
 	"pages": {
 		"user": {
-			"title": "user",
-			"about": "🤠 about me",
-			"education": "🎓 education",
-			"jobs": "💼 jobs"
+			"title": "user"
 		},
 		"auth": {
 			"title": "authentication"
 		},
 		"admin": {
 			"title": "admin"
+		}
+	},
+	"views":{
+		"about":{
+			"title":"🤠 about me"
+		},
+		"experience":{
+			"title":"🧪 experiences"
 		}
 	},
 	"cards": {
@@ -30,14 +35,13 @@
 				"long": "long"
 			}
 		},
-		"education": {
-			"presentYear": "present"
-		},
-		"job": {
-			"presentYear": "present"
+		"xp": {
+			"presentYear": "present",
+			"more": "more",
+			"less": "less"
 		},
 		"wip": {
-			"title": "Work in progress... come back soon!"
+			"title": "work in progress... come back soon!"
 		}
 	},
 	"forms": {
@@ -68,6 +72,12 @@
 			"title": "user form",
 			"name": "name",
 			"promptName": "enter name...",
+			"email": "email",
+			"promptEmail": "enter email...",
+			"password": "password",
+			"password2": "password check",
+			"promptPassword": "enter password...",
+			"promptPassword2": "enter password again...",
 			"bio": "bio"
 		}
 	},
@@ -84,7 +94,8 @@
 			"preview": "preview",
 			"download": "download",
 			"back": "back",
-			"login": "login"
+			"login": "login",
+			"logout": "logout"
 		}
 	},
 	"error": {

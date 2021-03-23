@@ -48,9 +48,15 @@ const router = new Router({
 					component: ResumePage
 				},
 				{
-					path: "auth",
+					path: "auth/login",
 					name: ROUTES.auth.login,
-					component: AuthPage
+					component: AuthPage,
+				},
+				{
+					path: "auth/register",
+					name: ROUTES.auth.register,
+					component: AuthPage,
+					props: { registerMode: true }
 				},
 				{
 					path: "admin",
@@ -153,25 +159,25 @@ async function checkAuthorized(to, from, next) {
 	let WildCard = {
 		name: ROUTES.wip
 	};
+
 	let LoginPage = {
 		name: ROUTES.auth.login
 	};
 
 	for (let i = 0; i < matched.length; i++) {
+		
 		let route = matched[i];
-
-		if (route.components.default.name === "UserPage") {
+		if (route.components.default.name === "AdminPage") {
 			adminMode = true;
-			break;
 		}
 	}
 
+	let isAuthenticated = await Store.dispatch("auth/authenticate");
+	let hasAccess = Store.getters["auth/getLoginStatus"];
+	
 	try {
-		let hasAccess = Store.getters["auth/getLoginStatus"];
-		let authenticated = await Store.dispatch("auth/authenticate");
-
 		if (adminMode === true) {
-			if (authenticated === true && hasAccess === true) {
+			if (isAuthenticated === true && hasAccess === true) {
 				return next();
 			} else {
 				await Store.dispatch("auth/logout");

@@ -139,7 +139,7 @@
         <b-button
           block
           variant="warning"
-          @click="updateExperience(this.$route.params.experience._id, form.title, form.org, form.startYear, form.endYear, form.description, form.type)">
+          @click="updateExperience({id: this.$route.params.experience._id, title: form.title, org: form.org, startYear: form.startYear, endYear: form.endYear, description: form.description, type: form.type})">
           {{ $t("form.actions.update") }}
         </b-button>
       </b-col>
@@ -163,7 +163,7 @@
         <b-button
           block
           variant="primary"
-          @click="postExperience(form.title, form.org, form.startYear, form.endYear, form.description, form.type)">
+          @click="postExperience({title: form.title, org: form.org, startYear: form.startYear, endYear: form.endYear, description: form.description, type: form.type})">
           {{ $t("form.actions.post") }}
         </b-button>
       </b-col>
@@ -230,9 +230,9 @@
 		},
 		methods:{
 			...mapActions({
-				postExperience: "user/experiences/postExperience",
-				patchExperience: "user/experiences/patchExperience",
-				deleteExperience: "user/experiences/deleteExperience",
+				postExperience: "user/xp/postExperience",
+				patchExperience: "user/xp/patchExperience",
+				deleteExperience: "user/xp/deleteExperience",
 			}),
 			getMarkDown: function(text){
 				if(text){

@@ -1,9 +1,15 @@
 <template>
   <div>
-    <b-row
-      align-h="end"
-      v-if="editMode">
-      <b-col cols="auto">
+    <b-row align-h="between">
+      <b-col
+        class="sub-header"
+        sm="auto"
+        md="auto">
+        {{ $t("views.experience.title") }}
+      </b-col>
+      <b-col
+        v-if="editMode"
+        cols="auto">
         <router-link
           class="simple-link"
           :to="{ name: ROUTES.admin.experienceCreate }">
@@ -11,39 +17,38 @@
         </router-link>
       </b-col>
     </b-row>
-    <b-row>
-      <b-col cols="12">
-        <jobs-view
-          :jobs="jobs"
+    <b-row v-if="xpList.length > 0">
+      <b-col
+        cols="12"
+        v-for="(xp, index) in xpList"
+        :key="xp._id">
+        <xp-card
+          class="mt-1"
+          :xp="xp"
+          :short-mode="true"
           :edit-mode="editMode" />
+        <hr v-if="index < xpList.length - 1">
       </b-col>
-      <b-col cols="11">
-        <hr>
-      </b-col>
-      <b-col cols="12">
-        <education-view
-          :educations="educations"
-          :edit-mode="editMode" />
+    </b-row>
+    <b-row
+      v-else
+      align-h="center">
+      <b-col cols="auto">
+        ...
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
-	import EducationViewVue from "./EducationView.vue";
-	import JobsView from "./JobsView.vue";
+	import XpCardVue from "../cards/XpCard.vue";
 	export default {
 		name:"ExperiencesView",
 		components:{
-			"jobs-view":JobsView,
-			"education-view":EducationViewVue
+			"xp-card": XpCardVue
 		},
 		props:{
-			jobs:{
-				type: Array,
-				required: true
-			},
-			educations:{
+			xpList:{
 				type: Array,
 				required: true
 			},

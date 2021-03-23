@@ -14,9 +14,8 @@
         sm="11"
         md="8">
         <experiences
-          :edit-mode="editMode"
-          :educations="educations"
-          :jobs="jobs" />
+          :xp-list="xpList"
+          :edit-mode="editMode" />
       </b-col>
     </b-row>
   </div>
@@ -44,6 +43,7 @@
 		computed: {
 			...mapGetters({
 				user: "user/getUser",
+				xpList: "user/getXp",
 				jobs: "user/getJobs",
 				educations: "user/getEducations",
 				isDarkTheme: "theme/isDarkTheme"

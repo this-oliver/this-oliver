@@ -5,7 +5,10 @@ import {
 } from "../api/experience";
 
 import i18n from "../../i18n";
+import Router from "../../router";
 import { toastError } from "../../mixin";
+
+import ROUTES from "../../enums/router-enums";
 
 const namespaced = true;
 const state = {};
@@ -19,7 +22,9 @@ const actions = {
 	) => {
 		try {
 			let token = context.rootGetters["auth/getToken"];
+			let userId = context.rootGetters["user/getUser"]._id;
 			let response = await postExperience(
+				userId,
 				title,
 				org,
 				startYear,
@@ -28,7 +33,10 @@ const actions = {
 				type,
 				token
 			);
+			
 			await context.dispatch("user/getUser", null, { root: true });
+			Router.push({ name: ROUTES.admin.profile});
+
 			return response;
 		} catch (error) {
 			if (error.response) {
@@ -61,7 +69,10 @@ const actions = {
 				type,
 				token
 			);
+
 			await context.dispatch("user/getUser", null, { root: true });
+			Router.push({ name: ROUTES.admin.profile });
+
 			return response;
 		} catch (error) {
 			if (error.response) {
@@ -82,7 +93,10 @@ const actions = {
 		try {
 			let token = context.rootGetters["auth/getToken"];
 			let response = await deleteExperience(id, token);
+			
 			await context.dispatch("user/getUser", null, {root: true});
+			Router.push({ name: ROUTES.admin.profile });
+
 			return response;
 		} catch (error) {
 			if (error.response) {

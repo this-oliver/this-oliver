@@ -17,7 +17,8 @@ const ROUTES = {
 	},
 	//other
 	auth:{
-		login:"login"
+		login:"login",
+		register: "register"
 	},
 	wip: "wip",
 };

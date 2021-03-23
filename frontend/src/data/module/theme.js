@@ -1,7 +1,11 @@
+import {setCache, getCache} from "../../helpers/cache-helper";
+
+const CACHED_THEME = "CACHED_THEME";
+
 const namespaced = true;
 
 const state = {
-	darkTheme: false
+	darkTheme: getCache(CACHED_THEME) || false
 };
 
 const getters = {
@@ -22,6 +26,7 @@ const getters = {
 const mutations = {
 	toggleTheme: (state) =>{
 		state.darkTheme = !state.darkTheme;
+		setCache(CACHED_THEME, state);
 	}
 };
 
