@@ -1,0 +1,27 @@
+{
+  "name": "olivermanzi",
+  "version": "1.0.0",
+  "description": "personal website",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run backend",
+    "frontend": "cd ./frontend && npm start",
+    "frontend-dev": "cd ./frontend && npm run dev",
+    "backend": "cd ./backend && npm build",
+    "backend-dev": "cd ./backend && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olivermanzi/olivermanzi.git"
+  },
+  "keywords": [
+    "website",
+    "diy"
+  ],
+  "author": "@olivermanzi <olivermanzi.dev@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olivermanzi/olivermanzi/issues"
+  },
+  "homepage": "https://github.com/olivermanzi/olivermanzi#readme"
+}
