@@ -23,7 +23,6 @@
 
 <script>
 	import { mapGetters } from "vuex";
-	import ROUTES from "../../enums/router-enums";
 
 	import AboutMeViewVue from "../views/AboutMeView.vue";
 	import ExperiencesViewVue from "../views/ExperiencesView.vue";
@@ -44,25 +43,8 @@
 			...mapGetters({
 				user: "user/getUser",
 				xpList: "user/getXp",
-				jobs: "user/getJobs",
-				educations: "user/getEducations",
 				isDarkTheme: "theme/isDarkTheme"
 			})
 		},
-		methods: {
-			goToResume: function() {
-				this.goTo(ROUTES.user.resume);
-			},
-			getActiveVariant: function(variant) {
-				let removeOutline = variant.substring(8, variant.length);
-				return removeOutline;
-			}
-		}
 	};
 </script>
-
-<style>
-.bio-text {
-	text-align: justify;
-}
-</style>

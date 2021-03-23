@@ -39,7 +39,8 @@ const actions = {
 			context.commit("setLoginStatus", true);
 			return true;
 		} catch (error) {
-			toastError(i18n.t("error.auth.title"), error);
+			console.log(error);
+			toastError(i18n.t("error.auth.title"), {error});
 			context.dispatch("logout");
 			return false;
 		}
@@ -94,8 +95,6 @@ const actions = {
 	logout: async context => {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
-		await context.dispatch("user/reset", null, { root: true });
-
 		Router.push({ name: ROUTES.user.landing });
 	},
 };

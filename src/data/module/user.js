@@ -7,6 +7,7 @@ import { toastError } from "../../mixin";
 
 import ROUTES from "../../enums/router-enums";
 import EXPERIENCE from "../../enums/experience-enums";
+
 import Oliver from "../../assets/static/oliver";
 
 import {
@@ -24,7 +25,13 @@ const state = {
 
 const getters = {
 	getUser: state => state.user,
-	getXp: state => state.user.experiences,
+	getXp: state => {
+		if(state.user){
+			return state.user.experiences;
+		}else{
+			return [];
+		}
+	},
 	getEducations: state => {
 		if(state.user.experiences){
 			return state.user.experiences.filter(experience => experience.type == EXPERIENCE.education);
@@ -57,9 +64,11 @@ const actions = {
 			if (users.length > 0) {
 				context.commit("setUser", users[0]);
 			}
-
+			
 			return users[0];
 		} catch (error) {
+			context.commit("setUser", Oliver);
+
 			if (error.response) {
 				toastError(
 					i18n.t("error.user.title"),
@@ -82,6 +91,8 @@ const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
+			context.commit("setUser", Oliver);
+
 			if (error.response) {
 				toastError(
 					i18n.t("error.user.title"),
