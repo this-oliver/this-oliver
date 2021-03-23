@@ -1,7 +1,16 @@
 {
 	"name": "olivermanzi",
-	"version": "0.1.0",
-	"private": true,
+	"version": "1.0.0",
+	"description": "personal website",
+	"author": "@olivermanzi <olivermanzi.dev@gmail.com>",
+	"bugs": {
+		"url": "https://github.com/olivermanzi/olivermanzi/issues"
+	},
+	"homepage": "olivermanzi.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/olivermanzi/olivermanzi.git"
+	},
 	"scripts": {
 		"dev": "vue-cli-service serve",
 		"build": "vue-cli-service build",
