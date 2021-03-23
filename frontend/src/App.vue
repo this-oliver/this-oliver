@@ -59,6 +59,16 @@
       </b-navbar>
 
       <b-row
+        v-if="loading"
+        id="content"
+        align-h="center"
+        align-v="stretch">
+        <b-col cols="auto">
+          <b-spinner />
+        </b-col>
+      </b-row>
+      <b-row
+        v-else
         id="content"
         align-h="center"
         align-v="stretch">
@@ -117,6 +127,7 @@
 		name: "App",
 		data: function() {
 			return {
+				loading: false,
 				showOlivier: false,
 				navigationItems: getNavigationItems()
 			};
@@ -158,6 +169,11 @@
 			goToLanding: function(){
 				this.goTo(ROUTES.user.landing);
 			}
+		},
+		created: async function(){
+			this.loading = true;
+			await this.$store.dispatch("user/initUser");
+			this.loading = false;
 		}
 	};
 </script>

@@ -53,7 +53,7 @@ const actions = {
 
 			context.commit("setToken", token);
 			context.commit("setLoginStatus", true);
-			context.dispatch("user/initUser", user, { root: true });
+			context.commit("user/setUser", user, { root: true });
 			
 			Router.push({name: ROUTES.admin.profile});
 			

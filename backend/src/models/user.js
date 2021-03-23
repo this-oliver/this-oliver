@@ -13,9 +13,10 @@ let user = new Schema(
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
 		bio: {
-			short: { type: String, default: " " },
-			long: { type: String, default: " " },
+			short: { type: String, default: "" },
+			long: { type: String, default: "" },
 		},
+		experiences: [{ type: Schema.Types.ObjectId, ref: "experience" }],
 		salt: { type: String },
 	},
 	{ timestamps: true }

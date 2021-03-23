@@ -18,9 +18,19 @@ export let postUser = async (name, email, password, shortBio, longBio) => {
 	}
 };
 
-export let getUser = async (id, token) => {
+export let getSingleUser = async id => {
 	try {
-		let response = await axios.get(`/users/${id}`, Config(token));
+		let response = await axios.get(`/users/${id}`);
+		if (response.status == 200) return Promise.resolve(response);
+		return Promise.reject(response);
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
+export let getAllUsers = async () => {
+	try {
+		let response = await axios.get("/users");
 		if (response.status == 200) return Promise.resolve(response);
 		return Promise.reject(response);
 	} catch (error) {
