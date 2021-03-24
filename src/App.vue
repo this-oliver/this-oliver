@@ -45,7 +45,7 @@
             <b-nav-form class="mx-2">
               <b-button
                 pill
-                :variant="getBootstrapInverseTheme"
+                :variant="getBootstrapOutlineTheme"
                 @click="toggleTheme">
                 <span v-if="isDarkTheme">
                   ☀️

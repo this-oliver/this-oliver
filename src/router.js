@@ -11,7 +11,7 @@ import AuthPage from "./components/pages/AuthPage";
 import AdminPage from "./components/pages/AdminPage";
 import UserPage from "./components/pages/UserPage";
 import ResumePage from "./components/pages/ResumePage";
-import WipPage from "./components/pages/WipPage";
+import MissingPage from "./components/pages/404Page";
 
 // views and other
 import ExperiencesView from "./components/views/ExperiencesView";
@@ -50,7 +50,7 @@ const router = new Router({
 				{
 					path: "auth/login",
 					name: ROUTES.auth.login,
-					component: AuthPage,
+					component: AuthPage
 				},
 				{
 					path: "auth/register",
@@ -97,8 +97,8 @@ const router = new Router({
 				},
 				{
 					path: "*",
-					name: ROUTES.wip,
-					component: WipPage
+					name: ROUTES.missing,
+					component: MissingPage
 				}
 			]
 		}
@@ -157,7 +157,7 @@ async function checkAuthorized(to, from, next) {
 	let adminMode = false;
 
 	let WildCard = {
-		name: ROUTES.wip
+		name: ROUTES.missing
 	};
 
 	let LoginPage = {
@@ -172,10 +172,10 @@ async function checkAuthorized(to, from, next) {
 		}
 	}
 
-	let isAuthenticated = await Store.dispatch("auth/authenticate");
-	let hasAccess = Store.getters["auth/getLoginStatus"];
-	
 	try {
+		let isAuthenticated = await Store.dispatch("auth/authenticate");
+		let hasAccess = Store.getters["auth/getLoginStatus"];
+
 		if (adminMode === true) {
 			if (isAuthenticated === true && hasAccess === true) {
 				return next();

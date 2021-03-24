@@ -18,7 +18,9 @@ export const mixin = {
 			isDarkTheme: "theme/isDarkTheme",
 			getTheme: "theme/getTheme",
 			getBootstrapTheme: "theme/getBootstrapTheme",
-			getBootstrapInverseTheme: "theme/getBootstrapInverseTheme"
+			getBootstrapOutlineTheme: "theme/getBootstrapOutlineTheme",
+			getOppositeBootstrapTheme: "theme/getOppositeBootstrapTheme",
+			getOppositeBootstrapOutlineTheme: "theme/getOppositeBootstrapOutlineTheme"
 		})
 	},
 	methods: {

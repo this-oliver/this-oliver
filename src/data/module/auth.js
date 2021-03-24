@@ -45,7 +45,6 @@ const actions = {
 			context.commit("setLoginStatus", true);
 			return true;
 		} catch (error) {
-			console.log(error);
 			toastError(i18n.t("error.auth.title"), {error});
 			context.dispatch("logout");
 			return false;

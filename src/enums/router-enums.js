@@ -20,7 +20,7 @@ const ROUTES = {
 		login:"login",
 		register: "register"
 	},
-	wip: "wip",
+	missing: "404",
 };
 
 export default ROUTES;
