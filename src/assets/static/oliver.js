@@ -10,6 +10,16 @@ const Oliver = {
 	},
 	experiences: [
 		{
+			_id: 0,
+			title: "international baccalaureate",
+			org: "international school of helsingborg",
+			type: EXPERIENCE.education,
+			startYear: 2014,
+			endYear: 2017,
+			description:
+				"studied a variaty of classes. my favorites were economics and visual arts. I also came to enjoy mathematics thanks to my teacher (mr. saduma)"
+		},
+		{
 			_id: 1,
 			title: "software engineering",
 			org: "gothenburg university",
@@ -17,7 +27,7 @@ const Oliver = {
 			startYear: 2017,
 			endYear: 2020,
 			description:
-				"read books, learnt how to code, made some cars parallel park themselves and took part in a shit ton of hackathons"
+				"read books, learnt how to code, made some cars parallel park themselves and took part in a alot of hackathons."
 		},
 		{
 			_id: 2,
@@ -27,17 +37,44 @@ const Oliver = {
 			startYear: 2020,
 			endYear: 2021,
 			description:
-				"pretty much a management course with a sprinkle of entrepreneuship"
+				"pretty much a management course with a sprinkle of entrepreneuship. found many good friends and learnt alot from teachers and fellow classmates due to the multi-diciplinary aspect of the program."
 		},
 		{
 			_id: 3,
-			title: "software engineering intern",
-			org: "aptiv",
+			title: "teaching assistant",
+			org: "gothenburg university",
 			type: EXPERIENCE.job,
 			startYear: 2017,
 			endYear: 2020,
-			description: "did some code stuff on a desk"
-		}
+			description: "supported teachers and taught students in object-oriented programming, programming project and other courses."
+		},
+		{
+			_id: 4,
+			title: "software engineering intern",
+			org: "aptiv",
+			type: EXPERIENCE.job,
+			startYear: 2018,
+			endYear: 2019,
+			description: "got familiar w android and helped build widgets for the little screen inside cars."
+		},
+		{
+			_id: 5,
+			title: "technical project lead",
+			org: "zesec of sweden",
+			type: EXPERIENCE.job,
+			startYear: 2019,
+			endYear: 2020,
+			description: "designed and helped build the zesec ecosystem. this included developing the entire web application and coordintating the development of the mobile and api application. learnt a lot and forever greatful for thomas and his mentorship."
+		},
+		{
+			_id: 6,
+			title: "built sdg generator",
+			org: "sdg.olivermanzi.com",
+			type: EXPERIENCE.projects,
+			startYear: 2021,
+			endYear: 2021,
+			description: "built a tool that randomly picks and sdg goal, a country that relates to the goal and a random article that somehow related to the goal. the purpose of the tool was to help with a hackathon that i organized with some friends."
+		},
 	]
 };
 
