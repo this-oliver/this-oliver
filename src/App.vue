@@ -68,16 +68,6 @@
       </b-navbar>
 
       <b-row
-        v-if="loading"
-        id="content"
-        align-h="center"
-        align-v="stretch">
-        <b-col cols="auto">
-          <b-spinner />
-        </b-col>
-      </b-row>
-      <b-row
-        v-else
         id="content"
         align-h="center"
         align-v="stretch">
