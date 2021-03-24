@@ -112,7 +112,8 @@
 		},
 		"auth": {
 			"title": "auth error",
-			"login": "invalid login credentials"
+			"login": "invalid login credentials",
+			"missingToken":"auth token is missing"
 		},
 		"user": {
 			"title":"user request error"

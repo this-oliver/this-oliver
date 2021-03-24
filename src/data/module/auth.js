@@ -33,8 +33,14 @@ const mutations = {
 
 const actions = {
 	authenticate: context => {
+		let token = context.state.token;
+		
+		if(!token){
+			toastError(i18n.t("error.auth.title"), i18n.t("error.auth.missingToken"));
+			return false;
+		}
+
 		try {
-			let token = context.state.token;
 			verifyToken(token);	
 			context.commit("setLoginStatus", true);
 			return true;

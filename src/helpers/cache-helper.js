@@ -13,7 +13,13 @@ export let getCache = key => {
 
 	try {
 		let value = JSON.parse(localStorage.getItem(key));
-		return value;
+		
+		if(!value){
+			return null;
+		}else{
+			return value;
+		}
+
 	} catch (error) {
 		return null;
 	}
