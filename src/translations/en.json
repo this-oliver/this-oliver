@@ -18,6 +18,14 @@
 		},
 		"admin": {
 			"title": "admin"
+		},
+		"wip":{
+			"title": "wip",
+			"card": "work in progress... come back soon!"
+		},
+		"404":{
+			"title": "404",
+			"card": "the page you are looking for doesn't exist"
 		}
 	},
 	"views":{
@@ -39,9 +47,6 @@
 			"presentYear": "present",
 			"more": "more",
 			"less": "less"
-		},
-		"wip": {
-			"title": "work in progress... come back soon!"
 		}
 	},
 	"forms": {

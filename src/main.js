@@ -36,6 +36,6 @@ const vm = new Vue({
  * 
  * @returns Vue instance
  */
-export let getVm = async () => {
+export let getVm = () => {
 	return vm;
 };
