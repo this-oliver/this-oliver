@@ -118,7 +118,6 @@ const actions = {
 			Router.push({ name: ROUTES.admin.profile });
 			return user;
 		} catch (error) {
-			console.log({ vError: error });
 			if (error.response) {
 				toastError(
 					i18n.t("error.user.title"),
