@@ -10,8 +10,8 @@
         sticky>
         <b-navbar-brand
           class="brand"
-          @click="goToLanding">
-          {{ getMyName }}
+          :to="{ name: ROUTES.user.landing }">
+          Oliver Manzi
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav" />
@@ -32,7 +32,7 @@
                 {{ item.title }}
               </b-link>
             </b-nav-form>
-            <!-- locale -->
+            <!-- logout -->
             <b-nav-form class="mx-2">
               <span
                 v-if="inAdminMode"
@@ -40,14 +40,6 @@
                 @click="logout">
                 {{ `${$t("form.actions.logout")} ✌️` }}
               </span>
-            </b-nav-form>
-            <!-- locale -->
-            <b-nav-form class="mx-2">
-              <b-dropdown
-                :text="$i18n.locale"
-                :variant="getBootstrapTheme"
-                no-caret
-                disabled />
             </b-nav-form>
             <!-- theme -->
             <b-nav-form class="mx-2">
@@ -109,7 +101,10 @@
             <router-link :to="{ name: ROUTES.admin.profile }">
               🤠
             </router-link>
-            Oliver Manzi [{{ getYear }}]
+            Oliver Manzi 
+            <small> 
+              &copy; [{{ getYear }}] 
+            </small>
           </small>
         </b-col>
       </b-row>
@@ -120,7 +115,6 @@
 <script>
 	import {getCurrentYear} from "./helpers/time-helper";
 	import {getNavigationItems} from "./helpers/navigation-helper";
-	import ROUTES from "./enums/router-enums";
 	import { mapActions } from "vuex";
 
 	export default {
@@ -135,9 +129,6 @@
 		computed: {
 			getStyle: function(){
 				return `${this.getTheme} container`;
-			},
-			getMyName: function(){
-				return `${this.isDarkTheme? "Olivier":"Oliver"} Manzi`;
 			},
 			getYear: function(){
 				return `2020 - ${getCurrentYear()}`;
@@ -179,12 +170,6 @@
 			...mapActions({
 				logout: "auth/logout"
 			}),
-			goToResume: function(){
-				this.goTo(ROUTES.user.resume);
-			},
-			goToLanding: function(){
-				this.goTo(ROUTES.user.landing);
-			}
 		},
 		created: async function(){
 			this.loading = true;
