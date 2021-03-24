@@ -9,7 +9,7 @@ const state = {
 };
 
 const getters = {
-	isDarkTheme: state =>{
+	isDarkTheme: state => {
 		return state.darkTheme;
 	},
 	getTheme: state => {
@@ -18,8 +18,14 @@ const getters = {
 	getBootstrapTheme: state => {
 		return state.darkTheme ? "dark" : "light";
 	},
-	getBootstrapInverseTheme: state => {
+	getOppositeBootstrapTheme: state => {
+		return state.darkTheme ? "light" : "dark";
+	},
+	getBootstrapOutlineTheme: state => {
 		return state.darkTheme ? "outline-light" : "outline-dark";
+	},
+	getOppositeBootstrapOutlineTheme: state => {
+		return state.darkTheme ? "outline-dark" : "outline-light";
 	}
 };
 

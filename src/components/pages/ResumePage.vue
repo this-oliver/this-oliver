@@ -15,7 +15,7 @@
           :href="resumeUrl"
           download="oliver_manzi_resume.pdf">
           <b-button
-            :variant="getBootstrapInverseTheme">
+            :variant="getBootstrapOutlineTheme">
             {{ $t("form.actions.download") }}
           </b-button>
         </a>
