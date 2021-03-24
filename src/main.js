@@ -32,6 +32,10 @@ const vm = new Vue({
 	render: h => h(App)
 }).$mount("#app");
 
-export let getVm = () => {
+/**
+ * 
+ * @returns Vue instance
+ */
+export let getVm = async () => {
 	return vm;
 };
