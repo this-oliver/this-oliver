@@ -3,6 +3,7 @@ import {
 	getAllArticles,
 	patchArticle,
 	deleteArticle,
+	getSingleArticle,
 } from "../api/article";
 
 import i18n from "../../i18n";
@@ -66,6 +67,26 @@ const actions = {
 			let articles = response.data;
 			context.commit("setArticles", articles);
 			return articles;
+		} catch (error) {
+			if (error.response) {
+				toastError(
+					i18n.t("error.article.title"),
+					`${i18n.t("error.api.request.get", { name: "article" })}: ${
+						error.response.data
+					}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
+	getSingleArticle: async (context, id) => {
+		try {
+			let response = await getSingleArticle(id);
+			let article = response.data;
+			return article;
 		} catch (error) {
 			if (error.response) {
 				toastError(

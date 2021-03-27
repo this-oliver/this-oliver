@@ -32,11 +32,15 @@ const getters = {
 const mutations = {
 	toggleTheme: (state) =>{
 		state.darkTheme = !state.darkTheme;
-		setCache(CACHED_THEME, state);
+		setCache(CACHED_THEME, state.darkTheme);
 	}
 };
 
-const actions = {};
+const actions = {
+	toggleTheme: context => {
+		context.dispatch("toggleTheme");
+	}
+};
 
 export default {
 	namespaced,

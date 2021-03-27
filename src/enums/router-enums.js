@@ -6,6 +6,8 @@ const ROUTES = {
 	user:{
 		landing: "landing",
 		resume: "resume",
+		articleList: "article-list",
+		articleSingle: "article-single"
 	},
 	//admin
 	admin: {

@@ -33,7 +33,7 @@
 	import { mapGetters } from "vuex";
 
 	import AboutMeViewVue from "../views/AboutMeView.vue";
-	import ArticlesViewVue from "../views/ArticlesView.vue";
+	import ArticlesViewVue from "../views/ArticleListView.vue";
 	import ExperiencesViewVue from "../views/ExperiencesView.vue";
 
 	export default {

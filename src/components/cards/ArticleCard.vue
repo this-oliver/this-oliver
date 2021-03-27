@@ -7,7 +7,11 @@
       <b-col cols="10">
         <b-row>
           <b-col cols="12">
-            <b>{{ article.title }}</b>
+            <a
+              class="simple-link"
+              @click="open">
+              <b>{{ article.title }}</b>
+            </a>
           </b-col>
           <b-col cols="12">
             <small>
@@ -80,6 +84,17 @@
 			...mapActions({
 				deleteArticle: "user/article/deleteArticle"
 			}),
+			open: function(){
+				this.$router.push(
+					{ 
+						name: this.ROUTES.user.articleSingle, 
+						params: { 
+							id: this.article._id,
+							article: this.article
+						}
+					}
+				);
+			},
 			update: function(){
 				this.$router.push(
 					{ 

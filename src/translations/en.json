@@ -1,13 +1,8 @@
 {
 	"nav": {
 		"title": "navigation",
-		"about": "about me",
-		"jobs": "jobs",
-		"education": "education",
-		"projects": "projects",
-		"journal": "journal",
-		"admin": "admin",
-		"resume": "resume"
+		"articles": "articles 📰",
+		"resume": "resume 📑"
 	},
 	"pages": {
 		"user": {

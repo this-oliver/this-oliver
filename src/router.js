@@ -4,6 +4,7 @@ import Router from "vue-router";
 import i18n from "./i18n";
 import Store from "./data/store";
 import { scrollToTop } from "./mixin";
+import {handleLocale} from "./helpers/locale-helper";
 import ROUTES from "./enums/router-enums";
 
 // pages
@@ -11,7 +12,12 @@ import AuthPage from "./components/pages/AuthPage";
 import AdminPage from "./components/pages/AdminPage";
 import UserPage from "./components/pages/UserPage";
 import ResumePage from "./components/pages/ResumePage";
+import ArticlePage from "./components/pages/ArticlePage";
 import MissingPage from "./components/pages/404Page";
+
+// views
+import ArticleListView from "./components/views/ArticleListView";
+import ArticleView from "./components/views/ArticleView";
 
 // forms
 import ArticleForm from "./components/forms/ArticleForm";
@@ -46,6 +52,24 @@ const router = new Router({
 					path: "resume",
 					name: ROUTES.user.resume,
 					component: ResumePage
+				},
+				{
+					path: "articles",
+					component: ArticlePage,
+					children: [
+						{
+							path: "/",
+							name: ROUTES.user.articleList,
+							component: ArticleListView,
+							props: true
+						},
+						{
+							path: ":id",
+							name: ROUTES.user.articleSingle,
+							component: ArticleView,
+							props: true
+						}
+					]
 				},
 				{
 					path: "auth/login",
@@ -117,36 +141,6 @@ router.beforeEach((to, from, next) => {
 });
 
 // router helpers
-/**
- * handles user locale
- * @param {*} to
- * @param {*} from
- * @param {*} next
- */
-function handleLocale(to, from, next) {
-	let language = to.params.locale;
-
-	if (!language) language = process.env.VUE_APP_i18n_FALLBACK_LOCALE;
-
-	// checks if lang param is valid
-	let validLocaleFlag = false;
-	i18n.availableLocales.forEach(locale => {
-		if (locale == language) {
-			validLocaleFlag = true;
-			return;
-		}
-	});
-
-	//if lang param is invalid, set it to locale and continue routing
-	if (!validLocaleFlag) {
-		let params = to.params;
-		params.locale = process.env.VUE_APP_i18n_LOCALE || i18n.locale;
-		return next({ name: to.name, params: params });
-	} else {
-		i18n.locale = language;
-		return next({ params: { locale: i18n.locale } });
-	}
-}
 
 /**
  * checks whether user is authorized

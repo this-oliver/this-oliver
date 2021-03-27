@@ -17,15 +17,15 @@
         </router-link>
       </b-col>
     </b-row>
-    <b-row v-if="articles.length > 0">
+    <b-row v-if="getArticles.length > 0">
       <b-col
         cols="12"
-        v-for="(article, index) in articles"
+        v-for="(article, index) in getArticles"
         :key="article._id">
         <article-card
           :article="article"
           :edit-mode="editMode" />
-        <hr v-if="index < articles.length - 1">
+        <hr v-if="index < getArticles.length - 1">
       </b-col>
     </b-row>
     <b-row
@@ -39,13 +39,14 @@
 </template>
 
 <script>
+	import { mapGetters } from "vuex";
 	import ArticleCardVue from "../cards/ArticleCard.vue";
 	export default {
-		name:"ArticlesView",
+		name:"ArticleListView",
 		props:{
 			articles:{
 				type: Array,
-				required: true
+				default: null
 			},
 			editMode: {
 				type: Boolean,
@@ -54,6 +55,14 @@
 		},
 		components:{
 			"article-card": ArticleCardVue
+		},
+		computed: {
+			...mapGetters({
+				articleList: "user/article/getArticles"
+			}),
+			getArticles: function(){
+				return this.articles? this.articles : this.articleList;
+			}
 		}
 	};
 </script>
