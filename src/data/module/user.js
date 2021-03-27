@@ -1,5 +1,7 @@
 import { getSingleUser, getAllUsers, patchUser } from "../api/user";
-import ExperienceModule from "./xp.js";
+
+import ExperienceModule from "./xp";
+import ArticleModule from "./article";
 
 import i18n from "../../i18n";
 import Router from "../../router";
@@ -20,7 +22,6 @@ const namespaced = true;
 
 const state = {
 	user: getCache(CachEnums.USER) || Oliver || null,
-	articles: []
 };
 
 const getters = {
@@ -62,7 +63,10 @@ const actions = {
 			let users = response.data;
 
 			if (users.length > 0) {
-				context.commit("setUser", users[0]);
+				let oliver = users[0];
+
+				context.commit("setUser", oliver);
+				context.commit("user/article/setArticles", oliver.articles, {root: true});
 			}
 			
 			return users[0];
@@ -138,7 +142,8 @@ const actions = {
 };
 
 const modules = {
-	xp: ExperienceModule
+	xp: ExperienceModule,
+	article: ArticleModule
 };
 
 export default {

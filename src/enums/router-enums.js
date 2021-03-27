@@ -14,6 +14,9 @@ const ROUTES = {
 		experiences:"admin-experiences",
 		experienceCreate:"admin-experience-create",
 		experienceUpdate:"admin-experience-update",
+		articles: "admin-articles",
+		articleCreate: "admin-article-create",
+		articleUpdate: "admin-article-update",
 	},
 	//other
 	auth:{

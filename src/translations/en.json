@@ -33,7 +33,10 @@
 			"title":"🤠 about me"
 		},
 		"experience":{
-			"title":"🧪 experiences"
+			"title":"🗃 experiences"
+		},
+		"article":{
+			"title":"🗞 articles"
 		}
 	},
 	"cards": {
@@ -84,6 +87,14 @@
 			"promptPassword": "enter password...",
 			"promptPassword2": "enter password again...",
 			"bio": "bio"
+		},
+		"article": {
+			"title": "article form",
+			"articleTitle": "title",
+			"content": "content",
+			"promptContent": "jot things down...",
+			"tags": "tags",
+			"promptTags": "enter tags..."
 		}
 	},
 	"footer": {
@@ -125,6 +136,9 @@
 		},
 		"experience": {
 			"title":"experience request error"
+		},
+		"article": {
+			"title":"article request error"
 		}
 	}
 }

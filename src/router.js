@@ -13,8 +13,8 @@ import UserPage from "./components/pages/UserPage";
 import ResumePage from "./components/pages/ResumePage";
 import MissingPage from "./components/pages/404Page";
 
-// views and other
-import ExperiencesView from "./components/views/ExperiencesView";
+// forms
+import ArticleForm from "./components/forms/ArticleForm";
 import BioForm from "./components/forms/BioForm";
 import ExperienceForm from "./components/forms/ExperienceForm";
 
@@ -76,12 +76,6 @@ const router = new Router({
 							props: { editMode: true }
 						},
 						{
-							path: "experiences",
-							name: ROUTES.admin.experiences,
-							component: ExperiencesView,
-							props: { editMode: true }
-						},
-						{
 							path: "experiences/create",
 							name: ROUTES.admin.experienceCreate,
 							component: ExperienceForm,
@@ -91,6 +85,18 @@ const router = new Router({
 							path: "experiences/:title/update",
 							name: ROUTES.admin.experienceUpdate,
 							component: ExperienceForm,
+							props: { default: true, editMode: true }
+						},
+						{
+							path: "articles/create",
+							name: ROUTES.admin.articleCreate,
+							component: ArticleForm,
+							props: { editMode: false }
+						},
+						{
+							path: "articles/:title/update",
+							name: ROUTES.admin.articleUpdate,
+							component: ArticleForm,
 							props: { default: true, editMode: true }
 						}
 					]
