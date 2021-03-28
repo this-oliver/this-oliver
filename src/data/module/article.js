@@ -45,7 +45,7 @@ const actions = {
 			let response = await postArticle(token, userId, title, content, tags);
 			let article = response.data;
 
-			await context.dispatch("getArticles");
+			await context.dispatch("getUserArticles", userId);
 			Router.push({ name: ROUTES.admin.profile });
 
 			return article;
@@ -111,7 +111,8 @@ const actions = {
 			let response = await patchArticle(token, id, patch);
 			let article = response.data;
 
-			await context.dispatch("getArticles");
+			let userId = context.rootGetters["user/getUser"]._id;
+			await context.dispatch("getUserArticles", userId);
 			Router.push({ name: ROUTES.admin.profile });
 
 			return article;
@@ -135,7 +136,10 @@ const actions = {
 			let token = context.rootGetters["auth/getToken"];
 			let response = await deleteArticle(token, id);
 			let article = response.data;
-			await context.dispatch("getArticles");
+
+			let userId = context.rootGetters["user/getUser"]._id;
+			await context.dispatch("getUserArticles", userId);
+
 			return article;
 		} catch (error) {
 			if (error.response) {

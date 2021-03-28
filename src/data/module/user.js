@@ -7,18 +7,21 @@ import i18n from "../../i18n";
 import Router from "../../router";
 import { toastError } from "../../mixin";
 import { sortLatestXp } from "../../helpers/time-helper";
-
-import Oliver from "../../assets/static/oliver";
-import ROUTES from "../../enums/router-enums";
-
-
 import {
 	setCache,
 	getCache,
 	enums as CachEnums
 } from "../../helpers/cache-helper";
 
+import Oliver from "../../assets/static/oliver";
+import ROUTES from "../../enums/router-enums";
+
 const namespaced = true;
+
+const modules = {
+	xp: ExperienceModule,
+	article: ArticleModule
+};
 
 const state = {
 	user: getCache(CachEnums.USER) || Oliver || null,
@@ -127,11 +130,6 @@ const actions = {
 	reset: context => {
 		context.commit("setUser", null);
 	}
-};
-
-const modules = {
-	xp: ExperienceModule,
-	article: ArticleModule
 };
 
 export default {
