@@ -16,12 +16,11 @@
           <b-col cols="12">
             <small>
               <b>
-                today...
+                {{ getTimeAgo }}
               </b>
             </small>
           </b-col>
-          <b-col
-            cols="12">
+          <b-col cols="11">
             <small>
               <span v-html="getContent" />
             </small>
@@ -59,9 +58,9 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../helpers/markdown-helper";
+	import { getTimeAgo } from "../../helpers/time-helper";
 	export default {
-		name: "ExperienceCard",
+		name: "ArticleCard",
 		props: {
 			article: {
 				type: Object,
@@ -74,11 +73,20 @@
 		},
 		computed: {
 			getContent: function() {
-				const MAX_LENGTH = 80;
+				const MAX_LENGTH = 50;
 				let content = this.article.content;
 				
-				return (content.length > MAX_LENGTH)? getMarkdown(`-> ${content.substring(0, MAX_LENGTH)}`): getMarkdown(`-> ${content}`);
+				if(content.length > MAX_LENGTH){
+					content = content.substring(0, MAX_LENGTH);
+				}
+				
+				content = content.replace("\n\n", " ");
+
+				return content;
 			},
+			getTimeAgo: function(){
+				return getTimeAgo(this.article.createdAt);
+			}
 		},
 		methods:{
 			...mapActions({

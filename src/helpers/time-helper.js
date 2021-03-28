@@ -23,9 +23,9 @@ export let sortLatestArticles = articles =>{
 		let a = Moment(articleA.createdAt);
 		let b = Moment(articleB.createdAt);
 
-		if (a.isBefore(b)) {
+		if (a.isAfter(b)) {
 			return -1;
-		} else if (a.isAfter(b)) {
+		} else if (a.isBefore(b)) {
 			return 1;
 		} else {
 			return 0;
@@ -38,13 +38,7 @@ export let sortLatestArticles = articles =>{
 export let sortLatestXp = xpList => {
 
 	let compare = (a, b) => {
-		if (a < b) {
-			return -1;
-		} else if (a > b) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return b.startYear - a.startYear;
 	};
 
 	xpList.sort(compare);

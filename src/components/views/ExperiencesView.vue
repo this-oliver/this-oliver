@@ -13,10 +13,11 @@
         <router-link
           class="simple-link"
           :to="{ name: ROUTES.admin.experienceCreate }">
-          +
+          <b> + </b>
         </router-link>
       </b-col>
     </b-row>
+    <hr>
     <b-row v-if="xpList.length > 0">
       <b-col
         cols="12"
