@@ -1,14 +1,16 @@
 import { getSingleUser, getAllUsers, patchUser } from "../api/user";
-import ExperienceModule from "./xp.js";
+
+import ExperienceModule from "./xp";
+import ArticleModule from "./article";
 
 import i18n from "../../i18n";
 import Router from "../../router";
 import { toastError } from "../../mixin";
-
-import ROUTES from "../../enums/router-enums";
-import EXPERIENCE from "../../enums/experience-enums";
+import { sortLatestXp } from "../../helpers/time-helper";
 
 import Oliver from "../../assets/static/oliver";
+import ROUTES from "../../enums/router-enums";
+
 
 import {
 	setCache,
@@ -20,28 +22,13 @@ const namespaced = true;
 
 const state = {
 	user: getCache(CachEnums.USER) || Oliver || null,
-	articles: []
 };
 
 const getters = {
 	getUser: state => state.user,
 	getXp: state => {
 		if(state.user){
-			return state.user.experiences;
-		}else{
-			return [];
-		}
-	},
-	getEducations: state => {
-		if(state.user.experiences){
-			return state.user.experiences.filter(experience => experience.type == EXPERIENCE.education);
-		}else{
-			return [];
-		}
-	},
-	getJobs: state => {
-		if(state.user.experiences){
-			return state.user.experiences.filter(experience => experience.type == EXPERIENCE.job);
+			return sortLatestXp(state.user.experiences);
 		}else{
 			return [];
 		}
@@ -62,9 +49,14 @@ const actions = {
 			let users = response.data;
 
 			if (users.length > 0) {
-				context.commit("setUser", users[0]);
+				let oliver = users[0];
+
+				context.commit("setUser", oliver);
+				await context.dispatch("user/article/getUserArticles", oliver._id, {
+					root: true
+				});
 			}
-			
+
 			return users[0];
 		} catch (error) {
 			context.commit("setUser", Oliver);
@@ -138,7 +130,8 @@ const actions = {
 };
 
 const modules = {
-	xp: ExperienceModule
+	xp: ExperienceModule,
+	article: ArticleModule
 };
 
 export default {

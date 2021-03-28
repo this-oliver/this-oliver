@@ -2,29 +2,34 @@
   <div>
     <b-row>
       <b-col cols="1">
-        <span class="sub-header">{{ getXpEmoji(xp.type) }}</span>
+        <span class="sub-header"> 📰 </span>
       </b-col>
       <b-col cols="10">
         <b-row>
           <b-col cols="12">
-            <b>{{ xp.title }}</b>
+            <a
+              class="simple-link"
+              @click="open">
+              <b>{{ article.title }}</b>
+            </a>
           </b-col>
           <b-col cols="12">
             <small>
               <b>
-                {{ `${xp.org} (${xp.startYear}-${getEndYear})` }}
+                today...
               </b>
             </small>
           </b-col>
           <b-col
             cols="12">
             <small>
-              <span v-html="getDesc" />
+              <span v-html="getContent" />
             </small>
           </b-col>
         </b-row>
       </b-col>
     </b-row>
+    <!-- actions -->
     <b-row
       v-if="editMode"
       align-h="end">
@@ -44,7 +49,7 @@
         md="auto">
         <span
           class="simple-link"
-          @click="deleteXp(xp._id)">
+          @click="deleteArticle(article._id)">
           {{ $t("form.actions.delete") }}
         </span>
       </b-col>
@@ -53,14 +58,12 @@
 </template>
 
 <script>
-	import i18n from "../../i18n";
 	import { mapActions } from "vuex";
-	import EXPERIENCES from "../../enums/experience-enums";
 	import { getMarkdown } from "../../helpers/markdown-helper";
 	export default {
 		name: "ExperienceCard",
 		props: {
-			xp: {
+			article: {
 				type: Object,
 				required: true
 			},
@@ -68,47 +71,40 @@
 				type: Boolean,
 				default: false
 			},
-			shortMode: {
-				type: Boolean,
-				default: true
-			}
 		},
 		computed: {
-			getDesc: function() {
-				let description = this.xp.description;
-				return getMarkdown(`-> ${description}`);
-			},
-			getEndYear: function() {
-				let endYear = this.xp.endYear;
-				return endYear ? endYear : i18n.t("cards.xp.presentYear");
+			getContent: function() {
+				const MAX_LENGTH = 80;
+				let content = this.article.content;
+				
+				return (content.length > MAX_LENGTH)? getMarkdown(`-> ${content.substring(0, MAX_LENGTH)}`): getMarkdown(`-> ${content}`);
 			},
 		},
 		methods:{
 			...mapActions({
-				deleteXp: "user/xp/deleteExperience"
+				deleteArticle: "user/article/deleteArticle"
 			}),
-			update: function(){
+			open: function(){
 				this.$router.push(
 					{ 
-						name: this.ROUTES.admin.experienceUpdate, 
+						name: this.ROUTES.user.articleSingle, 
 						params: { 
-							title: this.xp.title.replaceAll(" ", "-"),
-							experience: this.xp
+							id: this.article._id,
+							article: this.article
 						}
 					}
 				);
 			},
-			getXpEmoji: function(type){
-				switch (type) {
-				case EXPERIENCES.job:
-					return "💼";
-				case EXPERIENCES.education:
-					return "🎓";
-				case EXPERIENCES.projects:
-					return "🧪";
-				default:
-					return "🧪";
-				}
+			update: function(){
+				this.$router.push(
+					{ 
+						name: this.ROUTES.admin.articleUpdate, 
+						params: { 
+							title: this.article.title.replaceAll(" ", "-"),
+							article: this.article
+						}
+					}
+				);
 			},
 		}
 	};

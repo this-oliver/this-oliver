@@ -30,13 +30,18 @@ const getters = {
 };
 
 const mutations = {
-	toggleTheme: (state) =>{
-		state.darkTheme = !state.darkTheme;
-		setCache(CACHED_THEME, state);
+	setTheme: (state, isDarkTheme) =>{
+		state.darkTheme = isDarkTheme;
+		setCache(CACHED_THEME, isDarkTheme);
 	}
 };
 
-const actions = {};
+const actions = {
+	toggleTheme: context => {
+		let isDarkTheme = context.state.darkTheme;
+		context.commit("setTheme", !isDarkTheme);
+	}
+};
 
 export default {
 	namespaced,

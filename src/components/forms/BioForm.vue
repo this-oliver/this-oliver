@@ -159,12 +159,6 @@
 				}else{
 					return null;
 				}
-			},
-			handleShortBio: function(text){
-				this.form.short = text;
-			},
-			handleLongBio: function(text){
-				this.form.long = text;
 			}
 		},
 		created: function(){

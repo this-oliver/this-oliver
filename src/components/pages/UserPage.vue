@@ -13,8 +13,16 @@
         class="mt-3"
         sm="11"
         md="8">
+        <articles
+          :articles="articles"
+          :edit-mode="editMode" />
+      </b-col>
+      <b-col
+        class="mt-3"
+        sm="11"
+        md="8">
         <experiences
-          :xp-list="xpList"
+          :xp-list="experiences"
           :edit-mode="editMode" />
       </b-col>
     </b-row>
@@ -25,13 +33,15 @@
 	import { mapGetters } from "vuex";
 
 	import AboutMeViewVue from "../views/AboutMeView.vue";
+	import ArticlesViewVue from "../views/ArticleListView.vue";
 	import ExperiencesViewVue from "../views/ExperiencesView.vue";
 
 	export default {
 		name: "UserPage",
 		components: {
 			"about-me-view": AboutMeViewVue,
-			"experiences": ExperiencesViewVue
+			"experiences": ExperiencesViewVue,
+			"articles": ArticlesViewVue
 		},
 		props: {
 			editMode: {
@@ -42,7 +52,8 @@
 		computed: {
 			...mapGetters({
 				user: "user/getUser",
-				xpList: "user/getXp",
+				experiences: "user/getXp",
+				articles: "user/article/getArticles",
 				isDarkTheme: "theme/isDarkTheme"
 			})
 		},

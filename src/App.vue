@@ -11,7 +11,7 @@
         <b-navbar-brand
           class="brand"
           :to="{ name: ROUTES.user.landing }">
-          Oliver Manzi
+          {{ getName }}
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav" />
@@ -24,11 +24,11 @@
             <!-- links -->
             <b-nav-form
               class="mx-2"
-              v-for="item in navigationItems"
+              v-for="item in getNavItems"
               :key="item.title">
               <b-link
                 class="simple-link"
-                :to="{name: item.route}">
+                :to="{name: item.route, props: item.props}">
                 {{ item.title }}
               </b-link>
             </b-nav-form>
@@ -114,8 +114,7 @@
 
 <script>
 	import {getCurrentYear} from "./helpers/time-helper";
-	import {getNavigationItems} from "./helpers/navigation-helper";
-	import { mapActions } from "vuex";
+	import { mapActions, mapGetters } from "vuex";
 
 	export default {
 		name: "App",
@@ -123,15 +122,33 @@
 			return {
 				loading: false,
 				showOlivier: false,
-				navigationItems: getNavigationItems()
 			};
 		},
 		computed: {
+			...mapGetters({
+				user: "user/getUser",
+			}),
+			getName: function(){
+				let user = this.user;
+				return (user)? user.name : "Oliver Manzi";
+			},
 			getStyle: function(){
 				return `${this.getTheme} container`;
 			},
 			getYear: function(){
 				return `2020 - ${getCurrentYear()}`;
+			},
+			getNavItems: function(){
+				return [
+					{
+						title: this.$t("nav.articles"),
+						route: this.ROUTES.user.articleList,
+					},
+					{
+						title: this.$t("nav.resume"),
+						route: this.ROUTES.user.resume
+					},
+				];
 			},
 			getFooterItems: function(){
 				return [

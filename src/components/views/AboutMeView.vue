@@ -46,10 +46,5 @@
 		components:{
 			"bio-card":BioCardVue
 		},
-		data: function(){
-			return {
-				showForm: false
-			};
-		}
 	};
 </script>

@@ -1,6 +1,6 @@
 import { getVm } from "./main";
 import Router from "./router";
-import {mapGetters, mapMutations} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 import ROUTES from "./enums/router-enums";
 
@@ -24,7 +24,7 @@ export const mixin = {
 		})
 	},
 	methods: {
-		...mapMutations({
+		...mapActions({
 			toggleTheme: "theme/toggleTheme"
 		}),
 		goTo,

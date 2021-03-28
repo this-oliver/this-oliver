@@ -2,7 +2,7 @@ import {
 	postExperience,
 	patchExperience,
 	deleteExperience
-} from "../api/experience";
+} from "../api/xp";
 
 import i18n from "../../i18n";
 import Router from "../../router";
@@ -33,9 +33,9 @@ const actions = {
 				type,
 				token
 			);
-			
+
 			await context.dispatch("user/getUser", null, { root: true });
-			Router.push({ name: ROUTES.admin.profile});
+			Router.push({ name: ROUTES.admin.profile });
 
 			return response;
 		} catch (error) {
@@ -93,8 +93,8 @@ const actions = {
 		try {
 			let token = context.rootGetters["auth/getToken"];
 			let response = await deleteExperience(id, token);
-			
-			await context.dispatch("user/getUser", null, {root: true});
+
+			await context.dispatch("user/getUser", null, { root: true });
 			Router.push({ name: ROUTES.admin.profile });
 
 			return response;
