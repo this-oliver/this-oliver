@@ -13,7 +13,7 @@
         <router-link
           class="simple-link"
           :to="{ name: ROUTES.admin.articleCreate }">
-          +
+          <b> + </b>
         </router-link>
       </b-col>
     </b-row>
