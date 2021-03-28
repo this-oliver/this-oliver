@@ -1,13 +1,14 @@
 import {
 	postArticle,
-	getAllArticles,
 	patchArticle,
 	deleteArticle,
 	getSingleArticle,
+	getUserArticles,
 } from "../api/article";
 
 import i18n from "../../i18n";
 import { toastError } from "../../mixin";
+import { sortLatestArticles } from "../../helpers/time-helper";
 
 import Router from "../../router";
 import ROUTES from "../../enums/router-enums";
@@ -20,7 +21,9 @@ const state = {
 };
 
 const getters = {
-	getArticles: state => state.articles,
+	getArticles: state => {
+		return sortLatestArticles(state.articles);
+	},
 	getTags: state => state.tags
 };
 
@@ -61,9 +64,9 @@ const actions = {
 			}
 		}
 	},
-	getArticles: async context => {
+	getUserArticles: async (context, id) => {
 		try {
-			let response = await getAllArticles();
+			let response = await getUserArticles(id);
 			let articles = response.data;
 			context.commit("setArticles", articles);
 			return articles;

@@ -42,6 +42,19 @@ export let getSingleArticle = async (id) => {
 	}
 };
 
+export let getUserArticles = async (id) => {
+	try {
+		let response = await axios.get(`/users/${id}/articles`);
+		if (response.status == 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export let patchArticle = async (token, id, patch) => {
 	try {
 		let response = await axios.patch(`/articles/${id}`, patch, config(token));
