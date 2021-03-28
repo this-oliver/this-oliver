@@ -17,7 +17,10 @@
         </router-link>
       </b-col>
     </b-row>
-    <b-row v-if="getArticles.length > 0">
+    <hr>
+    <b-row
+      v-if="getArticles.length > 0"
+      class="mt-3">
       <b-col
         cols="12"
         v-for="(article, index) in getArticles"

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- loading -->
     <b-row v-if="loading">
       <b-col cols="4">
         <loading-card />
@@ -8,7 +9,10 @@
         <loading-card />
       </b-col>
     </b-row>
-    <b-row v-else>
+    <!-- article -->
+    <b-row
+      align-h="end"
+      v-else>
       <b-col
         sm="11"
         md="4">
@@ -25,42 +29,39 @@
             cols="12">
             <i>{{ getTimeAgo(getArticle.createdAt) }}</i>
           </b-col>
+          <!-- tags -->
+          <b-col cols="auto">
+            <small>
+              <b-badge
+                class="mr-1 mt-1"
+                v-for="tag in getArticle.tags"
+                :key="tag._id">
+                {{ tag.name }}
+              </b-badge>
+            </small>
+          </b-col>
         </b-row>
       </b-col>
       <!-- content -->
       <b-col
+        id="article-content"
         sm="11"
         md="8">
         <b-row>
           <b-col cols="12">
             <span v-html="getMarkdown(getArticle.content)" />
           </b-col>
-          <b-col cols="auto">
-            <b-row>
-              <!-- tags -->
-              <b-col cols="12">
-                <small>
-                  <b-badge
-                    class="mr-1 mt-1"
-                    v-for="tag in getArticle.tags"
-                    :key="tag._id">
-                    {{ tag.name }}
-                  </b-badge>
-                </small>
-              </b-col>
-              <!-- back btn -->
-              <b-col
-                class="mt-2"
-                cols="auto">
-                <router-link
-                  class="simple-link"
-                  :to="{ name: ROUTES.user.articleList }">
-                  &larr; {{ $t("nav.articles") }}
-                </router-link>
-              </b-col>
-            </b-row>
-          </b-col>
         </b-row>
+      </b-col>
+      <!-- back btn -->
+      <b-col
+        class="mt-2"
+        cols="auto">
+        <router-link
+          class="simple-link"
+          :to="{ name: ROUTES.user.articleList }">
+          &larr; {{ $t("nav.articles") }}
+        </router-link>
       </b-col>
     </b-row>
   </div>
@@ -114,3 +115,9 @@
 		}
 	};
 </script>
+
+<style scoped>
+#article-content{
+	min-height: 60vh;
+}
+</style>
