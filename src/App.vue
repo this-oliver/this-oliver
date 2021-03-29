@@ -14,7 +14,7 @@
           {{ getName }}
         </b-navbar-brand>
 
-        <b-navbar-toggle target="nav" />
+        <b-navbar-toggle target="sidebar-nav" />
         <b-collapse
           id="nav"
           is-nav>
@@ -109,6 +109,51 @@
         </b-col>
       </b-row>
     </b-container>
+
+    <b-sidebar
+      id="sidebar-nav"
+      :title="getName"
+      :bg-variant="getBootstrapTheme"
+      :text-variant="getOppositeBootstrapTheme"
+      shadow>
+      <b-row
+        class="ml-2"
+        align-v="stretch">
+        <b-col
+          class="mx-1 my-2"
+          cols="8"
+          v-for="item in getNavItems"
+          :key="item.title">
+          <b-link
+            class="simple-link"
+            :to="{name: item.route, props: item.props}">
+            {{ item.title }}
+          </b-link>
+        </b-col>
+        <b-col class="mx-1 my-2">
+          <span
+            v-if="inAdminMode"
+            class="simple-link"
+            @click="logout">
+            {{ `${$t("form.actions.logout")} ✌️` }}
+          </span>
+        </b-col>
+        <b-col
+          class="mx-1 my-2">
+          <b-button
+            pill
+            :variant="getBootstrapOutlineTheme"
+            @click="toggleTheme">
+            <span v-if="isDarkTheme">
+              ☀️
+            </span>
+            <span v-else>
+              🌘
+            </span>
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-sidebar>
   </div>
 </template>
 
