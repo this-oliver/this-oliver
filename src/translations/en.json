@@ -104,6 +104,7 @@
 			"delete": "delete",
 			"preview": "preview",
 			"download": "download",
+			"close": "close",
 			"back": "back",
 			"login": "login",
 			"logout": "logout"

@@ -14,7 +14,7 @@
           {{ getName }}
         </b-navbar-brand>
 
-        <b-navbar-toggle target="nav" />
+        <b-navbar-toggle target="sidebar-nav" />
         <b-collapse
           id="nav"
           is-nav>
@@ -109,6 +109,87 @@
         </b-col>
       </b-row>
     </b-container>
+
+    <b-sidebar
+      id="sidebar-nav"
+      :title="getName"
+      :bg-variant="getBootstrapTheme"
+      :text-variant="getOppositeBootstrapTheme"
+      no-header
+      shadow>
+      <template #default="{ hide }">
+        <b-row
+          class="ml-2"
+          align-v="stretch">
+          <!-- title -->
+          <b-col
+            class="my-3"
+            cols="12">
+            <router-link
+              :id="getTheme"
+              class="brand"
+              :to="{ name: ROUTES.user.landing }">
+              {{ getName }}
+            </router-link>
+          </b-col>
+          <!-- links -->
+          <b-col
+            class="mt-2"
+            cols="8"
+            v-for="item in getNavItems"
+            :key="item.title">
+            <b-link
+              class="simple-link"
+              :to="{name: item.route, props: item.props}">
+              {{ item.title }}
+            </b-link>
+          </b-col>
+          <!-- logout -->
+          <b-col
+            class="mt-2"
+            cols="8">
+            <b-link
+              v-if="inAdminMode"
+              class="simple-link"
+              @click="logout">
+              {{ `${$t("form.actions.logout")} ✌️` }}
+            </b-link>
+          </b-col>
+          <b-col
+            class="mt-5"
+            cols="12">
+            <b-row align-h="around">
+              <!-- theme -->
+              <b-col
+                class="mt-2 mx-1"
+                cols="auto">
+                <b-button
+                  pill
+                  :variant="getBootstrapOutlineTheme"
+                  @click="toggleTheme">
+                  <span v-if="isDarkTheme">
+                    ☀️
+                  </span>
+                  <span v-else>
+                    🌘
+                  </span>
+                </b-button>
+              </b-col>
+              <!-- close -->
+              <b-col
+                class="mt-2 mx-1"
+                cols="auto">
+                <b-button
+                  :variant="getBootstrapOutlineTheme"
+                  @click="hide">
+                  {{ $t("form.actions.close") }}
+                </b-button>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
+      </template>
+    </b-sidebar>
   </div>
 </template>
 

@@ -1,7 +1,20 @@
-import HtmlSanitizer from "sanitize-html";
 import MarkdDownIt from "markdown-it";
+import Mila from "markdown-it-link-attributes";
 
-const MarkDown = new MarkdDownIt();
+import HtmlSanitizer from "sanitize-html";
+
+const initMarkDown = () => {
+	let MD = new MarkdDownIt();
+
+	MD.use(Mila, {
+		attrs: {
+			target: "_blank",
+			rel: "noopener"
+		}
+	});
+
+	return MD;
+};
 
 export const sanitizeHtml = (dirtyHtml) =>{
 	let options = {
@@ -20,5 +33,6 @@ export const sanitizeHtml = (dirtyHtml) =>{
 };
 
 export const getMarkdown = (text) =>{
+	const MarkDown = initMarkDown();
 	return MarkDown.render(text);
 };
