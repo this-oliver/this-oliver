@@ -2,7 +2,23 @@
   <div>
     <b-row>
       <b-col cols="1">
-        <span class="sub-header"> 📰 </span>
+        <b-row>
+          <b-col cols="12">
+            <span class="sub-header"> 📰 </span>
+          </b-col>
+          <b-col
+            v-if="editMode"
+            cols="12">
+            <small>
+              <span v-if="article.publish">
+                👍
+              </span>
+              <span v-else>
+                📝
+              </span>
+            </small>
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="10">
         <b-row>

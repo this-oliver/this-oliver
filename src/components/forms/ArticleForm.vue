@@ -101,7 +101,7 @@
           block
           variant="warning"
           :disabled="!validateForm"
-          @click="update({id: getArticle._id, title: form.title, content: form.content, tags: form.tags, publish: form.publish})">
+          @click="update({id: $route.params.id, patch: {title: form.title, content: form.content, tags: form.tags, publish: form.publish}})">
           {{ $t("form.actions.update") }}
         </b-button>
         <b-button
@@ -154,18 +154,10 @@
 					tags: null,
 					publish: false
 				},
-				showPreview: false,
+				showPreview: false
 			};
 		},
 		computed:{
-			getArticle: function(){
-
-				if(this.editMode){
-					return this.article || this.$route.params.article;
-				}
-
-				return null;
-			},
 			getArticleLength: function(){
 				let content = this.form.content;
 				return getWordCount(content);
@@ -212,6 +204,7 @@
 			if(this.editMode){
 				if(!article){
 					article = await this.$store.dispatch("user/article/getSecretArticle", this.$route.params.id);
+					this.fallBackArticle = article;
 				}
 				this.form.title = article.title;
 				this.form.content = article.content;
