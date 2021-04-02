@@ -110,7 +110,7 @@
 					{ 
 						name: this.ROUTES.admin.articleUpdate, 
 						params: { 
-							title: this.article.title.replaceAll(" ", "-"),
+							id: this.article._id,
 							article: this.article
 						}
 					}

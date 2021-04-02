@@ -89,6 +89,7 @@
 			"content": "content",
 			"promptContent": "jot things down...",
 			"tags": "tags",
+			"publish": "publish",
 			"promptTags": "enter tags..."
 		}
 	},

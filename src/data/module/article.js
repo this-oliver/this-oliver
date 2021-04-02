@@ -2,8 +2,10 @@ import {
 	postArticle,
 	patchArticle,
 	deleteArticle,
-	getSingleArticle,
+	getArticle,
 	getUserArticles,
+	getSecretArticle,
+	getSecretUserArticles,
 } from "../api/article";
 
 import i18n from "../../i18n";
@@ -37,12 +39,12 @@ const mutations = {
 };
 
 const actions = {
-	postArticle: async (context, { title, content, tags }) => {
+	postArticle: async (context, { title, content, tags, publish }) => {
 		try {
 			let token = context.rootGetters["auth/getToken"];
 			let userId = context.rootGetters["user/getUser"]._id;
 
-			let response = await postArticle(token, userId, title, content, tags);
+			let response = await postArticle(token, userId, title, content, tags, publish);
 			let article = response.data;
 
 			await context.dispatch("getUserArticles", userId);
@@ -85,9 +87,52 @@ const actions = {
 			}
 		}
 	},
-	getSingleArticle: async (context, id) => {
+	getSecretUserArticles: async (context, id) => {
 		try {
-			let response = await getSingleArticle(id);
+			let token = context.rootGetters["auth/getToken"];
+			let response = await getSecretUserArticles(id, token);
+			let articles = response.data;
+			context.commit("setArticles", articles);
+			return articles;
+		} catch (error) {
+			if (error.response) {
+				toastError(
+					i18n.t("error.article.title"),
+					`${i18n.t("error.api.request.get", { name: "article" })}: ${
+						error.response.data
+					}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
+	getArticle: async (context, id) => {
+		try {
+			let response = await getArticle(id);
+			let article = response.data;
+			return article;
+		} catch (error) {
+			if (error.response) {
+				toastError(
+					i18n.t("error.article.title"),
+					`${i18n.t("error.api.request.get", { name: "article" })}: ${
+						error.response.data
+					}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
+	getSecretArticle: async (context, id) => {
+		try {
+			let token = context.rootGetters["auth/getToken"];
+			let response = await getSecretArticle(id, token);
 			let article = response.data;
 			return article;
 		} catch (error) {

@@ -1,26 +1,6 @@
 import axios from "axios";
 import { config as Config } from "../../helpers/token-helper";
 
-export let postUser = async (name, email, password, shortBio, longBio) => {
-	let data = {
-		name: name,
-		email: email,
-		password: password,
-		bio: { short: shortBio, long: longBio }
-	};
-
-	try {
-		let response = await axios.post("/users", data);
-		if (response.status == 201) {
-			return response;
-		} else {
-			throw response;
-		}
-	} catch (error) {
-		return Promise.reject(error);
-	}
-};
-
 export let getSingleUser = async id => {
 	try {
 		let response = await axios.get(`/users/${id}`);

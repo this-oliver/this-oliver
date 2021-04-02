@@ -106,7 +106,7 @@ const router = new Router({
 							props: { editMode: false }
 						},
 						{
-							path: "experiences/:title/update",
+							path: "experiences/:id/update",
 							name: ROUTES.admin.experienceUpdate,
 							component: ExperienceForm,
 							props: { default: true, editMode: true }
@@ -118,7 +118,7 @@ const router = new Router({
 							props: { editMode: false }
 						},
 						{
-							path: "articles/:title/update",
+							path: "articles/:id/update",
 							name: ROUTES.admin.articleUpdate,
 							component: ArticleForm,
 							props: { default: true, editMode: true }

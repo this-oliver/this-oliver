@@ -1,5 +1,4 @@
-import {login} from "../api/auth";
-import {postUser} from "../api/user";
+import {login, register} from "../api/auth";
 
 import i18n from "../../i18n";
 import Router from "../../router";
@@ -80,7 +79,7 @@ const actions = {
 	register: async (context, { name, email, password }) => {
 		await context.dispatch("user/reset", null, { root: true });
 		try {
-			let response = await postUser(name, email, password, null, null);
+			let response = await register(name, email, password, null, null);
 			let user = response.data.user;
 			Router.push({name: ROUTES.auth.login});
 			return user;
