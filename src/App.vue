@@ -208,6 +208,7 @@
 		computed: {
 			...mapGetters({
 				user: "user/getUser",
+				loginStatus: "auth/getLoginStatus",
 			}),
 			getName: function(){
 				let user = this.user;
@@ -266,12 +267,14 @@
 		},
 		methods: {
 			...mapActions({
+				initAdmin: "user/initAdmin",
+				initUser: "user/initUser",
 				logout: "auth/logout"
 			}),
 		},
 		created: async function(){
 			this.loading = true;
-			await this.$store.dispatch("user/initUser");
+			(this.loginStatus)? await this.initAdmin() : await this.initUser();
 			this.loading = false;
 		}
 	};

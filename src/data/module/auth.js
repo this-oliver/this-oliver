@@ -17,6 +17,7 @@ const state = {
 
 const getters = {
 	getToken: state => state.token,
+	getDecodedToken: state => verifyToken(state.token).data,
 	getLoginStatus: state => state.loggedIn
 };
 
@@ -59,6 +60,7 @@ const actions = {
 			context.commit("setToken", token);
 			context.commit("setLoginStatus", true);
 			context.commit("user/setUser", user, { root: true });
+			context.dispatch("user/initAdmin", null, { root: true });
 			
 			Router.push({name: ROUTES.admin.profile});
 			
@@ -99,6 +101,7 @@ const actions = {
 	logout: async context => {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
+		context.dispatch("user/initUser", null, { root: true });
 		Router.push({ name: ROUTES.user.landing });
 	},
 };
