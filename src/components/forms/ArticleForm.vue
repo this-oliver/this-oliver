@@ -61,6 +61,22 @@
           :placeholder="$t('forms.article.promptTags')" />
       </b-col>
     </b-row>
+    <!-- tags -->
+    <b-row
+      class="mt-2"
+      align-h="between">
+      <b-col
+        class="sub-header"
+        md="auto">
+        {{ $t("forms.article.publish") }}
+      </b-col>
+      <b-col md="12">
+        <b-form-checkbox
+          v-model="form.publish"
+          :value="true"
+          :unchecked-value="false" />
+      </b-col>
+    </b-row>
     <!-- actions -->
     <b-row
       class="mt-2"
@@ -85,7 +101,7 @@
           block
           variant="warning"
           :disabled="!validateForm"
-          @click="update({id: article._id, title: form.title, content: form.content, tags: form.tags})">
+          @click="update({id: $route.params.id, patch: {title: form.title, content: form.content, tags: form.tags, publish: form.publish}})">
           {{ $t("form.actions.update") }}
         </b-button>
         <b-button
@@ -93,7 +109,7 @@
           block
           variant="primary"
           :disabled="!validateForm"
-          @click="post({title: form.title, content: form.content, tags: form.tags})">
+          @click="post({title: form.title, content: form.content, tags: form.tags, publish: form.publish})">
           {{ $t("form.actions.post") }}
         </b-button>
       </b-col>
@@ -102,7 +118,7 @@
     <!-- modals -->
     <b-modal
       v-model="showPreview"
-      :title="`${$t('form.actions.preview')}: ${$t('forms.article.title')}`"
+      :title="`${$t('form.actions.preview')}: ${form.title}`"
       hide-footer
       size="xl">
       <span
@@ -136,8 +152,9 @@
 					title: null,
 					content: null,
 					tags: null,
+					publish: false
 				},
-				showPreview: false,
+				showPreview: false
 			};
 		},
 		computed:{
@@ -182,11 +199,16 @@
 				}
 			}
 		},
-		created: function(){
+		created: async function(){
 			let article = this.$route.params.article;
-			if(this.editMode && article !== null){
+			if(this.editMode){
+				if(!article){
+					article = await this.$store.dispatch("user/article/getSecretArticle", this.$route.params.id);
+					this.fallBackArticle = article;
+				}
 				this.form.title = article.title;
 				this.form.content = article.content;
+				this.form.publish = article.publish;
 				
 				let tags = [];
 				for(let i = 0; i < article.tags.length; i++){

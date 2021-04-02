@@ -15,6 +15,26 @@ export let login = async (email, password) => {
 	}
 };
 
+export let register = async (name, email, password, shortBio, longBio) => {
+	let data = {
+		name: name,
+		email: email,
+		password: password,
+		bio: { short: shortBio, long: longBio }
+	};
+
+	try {
+		let response = await axios.post("/auth/register", data);
+		if (response.status == 201) {
+			return response;
+		} else {
+			throw response;
+		}
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export let patchPassword = async (oldPassword, newPassword, token) => {
 	let data = { oldPassword: oldPassword, newPassword: newPassword };
 	try {

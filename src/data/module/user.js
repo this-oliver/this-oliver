@@ -78,6 +78,35 @@ const actions = {
 			}
 		}
 	},
+	initAdmin: async context => {
+		try {
+			let userId = context.rootGetters["auth/getDecodedToken"];
+			let response = await getSingleUser(userId);
+			let oliver = response.data;
+
+			context.commit("setUser", oliver);
+			await context.dispatch("user/article/getSecretUserArticles", oliver._id, {
+				root: true
+			});
+
+			return oliver;
+		} catch (error) {
+			context.commit("setUser", Oliver);
+
+			if (error.response) {
+				toastError(
+					i18n.t("error.user.title"),
+					`${i18n.t("error.api.request.get", { name: "user" })}: ${
+						error.response.data
+					}`
+				);
+			} else if (error.request) {
+				toastError(i18n.t("error.api.request.noConnection"), error.message);
+			} else {
+				toastError(i18n.t("error.title"), error);
+			}
+		}
+	},
 	getUser: async context => {
 		try {
 			let id = context.state.user._id;

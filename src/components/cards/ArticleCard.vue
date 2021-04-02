@@ -2,7 +2,23 @@
   <div>
     <b-row>
       <b-col cols="1">
-        <span class="sub-header"> 📰 </span>
+        <b-row>
+          <b-col cols="12">
+            <span class="sub-header"> 📰 </span>
+          </b-col>
+          <b-col
+            v-if="editMode"
+            cols="12">
+            <small>
+              <span v-if="article.publish">
+                👍
+              </span>
+              <span v-else>
+                📝
+              </span>
+            </small>
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="10">
         <b-row>
@@ -58,6 +74,7 @@
 
 <script>
 	import { mapActions } from "vuex";
+	import { cleanMarkdown } from "../../helpers/markdown-helper";
 	import { getTimeAgo } from "../../helpers/time-helper";
 	export default {
 		name: "ArticleCard",
@@ -79,10 +96,8 @@
 				if(content.length > MAX_LENGTH){
 					content = content.substring(0, MAX_LENGTH);
 				}
-				
-				content = content.replace("\n\n", " ");
 
-				return content;
+				return cleanMarkdown(content);
 			},
 			getTimeAgo: function(){
 				return getTimeAgo(this.article.createdAt);
@@ -108,7 +123,7 @@
 					{ 
 						name: this.ROUTES.admin.articleUpdate, 
 						params: { 
-							title: this.article.title.replaceAll(" ", "-"),
+							id: this.article._id,
 							article: this.article
 						}
 					}

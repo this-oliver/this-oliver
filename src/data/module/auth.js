@@ -1,5 +1,4 @@
-import {login} from "../api/auth";
-import {postUser} from "../api/user";
+import {login, register} from "../api/auth";
 
 import i18n from "../../i18n";
 import Router from "../../router";
@@ -18,6 +17,7 @@ const state = {
 
 const getters = {
 	getToken: state => state.token,
+	getDecodedToken: state => verifyToken(state.token).data,
 	getLoginStatus: state => state.loggedIn
 };
 
@@ -60,6 +60,7 @@ const actions = {
 			context.commit("setToken", token);
 			context.commit("setLoginStatus", true);
 			context.commit("user/setUser", user, { root: true });
+			context.dispatch("user/initAdmin", null, { root: true });
 			
 			Router.push({name: ROUTES.admin.profile});
 			
@@ -80,7 +81,7 @@ const actions = {
 	register: async (context, { name, email, password }) => {
 		await context.dispatch("user/reset", null, { root: true });
 		try {
-			let response = await postUser(name, email, password, null, null);
+			let response = await register(name, email, password, null, null);
 			let user = response.data.user;
 			Router.push({name: ROUTES.auth.login});
 			return user;
@@ -100,6 +101,7 @@ const actions = {
 	logout: async context => {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
+		context.dispatch("user/initUser", null, { root: true });
 		Router.push({ name: ROUTES.user.landing });
 	},
 };

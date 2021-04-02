@@ -92,7 +92,7 @@
 					{ 
 						name: this.ROUTES.admin.experienceUpdate, 
 						params: { 
-							title: this.xp.title.replaceAll(" ", "-"),
+							id: this.xp._id,
 							experience: this.xp
 						}
 					}
