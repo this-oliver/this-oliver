@@ -76,6 +76,7 @@
 
 <script>
 	import { mapActions } from "vuex";
+	import { cleanMarkdown } from "../../helpers/markdown-helper";
 	import { getTimeAgo } from "../../helpers/time-helper";
 	export default {
 		name: "ArticleCard",
@@ -97,10 +98,8 @@
 				if(content.length > MAX_LENGTH){
 					content = content.substring(0, MAX_LENGTH);
 				}
-				
-				content = content.replace("\n\n", " ");
 
-				return content;
+				return cleanMarkdown(content);
 			},
 			getTimeAgo: function(){
 				return getTimeAgo(this.article.createdAt);

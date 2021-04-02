@@ -118,7 +118,7 @@
     <!-- modals -->
     <b-modal
       v-model="showPreview"
-      :title="`${$t('form.actions.preview')}: ${$t('forms.article.title')}`"
+      :title="`${$t('form.actions.preview')}: ${form.title}`"
       hide-footer
       size="xl">
       <span
