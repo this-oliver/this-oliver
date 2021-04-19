@@ -90,11 +90,22 @@
 		},
 		computed: {
 			getContent: function() {
-				const MAX_LENGTH = 50;
+				const MAX_LENGTH = 100;
 				let content = this.article.content;
 				
 				if(content.length > MAX_LENGTH){
-					content = content.substring(0, MAX_LENGTH);
+					const MAX_WORDS = 15;					
+					let words = content.split(" ");
+					let text = "";
+					
+					for(let i = 0; i < words.length; i++){
+						if(i > MAX_WORDS) break;
+						
+						let word = words[i];
+						text = text + `${word} `;
+					}
+					
+					content = `${text}...`;
 				}
 
 				return cleanMarkdown(content);
