@@ -7,7 +7,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.experience.experienceTitle") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.experience.experienceTitle") }}</span>
       </b-col>
       <b-col
         class="mt-2"
@@ -25,7 +25,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.experience.org") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.experience.org") }}</span>
       </b-col>
       <b-col
         class="mt-2"
@@ -43,7 +43,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.experience.years") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.experience.years") }}</span>
       </b-col>
       <b-col
         class="mt-2"
@@ -69,7 +69,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.experience.description") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.experience.description") }}</span>
         <small>{{ getDescriptionLength }}</small>
       </b-col>
       <b-col
@@ -98,7 +98,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.experience.type") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.experience.type") }}</span>
       </b-col>
       <b-col
         class="mt-2"

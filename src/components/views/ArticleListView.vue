@@ -2,7 +2,7 @@
   <div>
     <b-row align-h="between">
       <b-col
-        class="sub-header"
+        class="view-title"
         sm="auto"
         md="auto">
         {{ $t("views.article.title") }}

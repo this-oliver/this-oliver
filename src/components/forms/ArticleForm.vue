@@ -5,7 +5,7 @@
       class="mt-2"
       align-h="between">
       <b-col
-        class="sub-header"
+        class="form-subtitle"
         md="auto">
         {{ $t("forms.article.articleTitle") }}
       </b-col>
@@ -23,7 +23,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.article.content") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.article.content") }}</span>
         <small>{{ getArticleLength }}</small>
       </b-col>
       <b-col
@@ -51,7 +51,7 @@
       class="mt-2"
       align-h="between">
       <b-col
-        class="sub-header"
+        class="form-subtitle"
         md="auto">
         {{ $t("forms.article.tags") }}
       </b-col>
@@ -66,7 +66,7 @@
       class="mt-2"
       align-h="between">
       <b-col
-        class="sub-header"
+        class="form-subtitle"
         md="auto">
         {{ $t("forms.article.publish") }}
       </b-col>

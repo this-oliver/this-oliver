@@ -4,7 +4,7 @@
       <b-col cols="1">
         <b-row>
           <b-col cols="12">
-            <span class="sub-header"> 📰 </span>
+            <span class="card-title"> 📰 </span>
           </b-col>
           <b-col
             v-if="editMode"
