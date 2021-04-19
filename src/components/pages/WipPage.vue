@@ -3,7 +3,7 @@
     <b-row
       align-h="center">
       <b-col
-        class="sub-header bold-text wip-text mt-5"
+        class="page-title bold-text wip-text mt-5"
         md="4">
         <b-card
           img-src="@/assets/images/unsplash/wip-pop-zebra-wp81DxKUd1E-unsplash.jpg"

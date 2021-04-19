@@ -14,3 +14,9 @@
 }
 
 /* source of code^: https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
+
+
+.article-image{
+	max-width: 100%;
+	overflow: hidden;
+}

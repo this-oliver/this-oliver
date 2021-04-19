@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="1">
-        <span class="sub-header">{{ getXpEmoji(xp.type) }}</span>
+        <span class="card-title">{{ getXpEmoji(xp.type) }}</span>
       </b-col>
       <b-col cols="10">
         <b-row>

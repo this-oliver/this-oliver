@@ -5,7 +5,7 @@
       class="mt-2"
       align-h="between">
       <b-col
-        class="sub-header"
+        class="form-subtitle"
         md="auto">
         {{ $t("forms.user.name") }}
       </b-col>
@@ -21,7 +21,7 @@
       class="mt-2"
       align-h="between">
       <b-col
-        class="sub-header"
+        class="form-subtitle"
         md="auto">
         {{ $t("forms.user.email") }}
       </b-col>
@@ -37,7 +37,7 @@
       class="mt-2"
       align-h="between">
       <b-col
-        class="sub-header"
+        class="form-subtitle"
         md="2">
         {{ $t("forms.user.password") }}
       </b-col>

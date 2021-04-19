@@ -7,7 +7,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.bio.short") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.bio.short") }}</span>
         <small>{{ getShortLength }}</small>
       </b-col>
       <b-col
@@ -35,7 +35,7 @@
       <b-col
         sm="6"
         md="auto">
-        <span class="sub-header mr-3">{{ $t("forms.bio.long") }}</span>
+        <span class="form-subtitle mr-3">{{ $t("forms.bio.long") }}</span>
         <small>{{ getLongLength }}</small>
       </b-col>
       <b-col

@@ -19,7 +19,7 @@
         <b-row>
           <!-- title -->
           <b-col
-            class="sub-header"
+            class="view-title"
             cols="12">
             {{ getArticle.title }}
           </b-col>
@@ -27,7 +27,7 @@
           <b-col
             class="my-2"
             cols="12">
-            <i>{{ getTimeAgo(getArticle.createdAt) }}</i>
+            <i>{{ getTimeAgo }}</i>
           </b-col>
           <!-- tags -->
           <b-col cols="auto">
@@ -49,7 +49,7 @@
         md="8">
         <b-row>
           <b-col cols="12">
-            <span v-html="getMarkdown(getArticle.content)" />
+            <span v-html="getContent" />
           </b-col>
         </b-row>
       </b-col>
@@ -92,14 +92,12 @@
 		computed: {
 			getArticle: function(){
 				return (this.article)? this.article : this.fallbackArticle;
-			}
-		},
-		methods: {
-			getMarkdown: function(text){
-				return getMarkdown(text);
 			},
-			getTimeAgo: function(time){
-				return getTimeAgo(time);
+			getContent: function(){
+				return getMarkdown(this.getArticle.content);
+			},
+			getTimeAgo: function(){
+				return getTimeAgo(this.getArticle.createdAt);
 			}
 		},
 		created: async function(){
