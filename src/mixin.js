@@ -20,8 +20,14 @@ export const mixin = {
 			getBootstrapTheme: "theme/getBootstrapTheme",
 			getBootstrapOutlineTheme: "theme/getBootstrapOutlineTheme",
 			getOppositeBootstrapTheme: "theme/getOppositeBootstrapTheme",
-			getOppositeBootstrapOutlineTheme: "theme/getOppositeBootstrapOutlineTheme"
-		})
+			getOppositeBootstrapOutlineTheme:
+								"theme/getOppositeBootstrapOutlineTheme"
+		}),
+		adminMode: function() {
+			return this.$route.path.includes(
+				`${this.$i18n.locale}/admin/`
+			);
+		},
 	},
 	methods: {
 		...mapActions({

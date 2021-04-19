@@ -103,15 +103,24 @@
 			}
 		},
 		created: async function(){
-			this.loading = true;
+
+			// fetches article
 			let articleId = this.$route.params.id;
 			let paramArticle = this.$route.params.article;
 			if(paramArticle || this.article){
 				this.fallbackArticle = paramArticle;
 			} else if(articleId){
-				this.fallbackArticle = await this.$store.dispatch("user/article/getSingleArticle", articleId);
+				this.loading = true;
+				this.fallbackArticle = await this.$store.dispatch("user/article/getArticle", articleId);
+				this.loading = false;
 			}
-			this.loading = false;
+
+			// set page title
+			let article = this.getArticle;
+
+			if(article){
+				document.title = `${article.title} - ${article.author.name}`;
+			}
 		}
 	};
 </script>

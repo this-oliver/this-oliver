@@ -138,6 +138,10 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
 	scrollToTop();
 	handleLocale(to, from, next);
+
+	if(to.name !== "article-single"){
+		document.title = "Oliver Manzi";
+	}
 });
 
 // router helpers
