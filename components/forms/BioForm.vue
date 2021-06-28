@@ -67,7 +67,7 @@
 				<b-button
 					block
 					variant="secondary"
-					to="profile">
+					to="/">
 					back
 				</b-button>
 			</b-col>
@@ -152,6 +152,7 @@
 		created () {
 			if (this.editMode) {
 				const user = this.$store.getters["user/getUser"];
+				if(!user) return;
 				this.form.short = user.bio.short;
 				this.form.long = user.bio.long;
 			}

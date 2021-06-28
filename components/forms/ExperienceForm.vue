@@ -127,7 +127,7 @@
 				<b-button
 					block
 					variant="secondary"
-					to="profile">
+					to="/">
 					back
 				</b-button>
 			</b-col>

@@ -13,13 +13,13 @@
 				md="auto">
 				<nuxt-link
 					class="simple-link"
-					:to="{name: ROUTES.admin.bio}">
+					to="/">
 					update
 				</nuxt-link>
 			</b-col>
 		</b-row>
 		<b-row>
-			<b-col cols="12">
+			<b-col v-if="user" cols="12">
 				<bio-card
 					:short="user.bio.short"
 					:long="user.bio.long" />
