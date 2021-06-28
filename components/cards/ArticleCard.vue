@@ -6,9 +6,7 @@
 					<b-col cols="12">
 						<span class="card-title"> 📰 </span>
 					</b-col>
-					<b-col
-						v-if="editMode"
-						cols="12">
+					<b-col v-if="editMode" cols="12">
 						<small>
 							<span v-if="article.publish">
 								👍
@@ -23,11 +21,9 @@
 			<b-col cols="10">
 				<b-row>
 					<b-col cols="12">
-						<a
-							class="simple-link"
-							@click="open">
+						<nuxt-link class="simple-link" :to="`/articles/${article._id}`">
 							<b>{{ article.title }}</b>
-						</a>
+						</nuxt-link>
 					</b-col>
 					<b-col cols="12">
 						<small>
@@ -36,9 +32,7 @@
 							</b>
 						</small>
 					</b-col>
-					<b-col
-
-						cols="11">
+					<b-col cols="11">
 						<small>
 							<span v-html="getContent" />
 						</small>
@@ -47,27 +41,15 @@
 			</b-col>
 		</b-row>
 		<!-- actions -->
-		<b-row
-			v-if="editMode"
-			align-h="end">
-			<b-col
-				v-if="editMode"
-				sm="auto"
-				md="auto">
-				<span
-					class="simple-link"
-					@click="update">
-					Update
-				</span>
+		<b-row v-if="editMode" align-h="end">
+			<b-col v-if="editMode" sm="auto" md="auto">
+				<nuxt-link class="simple-link" :to="`/articles/${article._id}/edit`">
+					update
+				</nuxt-link>
 			</b-col>
-			<b-col
-				v-if="editMode"
-				sm="auto"
-				md="auto">
-				<span
-					class="simple-link"
-					@click="deleteArticle(article._id)">
-					Delete
+			<b-col v-if="editMode" sm="auto" md="auto">
+				<span class="simple-link" @click="deleteArticle(article._id)">
+					delete
 				</span>
 			</b-col>
 		</b-row>
@@ -101,7 +83,9 @@
 					let text = "";
 
 					for (let i = 0; i < words.length; i++) {
-						if (i > MAX_WORDS) { break; }
+						if (i > MAX_WORDS) {
+							break;
+						}
 
 						const word = words[i];
 						text = text + `${word} `;
@@ -119,29 +103,7 @@
 		methods: {
 			...mapActions({
 				deleteArticle: "user/user/article/delete"
-			}),
-			open () {
-				this.$router.push(
-					{
-						name: this.ROUTES.user.articleSingle,
-						params: {
-							id: this.article._id,
-							article: this.article
-						}
-					}
-				);
-			},
-			update () {
-				this.$router.push(
-					{
-						name: this.ROUTES.admin.articleUpdate,
-						params: {
-							id: this.article._id,
-							article: this.article
-						}
-					}
-				);
-			}
+			})
 		}
 	};
 </script>
