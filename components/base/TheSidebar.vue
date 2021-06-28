@@ -83,13 +83,18 @@
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
+	import { mapGetters, mapMutations } from "vuex";
 
 	export default {
 		name: "TheSidebar",
 		computed: {
 			...mapGetters({
 				getNavItems: "base/nav/getLinks"
+			})
+		},
+		methods: {
+			...mapMutations({
+				toggleTheme: "base/ui/toggleTheme"
 			})
 		}
 	};

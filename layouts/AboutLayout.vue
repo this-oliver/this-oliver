@@ -32,7 +32,7 @@
 	import BioCardVue from "../components/cards/BioCard.vue";
 
 	export default {
-		name: "AboutMeLayout",
+		name: "AboutLayout",
 		components: {
 			"bio-card": BioCardVue
 		},

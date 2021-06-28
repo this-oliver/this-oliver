@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<b-row align-h="center">
-			<b-col class="mt-3" sm="11" md="8">
+			<b-col v-if="user" class="mt-3" sm="11" md="8">
 				<about-layout :user="user" :edit-mode="editMode" />
 			</b-col>
-			<b-col class="mt-3" sm="11" md="8">
+			<b-col v-if="articles" class="mt-3" sm="11" md="8">
 				<article-list-layout :articles="articles" :edit-mode="editMode" />
 			</b-col>
-			<b-col class="mt-3" sm="11" md="8">
+			<b-col v-if="experiences" class="mt-3" sm="11" md="8">
 				<experiences-layout
 					:xp-list="experiences"
 					:edit-mode="editMode" />
@@ -39,8 +39,7 @@
 			...mapGetters({
 				user: "user/getUser",
 				experiences: "user/getXp",
-				articles: "user/article/getArticles",
-				isDarkTheme: "theme/isDarkTheme"
+				articles: "user/article/getArticles"
 			})
 		}
 	};
