@@ -2,7 +2,7 @@
 	<div>
 		<b-row
 			id="footer"
-			class="my-1"
+			class="my-2"
 			align-h="center">
 			<b-col
 				sm="11"
@@ -51,17 +51,17 @@
 				return [
 					{
 						title: "Github",
-						src: "https://github.com/simple-icons/simple-icons/blob/develop/icons/github.svg",
+						src: require("~/assets/icons/github.svg"),
 						link: "https://github.com/olivermanzi"
 					},
 					{
 						title: "LinkedIn",
-						src: "https://github.com/simple-icons/simple-icons/blob/develop/icons/linkedin.svg",
+						src: require("~/assets/icons/linkedin.svg"),
 						link: "https://www.linkedin.com/in/oliver-manzi/"
 					},
 					{
 						title: "FetchQr",
-						src: "https://github.com/simple-icons/simple-icons/blob/develop/icons/github.svg",
+						src: require("~/assets/icons/fetch.png"),
 						link: "https://fetchqr.com"
 					}
 				];

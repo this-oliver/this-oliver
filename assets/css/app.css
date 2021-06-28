@@ -3,9 +3,13 @@ html, body {
 	width: 100%;
 }
 
-.app-container{
+.app-container {
 	min-height: 100%;
 
 	display: grid;
 	grid-template-rows: auto 1fr auto;
+}
+
+.app-footer {
+	min-height: 5%;
 }

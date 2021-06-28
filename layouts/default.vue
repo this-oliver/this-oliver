@@ -2,7 +2,7 @@
 	<div :id="getTheme" class="app-container">
 		<the-navbar />
 		<nuxt />
-		<the-footer />
+		<the-footer class="app-footer" />
 	</div>
 </template>
 
