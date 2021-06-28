@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { sortLatestArticles } from "../../middleware/time";
 
 export const state = function () {
@@ -9,7 +10,7 @@ export const state = function () {
 
 export const getters = {
 	getArticles (state) {
-		return sortLatestArticles(state.articles);
+		return sortLatestArticles([...state.articles]);
 	},
 	getTags (state) {
 		return state.tags;

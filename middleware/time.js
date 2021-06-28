@@ -20,10 +20,11 @@ export const getTimeAgo = (date) => {
 
 /**
  * Returns list of articles sorted by created date
- * @param {Array} articles - array of article objects
+ * @param {Array} list - array of article objects
  * @returns {Array}
  */
-export const sortLatestArticles = (articles) => {
+export const sortLatestArticles = (list) => {
+	const articles = list;
 	const compare = (articleA, articleB) => {
 		const a = Moment(articleA.createdAt);
 		const b = Moment(articleB.createdAt);

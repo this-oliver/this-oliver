@@ -2,11 +2,11 @@ export const state = function () {
 	return {
 		links: [
 			{
-				title: "Articles",
+				title: "articles",
 				route: "articles"
 			},
 			{
-				title: "Resume",
+				title: "resume",
 				route: "resume"
 			}
 		]

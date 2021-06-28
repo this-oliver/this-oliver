@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { sortLatestXp } from "../../middleware/time";
 import { setCache,
 	getCache,
@@ -14,7 +15,7 @@ export const getters = {
 		return state.user;
 	},
 	getXp (state) {
-		return state.user ? sortLatestXp(state.user.experiences) : [];
+		return state.user ? sortLatestXp([...state.user.experiences]) : [];
 	}
 };
 

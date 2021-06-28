@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { verifyToken } from "../middleware/web-token";
 import { getCache,
 	setCache,
@@ -11,9 +12,15 @@ export const state = function () {
 };
 
 export const getters = {
-	getToken (state) { return state.token; },
-	getDecodedToken (state) { return verifyToken(state.token).data; },
-	getLoginStatus (state) { return state.loggedIn; }
+	getToken (state) {
+		return state.token;
+	},
+	getDecodedToken (state) {
+		return verifyToken(state.token).data;
+	},
+	getLoginStatus (state) {
+		return state.loggedIn;
+	}
 };
 
 export const mutations = {

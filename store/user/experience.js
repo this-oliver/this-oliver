@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export const actions = {
 	async post (context, { title, org, startYear, endYear, description, type }) {
 		try {
