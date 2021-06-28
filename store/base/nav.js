@@ -1,4 +1,4 @@
-export const state = () => {
+export const state = function () {
 	return {
 		links: [
 			{
@@ -14,7 +14,7 @@ export const state = () => {
 };
 
 export const getters = {
-	getLinks: (state) => {
+	getLinks (state) {
 		return state.links;
 	}
 };

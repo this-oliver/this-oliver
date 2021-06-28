@@ -152,14 +152,14 @@
 		created () {
 			if (this.editMode) {
 				const user = this.$store.getters["user/getUser"];
-				if(!user) return;
+				if (!user) { return; }
 				this.form.short = user.bio.short;
 				this.form.long = user.bio.long;
 			}
 		},
 		methods: {
 			...mapActions({
-				update: "user/patchUser"
+				update: "user/patch"
 			}),
 			getMarkDown (text) {
 				if (text) {

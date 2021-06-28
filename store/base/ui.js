@@ -1,35 +1,35 @@
-export const state = () => {
+export const state = function () {
 	return {
 		darkTheme: false
 	};
 };
 
 export const getters = {
-	isDarkTheme: (state) => {
+	isDarkTheme (state) {
 		return state.darkTheme;
 	},
-	getTheme: (state) => {
+	getTheme (state) {
 		return state.darkTheme ? "dark-theme" : "light-theme";
 	},
-	getBootstrapTheme: (state) => {
+	getBootstrapTheme (state) {
 		return state.darkTheme ? "dark" : "light";
 	},
-	getOppositeBootstrapTheme: (state) => {
+	getOppositeBootstrapTheme (state) {
 		return state.darkTheme ? "light" : "dark";
 	},
-	getBootstrapOutlineTheme: (state) => {
+	getBootstrapOutlineTheme (state) {
 		return state.darkTheme ? "outline-light" : "outline-dark";
 	},
-	getOppositeBootstrapOutlineTheme: (state) => {
+	getOppositeBootstrapOutlineTheme (state) {
 		return state.darkTheme ? "outline-dark" : "outline-light";
 	}
 };
 
 export const mutations = {
-	setTheme: (state, isDarkTheme) => {
+	setTheme (state, isDarkTheme) {
 		state.darkTheme = isDarkTheme;
 	},
-	toggleTheme: (state) => {
+	toggleTheme (state) {
 		state.darkTheme = !state.darkTheme;
 	}
 };

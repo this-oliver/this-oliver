@@ -108,7 +108,7 @@
 				this.fallbackArticle = paramArticle;
 			} else if (articleId) {
 				this.loading = true;
-				this.fallbackArticle = await this.$store.dispatch("user/article/getArticle", articleId);
+				this.fallbackArticle = await this.$store.dispatch("user/user/article/getSingle", articleId);
 				this.loading = false;
 			}
 

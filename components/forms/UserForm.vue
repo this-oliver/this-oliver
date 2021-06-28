@@ -178,7 +178,7 @@
 		methods: {
 			...mapActions({
 				postUser: "auth/register",
-				updateUser: "user/patchUser"
+				updateUser: "user/patch"
 			})
 		}
 	};

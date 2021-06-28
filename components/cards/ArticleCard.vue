@@ -118,7 +118,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteArticle: "user/article/deleteArticle"
+				deleteArticle: "user/user/article/delete"
 			}),
 			open () {
 				this.$router.push(

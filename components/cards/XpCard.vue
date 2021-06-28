@@ -85,7 +85,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteXp: "user/xp/deleteExperience"
+				deleteXp: "user/user/experience/delete"
 			}),
 			update () {
 				this.$router.push(

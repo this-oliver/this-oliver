@@ -1,9 +1,11 @@
-export const CacheEnums = {
+export const ENUMS = {
 	TOKEN: "auth_token_key",
 	USER: "user_cache_key"
 };
 
 export const setCache = (key, value) => {
+	if (process.browser === false) { return; }
+
 	try {
 		const parsedValue = JSON.stringify(value);
 		localStorage.setItem(key, parsedValue);
@@ -14,6 +16,8 @@ export const setCache = (key, value) => {
 };
 
 export const getCache = (key) => {
+	if (process.browser === false) { return; }
+
 	if (!localStorage.getItem(key)) {
 		return null;
 	}
@@ -32,6 +36,8 @@ export const getCache = (key) => {
 };
 
 export const removeCache = (key) => {
+	if (process.browser === false) { return; }
+
 	if (!localStorage.getItem(key)) {
 		return null;
 	}
