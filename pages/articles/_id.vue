@@ -83,7 +83,6 @@
 			try {
 				article = await store.dispatch("user/articles/get", id);
 			} catch (err) {
-				console.log(err);
 				return error({ statusCode: 400, message: err });
 			}
 

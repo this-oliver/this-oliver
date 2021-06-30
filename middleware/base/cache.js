@@ -9,9 +9,9 @@ export const setCache = (key, value) => {
 	try {
 		const parsedValue = JSON.stringify(value);
 		localStorage.setItem(key, parsedValue);
-		return Promise.resolve(true);
+		return true;
 	} catch (error) {
-		return Promise.reject(error);
+		return null;
 	}
 };
 
@@ -24,7 +24,6 @@ export const getCache = (key) => {
 
 	try {
 		const value = JSON.parse(localStorage.getItem(key));
-
 		if (!value) {
 			return null;
 		} else {
