@@ -18,17 +18,17 @@
 			</b-col>
 		</b-row>
 		<hr>
-		<b-row v-if="xpList.length > 0">
+		<b-row v-if="experienceList.length > 0">
 			<b-col
-				v-for="(xp, index) in xpList"
-				:key="xp._id"
+				v-for="(experience, index) in experienceList"
+				:key="experience._id"
 				cols="12">
-				<xp-card
+				<experience-card
 					class="mt-1"
-					:xp="xp"
+					:experience="experience"
 					:short-mode="true"
 					:edit-mode="editMode" />
-				<hr v-if="index < xpList.length - 1">
+				<hr v-if="index < experienceList.length - 1">
 			</b-col>
 		</b-row>
 		<b-row
@@ -42,14 +42,14 @@
 </template>
 
 <script>
-	import XpCardVue from "../components/cards/XpCard.vue";
+	import ExperienceCardVue from "../components/cards/ExperienceCard.vue";
 	export default {
 		name: "ExperiencesLayout",
 		components: {
-			"xp-card": XpCardVue
+			"experience-card": ExperienceCardVue
 		},
 		props: {
-			xpList: {
+			experienceList: {
 				type: Array,
 				required: true
 			},

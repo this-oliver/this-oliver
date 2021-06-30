@@ -14,7 +14,7 @@ export const getters = {
 	getUser (state) {
 		return state.user;
 	},
-	getXp (state) {
+	getExperiences (state) {
 		return state.user ? sortLatestXp([...state.user.experiences]) : [];
 	}
 };

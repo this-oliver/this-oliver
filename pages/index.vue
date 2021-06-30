@@ -9,7 +9,7 @@
 			</b-col>
 			<b-col v-if="experiences" class="mt-3" sm="11" md="8">
 				<experiences-layout
-					:xp-list="experiences"
+					:experience-list="experiences"
 					:edit-mode="editMode" />
 			</b-col>
 		</b-row>
@@ -38,7 +38,7 @@
 		computed: {
 			...mapGetters({
 				user: "user/getUser",
-				experiences: "user/getXp",
+				experiences: "user/getExperiences",
 				articles: "user/article/getArticles"
 			})
 		}
