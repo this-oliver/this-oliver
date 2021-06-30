@@ -1,7 +1,9 @@
 <template>
-	<div>
-		<login-form />
-	</div>
+	<b-row align-h="center" align-v="center">
+		<b-col sm="10" md="6">
+			<login-form />
+		</b-col>
+	</b-row>
 </template>
 
 <script>

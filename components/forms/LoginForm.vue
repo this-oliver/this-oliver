@@ -2,7 +2,7 @@
 	<div>
 		<b-form>
 			<b-form-group
-				class="input-field"
+				class="my-2"
 				label="email">
 				<b-form-input
 					v-model="form.email"
@@ -12,7 +12,7 @@
 			</b-form-group>
 
 			<b-form-group
-				class="input-field"
+				class="my-2"
 				label="password">
 				<b-form-input
 					v-model="form.password"
@@ -21,11 +21,13 @@
 					@keyup.enter="login" />
 			</b-form-group>
 
-			<b-row align-h="end">
+			<b-row align-h="center">
 				<b-col
-					class="input-field"
-					cols="auto">
+					class="mt-4"
+					sm="10"
+					md="8">
 					<b-button
+						block
 						variant="outline-primary"
 						:disabled="!validateForm || loading"
 						@click="login({email: form.email, password: form.password})">
