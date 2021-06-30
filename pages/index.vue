@@ -2,15 +2,13 @@
 	<div>
 		<b-row align-h="center">
 			<b-col v-if="user" class="mt-3" sm="11" md="8">
-				<about-page :user="user" :edit-mode="editMode" />
+				<about-page :user="user" />
 			</b-col>
 			<b-col v-if="articles" class="mt-3" sm="11" md="8">
-				<article-list-page :articles="articles" :edit-mode="editMode" />
+				<article-list-page :articles="articles" />
 			</b-col>
 			<b-col v-if="experiences" class="mt-3" sm="11" md="8">
-				<experiences-page
-					:experience-list="experiences"
-					:edit-mode="editMode" />
+				<experiences-page :experience-list="experiences" />
 			</b-col>
 		</b-row>
 	</div>
@@ -29,11 +27,8 @@
 			ExperiencesPage,
 			ArticleListPage
 		},
-		props: {
-			editMode: {
-				type: Boolean,
-				default: false
-			}
+		async asyncData ({ store }) {
+			await store.dispatch("user/initUser");
 		},
 		computed: {
 			...mapGetters({
