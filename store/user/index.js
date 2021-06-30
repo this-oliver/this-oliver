@@ -29,7 +29,7 @@ export const mutations = {
 export const actions = {
 	async initUser (context) {
 		try {
-			const response = await this.$api.user.getAll();
+			const response = await this.$api.user.index();
 			const users = response.data;
 
 			if (users.length > 0) {
@@ -49,7 +49,7 @@ export const actions = {
 	async initAdmin (context) {
 		try {
 			const id = context.rootGetters["auth/getDecodedToken"];
-			const response = await this.$api.user.getSingle(id);
+			const response = await this.$api.user.get(id);
 			const oliver = response.data;
 
 			context.commit("setUser", oliver);
@@ -65,7 +65,7 @@ export const actions = {
 	async get (context) {
 		try {
 			const id = context.state.user._id;
-			const response = await this.$api.user.getSingle(id);
+			const response = await this.$api.user.get(id);
 			const user = response.data;
 			context.commit("setUser", user);
 			return user;

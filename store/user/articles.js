@@ -51,7 +51,7 @@ export const actions = {
 	},
 	async get (context, id) {
 		try {
-			const response = await this.$api.article.getUserArticles(id);
+			const response = await this.$api.article.get(id);
 			const article = response.data;
 
 			return article;
@@ -63,7 +63,7 @@ export const actions = {
 		try {
 			const token = context.rootGetters["auth/getToken"];
 
-			const response = await this.$api.article.getSecretArticle(
+			const response = await this.$api.article.getSecret(
 				id,
 				token
 			);
@@ -75,7 +75,7 @@ export const actions = {
 	},
 	async indexUser (context, id) {
 		try {
-			const response = await this.$api.article.getUserArticles(id);
+			const response = await this.$api.article.indexUser(id);
 			const articles = response.data;
 
 			context.commit("setArticles", articles);
@@ -89,7 +89,7 @@ export const actions = {
 		try {
 			const token = context.rootGetters["auth/getToken"];
 
-			const response = await this.$api.article.getSecretUserArticles(
+			const response = await this.$api.article.indexUserSecrets(
 				id,
 				token
 			);

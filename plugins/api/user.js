@@ -1,5 +1,5 @@
 export default $axios => ({
-	async getSingle (id) {
+	async get (id) {
 		const response = await $axios.get(`/users/${id}`);
 		if (response.status === 200) {
 			return response;
@@ -7,7 +7,7 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async getAll () {
+	async index () {
 		const response = await $axios.get("/users");
 		if (response.status === 200) {
 			return response;

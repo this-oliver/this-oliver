@@ -12,16 +12,7 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async getAll () {
-		const response = await $axios.get("/articles");
-
-		if (response.status === 200) {
-			return response;
-		} else {
-			throw response;
-		}
-	},
-	async getSingle (id) {
+	async get (id) {
 		const response = await $axios.get(`/articles/${id}`);
 
 		if (response.status === 200) {
@@ -30,16 +21,7 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async getUserArticles (id) {
-		const response = await $axios.get(`/users/${id}/articles`);
-
-		if (response.status === 200) {
-			return response;
-		} else {
-			throw response;
-		}
-	},
-	async getSecretArticle (id, token) {
+	async getSecret (id, token) {
 		const response = await $axios.get(`/secret-articles/${id}`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
@@ -50,7 +32,25 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async getSecretUserArticles (id, token) {
+	async index () {
+		const response = await $axios.get("/articles");
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async indexUser (id) {
+		const response = await $axios.get(`/users/${id}/articles`);
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async indexUserSecrets (id, token) {
 		const response = await $axios.get(`/users/${id}/secret-articles`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
