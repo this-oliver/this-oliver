@@ -20,7 +20,13 @@ export const actions = {
 
 			return response.data;
 		} catch (error) {
-			console.log({ vuex_user_xp_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex experience",
+					error
+				}
+			});
 		}
 	},
 	async patch (
@@ -45,7 +51,13 @@ export const actions = {
 
 			return response.data;
 		} catch (error) {
-			console.log({ vuex_user_xp_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex experience",
+					error
+				}
+			});
 		}
 	},
 	async delete (context, id) {
@@ -58,7 +70,13 @@ export const actions = {
 
 			return response.data;
 		} catch (error) {
-			console.log({ vuex_user_xp_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex experience",
+					error
+				}
+			});
 		}
 	}
 };

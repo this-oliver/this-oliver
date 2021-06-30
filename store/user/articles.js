@@ -46,7 +46,13 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	},
 	async get (context, id) {
@@ -56,7 +62,13 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	},
 	async getSecret (context, id) {
@@ -70,7 +82,13 @@ export const actions = {
 			const article = response.data;
 			return article;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	},
 	async indexUser (context, id) {
@@ -82,7 +100,13 @@ export const actions = {
 
 			return articles;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	},
 	async indexUserSecrets (context, id) {
@@ -98,7 +122,13 @@ export const actions = {
 			context.commit("setArticles", articles);
 			return articles;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	},
 	async patch (context, { id, patch }) {
@@ -113,7 +143,13 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	},
 	async delete (context, id) {
@@ -128,7 +164,13 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			console.log({ vuex_user_article_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex article",
+					error
+				}
+			});
 		}
 	}
 };

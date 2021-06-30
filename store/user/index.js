@@ -43,7 +43,13 @@ export const actions = {
 
 			return users[0];
 		} catch (error) {
-			console.log({ vuex_user_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex user",
+					error
+				}
+			});
 		}
 	},
 	async initAdmin (context) {
@@ -59,7 +65,13 @@ export const actions = {
 
 			return oliver;
 		} catch (error) {
-			console.log({ vuex_user_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex user",
+					error
+				}
+			});
 		}
 	},
 	async get (context) {
@@ -70,7 +82,13 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			console.log({ vuex_user_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex user",
+					error
+				}
+			});
 		}
 	},
 	async patch (context, { name, email, short, long }) {
@@ -91,7 +109,13 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			console.log({ vuex_user_error: error });
+			this.$handleError({
+				statusCode: 400,
+				message: {
+					type: "vuex user",
+					error
+				}
+			});
 		}
 	},
 	reset (context) {

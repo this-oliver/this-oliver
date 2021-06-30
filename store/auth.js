@@ -47,7 +47,6 @@ export const actions = {
 			context.commit("setLoginStatus", true);
 			return true;
 		} catch (error) {
-			console.log({ vuex_auth: error });
 			context.dispatch("logout");
 			return false;
 		}
@@ -66,7 +65,13 @@ export const actions = {
 
 			return user;
 		} catch (error) {
-			console.log({ vuex_auth_error: error });
+			this.$handleError({
+				statusCode: 401,
+				message: {
+					type: "vuex authentication",
+					error
+				}
+			});
 		}
 	},
 	async register (context, { name, email, password }) {
@@ -76,7 +81,13 @@ export const actions = {
 			const user = response.data.user;
 			return user;
 		} catch (error) {
-			console.log({ vuex_auth_error: error });
+			this.$handleError({
+				statusCode: 401,
+				message: {
+					type: "vuex authentication",
+					error
+				}
+			});
 		}
 	},
 	async logout (context) {
