@@ -46,7 +46,7 @@ export const sortLatestArticles = (list) => {
  * @param {Array} articles - array of article objects
  * @returns {Array}
  */
-export const sortLatestXp = (experiences) => {
+export const sortLatestExperiences = (experiences) => {
 	const compare = (a, b) => {
 		return b.startYear - a.startYear;
 	};
