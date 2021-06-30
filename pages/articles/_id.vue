@@ -75,10 +75,21 @@
 		components: {
 			"loading-card": LoadingCardVue
 		},
-		async asyncData ({ store, params }) {
-			console.log("fetching...");
+		async asyncData ({ store, params, error }) {
 			const id = params.id;
-			const article = await store.dispatch("user/articles/getSingle", id);
+
+			let article = null;
+
+			try {
+				article = await store.dispatch("user/articles/get", id);
+			} catch (err) {
+				console.log(err);
+				return error({ statusCode: 400, message: err });
+			}
+
+			if (article === null) {
+				return error({ statusCode: 404, message: "article couldn't load" });
+			}
 
 			return { article };
 		},
@@ -86,16 +97,6 @@
 			return {
 				loading: false
 			};
-		},
-		head: {
-			title: this.article.title,
-			meta: [
-				{
-					hid: "description",
-					name: this.article.title,
-					content: this.article.content
-				}
-			]
 		},
 		computed: {
 			getContent () {
