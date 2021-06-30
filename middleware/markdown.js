@@ -27,6 +27,10 @@ const initMarkDown = () => {
  * @returns {String}
  */
 export const sanitizeHtml = (dirtyHtml) => {
+	if (!dirtyHtml) {
+		throw new Error("(Markdown Error) Missing dirty html");
+	}
+
 	const options = {
 		allowedTags: ["b", "i", "em", "strong", "a", "hr"],
 		allowedAttributes: {
@@ -44,34 +48,42 @@ export const sanitizeHtml = (dirtyHtml) => {
  * @returns {String}
  */
 export const getMarkdown = (text) => {
+	if (!text) {
+		throw new Error("(Markdown Error) Missing text");
+	}
+
 	const MarkDown = initMarkDown();
 	return MarkDown.render(text);
 };
 
 /**
  * Returns clean markdown
- * @param {String} string - markdown text
+ * @param {String} text - markdown text
  * @returns {String}
  */
-export const cleanMarkdown = (string) => {
-	string = Array.from(string);
-	let text = "";
+export const cleanMarkdown = (text) => {
+	if (!text) {
+		throw new Error("(Markdown Error) Missing text");
+	}
 
-	for (let i = 0; i < string.length; i++) {
-		const char = string[i];
+	text = Array.from(text);
+	let value = "";
+
+	for (let i = 0; i < text.length; i++) {
+		const char = text[i];
 
 		if (char === "#") {
-			string.splice(i, 1);
+			text.splice(i, 1);
 		} else if (
-			i + 1 < string.length &&
+			i + 1 < text.length &&
 			char === "\\" &&
-			string[i + 1] === "n"
+			text[i + 1] === "n"
 		) {
-			string.splice(i, 2);
+			text.splice(i, 2);
 		} else {
-			text += char;
+			value += char;
 		}
 	}
 
-	return text;
+	return value;
 };
