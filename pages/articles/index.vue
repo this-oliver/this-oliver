@@ -43,9 +43,9 @@
 
 <script>
 	import { mapGetters } from "vuex";
-	import ArticleCardVue from "../components/cards/ArticleCard.vue";
+	import ArticleCardVue from "../../components/cards/ArticleCard.vue";
 	export default {
-		name: "ArticleListLayout",
+		name: "ArticleList",
 		components: {
 			"article-card": ArticleCardVue
 		},
@@ -61,7 +61,7 @@
 		},
 		computed: {
 			...mapGetters({
-				articleList: "user/article/getArticles"
+				articleList: "user/articles/getArticles"
 			}),
 			getArticles () {
 				return this.articles ? this.articles : this.articleList;

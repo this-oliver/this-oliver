@@ -1,7 +1,14 @@
 <template>
 	<div :id="getTheme" class="app-container">
+		<!-- navbar -->
 		<the-navbar />
-		<nuxt />
+		<!-- content -->
+		<b-row class="app-content" align-h="center">
+			<b-col sm="11" md="10">
+				<nuxt />
+			</b-col>
+		</b-row>
+		<!-- footer -->
 		<the-footer class="app-footer" />
 	</div>
 </template>

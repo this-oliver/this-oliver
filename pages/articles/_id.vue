@@ -21,7 +21,7 @@
 					<b-col
 						class="layout-title"
 						cols="12">
-						{{ getArticle.title }}
+						{{ article.title }}
 					</b-col>
 					<!-- time ago -->
 					<b-col
@@ -33,7 +33,7 @@
 					<b-col cols="auto">
 						<small>
 							<b-badge
-								v-for="tag in getArticle.tags"
+								v-for="tag in article.tags"
 								:key="tag._id"
 								class="mr-1 mt-1">
 								{{ tag.name }}
@@ -57,66 +57,52 @@
 			<b-col
 				class="mt-2"
 				cols="auto">
-				<nuxt-link
-					class="simple-link"
-					to="articles">
+				<a class="simple-link" @click="$router.go(-1)">
 					&larr; articles
-				</nuxt-link>
+				</a>
 			</b-col>
 		</b-row>
 	</div>
 </template>
 
 <script>
-	import { getMarkdown } from "../middleware/markdown";
-	import { getTimeAgo } from "../middleware/time";
-	import LoadingCardVue from "../components/cards/LoadingCard.vue";
+	import { getMarkdown } from "../../middleware/markdown";
+	import { getTimeAgo } from "../../middleware/time";
+	import LoadingCardVue from "../../components/cards/LoadingCard.vue";
 
 	export default {
-		name: "ArticleLayout",
+		name: "ArticleSingle",
 		components: {
 			"loading-card": LoadingCardVue
 		},
-		props: {
-			article: {
-				type: Object,
-				default: null
-			}
+		async asyncData ({ store, params }) {
+			console.log("fetching...");
+			const id = params.id;
+			const article = await store.dispatch("user/articles/getSingle", id);
+
+			return { article };
 		},
 		data () {
 			return {
-				loading: false,
-				fallbackArticle: null
+				loading: false
 			};
 		},
+		head: {
+			title: this.article.title,
+			meta: [
+				{
+					hid: "description",
+					name: this.article.title,
+					content: this.article.content
+				}
+			]
+		},
 		computed: {
-			getArticle () {
-				return (this.article) ? this.article : this.fallbackArticle;
-			},
 			getContent () {
-				return getMarkdown(this.getArticle.content);
+				return getMarkdown(this.article.content);
 			},
 			getTimeAgo () {
-				return getTimeAgo(this.getArticle.createdAt);
-			}
-		},
-		async created () {
-			// fetches article
-			const articleId = this.$route.params.id;
-			const paramArticle = this.$route.params.article;
-			if (paramArticle || this.article) {
-				this.fallbackArticle = paramArticle;
-			} else if (articleId) {
-				this.loading = true;
-				this.fallbackArticle = await this.$store.dispatch("user/user/article/getSingle", articleId);
-				this.loading = false;
-			}
-
-			// set page title
-			const article = this.getArticle;
-
-			if (article) {
-				// set title of html document
+				return getTimeAgo(this.article.createdAt);
 			}
 		}
 	};

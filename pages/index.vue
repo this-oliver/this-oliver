@@ -2,13 +2,13 @@
 	<div>
 		<b-row align-h="center">
 			<b-col v-if="user" class="mt-3" sm="11" md="8">
-				<about-layout :user="user" :edit-mode="editMode" />
+				<about-page :user="user" :edit-mode="editMode" />
 			</b-col>
 			<b-col v-if="articles" class="mt-3" sm="11" md="8">
-				<article-list-layout :articles="articles" :edit-mode="editMode" />
+				<article-list-page :articles="articles" :edit-mode="editMode" />
 			</b-col>
 			<b-col v-if="experiences" class="mt-3" sm="11" md="8">
-				<experiences-layout
+				<experiences-page
 					:experience-list="experiences"
 					:edit-mode="editMode" />
 			</b-col>
@@ -18,16 +18,16 @@
 
 <script>
 	import { mapGetters } from "vuex";
-	import AboutLayout from "~/layouts/AboutLayout.vue";
-	import ArticleListLayout from "~/layouts/ArticleListLayout.vue";
-	import ExperiencesLayout from "~/layouts/ExperiencesLayout.vue";
+	import AboutPage from "~/pages/about.vue";
+	import ExperiencesPage from "~/pages/experiences.vue";
+	import ArticleListPage from "~/pages/articles.vue";
 
 	export default {
-		name: "Home",
+		name: "Landing",
 		components: {
-			AboutLayout,
-			ArticleListLayout,
-			ExperiencesLayout
+			AboutPage,
+			ExperiencesPage,
+			ArticleListPage
 		},
 		props: {
 			editMode: {
@@ -39,7 +39,7 @@
 			...mapGetters({
 				user: "user/getUser",
 				experiences: "user/getExperiences",
-				articles: "user/article/getArticles"
+				articles: "user/articles/getArticles"
 			})
 		}
 	};
