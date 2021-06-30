@@ -1,45 +1,23 @@
 <template>
-	<div>
-		<b-row
-			id="footer"
-			class="my-2"
-			align-h="center">
-			<b-col
-				sm="11"
-				md="4">
-				<b-row align-h="center">
-					<b-col
-						v-for="item in getFooterItems"
-						:key="item.link"
-						class="mx-1"
-						cols="auto">
-						<a
-							:href="item.link"
-							target="_blank">
-							<b-img-lazy
-								:src="item.src"
-								width="25"
-								alt="item.title" />
-						</a>
-					</b-col>
-				</b-row>
-			</b-col>
-
-			<b-col
-				class="my-1"
-				sm="auto"
-				md="auto">
-				<small class="bold-text">
-					<nuxt-link to="/">
-						🤠
-					</nuxt-link>
-					Oliver Manzi
-					<small>
-						&copy; 2020
-					</small>
+	<div id="footer">
+		<div class="footer-list">
+			<div v-for="item in getFooterItems" :key="item.link" class="footer-item">
+				<a :href="item.link" target="_blank">
+					<b-img-lazy :src="item.src" width="25" alt="item.title" />
+				</a>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<small class="bold-text">
+				<nuxt-link to="/">
+					🤠
+				</nuxt-link>
+				Oliver Manzi
+				<small>
+					&copy; 2020
 				</small>
-			</b-col>
-		</b-row>
+			</small>
+		</div>
 	</div>
 </template>
 
@@ -69,3 +47,44 @@
 		}
 	};
 </script>
+
+<style scoped>
+#footer {
+	display: grid;
+	padding: 0 10%;
+	justify-content: space-between;
+	grid-template-rows: 1fr;
+	grid-template-columns: 1fr auto;
+}
+
+.footer-list {
+	width: 50%;
+
+	display: grid;
+	place-items: center;
+	grid-template-rows: 1fr;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+@media screen and (max-width: 480px) {
+	#footer {
+		display: grid;
+		place-items: center;
+		column-gap: 1em;
+		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr;
+	}
+
+	.footer-list {
+		width: 100%;
+	}
+
+	.footer-item {
+		max-width: 25%;
+	}
+
+	.footer-copyright {
+		margin-top: 5%;
+	}
+}
+</style>

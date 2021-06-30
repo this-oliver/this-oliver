@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
 	height: 100%;
 	width: 100%;
 }
@@ -15,11 +16,19 @@ html, body {
 }
 
 .app-footer {
-	min-height: 5%;
+	min-height: 2.5%;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
 }
 
 @media screen and (max-width: 480px) {
 	.app-content {
-	min-height: 75vh;
-}
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+
+	.app-footer {
+		display: grid;
+		place-items: center;
+	}
 }
