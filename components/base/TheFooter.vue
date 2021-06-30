@@ -9,7 +9,7 @@
 		</div>
 		<div class="footer-copyright">
 			<small class="bold-text">
-				<nuxt-link to="/">
+				<nuxt-link to="/admin">
 					🤠
 				</nuxt-link>
 				Oliver Manzi
