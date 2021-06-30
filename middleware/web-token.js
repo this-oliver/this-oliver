@@ -1,12 +1,11 @@
 import JWT from "jsonwebtoken";
-const SECRET = process.env.VUE_APP_JWT_SECRET;
 
 /**
  * Checks validity of token and (if successful, returns decoded token).
  * @param {String} token
- * @returns {String | Object}
+ * @returns {String}
  */
 export const verifyToken = (token) => {
-	const decoded = JWT.verify(token, SECRET);
+	const decoded = JWT.verify(token, process.env.VUE_APP_JWT_SECRET);
 	return decoded;
 };

@@ -52,18 +52,14 @@ export const actions = {
 			});
 		}
 	},
-	async initAdmin (context) {
+	async initAdmin (context, user) {
 		try {
-			const id = context.rootGetters["auth/getDecodedToken"];
-			const response = await this.$api.user.get(id);
-			const oliver = response.data;
-
-			context.commit("setUser", oliver);
-			await context.dispatch("user/articles/indexUserSecrets", oliver._id, {
+			context.commit("setUser", user);
+			await context.dispatch("user/articles/indexUserSecrets", user._id, {
 				root: true
 			});
 
-			return oliver;
+			return user;
 		} catch (error) {
 			this.$handleError({
 				statusCode: 400,

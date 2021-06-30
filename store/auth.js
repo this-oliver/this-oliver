@@ -6,7 +6,7 @@ import { getCache,
 
 export const state = function () {
 	return {
-		token: null || getCache(CacheEnums.TOKEN),
+		token: getCache(CacheEnums.TOKEN) || null,
 		loggedIn: false
 	};
 };
@@ -14,9 +14,6 @@ export const state = function () {
 export const getters = {
 	getToken (state) {
 		return state.token;
-	},
-	getDecodedToken (state) {
-		return verifyToken(state.token).data;
 	},
 	getLoginStatus (state) {
 		return state.loggedIn;
@@ -34,11 +31,10 @@ export const mutations = {
 };
 
 export const actions = {
-	authenticate (context) {
-		const token = context.state.token;
+	async authenticate (context) {
+		const token = context.getters.getToken;
 
 		if (!token) {
-			console.log({ vuex_auth: "missing token" });
 			return false;
 		}
 
@@ -47,12 +43,12 @@ export const actions = {
 			context.commit("setLoginStatus", true);
 			return true;
 		} catch (error) {
-			context.dispatch("logout");
+			await context.dispatch("logout");
 			return false;
 		}
 	},
 	async login (context, { email, password }) {
-		await context.dispatch("user/reset", null, { root: true });
+		await context.dispatch("logout");
 		try {
 			const response = await this.$api.auth.login(email, password);
 			const token = response.data.token;
@@ -60,8 +56,8 @@ export const actions = {
 
 			context.commit("setToken", token);
 			context.commit("setLoginStatus", true);
-			context.commit("user/setUser", user, { root: true });
-			context.dispatch("user/initAdmin", null, { root: true });
+
+			await context.dispatch("user/initAdmin", user, { root: true });
 
 			return user;
 		} catch (error) {
@@ -93,6 +89,6 @@ export const actions = {
 	async logout (context) {
 		context.commit("setToken", null);
 		context.commit("setLoginStatus", false);
-		await context.dispatch("user/initUser", null, { root: true });
+		await context.dispatch("user/reset", null, { root: true });
 	}
 };

@@ -4,7 +4,7 @@
 			<b-col
 				sm="12"
 				md="11">
-				<nuxt />
+				admin
 			</b-col>
 		</b-row>
 	</div>
@@ -12,6 +12,7 @@
 
 <script>
 	export default {
-		name: "AdminPage"
+		name: "AdminPage",
+		middleware: "auth"
 	};
 </script>

@@ -38,7 +38,9 @@ export default {
 		// https://go.nuxtjs.dev/eslint
 		"@nuxtjs/eslint-module",
 		// https://github.com/nuxt-community/moment-module
-		"@nuxtjs/moment"
+		"@nuxtjs/moment",
+		// https://github.com/nuxt-community/dotenv-module
+		"@nuxtjs/dotenv"
 	],
 
 	// Modules: https://go.nuxtjs.dev/config-modules

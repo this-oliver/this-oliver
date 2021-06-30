@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
+		"@nuxtjs/dotenv": "^1.4.1",
+		"@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.3.5",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
@@ -25,9 +27,8 @@
     "vue-pdf": "^4.2.0"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config": "^6.0.0",
+		"@nuxtjs/eslint-config": "^6.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
-    "@nuxtjs/moment": "^1.6.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.22.0",
     "eslint-plugin-nuxt": "^2.0.0",

@@ -30,7 +30,7 @@
 						block
 						variant="outline-primary"
 						:disabled="!validateForm || loading"
-						@click="login({email: form.email, password: form.password})">
+						@click="login">
 						login
 						<b-spinner
 							v-if="loading"
@@ -44,7 +44,6 @@
 </template>
 
 <script>
-	import { mapActions } from "vuex";
 	import { isEmail } from "../../middleware/validator";
 	export default {
 		name: "LoginForm",
@@ -74,9 +73,18 @@
 			}
 		},
 		methods: {
-			...mapActions({
-				login: "auth/login"
-			}),
+			async login () {
+				this.loading = true;
+				try {
+					await this.$store.dispatch("auth/login", { email: this.form.email, password: this.form.password });
+					this.$router.push({
+						path: "/admin"
+					});
+					this.loading = false;
+				} catch (error) {
+					this.loading = false;
+				}
+			},
 			resetForm () {
 				this.form = {
 					email: null,
