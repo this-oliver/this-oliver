@@ -49,7 +49,31 @@ export const actions = {
 			console.log({ vuex_user_article_error: error });
 		}
 	},
-	async getUserArticles (context, id) {
+	async get (context, id) {
+		try {
+			const response = await this.$api.article.getUserArticles(id);
+			const article = response.data;
+
+			return article;
+		} catch (error) {
+			console.log({ vuex_user_article_error: error });
+		}
+	},
+	async getSecret (context, id) {
+		try {
+			const token = context.rootGetters["auth/getToken"];
+
+			const response = await this.$api.article.getSecretArticle(
+				id,
+				token
+			);
+			const article = response.data;
+			return article;
+		} catch (error) {
+			console.log({ vuex_user_article_error: error });
+		}
+	},
+	async indexUser (context, id) {
 		try {
 			const response = await this.$api.article.getUserArticles(id);
 			const articles = response.data;
@@ -61,36 +85,18 @@ export const actions = {
 			console.log({ vuex_user_article_error: error });
 		}
 	},
-	async getSecretUserArticles (context, id) {
+	async indexUserSecrets (context, id) {
 		try {
 			const token = context.rootGetters["auth/getToken"];
 
-			const response = await this.$api.article.getSecretUserArticles(id, token);
+			const response = await this.$api.article.getSecretUserArticles(
+				id,
+				token
+			);
 			const articles = response.data;
 
 			context.commit("setArticles", articles);
 			return articles;
-		} catch (error) {
-			console.log({ vuex_user_article_error: error });
-		}
-	},
-	async getSingle (context, id) {
-		try {
-			const response = await this.$api.article.getUserArticles(id);
-			const article = response.data;
-
-			return article;
-		} catch (error) {
-			console.log({ vuex_user_article_error: error });
-		}
-	},
-	async getSingleSecret (context, id) {
-		try {
-			const token = context.rootGetters["auth/getToken"];
-
-			const response = await this.$api.article.getSecretArticle(id, token);
-			const article = response.data;
-			return article;
 		} catch (error) {
 			console.log({ vuex_user_article_error: error });
 		}

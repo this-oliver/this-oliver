@@ -16,7 +16,7 @@ export const actions = {
 				token
 			);
 
-			await context.dispatch("user/getUser", null, { root: true });
+			await context.dispatch("user/get", null, { root: true });
 
 			return response.data;
 		} catch (error) {
@@ -41,7 +41,7 @@ export const actions = {
 				token
 			);
 
-			await context.dispatch("user/getUser", null, { root: true });
+			await context.dispatch("user/get", null, { root: true });
 
 			return response.data;
 		} catch (error) {
@@ -54,7 +54,7 @@ export const actions = {
 
 			const response = await this.$api.experience.delete(id, token);
 
-			await context.dispatch("user/getUser", null, { root: true });
+			await context.dispatch("user/get", null, { root: true });
 
 			return response.data;
 		} catch (error) {

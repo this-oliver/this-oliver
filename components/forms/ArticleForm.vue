@@ -190,7 +190,7 @@
 			let article = this.$route.params.article;
 			if (this.editMode) {
 				if (!article) {
-					article = await this.$store.dispatch("user/articles/getSingleSecret", this.$route.params.id);
+					article = await this.$store.dispatch("user/articles/getSecret", this.$route.params.id);
 					this.fallBackArticle = article;
 				}
 				this.form.title = article.title;

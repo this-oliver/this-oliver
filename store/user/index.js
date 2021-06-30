@@ -36,7 +36,7 @@ export const actions = {
 				const oliver = users[0];
 
 				context.commit("setUser", oliver);
-				await context.dispatch("user/articles/getUserArticles", oliver._id, {
+				await context.dispatch("user/articles/indexUser", oliver._id, {
 					root: true
 				});
 			}
@@ -53,7 +53,7 @@ export const actions = {
 			const oliver = response.data;
 
 			context.commit("setUser", oliver);
-			await context.dispatch("user/articles/getSecretUserArticles", oliver._id, {
+			await context.dispatch("user/articles/indexUserSecrets", oliver._id, {
 				root: true
 			});
 
@@ -62,7 +62,7 @@ export const actions = {
 			console.log({ vuex_user_error: error });
 		}
 	},
-	async getUser (context) {
+	async get (context) {
 		try {
 			const id = context.state.user._id;
 			const response = await this.$api.user.getSingle(id);
