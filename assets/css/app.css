@@ -10,6 +10,16 @@ html, body {
 	grid-template-rows: auto 1fr auto;
 }
 
+.app-content {
+	min-height: 80vh;
+}
+
 .app-footer {
 	min-height: 5%;
+}
+
+@media screen and (max-width: 480px) {
+	.app-content {
+	min-height: 75vh;
+}
 }
