@@ -36,7 +36,7 @@ export const actions = {
 				const oliver = users[0];
 
 				context.commit("setUser", oliver);
-				await context.dispatch("user/article/getUserArticles", oliver._id, {
+				await context.dispatch("user/articles/getUserArticles", oliver._id, {
 					root: true
 				});
 			}
@@ -53,7 +53,7 @@ export const actions = {
 			const oliver = response.data;
 
 			context.commit("setUser", oliver);
-			await context.dispatch("user/article/getSecretUserArticles", oliver._id, {
+			await context.dispatch("user/articles/getSecretUserArticles", oliver._id, {
 				root: true
 			});
 

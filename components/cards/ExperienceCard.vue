@@ -72,7 +72,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteXp: "user/user/experience/delete"
+				deleteXp: "user/user/experiences/delete"
 			}),
 			getExperienceEmoji (type) {
 				switch (type) {

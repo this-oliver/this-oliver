@@ -190,7 +190,7 @@
 			let article = this.$route.params.article;
 			if (this.editMode) {
 				if (!article) {
-					article = await this.$store.dispatch("user/user/article/getSingleSecret", this.$route.params.id);
+					article = await this.$store.dispatch("user/articles/getSingleSecret", this.$route.params.id);
 					this.fallBackArticle = article;
 				}
 				this.form.title = article.title;
@@ -208,8 +208,8 @@
 		},
 		methods: {
 			...mapActions({
-				post: "user/user/article/post",
-				update: "user/user/article/patch"
+				post: "user/user/articles/post",
+				update: "user/user/articles/patch"
 			}),
 			getMarkDown (text) {
 				if (text) {

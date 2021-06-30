@@ -3,11 +3,11 @@ export const state = function () {
 		links: [
 			{
 				title: "articles",
-				route: "articles"
+				route: "/articles"
 			},
 			{
 				title: "resume",
-				route: "resume"
+				route: "/resume"
 			}
 		]
 	};

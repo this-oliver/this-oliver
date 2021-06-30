@@ -102,7 +102,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteArticle: "user/user/article/delete"
+				deleteArticle: "user/user/articles/delete"
 			})
 		}
 	};
