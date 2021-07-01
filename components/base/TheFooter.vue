@@ -1,9 +1,9 @@
 <template>
 	<div id="footer">
 		<div class="footer-list">
-			<div v-for="item in getFooterItems" :key="item.link" class="footer-item">
+			<div v-for="item in getFooterItems" :key="item.link" class="footer-list-item">
 				<a :href="item.link" target="_blank">
-					<b-img-lazy :src="item.src" width="25" alt="item.title" />
+					<b-img-lazy class="footer-list-item-img" :src="item.src" width="25" alt="item.title" />
 				</a>
 			</div>
 		</div>
@@ -64,6 +64,13 @@
 	place-items: center;
 	grid-template-rows: 1fr;
 	grid-template-columns: repeat(3, 1fr);
+}
+
+.footer-list-item {
+	background-color: #f8f9fa;
+
+	border-radius: 15%;
+	border: #f8f9fa 5px solid;
 }
 
 .footer-copyright {
