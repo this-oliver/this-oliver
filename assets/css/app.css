@@ -5,18 +5,17 @@ body {
 }
 
 .app-container {
-	min-height: 100%;
+	min-height: 100vh;
 
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 }
 
 .app-content {
-	min-height: 80vh;
+	min-height: 65vh;
 }
 
 .app-footer {
-	min-height: 2.5%;
 	margin-top: 1.5em;
 	margin-bottom: 1.5em;
 }

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import RegsiterForm from "~/components/forms/UserForm.vue";
+	import RegsiterForm from "~/components/base/RegisterForm.vue";
 
 	export default {
 		name: "RegisterPage",

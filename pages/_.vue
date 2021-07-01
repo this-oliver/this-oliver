@@ -1,11 +1,10 @@
 <template>
 	<div>
 		<b-row align-h="center">
-			<b-col
-				class="mt-2"
-				sm="12"
-				md="9">
-				🔍 can't find the page you're looking for
+			<b-col cols="auto">
+				<b-badge variant="warning">
+					🔍 the page you are looking for is not available
+				</b-badge>
 			</b-col>
 		</b-row>
 	</div>

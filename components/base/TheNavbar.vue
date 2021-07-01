@@ -11,7 +11,7 @@
 				Oliver
 			</b-navbar-brand>
 
-			<b-navbar-toggle target="sidebar-nav" />
+			<b-navbar-toggle target="sidebar-nav" @click="showSidebar(true)" />
 			<b-collapse
 				id="nav"
 				is-nav>
@@ -69,7 +69,8 @@
 		},
 		methods: {
 			...mapMutations({
-				toggleTheme: "base/ui/toggleTheme"
+				toggleTheme: "base/ui/toggleTheme",
+				showSidebar: "base/nav/showSidebar"
 			})
 		}
 	};

@@ -31,17 +31,13 @@ export const actions = {
 		try {
 			const response = await this.$api.user.index();
 			const users = response.data;
+			const oliver = users[0];
 
-			if (users.length > 0) {
-				const oliver = users[0];
-
+			if (oliver) {
 				context.commit("setUser", oliver);
-				await context.dispatch("user/articles/indexUser", oliver._id, {
-					root: true
-				});
 			}
 
-			return users[0];
+			return oliver;
 		} catch (error) {
 			this.$handleError({
 				statusCode: 400,

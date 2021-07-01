@@ -122,7 +122,7 @@
 	import { getWordCount } from "../../middleware/string";
 
 	export default {
-		name: "BioForm",
+		name: "AboutForm",
 		props: {
 			editMode: {
 				type: Boolean,

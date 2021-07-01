@@ -1,109 +1,37 @@
 <template>
 	<div>
-		<!-- loading -->
-		<b-row v-if="loading">
-			<b-col cols="4">
-				<loading-card />
-			</b-col>
-			<b-col cols="8">
-				<loading-card />
+		<b-row v-if="!article" align-h="center">
+			<b-col cols="auto">
+				<b-badge variant="warning">
+					🚦 article could not load
+				</b-badge>
 			</b-col>
 		</b-row>
-		<!-- article -->
-		<b-row
-			v-else
-			align-h="end">
-			<b-col
-				sm="11"
-				md="4">
-				<b-row>
-					<!-- title -->
-					<b-col
-						class="layout-title"
-						cols="12">
-						{{ article.title }}
-					</b-col>
-					<!-- time ago -->
-					<b-col
-						class="my-2"
-						cols="12">
-						<i>{{ getTimeAgo }}</i>
-					</b-col>
-					<!-- tags -->
-					<b-col cols="auto">
-						<small>
-							<b-badge
-								v-for="tag in article.tags"
-								:key="tag._id"
-								class="mr-1 mt-1">
-								{{ tag.name }}
-							</b-badge>
-						</small>
-					</b-col>
-				</b-row>
-			</b-col>
-			<!-- content -->
-			<b-col
-				id="article-content"
-				sm="11"
-				md="8">
-				<b-row>
-					<b-col cols="12">
-						<span v-html="getContent" />
-					</b-col>
-				</b-row>
-			</b-col>
-			<!-- back btn -->
-			<b-col
-				class="mt-2"
-				cols="auto">
-				<a class="simple-link" @click="$router.go(-1)">
-					&larr; articles
-				</a>
+		<b-row v-else>
+			<b-col cols="12">
+				<article-single :article="article" />
 			</b-col>
 		</b-row>
 	</div>
 </template>
 
 <script>
-	import { getMarkdown } from "../../middleware/markdown";
-	import { getTimeAgo } from "../../middleware/time";
-	import LoadingCardVue from "../../components/cards/LoadingCard.vue";
+	import ArticleSingle from "~/components/article/ArticleSingle.vue";
 
 	export default {
-		name: "ArticleSingle",
+		name: "ArticleSinglePage",
 		components: {
-			"loading-card": LoadingCardVue
+			ArticleSingle
 		},
 		async asyncData ({ store, params, error }) {
 			const id = params.id;
-
-			let article = null;
-
-			try {
-				article = await store.dispatch("user/articles/get", id);
-			} catch (err) {
-				return error({ statusCode: 400, message: err });
-			}
+			const article = await store.dispatch("user/articles/get", id);
 
 			if (article === null) {
 				return error({ statusCode: 404, message: "article couldn't load" });
 			}
 
 			return { article };
-		},
-		data () {
-			return {
-				loading: false
-			};
-		},
-		computed: {
-			getContent () {
-				return getMarkdown(this.article.content);
-			},
-			getTimeAgo () {
-				return getTimeAgo(this.article.createdAt);
-			}
 		}
 	};
 </script>
