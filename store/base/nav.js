@@ -19,13 +19,10 @@ export const getters = {
 		const loginStatus = rootGetters["auth/getLoginStatus"];
 
 		if (loginStatus === true) {
-			// copy links array
-			const links = [...state.links];
-			// append `/admin/` to links
-			return links.map((link) => {
-				const navLink = link;
-				navLink.route = `/admin${navLink.route}`;
-				return navLink;
+			// copy links array and append `/admin/` to links
+			return state.links.slice().map((link) => {
+				link.route = `/admin${link.route}`;
+				return link;
 			});
 		} else {
 			return state.links;

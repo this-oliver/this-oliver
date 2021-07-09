@@ -40,17 +40,11 @@
 					</b-nav-form>
 					<!-- theme -->
 					<b-nav-form class="mx-2">
-						<b-button
-							pill
-							:variant="getBootstrapOutlineTheme"
-							@click="toggleTheme">
-							<span v-if="isDarkTheme">
-								☀️
-							</span>
-							<span v-else>
-								🌘
-							</span>
-						</b-button>
+						<b-form-checkbox
+							switch
+							size="lg"
+							:checked="isDarkTheme"
+							@change="toggleTheme" />
 					</b-nav-form>
 				</b-navbar-nav>
 			</b-collapse>
