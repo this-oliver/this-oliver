@@ -67,7 +67,7 @@
 				<b-button
 					block
 					variant="secondary"
-					to="/">
+					@click="$router.go(-1)">
 					back
 				</b-button>
 			</b-col>

@@ -2,7 +2,7 @@
 	<div>
 		<b-row class="mt-3">
 			<b-col cols="12">
-				<experience-list :experiences="experiences" />
+				<experience-list :experiences="experiences" :edit-mode="true" />
 			</b-col>
 		</b-row>
 	</div>
@@ -17,6 +17,7 @@
 		components: {
 			"experience-list": ExperienceListVue
 		},
+		layout: "admin",
 		computed: {
 			...mapGetters({
 				experiences: "user/getExperiences"

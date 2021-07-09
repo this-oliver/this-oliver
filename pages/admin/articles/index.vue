@@ -2,7 +2,7 @@
 	<div>
 		<b-row class="mt-3">
 			<b-col cols="12">
-				<article-list :articles="articleList" />
+				<article-list :articles="articleList" :edit-mode="true" />
 			</b-col>
 		</b-row>
 	</div>
@@ -16,9 +16,10 @@
 		components: {
 			ArticleList
 		},
+		layout: "admin",
 		async asyncData ({ store }) {
 			const user = store.getters["user/getUser"];
-			await store.dispatch("user/articles/indexUser", user._id);
+			await store.dispatch("user/articles/indexUserSecrets", user._id);
 		},
 		computed: {
 			...mapGetters({
