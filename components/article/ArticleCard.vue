@@ -43,7 +43,7 @@
 		<!-- actions -->
 		<b-row v-if="editMode" align-h="end">
 			<b-col v-if="editMode" cols="3">
-				<nuxt-link class="simple-link" :to="editMode == true ? `/admin/articles/${article._id}/edit` : `/articles/${article._id}/edit`">
+				<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/update`">
 					update
 				</nuxt-link>
 			</b-col>
@@ -102,7 +102,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteArticle: "user/user/articles/delete"
+				deleteArticle: "user/articles/delete"
 			})
 		}
 	};

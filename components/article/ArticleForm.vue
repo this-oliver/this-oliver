@@ -88,22 +88,14 @@
 				<b-button
 					block
 					variant="secondary"
-					to="/">
+					@click="$router.go(-1)">
 					back
 				</b-button>
 			</b-col>
 			<b-col
 				class="mt-1"
 				sm="8"
-				md="3">
-				<b-button
-					v-if="editMode"
-					block
-					variant="warning"
-					:disabled="!validateForm"
-					@click="update({id: $route.params.id, patch: {title: form.title, content: form.content, tags: form.tags, publish: form.publish}})">
-					updated
-				</b-button>
+				md="4">
 				<b-button
 					v-if="editMode"
 					block
@@ -216,8 +208,8 @@
 		},
 		methods: {
 			...mapActions({
-				post: "user/user/articles/post",
-				update: "user/user/articles/patch"
+				post: "user/articles/post",
+				update: "user/articles/patch"
 			}),
 			getMarkDown (text) {
 				if (text) {
