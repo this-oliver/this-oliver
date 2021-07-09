@@ -11,6 +11,7 @@
 
 	export default {
 		name: "LoginPage",
-		components: { LoginForm }
+		components: { LoginForm },
+		middleware: "isLoggedIn"
 	};
 </script>
