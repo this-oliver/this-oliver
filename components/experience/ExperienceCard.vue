@@ -26,7 +26,7 @@
 		</b-row>
 		<b-row v-if="editMode" align-h="end">
 			<b-col v-if="editMode" cols="3">
-				<nuxt-link class="simple-link" :to="editMode == true ? `/admin/experiences/${experience._id}/edit` : `/admin/experiences/${experience._id}/edit`">
+				<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/update`">
 					update
 				</nuxt-link>
 			</b-col>
@@ -71,7 +71,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteXp: "user/user/experiences/delete"
+				deleteXp: "user/experiences/delete"
 			}),
 			getExperienceEmoji (type) {
 				switch (type) {

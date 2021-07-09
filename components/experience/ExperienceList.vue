@@ -12,7 +12,7 @@
 				cols="2">
 				<nuxt-link
 					class="simple-link"
-					to="articles/create">
+					to="/admin/experiences/create">
 					<b> + </b>
 				</nuxt-link>
 			</b-col>

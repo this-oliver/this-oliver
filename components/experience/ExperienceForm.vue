@@ -127,7 +127,7 @@
 				<b-button
 					block
 					variant="secondary"
-					to="/">
+					@click="$router.go(-1)">
 					back
 				</b-button>
 			</b-col>
@@ -141,18 +141,6 @@
 					variant="warning"
 					@click="updateExperience({id: $route.params.experience._id, title: form.title, org: form.org, startYear: form.startYear, endYear: form.endYear, description: form.description, type: form.type})">
 					update
-				</b-button>
-			</b-col>
-			<b-col
-				v-if="editMode"
-				class="mt-1"
-				sm="11"
-				md="3">
-				<b-button
-					block
-					variant="danger"
-					@click="deleteExperience($route.params.experience._id)">
-					delete
 				</b-button>
 			</b-col>
 			<b-col
@@ -229,7 +217,7 @@
 			}
 		},
 		created () {
-			const experience = this.$route.params.experience;
+			const experience = this.experience;
 			if (this.editMode && experience !== null) {
 				this.form.title = experience.title;
 				this.form.org = experience.org;
@@ -241,9 +229,9 @@
 		},
 		methods: {
 			...mapActions({
-				postExperience: "user/user/experiences/post",
-				updateExperience: "user/user/experiences/patch",
-				deleteExperience: "user/user/experiences/delete"
+				postExperience: "user/experiences/post",
+				updateExperience: "user/experiences/patch",
+				deleteExperience: "user/experiences/delete"
 			}),
 			getMarkDown (text) {
 				if (text) {

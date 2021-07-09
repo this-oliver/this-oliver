@@ -13,7 +13,7 @@
 	import ExperienceListVue from "~/components/experience/ExperienceList.vue";
 
 	export default {
-		name: "ExperiencesPage",
+		name: "AdminExperiencesPage",
 		components: {
 			"experience-list": ExperienceListVue
 		},
