@@ -60,6 +60,14 @@ body {
 	cursor: pointer;
 }
 
+.center-text {
+	text-align: center;
+}
+
+.danger {
+	color: red;
+}
+
 @media screen and (max-width: 480px) {
 	body {
 		font-family: Helvetica, sans-serif;

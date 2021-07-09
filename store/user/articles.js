@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { sortLatestArticles } from "../../middleware/time";
+import { sortLatestArticles } from "../../utils/time";
 
 export const state = function () {
 	return {
@@ -42,7 +42,7 @@ export const actions = {
 			);
 			const article = response.data;
 
-			await context.dispatch("getSecretUserArticles", id);
+			await context.dispatch("indexUserSecrets", id);
 
 			return article;
 		} catch (error) {
@@ -139,7 +139,7 @@ export const actions = {
 			const article = response.data;
 
 			const userId = context.rootGetters["user/getUser"]._id;
-			await context.dispatch("getSecretUserArticles", userId);
+			await context.dispatch("indexUserSecrets", userId);
 
 			return article;
 		} catch (error) {
@@ -160,7 +160,7 @@ export const actions = {
 			const article = response.data;
 
 			const userId = context.rootGetters["user/getUser"]._id;
-			await context.dispatch("getSecretUserArticles", userId);
+			await context.dispatch("indexUserSecrets", userId);
 
 			return article;
 		} catch (error) {

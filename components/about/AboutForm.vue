@@ -67,7 +67,7 @@
 				<b-button
 					block
 					variant="secondary"
-					to="/">
+					@click="$router.go(-1)">
 					back
 				</b-button>
 			</b-col>
@@ -118,8 +118,8 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../middleware/markdown";
-	import { getWordCount } from "../../middleware/string";
+	import { getMarkdown } from "../../utils/markdown";
+	import { getWordCount } from "../../utils/string";
 
 	export default {
 		name: "AboutForm",

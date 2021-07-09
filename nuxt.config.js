@@ -78,5 +78,13 @@ export default {
 	},
 
 	// Build Configuration: https://go.nuxtjs.dev/config-build
-	build: {}
+	build: {},
+
+	// vue configurations
+	vue: {
+		config: {
+			// hides source code from browser
+			productionSourceMap: false
+		}
+	}
 };

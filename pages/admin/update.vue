@@ -2,7 +2,7 @@
 	<div>
 		<b-row align-h="center">
 			<b-col class="mt-3" sm="11" md="8">
-				<about-me :short="user.bio.short" :long="user.bio.long" :edit-mode="true" />
+				<about-form :edit-mode="true" />
 			</b-col>
 		</b-row>
 	</div>
@@ -10,11 +10,11 @@
 
 <script>
 	import { mapGetters } from "vuex";
-	import AboutMe from "~/components/about/AboutMe.vue";
+	import AboutForm from "~/components/about/AboutForm.vue";
 
 	export default {
 		name: "AdminPage",
-		components: { AboutMe },
+		components: { AboutForm },
 		layout: "admin",
 		middleware: "authentication",
 		async asyncData ({ store }) {

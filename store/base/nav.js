@@ -15,8 +15,18 @@ export const state = function () {
 };
 
 export const getters = {
-	getLinks (state) {
-		return state.links;
+	getLinks (state, getters, rootState, rootGetters) {
+		const loginStatus = rootGetters["auth/getLoginStatus"];
+
+		if (loginStatus === true) {
+			// copy links array and append `/admin/` to links
+			return state.links.slice().map((link) => {
+				link.route = `/admin${link.route}`;
+				return link;
+			});
+		} else {
+			return state.links;
+		}
 	},
 	isSidebarVisible (state) {
 		return state.showSidebar;

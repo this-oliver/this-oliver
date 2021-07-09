@@ -71,7 +71,7 @@
 				<b-button
 					block
 					variant="secondary"
-					to="/">
+					@click="$router.go(-1)">
 					back
 				</b-button>
 			</b-col>
@@ -117,7 +117,7 @@
 
 <script>
 	import { mapActions, mapGetters } from "vuex";
-	import { isEmail } from "../../middleware/validator";
+	import { isEmail } from "../../utils/validator";
 
 	export default {
 		name: "UserForm",

@@ -88,14 +88,14 @@
 				<b-button
 					block
 					variant="secondary"
-					to="/">
+					@click="$router.go(-1)">
 					back
 				</b-button>
 			</b-col>
 			<b-col
 				class="mt-1"
 				sm="8"
-				md="3">
+				md="4">
 				<b-button
 					v-if="editMode"
 					block
@@ -131,8 +131,8 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../middleware/markdown";
-	import { getWordCount } from "../../middleware/string";
+	import { getMarkdown } from "../../utils/markdown";
+	import { getWordCount } from "../../utils/string";
 
 	export default {
 		name: "ArticleForm",
@@ -208,8 +208,8 @@
 		},
 		methods: {
 			...mapActions({
-				post: "user/user/articles/post",
-				update: "user/user/articles/patch"
+				post: "user/articles/post",
+				update: "user/articles/patch"
 			}),
 			getMarkDown (text) {
 				if (text) {

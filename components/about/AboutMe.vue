@@ -3,6 +3,15 @@
 		<b-row align-h="between">
 			<b-col md="auto" class="layout-title mx-2">
 				About Me
+				<b-button
+					v-if="editMode"
+					class="mx-1"
+					pill
+					size="sm"
+					variant="warning"
+					to="/admin/update">
+					update
+				</b-button>
 			</b-col>
 			<b-col md="auto">
 				<b-button-group>
@@ -34,7 +43,7 @@
 </template>
 
 <script>
-	import { getMarkdown } from "../../middleware/markdown";
+	import { getMarkdown } from "../../utils/markdown";
 
 	export default {
 		name: "AboutMe",
@@ -46,6 +55,10 @@
 			long: {
 				type: String,
 				required: true
+			},
+			editMode: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data () {

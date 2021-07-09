@@ -47,8 +47,8 @@
 </template>
 
 <script>
-	import { getMarkdown } from "../../middleware/markdown";
-	import { getTimeAgo } from "../../middleware/time";
+	import { getMarkdown } from "../../utils/markdown";
+	import { getTimeAgo } from "../../utils/time";
 
 	export default {
 		name: "ArticleSingle",
