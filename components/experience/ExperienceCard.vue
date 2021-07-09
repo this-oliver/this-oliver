@@ -43,7 +43,7 @@
 	import { mapActions } from "vuex";
 	import { getMarkdown } from "../../utils/markdown";
 
-	import EXPERIENCES from "../../enums/experience";
+	import EXPERIENCES from "../../logic/enums/experience";
 	export default {
 		name: "ExperienceCard",
 		props: {

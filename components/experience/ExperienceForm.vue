@@ -189,7 +189,7 @@
 	import { getMarkdown } from "../../utils/markdown";
 	import { getWordCount } from "../../utils/string";
 
-	import EXPERIENCE_TYPE from "../../enums/experience";
+	import EXPERIENCE_TYPE from "../../logic/enums/experience";
 	export default {
 		name: "ExperienceForm",
 		props: {
