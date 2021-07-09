@@ -105,6 +105,14 @@
 					updated
 				</b-button>
 				<b-button
+					v-if="editMode"
+					block
+					variant="warning"
+					:disabled="!validateForm"
+					@click="update({id: $route.params.id, patch: {title: form.title, content: form.content, tags: form.tags, publish: form.publish}})">
+					updated
+				</b-button>
+				<b-button
 					v-else
 					block
 					variant="primary"

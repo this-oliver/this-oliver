@@ -25,13 +25,13 @@
 			</b-col>
 		</b-row>
 		<b-row v-if="editMode" align-h="end">
-			<b-col v-if="editMode" sm="auto" md="auto">
-				<nuxt-link class="simple-link" :to="`/experiences/${experience._id}/edit`">
+			<b-col v-if="editMode" cols="3">
+				<nuxt-link class="simple-link" :to="editMode == true ? `/admin/experiences/${experience._id}/edit` : `/admin/experiences/${experience._id}/edit`">
 					update
 				</nuxt-link>
 			</b-col>
-			<b-col v-if="editMode" sm="auto" md="auto">
-				<span class="simple-link" @click="deleteXp(experience._id)">
+			<b-col v-if="editMode" cols="3">
+				<span class="danger simple-link" @click="deleteXp(experience._id)">
 					delete
 				</span>
 			</b-col>
@@ -62,8 +62,7 @@
 		},
 		computed: {
 			getDesc () {
-				const description = this.experience.description;
-				return getMarkdown(`-> ${description}`);
+				return getMarkdown(this.experience.description);
 			},
 			getEndYear () {
 				const endYear = this.experience.endYear;

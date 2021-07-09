@@ -21,7 +21,7 @@
 			<b-col cols="10">
 				<b-row>
 					<b-col cols="12">
-						<nuxt-link class="simple-link" :to="`/articles/${article._id}`">
+						<nuxt-link class="simple-link" :to="editMode == true ? `/admin/articles/${article._id}` : `/articles/${article._id}`">
 							<b>{{ article.title }}</b>
 						</nuxt-link>
 					</b-col>
@@ -42,13 +42,13 @@
 		</b-row>
 		<!-- actions -->
 		<b-row v-if="editMode" align-h="end">
-			<b-col v-if="editMode" sm="auto" md="auto">
-				<nuxt-link class="simple-link" :to="`/articles/${article._id}/edit`">
+			<b-col v-if="editMode" cols="3">
+				<nuxt-link class="simple-link" :to="editMode == true ? `/admin/articles/${article._id}/edit` : `/articles/${article._id}/edit`">
 					update
 				</nuxt-link>
 			</b-col>
-			<b-col v-if="editMode" sm="auto" md="auto">
-				<span class="simple-link" @click="deleteArticle(article._id)">
+			<b-col v-if="editMode" cols="3">
+				<span class="danger simple-link" @click="deleteArticle(article._id)">
 					delete
 				</span>
 			</b-col>
