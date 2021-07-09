@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { verifyToken } from "../middleware/web-token";
+import { verifyToken } from "../utils/jwt";
 import { getCache,
 	setCache,
-	ENUMS as CacheEnums } from "../middleware/base/cache";
+	ENUMS as CacheEnums } from "../utils/cache";
 
 export const state = function () {
 	return {

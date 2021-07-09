@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { sortLatestExperiences } from "../../middleware/time";
+import { sortLatestExperiences } from "../../utils/time";
 import { setCache,
 	getCache,
-	ENUMS as CachEnums } from "../../middleware/base/cache";
+	ENUMS as CachEnums } from "../../utils/cache";
 
 export const state = function () {
 	return {

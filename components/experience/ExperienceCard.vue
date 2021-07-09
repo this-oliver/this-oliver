@@ -41,7 +41,7 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../middleware/markdown";
+	import { getMarkdown } from "../../utils/markdown";
 
 	import EXPERIENCES from "../../enums/experience";
 	export default {

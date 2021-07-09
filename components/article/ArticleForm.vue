@@ -131,8 +131,8 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../middleware/markdown";
-	import { getWordCount } from "../../middleware/string";
+	import { getMarkdown } from "../../utils/markdown";
+	import { getWordCount } from "../../utils/string";
 
 	export default {
 		name: "ArticleForm",

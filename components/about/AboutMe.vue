@@ -34,7 +34,7 @@
 </template>
 
 <script>
-	import { getMarkdown } from "../../middleware/markdown";
+	import { getMarkdown } from "../../utils/markdown";
 
 	export default {
 		name: "AboutMe",

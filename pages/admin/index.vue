@@ -2,7 +2,7 @@
 	<div>
 		<b-row align-h="center">
 			<b-col class="mt-3" sm="11" md="8">
-				<about-me :user="user" :edit-mode="true" />
+				<about-me :short="user.bio.short" :long="user.bio.long" :edit-mode="true" />
 			</b-col>
 			<b-col class="mt-3" sm="11" md="8">
 				<article-list :articles="articles" :edit-mode="true" />
@@ -27,9 +27,11 @@
 			ArticleList,
 			ExperienceList
 		},
-		middleware: "auth",
+		layout: "admin",
+		middleware: "authentication",
 		async asyncData ({ store }) {
-			await store.dispatch("user/initUser");
+			const user = await store.dispatch("user/initUser");
+			await store.dispatch("user/articles/indexUserSecrets", user._id);
 		},
 		computed: {
 			...mapGetters({

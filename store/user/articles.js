@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { sortLatestArticles } from "../../middleware/time";
+import { sortLatestArticles } from "../../utils/time";
 
 export const state = function () {
 	return {

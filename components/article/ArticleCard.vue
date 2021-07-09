@@ -58,8 +58,8 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { cleanMarkdown } from "../../middleware/markdown";
-	import { getTimeAgo } from "../../middleware/time";
+	import { cleanMarkdown } from "../../utils/markdown";
+	import { getTimeAgo } from "../../utils/time";
 	export default {
 		name: "ArticleCard",
 		props: {

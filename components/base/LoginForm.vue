@@ -44,7 +44,7 @@
 </template>
 
 <script>
-	import { isEmail } from "../../middleware/validator";
+	import { isEmail } from "../../utils/validator";
 	export default {
 		name: "LoginForm",
 		props: {

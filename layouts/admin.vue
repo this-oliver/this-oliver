@@ -1,5 +1,5 @@
 <template>
-	<div :id="getTheme" class="app-container">
+	<div :id="getTheme" class="admin app-container">
 		<!-- navbar -->
 		<div>
 			<the-navbar />
@@ -22,10 +22,18 @@
 	import TheSidebar from "~/components/base/TheSidebar.vue";
 
 	export default {
-		name: "Guest",
+		name: "Admin",
 		components: { TheNavbar, TheFooter, TheSidebar },
 		async fetch () {
 			await this.$store.dispatch("user/initUser");
 		}
 	};
 </script>
+
+<style scoped>
+
+.admin {
+	border: 5px solid red;
+}
+
+</style>
