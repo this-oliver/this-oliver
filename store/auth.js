@@ -61,8 +61,8 @@ export const actions = {
 
 			return user;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 401,
+			this.$handleError.api({
+				status: 401,
 				message: {
 					type: "vuex authentication",
 					error
@@ -77,8 +77,8 @@ export const actions = {
 			const user = response.data.user;
 			return user;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 401,
+			this.$handleError.api({
+				status: 401,
 				message: {
 					type: "vuex authentication",
 					error

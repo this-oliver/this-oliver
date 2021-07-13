@@ -46,8 +46,8 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error
@@ -62,8 +62,8 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error
@@ -82,8 +82,8 @@ export const actions = {
 			const article = response.data;
 			return article;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error
@@ -100,8 +100,8 @@ export const actions = {
 
 			return articles;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error
@@ -122,8 +122,8 @@ export const actions = {
 			context.commit("setArticles", articles);
 			return articles;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error
@@ -143,8 +143,8 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error
@@ -164,8 +164,8 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex article",
 					error

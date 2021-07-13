@@ -39,8 +39,8 @@ export const actions = {
 
 			return oliver;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex user",
 					error
@@ -51,14 +51,18 @@ export const actions = {
 	async initAdmin (context, user) {
 		try {
 			context.commit("setUser", user);
-			await context.dispatch("user/articles/indexUserSecrets", user._id, {
-				root: true
-			});
+			await context.dispatch(
+				"user/articles/indexUserSecrets",
+				user._id,
+				{
+					root: true
+				}
+			);
 
 			return user;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex user",
 					error
@@ -74,8 +78,8 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex user",
 					error
@@ -101,8 +105,8 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex user",
 					error

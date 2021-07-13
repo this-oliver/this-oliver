@@ -20,8 +20,8 @@ export const actions = {
 
 			return response.data;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex experience",
 					error
@@ -38,8 +38,8 @@ export const actions = {
 			// eslint-disable-next-line eqeqeq
 			return experiences.find(experience => experience._id == id);
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex experience",
 					error
@@ -69,8 +69,8 @@ export const actions = {
 
 			return response.data;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex experience",
 					error
@@ -88,8 +88,8 @@ export const actions = {
 
 			return response.data;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
+			this.$handleError.api({
+				status: 400,
 				message: {
 					type: "vuex experience",
 					error

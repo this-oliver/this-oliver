@@ -17,6 +17,9 @@
 		components: {
 			AboutMe
 		},
+		async asyncData ({ store }) {
+			await store.dispatch("user/initUser");
+		},
 		computed: {
 			...mapGetters({
 				user: "user/getUser"
