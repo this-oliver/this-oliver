@@ -9,10 +9,10 @@
 					<b-col v-if="editMode" cols="12">
 						<small>
 							<span v-if="article.publish">
-								👍
+								<check-circle variant="success" />
 							</span>
 							<span v-else>
-								📝
+								<dash-circle variant="warning" />
 							</span>
 						</small>
 					</b-col>
@@ -25,16 +25,16 @@
 							<b>{{ article.title }}</b>
 						</nuxt-link>
 					</b-col>
+					<b-col cols="11">
+						<small>
+							<span v-html="getContent" />
+						</small>
+					</b-col>
 					<b-col cols="12">
 						<small>
 							<b>
 								{{ getTimeAgo }}
 							</b>
-						</small>
-					</b-col>
-					<b-col cols="11">
-						<small>
-							<span v-html="getContent" />
 						</small>
 					</b-col>
 				</b-row>
@@ -58,10 +58,16 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { cleanMarkdown } from "../../utils/markdown";
+	import { BIconCheckCircleFill, BIconDashCircleFill } from "bootstrap-vue";
 	import { getTimeAgo } from "../../utils/time";
+	import { cleanMarkdown } from "../../utils/markdown";
+
 	export default {
 		name: "ArticleCard",
+		components: {
+			"check-circle": BIconCheckCircleFill,
+			"dash-circle": BIconDashCircleFill
+		},
 		props: {
 			article: {
 				type: Object,

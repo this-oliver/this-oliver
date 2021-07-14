@@ -20,6 +20,11 @@
 			const user = store.getters["user/getUser"];
 			await store.dispatch("user/articles/indexUser", user._id);
 		},
+		head () {
+			return {
+				title: "Articles"
+			};
+		},
 		computed: {
 			...mapGetters({
 				articleList: "user/articles/getArticles"
