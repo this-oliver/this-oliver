@@ -1,4 +1,10 @@
-export default {
+const BaseUrl = process.env.VUE_APP_API;
+
+if (!BaseUrl) {
+	throw new Error("[.env] Env variable 'VUE_APP_API' is undefined.");
+}
+
+const Config = {
 	// Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 	ssr: true,
 
@@ -55,18 +61,18 @@ export default {
 
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
 	axios: {
-		baseURL: process.env.VUE_APP_API_URL // Used as fallback if no runtime config is provided
+		baseURL: `${BaseUrl}/api` // Used as fallback if no runtime config is provided
 	},
 
 	publicRuntimeConfig: {
 		axios: {
-			browserBaseURL: process.env.VUE_APP_API_URL
+			browserBaseURL: `${BaseUrl}/api`
 		}
 	},
 
 	privateRuntimeConfig: {
 		axios: {
-			baseURL: process.env.VUE_APP_API_URL
+			baseURL: `${BaseUrl}/api`
 		}
 	},
 
@@ -88,3 +94,5 @@ export default {
 		}
 	}
 };
+
+export default Config;
