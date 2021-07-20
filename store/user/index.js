@@ -40,7 +40,7 @@ export const actions = {
 			return oliver;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Initiating User", message: error.message },
 				{ root: true }
 			);
@@ -60,7 +60,7 @@ export const actions = {
 			return user;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Initiating Admin", message: error.message },
 				{ root: true }
 			);
@@ -75,7 +75,7 @@ export const actions = {
 			return user;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Getting User", message: error.message },
 				{ root: true }
 			);
@@ -100,7 +100,7 @@ export const actions = {
 			return user;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Patching User", message: error.message },
 				{ root: true }
 			);

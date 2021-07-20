@@ -46,7 +46,7 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			context.commit("base/toaster/error", { title: "Poasting Article", message: error.message }, { root: true });
+			context.commit("base/toaster/addError", { title: "Poasting Article", message: error.message }, { root: true });
 		}
 	},
 	async get (context, id) {
@@ -57,7 +57,7 @@ export const actions = {
 			return article;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Getting Article", message: error.message },
 				{ root: true }
 			);
@@ -75,7 +75,7 @@ export const actions = {
 			return article;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Getting Secret Article", message: error.message },
 				{ root: true }
 			);
@@ -91,7 +91,7 @@ export const actions = {
 			return articles;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Getting User Articles", message: error.message },
 				{ root: true }
 			);
@@ -111,7 +111,7 @@ export const actions = {
 			return articles;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Getting User Secret Articles", message: error.message },
 				{ root: true }
 			);
@@ -130,7 +130,7 @@ export const actions = {
 			return article;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Patching Article", message: error.message },
 				{ root: true }
 			);
@@ -149,7 +149,7 @@ export const actions = {
 			return article;
 		} catch (error) {
 			context.commit(
-				"base/toaster/error",
+				"base/toaster/addError",
 				{ title: "Deleting Article", message: error.message },
 				{ root: true }
 			);
