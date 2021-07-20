@@ -39,13 +39,11 @@ export const actions = {
 
 			return oliver;
 		} catch (error) {
-			this.$handleError.api({
-				status: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
+			context.commit(
+				"base/toaster/error",
+				{ title: "Initiating User", message: error.message },
+				{ root: true }
+			);
 		}
 	},
 	async initAdmin (context, user) {
@@ -61,13 +59,11 @@ export const actions = {
 
 			return user;
 		} catch (error) {
-			this.$handleError.api({
-				status: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
+			context.commit(
+				"base/toaster/error",
+				{ title: "Initiating Admin", message: error.message },
+				{ root: true }
+			);
 		}
 	},
 	async get (context) {
@@ -78,13 +74,11 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			this.$handleError.api({
-				status: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
+			context.commit(
+				"base/toaster/error",
+				{ title: "Getting User", message: error.message },
+				{ root: true }
+			);
 		}
 	},
 	async patch (context, { name, email, short, long }) {
@@ -105,13 +99,11 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			this.$handleError.api({
-				status: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
+			context.commit(
+				"base/toaster/error",
+				{ title: "Patching User", message: error.message },
+				{ root: true }
+			);
 		}
 	},
 	reset (context) {
