@@ -1,7 +1,12 @@
 const BaseUrl = process.env.VUE_APP_API;
+const JwtSecret = process.env.VUE_APP_JWT_SECRET;
 
 if (!BaseUrl) {
 	throw new Error("[.env] Env variable 'VUE_APP_API' is undefined.");
+}
+
+if (!JwtSecret) {
+	throw new Error("[.env] Env variable 'VUE_APP_JWT_SECRET' is undefined.");
 }
 
 const Config = {
@@ -71,6 +76,7 @@ const Config = {
 	},
 
 	privateRuntimeConfig: {
+		VUE_APP_JWT_SECRET: JwtSecret,
 		axios: {
 			baseURL: `${BaseUrl}/api`
 		}
