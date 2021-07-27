@@ -67,10 +67,7 @@ export const actions = {
 		try {
 			const token = context.rootGetters["auth/getToken"];
 
-			const response = await this.$api.article.getSecret(
-				id,
-				token
-			);
+			const response = await this.$api.admin.getArticle(id, token);
 			const article = response.data;
 			return article;
 		} catch (error) {

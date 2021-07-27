@@ -86,14 +86,7 @@ export const actions = {
 			const id = context.state.user._id;
 			const token = context.rootGetters["auth/getToken"];
 
-			const response = await this.$api.user.patch(
-				id,
-				name,
-				email,
-				short,
-				long,
-				token
-			);
+			const response = await this.$api.admin.patch(id, name, email, short, long, token);
 			const user = response.data;
 
 			context.commit("setUser", user);
