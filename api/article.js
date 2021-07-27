@@ -1,6 +1,6 @@
 export default $axios => ({
 	async post (token, userId, title, content, tags, publish) {
-		const response = await $axios.post(`/users/${userId}/articles`, { title, content, tags, publish }, { headers: { Authorization: `Bearer ${token}` } });
+		const response = await $axios.post(`/user/${userId}/articles`, { title, content, tags, publish }, { headers: { Authorization: `Bearer ${token}` } });
 
 		if (response.status === 201) {
 			return response;
@@ -38,7 +38,7 @@ export default $axios => ({
 		}
 	},
 	async indexUser (id) {
-		const response = await $axios.get(`/users/${id}/articles`);
+		const response = await $axios.get(`/user/${id}/articles`);
 
 		if (response.status === 200) {
 			return response;
@@ -47,7 +47,7 @@ export default $axios => ({
 		}
 	},
 	async indexUserSecrets (id, token) {
-		const response = await $axios.get(`/users/${id}/articles/secret`, {
+		const response = await $axios.get(`/user/${id}/articles/secret`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
 
