@@ -30,12 +30,11 @@ export const actions = {
 	async post (context, { title, content, tags, publish }) {
 		try {
 			const token = this.$auth.strategy.token.get();
-			const id = this.$auth.user._id;
 
-			const response = await this.$api.article.post(token, id, title, content, tags, publish);
+			const response = await this.$api.article.post(token, title, content, tags, publish);
 			const article = response.data;
 
-			await context.dispatch("indexUserSecrets", id);
+			await context.dispatch("indexUser");
 
 			return article;
 		} catch (error) {
@@ -44,7 +43,9 @@ export const actions = {
 	},
 	async get (context, id) {
 		try {
-			const response = await this.$api.article.get(id);
+			const token = this.$auth.strategy.token.get();
+
+			const response = await this.$api.admin.getArticle(token, id);
 			const article = response.data;
 
 			return article;
@@ -52,20 +53,10 @@ export const actions = {
 			context.commit("base/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
-	async getSecret (context, id) {
-		try {
-			const token = this.$auth.strategy.token.get();
-
-			const response = await this.$api.admin.getArticle(id, token);
-			const article = response.data;
-			return article;
-		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Getting Secret Article", message: error.message }, { root: true });
-		}
-	},
 	async indexUser (context, id) {
+		const token = this.$auth.strategy.token.get();
 		try {
-			const response = await this.$api.article.indexUser(id);
+			const response = await this.$api.admin.indexArticles(token);
 			const articles = response.data;
 
 			context.commit("setArticles", articles);
@@ -73,19 +64,6 @@ export const actions = {
 			return articles;
 		} catch (error) {
 			context.commit("base/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
-		}
-	},
-	async indexUserSecrets (context, id) {
-		try {
-			const token = this.$auth.strategy.token.get();
-
-			const response = await this.$api.admin.indexArticles(id, token);
-			const articles = response.data;
-
-			context.commit("setArticles", articles);
-			return articles;
-		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Getting User Secret Articles", message: error.message }, { root: true });
 		}
 	},
 	async patch (context, { id, patch }) {

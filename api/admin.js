@@ -8,7 +8,7 @@ export default $axios => ({
 		}
 	},
 
-	async getArticle (id, token) {
+	async getArticle (token, id) {
 		const response = await $axios.get(`/admin/articles/${id}`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
@@ -20,7 +20,7 @@ export default $axios => ({
 		}
 	},
 
-	async indexArticles (id, token) {
+	async indexArticles (token) {
 		const response = await $axios.get("/admin/articles", {
 			headers: { Authorization: `Bearer ${token}` }
 		});
@@ -32,7 +32,7 @@ export default $axios => ({
 		}
 	},
 
-	async patch (id, name, email, shortBio, longBio, token) {
+	async patch (token, id, name, email, shortBio, longBio) {
 		const response = await $axios.patch("/admin", {
 			name,
 			email,

@@ -18,10 +18,7 @@
 		},
 		layout: "admin",
 		async asyncData ({ store }) {
-			const user = store.getters["admin/getUser"];
-			if (user) {
-				await store.dispatch("admin/articles/indexUserSecrets", user._id);
-			}
+			await store.dispatch("admin/articles/indexUser");
 		},
 		computed: {
 			...mapGetters({
