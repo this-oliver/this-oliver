@@ -9,7 +9,6 @@
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
 	import AboutMe from "~/components/about/AboutMe.vue";
 
 	export default {
@@ -18,17 +17,15 @@
 			AboutMe
 		},
 		async asyncData ({ store }) {
-			await store.dispatch("user/initUser");
+			const oliver = await store.dispatch("user/initUser");
+			return { oliver };
 		},
 		computed: {
-			...mapGetters({
-				user: "user/getUser"
-			}),
 			getShortBio () {
-				return (this.user) ? this.user.bio.short : null;
+				return (this.oliver) ? this.oliver.bio.short : null;
 			},
 			getLongBio () {
-				return (this.user) ? this.user.bio.long : null;
+				return (this.oliver) ? this.oliver.bio.long : null;
 			}
 		}
 	};
