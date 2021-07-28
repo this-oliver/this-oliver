@@ -15,6 +15,6 @@
 		name: "CreateExperiencePage",
 		components: { ExperienceForm },
 		layout: "admin",
-		middleware: "authentication"
+		middleware: "auth"
 	};
 </script>

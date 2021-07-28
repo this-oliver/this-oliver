@@ -18,6 +18,7 @@
 					</b-col>
 					<b-col cols="12">
 						<small>
+							<!-- eslint-disable-next-line vue/no-v-html -->
 							<span v-html="getDesc" />
 						</small>
 					</b-col>
@@ -71,7 +72,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteXp: "user/experiences/delete"
+				deleteXp: "admin/experiences/delete"
 			}),
 			getExperienceEmoji (type) {
 				switch (type) {

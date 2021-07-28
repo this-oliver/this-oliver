@@ -18,14 +18,14 @@
 		},
 		layout: "admin",
 		async asyncData ({ store }) {
-			const user = store.getters["user/getUser"];
+			const user = store.getters["admin/getUser"];
 			if (user) {
-				await store.dispatch("user/articles/indexUserSecrets", user._id);
+				await store.dispatch("admin/articles/indexUserSecrets", user._id);
 			}
 		},
 		computed: {
 			...mapGetters({
-				articleList: "user/articles/getArticles"
+				articleList: "admin/articles/getArticles"
 			})
 		}
 	};

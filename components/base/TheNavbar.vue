@@ -30,7 +30,7 @@
 						</b-link>
 					</b-nav-form>
 					<!-- logout -->
-					<b-nav-form v-if="isLoggedIn" class="mx-2">
+					<b-nav-form v-if="$auth.loggedIn" class="mx-2">
 						<span
 							class="simple-link danger"
 							@click="logout">
@@ -57,8 +57,7 @@
 		name: "TheNavbar",
 		computed: {
 			...mapGetters({
-				getNavItems: "base/nav/getLinks",
-				isLoggedIn: "auth/getLoginStatus"
+				getNavItems: "base/nav/getLinks"
 			})
 		},
 		methods: {
@@ -67,7 +66,7 @@
 				showSidebar: "base/nav/showSidebar"
 			}),
 			logout () {
-				this.$store.dispatch("auth/logout");
+				this.$store.dispatch("authentication/logout");
 				this.$router.push("/");
 			}
 		}

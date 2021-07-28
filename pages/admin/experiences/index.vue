@@ -20,7 +20,7 @@
 		layout: "admin",
 		computed: {
 			...mapGetters({
-				experiences: "user/getExperiences"
+				experiences: "admin/getExperiences"
 			})
 		}
 	};

@@ -93,23 +93,41 @@
 				</b-button>
 			</b-col>
 			<b-col
+				v-if="editMode"
+				class="mt-1 ml-auto"
+				sm="8"
+				md="3">
+				<b-button
+					block
+					variant="outline-dark"
+					:disabled="!validateForm"
+					@click="saveArticle">
+					quick save
+				</b-button>
+			</b-col>
+			<b-col
+				v-if="editMode"
 				class="mt-1"
 				sm="8"
-				md="4">
+				md="3">
 				<b-button
-					v-if="editMode"
 					block
-					variant="warning"
+					variant="dark"
 					:disabled="!validateForm"
-					@click="update({id: $route.params.id, patch: {title: form.title, content: form.content, tags: form.tags, publish: form.publish}})">
-					updated
+					@click="updateArticle">
+					update
 				</b-button>
+			</b-col>
+			<b-col
+				v-if="!editMode"
+				class="mt-1"
+				sm="8"
+				md="3">
 				<b-button
-					v-else
 					block
-					variant="primary"
+					variant="success"
 					:disabled="!validateForm"
-					@click="post({title: form.title, content: form.content, tags: form.tags, publish: form.publish})">
+					@click="postArticle">
 					post
 				</b-button>
 			</b-col>
@@ -121,9 +139,10 @@
 			:title="`preview: ${form.title}`"
 			hide-footer
 			size="xl">
-			<span
-				v-if="form.content && form.content.length > 0"
-				v-html="getMarkDown(form.content)" />
+			<span v-if="form.content && form.content.length > 0">
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<span v-html="getMarkDown(form.content)" />
+			</span>
 			<span v-else>...</span>
 		</b-modal>
 	</div>
@@ -190,7 +209,7 @@
 			let article = this.$route.params.article;
 			if (this.editMode) {
 				if (!article) {
-					article = await this.$store.dispatch("user/articles/getSecret", this.$route.params.id);
+					article = await this.$store.dispatch("admin/articles/getSecret", this.$route.params.id);
 					this.fallBackArticle = article;
 				}
 				this.form.title = article.title;
@@ -208,9 +227,33 @@
 		},
 		methods: {
 			...mapActions({
-				post: "user/articles/post",
-				update: "user/articles/patch"
+				post: "admin/articles/post",
+				update: "admin/articles/patch"
 			}),
+			async postArticle () {
+				try {
+					await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish });
+					this.$router.push("/admin/articles");
+				} catch (error) {
+					this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
+				}
+			},
+			async updateArticle () {
+				try {
+					await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
+					this.$router.push("/admin/articles");
+				} catch (error) {
+					this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
+				}
+			},
+			async saveArticle () {
+				try {
+					await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
+					this.$store.commit("base/toaster/addSuccess", { title: `Article ${this.article._id}`, message: "Saved" });
+				} catch (error) {
+					this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
+				}
+			},
 			getMarkDown (text) {
 				if (text) {
 					return getMarkdown(text);

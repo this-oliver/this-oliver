@@ -15,10 +15,10 @@
 		name: "UpdateArticlePage",
 		components: { ArticleForm },
 		layout: "admin",
-		middleware: "authentication",
+		middleware: "auth",
 		async asyncData ({ params, store }) {
 			const id = params.id;
-			const article = await store.dispatch("user/articles/getSecret", id);
+			const article = await store.dispatch("admin/articles/getSecret", id);
 
 			return { article };
 		}

@@ -27,6 +27,7 @@
 					</b-col>
 					<b-col cols="11">
 						<small>
+							<!-- eslint-disable-next-line vue/no-v-html -->
 							<span v-html="getContent" />
 						</small>
 					</b-col>
@@ -108,7 +109,7 @@
 		},
 		methods: {
 			...mapActions({
-				deleteArticle: "user/articles/delete"
+				deleteArticle: "admin/articles/delete"
 			})
 		}
 	};

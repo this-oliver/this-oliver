@@ -2,7 +2,8 @@ export const state = function () {
 	return {
 		success: [],
 		warnings: [],
-		errors: []
+		errors: [],
+		history: []
 	};
 };
 
@@ -29,12 +30,15 @@ export const mutations = {
 		state.errors.push({ title, message });
 	},
 	removeSuccess (state) {
-		state.success.pop();
+		const toast = state.success.pop();
+		state.history.push(toast);
 	},
 	removeWarning (state) {
-		state.warnings.pop();
+		const toast = state.warnings.pop();
+		state.history.push(toast);
 	},
 	removeError (state) {
-		state.errors.pop();
+		const toast = state.errors.pop();
+		state.history.push(toast);
 	}
 };

@@ -15,6 +15,6 @@
 		name: "CreateArticlePage",
 		components: { ArticleForm },
 		layout: "admin",
-		middleware: "authentication"
+		middleware: "auth"
 	};
 </script>

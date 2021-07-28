@@ -25,10 +25,7 @@
 
 	export default {
 		name: "Admin",
-		components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar },
-		async fetch () {
-			await this.$store.dispatch("user/initUser");
-		}
+		components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar }
 	};
 </script>
 

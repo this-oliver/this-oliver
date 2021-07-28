@@ -26,7 +26,7 @@
 		layout: "admin",
 		async asyncData ({ store, params, error }) {
 			const id = params.id;
-			const article = await store.dispatch("user/articles/getSecret", id);
+			const article = await store.dispatch("admin/articles/getSecret", id);
 
 			if (article === null) {
 				return error({ statusCode: 404, message: "article couldn't load" });

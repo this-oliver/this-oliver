@@ -27,6 +27,7 @@
 			</b-col>
 			<!-- content -->
 			<b-col id="article-content" sm="11" md="8">
+				<!-- eslint-disable-next-line vue/no-v-html -->
 				<span v-html="getContent" />
 			</b-col>
 			<!-- back btn -->

@@ -33,7 +33,7 @@
 			</b-col>
 			<!-- logout -->
 			<b-col
-				v-if="isLoggedIn"
+				v-if="$auth.loggedIn"
 				class="mt-auto"
 				cols="8">
 				<b-link
@@ -75,8 +75,7 @@
 		computed: {
 			...mapGetters({
 				getNavItems: "base/nav/getLinks",
-				isSidebarVisible: "base/nav/isSidebarVisible",
-				isLoggedIn: "auth/getLoginStatus"
+				isSidebarVisible: "base/nav/isSidebarVisible"
 			})
 		},
 		methods: {
@@ -85,7 +84,7 @@
 				showSidebar: "base/nav/showSidebar"
 			}),
 			logout () {
-				this.$store.dispatch("auth/logout");
+				this.$store.dispatch("authentication/logout");
 				this.$router.push("/");
 			}
 		}

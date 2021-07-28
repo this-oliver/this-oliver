@@ -16,6 +16,10 @@
 		"indent": ["error", "tab"],
 		"quotes": ["error", "double"],
 		"semi": ["error", "always"],
+		"operator-linebreak": ["error", "after"],
+    "function-paren-newline": ["error", "never"],
+    "function-call-argument-newline": ["error", "never"],
+		/* vue rules below */
 		"vue/custom-event-name-casing": ["error"],
 		"vue/attribute-hyphenation": ["error", "always"],
 		"vue/script-indent": [

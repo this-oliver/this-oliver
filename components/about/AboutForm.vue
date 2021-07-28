@@ -98,9 +98,10 @@
 			title="preview: short"
 			hide-footer
 			size="xl">
-			<span
-				v-if="form.short && form.short.length > 0"
-				v-html="getMarkDown(form.short)" />
+			<span v-if="form.short && form.short.length > 0">
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<span v-html="getMarkDown(form.short)" />
+			</span>
 			<span v-else>...</span>
 		</b-modal>
 		<b-modal
@@ -108,9 +109,10 @@
 			title="preview: long"
 			hide-footer
 			size="xl">
-			<span
-				v-if="form.long && form.long.length > 0"
-				v-html="getMarkDown(form.long)" />
+			<span v-if="form.long && form.long.length > 0">
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<span v-html="getMarkDown(form.long)" />
+			</span>
 			<span v-else>...</span>
 		</b-modal>
 	</div>
@@ -151,7 +153,7 @@
 		},
 		created () {
 			if (this.editMode) {
-				const user = this.$store.getters["user/getUser"];
+				const user = this.$store.getters["admin/getUser"];
 				if (!user) { return; }
 				this.form.short = user.bio.short;
 				this.form.long = user.bio.long;
@@ -159,7 +161,7 @@
 		},
 		methods: {
 			...mapActions({
-				update: "user/patch"
+				update: "admin/patch"
 			}),
 			getMarkDown (text) {
 				if (text) {

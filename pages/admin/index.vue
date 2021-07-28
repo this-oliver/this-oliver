@@ -16,13 +16,13 @@
 		name: "AdminPage",
 		components: { AboutMe },
 		layout: "admin",
-		middleware: "authentication",
+		middleware: "auth",
 		async asyncData ({ store }) {
-			await store.dispatch("user/initUser");
+			await store.dispatch("admin/initUser");
 		},
 		computed: {
 			...mapGetters({
-				user: "user/getUser"
+				user: "admin/getUser"
 			})
 		}
 	};

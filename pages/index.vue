@@ -25,10 +25,10 @@
 				user: "user/getUser"
 			}),
 			getShortBio () {
-				return this.user.bio.short;
+				return (this.user) ? this.user.bio.short : null;
 			},
 			getLongBio () {
-				return this.user.bio.long;
+				return (this.user) ? this.user.bio.long : null;
 			}
 		}
 	};

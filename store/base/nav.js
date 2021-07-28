@@ -25,8 +25,8 @@ export const state = function () {
 };
 
 export const getters = {
-	getLinks (state, getters, rootState, rootGetters) {
-		const loginStatus = rootGetters["auth/getLoginStatus"];
+	getLinks (state, getters, rootState) {
+		const loginStatus = rootState.auth.loggedIn;
 
 		// if login status is true, return admin links instead
 		return (loginStatus === true) ? state.adminLinks : state.links;

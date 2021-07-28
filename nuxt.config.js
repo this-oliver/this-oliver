@@ -1,15 +1,4 @@
-const BaseUrl = process.env.VUE_APP_API;
-const JwtSecret = process.env.VUE_APP_JWT_SECRET;
-
-if (!BaseUrl) {
-	throw new Error("[.env] Env variable 'VUE_APP_API' is undefined.");
-}
-
-if (!JwtSecret) {
-	throw new Error("[.env] Env variable 'VUE_APP_JWT_SECRET' is undefined.");
-}
-
-const Config = {
+export default {
 	// Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
 	ssr: true,
 
@@ -60,26 +49,47 @@ const Config = {
 		"bootstrap-vue/nuxt",
 		// https://go.nuxtjs.dev/axios
 		"@nuxtjs/axios",
+		// https://auth.nuxtjs.org
+		"@nuxtjs/auth-next",
 		// https://go.nuxtjs.dev/pwa
 		"@nuxtjs/pwa"
 	],
 
+	auth: {
+		redirect: {
+			login: "/auth/login",
+			logout: "/auth/login"
+		},
+		strategies: {
+			local: {
+				token: {
+					property: "token",
+					global: true
+				},
+				user: {
+					property: false
+				},
+				endpoints: {
+					login: { url: "/auth/login", method: "post" },
+					user: { url: "/admin", method: "get" }
+				}
+			}
+		}
+	},
+
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
 	axios: {
-		baseURL: `${BaseUrl}/api` // Used as fallback if no runtime config is provided
+		baseURL: `${process.env.VUE_APP_API}/api` // Used as fallback if no runtime config is provided
 	},
 
 	publicRuntimeConfig: {
 		axios: {
-			browserBaseURL: `${BaseUrl}/api`
+			browserBaseURL: `${process.env.VUE_APP_API}/api`
 		}
 	},
 
 	privateRuntimeConfig: {
-		VUE_APP_JWT_SECRET: JwtSecret,
-		axios: {
-			baseURL: `${BaseUrl}/api`
-		}
+		VUE_APP_JWT_SECRET: process.env.VUE_APP_JWT_SECRET
 	},
 
 	// PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -100,5 +110,3 @@ const Config = {
 		}
 	}
 };
-
-export default Config;
