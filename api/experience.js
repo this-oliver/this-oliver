@@ -1,12 +1,11 @@
 export default $axios => ({
-	async post (id,
+	async post (token,
 		title,
 		org,
 		startYear,
 		endYear,
 		description,
-		type,
-		token) {
+		type) {
 		const response = await $axios.post("/experiences", {
 			title,
 			org,
@@ -22,14 +21,13 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async patch (id,
+	async patch (token, id,
 		title,
 		org,
 		startYear,
 		endYear,
 		description,
-		type,
-		token) {
+		type) {
 		const response = await $axios.patch(`/experiences/${id}`, {
 			title,
 			org,
@@ -45,7 +43,7 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async delete (id, token) {
+	async delete (token, id) {
 		const response = await $axios.delete(`/experiences/${id}`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});

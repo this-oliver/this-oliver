@@ -3,9 +3,8 @@ export const actions = {
 	async post (context, { title, org, startYear, endYear, description, type }) {
 		try {
 			const token = this.$auth.strategy.token.get();
-			const id = this.$auth.user._id;
 
-			const response = await this.$api.experience.post(id, title, org, startYear, endYear, description, type, token);
+			const response = await this.$api.experience.post(token, title, org, startYear, endYear, description, type);
 
 			await context.dispatch("user/get", null, { root: true });
 
@@ -43,7 +42,7 @@ export const actions = {
 		try {
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.experience.patch(id, title, org, startYear, endYear, description, type, token);
+			const response = await this.$api.experience.patch(token, id, title, org, startYear, endYear, description, type);
 
 			await context.dispatch("user/get", null, { root: true });
 
@@ -62,9 +61,9 @@ export const actions = {
 		try {
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.experience.delete(id, token);
+			const response = await this.$api.experience.delete(token, id);
 
-			await context.dispatch("user/get", null, { root: true });
+			await this.$auth.fetchUser();
 
 			return response.data;
 		} catch (error) {

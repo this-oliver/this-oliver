@@ -149,7 +149,6 @@
 </template>
 
 <script>
-	import { mapActions } from "vuex";
 	import { getMarkdown } from "../../utils/markdown";
 	import { getWordCount } from "../../utils/string";
 
@@ -209,7 +208,7 @@
 			let article = this.$route.params.article;
 			if (this.editMode) {
 				if (!article) {
-					article = await this.$store.dispatch("admin/articles/getSecret", this.$route.params.id);
+					article = await this.$store.dispatch("admin/articles/get", this.$route.params.id);
 					this.fallBackArticle = article;
 				}
 				this.form.title = article.title;
@@ -226,10 +225,6 @@
 			}
 		},
 		methods: {
-			...mapActions({
-				post: "admin/articles/post",
-				update: "admin/articles/patch"
-			}),
 			async postArticle () {
 				try {
 					await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish });

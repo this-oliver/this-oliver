@@ -33,7 +33,7 @@ export const actions = {
 			const id = context.state.user._id;
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.admin.patch(id, name, email, short, long, token);
+			const response = await this.$api.admin.patch(token, id, name, email, short, long);
 			const user = response.data;
 
 			context.commit("setUser", user);

@@ -1,5 +1,5 @@
 export default $axios => ({
-	async post (token, userId, title, content, tags, publish) {
+	async post (token, title, content, tags, publish) {
 		const response = await $axios.post("/articles", { title, content, tags, publish }, { headers: { Authorization: `Bearer ${token}` } });
 
 		if (response.status === 201) {
