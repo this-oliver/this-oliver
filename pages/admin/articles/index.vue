@@ -2,14 +2,13 @@
 	<div>
 		<b-row class="mt-3">
 			<b-col cols="12">
-				<article-list :articles="articleList" :edit-mode="true" />
+				<article-list :articles="articles" :edit-mode="true" />
 			</b-col>
 		</b-row>
 	</div>
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
 	import ArticleList from "~/components/article/ArticleList.vue";
 	export default {
 		name: "ArticleListPage",
@@ -18,12 +17,12 @@
 		},
 		layout: "admin",
 		async asyncData ({ store }) {
-			await store.dispatch("admin/articles/indexUser");
-		},
-		computed: {
-			...mapGetters({
-				articleList: "admin/articles/getArticles"
-			})
+			try {
+				const articles = await store.dispatch("admin/articles/indexUser");
+				return { articles };
+			} catch (error) {
+				console.log({ pageError: error });
+			}
 		}
 	};
 </script>

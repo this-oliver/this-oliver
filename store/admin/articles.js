@@ -53,9 +53,9 @@ export const actions = {
 			context.commit("base/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
-	async indexUser (context, id) {
-		const token = this.$auth.strategy.token.get();
+	async indexUser (context) {
 		try {
+			const token = this.$auth.strategy.token.get();
 			const response = await this.$api.admin.indexArticles(token);
 			const articles = response.data;
 
@@ -63,6 +63,7 @@ export const actions = {
 
 			return articles;
 		} catch (error) {
+			console.log({ apiError: error });
 			context.commit("base/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
 		}
 	},
