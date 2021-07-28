@@ -1,14 +1,7 @@
 <template>
-	<div>
-		<b-row v-if="!article" align-h="center">
-			<b-col cols="auto">
-				<b-badge variant="warning">
-					🚦 article could not load
-				</b-badge>
-			</b-col>
-		</b-row>
+	<div id="article-single">
 		<!-- article -->
-		<b-row v-else>
+		<b-row>
 			<b-col id="article-info" sm="11" md="4">
 				<b-row align-v="stretch">
 					<!-- title -->
@@ -34,6 +27,7 @@
 			</b-col>
 			<!-- content -->
 			<b-col id="article-content" sm="11" md="8">
+				<!-- eslint-disable-next-line vue/no-v-html -->
 				<span v-html="getContent" />
 			</b-col>
 			<!-- back btn -->
@@ -70,6 +64,10 @@
 </script>
 
 <style scoped>
+#article-single{
+	max-width: 100vw;
+}
+
 #article-info {
 	max-width: 25vw;
 }

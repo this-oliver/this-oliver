@@ -32,6 +32,11 @@
 			}
 
 			return { article };
+		},
+		head () {
+			return {
+				title: this.article.title
+			};
 		}
 	};
 </script>

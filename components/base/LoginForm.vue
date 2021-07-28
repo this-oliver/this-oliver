@@ -74,9 +74,12 @@
 		},
 		methods: {
 			async login () {
-				this.loading = true;
 				try {
-					await this.$store.dispatch("auth/login", { email: this.form.email, password: this.form.password });
+					this.loading = true;
+					await this.$auth.loginWith("local", { data: {
+						email: this.form.email, password: this.form.password
+					} });
+
 					this.$router.push({
 						path: "/admin"
 					});

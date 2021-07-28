@@ -33,11 +33,11 @@
 			</b-col>
 			<!-- logout -->
 			<b-col
+				v-if="$auth.loggedIn"
 				class="mt-auto"
 				cols="8">
 				<b-link
-					v-if="inAdminMode"
-					class="simple-link"
+					class="simple-link danger"
 					@click="logout">
 					logout ✌️
 				</b-link>
@@ -82,7 +82,11 @@
 			...mapMutations({
 				toggleTheme: "base/ui/toggleTheme",
 				showSidebar: "base/nav/showSidebar"
-			})
+			}),
+			logout () {
+				this.$store.dispatch("authentication/logout");
+				this.$router.push("/");
+			}
 		}
 	};
 </script>

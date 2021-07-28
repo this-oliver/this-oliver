@@ -162,13 +162,13 @@
 				return text.length > 0 && text === this.form.password;
 			},
 			validateForm () {
-				return (this.editMode)
-					? (
+				return (this.editMode) ?
+					(
 						this.validateName !== false &&
 						this.validateEmail !== false &&
 						this.validatePassword2 !== false
-					)
-					: (
+					) :
+					(
 						this.validateName === true &&
 						this.validateEmail === true &&
 						this.validatePassword2 === true
@@ -177,8 +177,8 @@
 		},
 		methods: {
 			...mapActions({
-				postUser: "auth/register",
-				updateUser: "user/patch"
+				postUser: "admin/register",
+				updateUser: "admin/patch"
 			})
 		}
 	};

@@ -10,23 +10,26 @@ export const state = function () {
 				route: "/experiences"
 			}
 		],
+		adminLinks: [
+			{
+				title: "articles",
+				route: "/admin/articles"
+			},
+			{
+				title: "experience",
+				route: "/admin/experiences"
+			}
+		],
 		showSidebar: false
 	};
 };
 
 export const getters = {
-	getLinks (state, getters, rootState, rootGetters) {
-		const loginStatus = rootGetters["auth/getLoginStatus"];
+	getLinks (state, getters, rootState) {
+		const loginStatus = rootState.auth.loggedIn;
 
-		if (loginStatus === true) {
-			// copy links array and append `/admin/` to links
-			return state.links.slice().map((link) => {
-				link.route = `/admin${link.route}`;
-				return link;
-			});
-		} else {
-			return state.links;
-		}
+		// if login status is true, return admin links instead
+		return (loginStatus === true) ? state.adminLinks : state.links;
 	},
 	isSidebarVisible (state) {
 		return state.showSidebar;

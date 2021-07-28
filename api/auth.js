@@ -26,11 +26,7 @@ export default $axios => ({
 		}
 	},
 	async patchPassword (oldPassword, newPassword, token) {
-		const response = await $axios.patch(
-			"/auth/password",
-			{ oldPassword, newPassword },
-			{ headers: { Authorization: `Bearer ${token}` } }
-		);
+		const response = await $axios.patch("/auth/password", { oldPassword, newPassword }, { headers: { Authorization: `Bearer ${token}` } });
 
 		if (response.status === 200) {
 			return response;

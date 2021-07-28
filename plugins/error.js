@@ -1,12 +1,23 @@
+class ApiError extends Error {
+	constructor (status, message) {
+		super(message);
+
+		this.title = "ApiError";
+		this.status = status;
+		this.message = message;
+	}
+}
+
 /**
  * Routes to error page
  * @param {Object} payload - payload with status + message
  */
-const handleError = error => ({ statusCode, message }) => {
-	error({ statusCode, message });
+const handleError = {
+	api: ({ status, message }) => {
+		throw new ApiError(status, message);
+	}
 };
 
-export default (ctx, inject) => {
-	// inject api into vue components and nuxt context
-	inject("handleError", handleError(ctx.error));
+export default (context, inject) => {
+	inject("handleError", handleError);
 };

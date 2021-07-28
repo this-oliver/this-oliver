@@ -1,7 +1,5 @@
-export default async function ({ store, redirect }) {
-	const authenticated = await store.dispatch("auth/authenticate");
-
-	if (authenticated === true) {
+export default function ({ $auth, redirect }) {
+	if ($auth.isLoggedIn) {
 		return redirect("/admin");
 	}
 }

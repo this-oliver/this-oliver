@@ -133,13 +133,25 @@
 			</b-col>
 			<b-col
 				v-if="editMode"
+				class="mt-1 ml-auto"
+				sm="11"
+				md="3">
+				<b-button
+					block
+					variant="outline-danger"
+					@click="deleteExperience">
+					delete
+				</b-button>
+			</b-col>
+			<b-col
+				v-if="editMode"
 				class="mt-1"
 				sm="11"
 				md="3">
 				<b-button
 					block
-					variant="warning"
-					@click="updateExperience({id: $route.params.experience._id, title: form.title, org: form.org, startYear: form.startYear, endYear: form.endYear, description: form.description, type: form.type})">
+					variant="dark"
+					@click="updateExperience">
 					update
 				</b-button>
 			</b-col>
@@ -151,7 +163,7 @@
 				<b-button
 					block
 					variant="primary"
-					@click="postExperience({title: form.title, org: form.org, startYear: form.startYear, endYear: form.endYear, description: form.description, type: form.type})">
+					@click="postExperience">
 					post
 				</b-button>
 			</b-col>
@@ -163,9 +175,10 @@
 			title="preview: short"
 			hide-footer
 			size="xl">
-			<span
-				v-if="form.description && form.description.length > 0"
-				v-html="getMarkDown(form.description)" />
+			<span v-if="form.description && form.description.length > 0">
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<span v-html="getMarkDown(form.description)" />
+			</span>
 			<span v-else>...</span>
 		</b-modal>
 	</div>
@@ -229,10 +242,34 @@
 		},
 		methods: {
 			...mapActions({
-				postExperience: "user/experiences/post",
-				updateExperience: "user/experiences/patch",
-				deleteExperience: "user/experiences/delete"
+				postExperience: "admin/experiences/post",
+				updateExperience: "admin/experiences/patch",
+				deleteExperience: "admin/experiences/delete"
 			}),
+			async postExperience () {
+				try {
+					await this.$store.dispatch("admin/experiences/post", { title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
+					this.$router.push("/admin/experiences");
+				} catch (error) {
+					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
+				}
+			},
+			async updateExperience () {
+				try {
+					await this.$store.dispatch("admin/experiences/patch", { id: this.$route.params.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
+					this.$router.push("/admin/experiences");
+				} catch (error) {
+					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
+				}
+			},
+			async deleteExperience () {
+				try {
+					await this.$store.dispatch("admin/experiences/delete", this.$route.params.experience._id);
+					this.$router.push("/admin/experiences");
+				} catch (error) {
+					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
+				}
+			},
 			getMarkDown (text) {
 				if (text) {
 					return getMarkdown(text);

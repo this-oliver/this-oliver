@@ -15,7 +15,8 @@ export const getters = {
 		return state.user;
 	},
 	getExperiences (state) {
-		return state.user ? sortLatestExperiences([...state.user.experiences]) : [];
+		const user = state.user;
+		return user ? sortLatestExperiences([...user.experiences]) : [];
 	}
 };
 
@@ -29,9 +30,8 @@ export const mutations = {
 export const actions = {
 	async initUser (context) {
 		try {
-			const response = await this.$api.user.index();
-			const users = response.data;
-			const oliver = users[0];
+			const response = await this.$api.user.get();
+			const oliver = response.data;
 
 			if (oliver) {
 				context.commit("setUser", oliver);
@@ -39,31 +39,7 @@ export const actions = {
 
 			return oliver;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
-		}
-	},
-	async initAdmin (context, user) {
-		try {
-			context.commit("setUser", user);
-			await context.dispatch("user/articles/indexUserSecrets", user._id, {
-				root: true
-			});
-
-			return user;
-		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
+			context.commit("base/toaster/addError", { title: "Initiating User", message: error.message }, { root: true });
 		}
 	},
 	async get (context) {
@@ -74,43 +50,7 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
+			context.commit("base/toaster/addError", { title: "Getting User", message: error.message }, { root: true });
 		}
-	},
-	async patch (context, { name, email, short, long }) {
-		try {
-			const id = context.state.user._id;
-			const token = context.rootGetters["auth/getToken"];
-
-			const response = await this.$api.user.patch(
-				id,
-				name,
-				email,
-				short,
-				long,
-				token
-			);
-			const user = response.data;
-
-			context.commit("setUser", user);
-			return user;
-		} catch (error) {
-			this.$handleError({
-				statusCode: 400,
-				message: {
-					type: "vuex user",
-					error
-				}
-			});
-		}
-	},
-	reset (context) {
-		context.commit("setUser", null);
 	}
 };

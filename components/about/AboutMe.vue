@@ -36,6 +36,7 @@
 		</b-row>
 		<b-row class="mt-3" align-h="center">
 			<b-col cols="12">
+				<!-- eslint-disable-next-line vue/no-v-html -->
 				<div class="bio-text" v-html="getMarkdown" />
 			</b-col>
 		</b-row>

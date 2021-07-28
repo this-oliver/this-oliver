@@ -7,7 +7,7 @@ export default {
 
 	// Global page headers: https://go.nuxtjs.dev/config-head
 	head: {
-		title: "oliver manzi",
+		title: "Oliver Manzi",
 		meta: [
 			{ charset: "utf-8" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -26,8 +26,8 @@ export default {
 	// Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
 	plugins: [
 		{ src: "~/plugins/api" },
-		{ src: "~/plugins/mixin" },
-		{ src: "~/plugins/error" }
+		{ src: "~/plugins/error" },
+		{ src: "~/plugins/mixin" }
 	],
 
 	// Auto import components: https://go.nuxtjs.dev/config-components
@@ -49,25 +49,47 @@ export default {
 		"bootstrap-vue/nuxt",
 		// https://go.nuxtjs.dev/axios
 		"@nuxtjs/axios",
+		// https://auth.nuxtjs.org
+		"@nuxtjs/auth-next",
 		// https://go.nuxtjs.dev/pwa
 		"@nuxtjs/pwa"
 	],
 
+	auth: {
+		redirect: {
+			login: "/auth/login",
+			logout: "/auth/login"
+		},
+		strategies: {
+			local: {
+				token: {
+					property: "token",
+					global: true
+				},
+				user: {
+					property: false
+				},
+				endpoints: {
+					login: { url: "/auth/login", method: "post" },
+					user: { url: "/admin", method: "get" }
+				}
+			}
+		}
+	},
+
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
 	axios: {
-		baseURL: process.env.VUE_APP_API_URL // Used as fallback if no runtime config is provided
+		baseURL: `${process.env.VUE_APP_API}/api` // Used as fallback if no runtime config is provided
 	},
 
 	publicRuntimeConfig: {
 		axios: {
-			browserBaseURL: process.env.VUE_APP_API_URL
+			browserBaseURL: `${process.env.VUE_APP_API}/api`
 		}
 	},
 
 	privateRuntimeConfig: {
-		axios: {
-			baseURL: process.env.VUE_APP_API_URL
-		}
+		VUE_APP_JWT_SECRET: process.env.VUE_APP_JWT_SECRET
 	},
 
 	// PWA module configuration: https://go.nuxtjs.dev/pwa

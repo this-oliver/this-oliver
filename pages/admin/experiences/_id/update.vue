@@ -15,10 +15,10 @@
 		name: "UpdateExperiencePage",
 		components: { ExperienceForm },
 		layout: "admin",
-		middleware: "authentication",
+		middleware: "auth",
 		async asyncData ({ params, store }) {
 			const id = params.id;
-			const experience = await store.dispatch("user/experiences/get", id);
+			const experience = await store.dispatch("admin/experiences/get", id);
 
 			return { experience };
 		}
