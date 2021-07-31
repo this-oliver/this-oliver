@@ -1,4 +1,4 @@
-export default {
+export const EXPERIENCES = {
 	job: "job",
 	education: "education",
 	projects: "projects",

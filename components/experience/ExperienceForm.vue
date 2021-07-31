@@ -190,7 +190,7 @@
 	import { getMarkdown } from "../../utils/markdown";
 	import { getWordCount } from "../../utils/string";
 
-	import EXPERIENCE_TYPE from "../../logic/enums/experience";
+	import { EXPERIENCES } from "../../logic/enums";
 	export default {
 		name: "ExperienceForm",
 		props: {
@@ -223,8 +223,8 @@
 			},
 			getExperienceOptions () {
 				const types = [];
-				for (const key in EXPERIENCE_TYPE) {
-					types.push({ value: EXPERIENCE_TYPE[key], text: EXPERIENCE_TYPE[key] });
+				for (const key in EXPERIENCES) {
+					types.push({ value: EXPERIENCES[key], text: EXPERIENCES[key] });
 				}
 				return types;
 			}
