@@ -17,9 +17,6 @@
 		components: { AboutMe },
 		layout: "admin",
 		middleware: "auth",
-		async asyncData ({ store }) {
-			await store.dispatch("admin/initUser");
-		},
 		computed: {
 			...mapGetters({
 				user: "admin/getUser"

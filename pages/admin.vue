@@ -5,11 +5,11 @@
 </template>
 
 <script>
-
 	export default {
-		name: "Landing",
-		async asyncData ({ store }) {
-			await store.dispatch("user/initUser");
+		layout: "admin",
+		middleware: "auth",
+		async asyncData ({ $auth }) {
+			await $auth.fetchUser();
 		}
 	};
 </script>
