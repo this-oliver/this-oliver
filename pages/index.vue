@@ -17,7 +17,8 @@
 			AboutMe
 		},
 		async asyncData ({ store }) {
-			const oliver = await store.dispatch("user/initUser");
+			const user = store.getters["user/getUser"];
+			const oliver = user || await store.dispatch("user/initUser");
 			return { oliver };
 		},
 		computed: {

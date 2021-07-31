@@ -18,15 +18,15 @@
 			</b-col>
 		</b-row>
 		<hr v-if="hideTitle == false || editMode == true">
-		<b-row v-if="articles.length > 0">
+		<b-row v-if="getArticles.length > 0">
 			<b-col
-				v-for="(article, index) in articles"
+				v-for="(article, index) in getArticles"
 				:key="article._id"
 				cols="12">
 				<article-card
 					:article="article"
 					:edit-mode="editMode" />
-				<hr v-if="index < articles.length - 1">
+				<hr v-if="index < getArticles.length - 1">
 			</b-col>
 		</b-row>
 		<b-row
@@ -58,6 +58,11 @@
 			editMode: {
 				type: Boolean,
 				default: false
+			}
+		},
+		computed: {
+			getArticles () {
+				return this.articles ? this.articles : [];
 			}
 		}
 	};
