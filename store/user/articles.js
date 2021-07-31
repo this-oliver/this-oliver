@@ -37,9 +37,9 @@ export const actions = {
 			context.commit("base/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
-	async indexUser (context, id) {
+	async index (context) {
 		try {
-			const response = await this.$api.article.indexUser(id);
+			const response = await this.$api.article.index();
 			const articles = response.data;
 
 			context.commit("setArticles", articles);

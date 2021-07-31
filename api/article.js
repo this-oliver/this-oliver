@@ -26,15 +26,6 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async indexUser (id) {
-		const response = await $axios.get(`/user/${id}/articles`);
-
-		if (response.status === 200) {
-			return response;
-		} else {
-			throw response;
-		}
-	},
 	async patch (token, id, patch) {
 		const response = await $axios.patch(`/articles/${id}`, patch, {
 			headers: { Authorization: `Bearer ${token}` }

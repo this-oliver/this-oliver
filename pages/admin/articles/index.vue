@@ -17,12 +17,8 @@
 		},
 		layout: "admin",
 		async asyncData ({ store }) {
-			try {
-				const articles = await store.dispatch("admin/articles/indexUser");
-				return { articles };
-			} catch (error) {
-				console.log({ pageError: error });
-			}
+			const articles = await store.dispatch("admin/articles/index");
+			return { articles };
 		}
 	};
 </script>

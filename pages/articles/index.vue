@@ -16,8 +16,7 @@
 			ArticleList
 		},
 		async asyncData ({ store }) {
-			const user = store.getters["user/getUser"];
-			const articles = (user) ? await store.dispatch("user/articles/indexUser", user._id) : [];
+			const articles = await store.dispatch("user/articles/index");
 			return { articles };
 		},
 		head () {

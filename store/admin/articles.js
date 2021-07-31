@@ -34,7 +34,7 @@ export const actions = {
 			const response = await this.$api.article.post(token, title, content, tags, publish);
 			const article = response.data;
 
-			await context.dispatch("indexUser");
+			await context.dispatch("index");
 
 			return article;
 		} catch (error) {
@@ -53,7 +53,7 @@ export const actions = {
 			context.commit("base/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
-	async indexUser (context) {
+	async index (context) {
 		try {
 			const token = this.$auth.strategy.token.get();
 			const response = await this.$api.admin.indexArticles(token);
