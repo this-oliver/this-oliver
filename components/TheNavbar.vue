@@ -20,23 +20,29 @@
 					align="end">
 					<!-- links -->
 					<b-nav-form
-						v-for="item in getNavItems"
-						:key="item.title"
+						v-for="link in links"
+						:key="link.title"
 						class="mx-2">
 						<b-link
 							class="simple-link"
-							:to="item.route">
-							{{ item.title }}
+							:to="link.route">
+							{{ link.title }}
 						</b-link>
 					</b-nav-form>
-					<!-- logout -->
-					<b-nav-form v-if="loggedIn" class="mx-2">
-						<span
-							class="simple-link danger"
-							@click="logout">
-							logout ✌️
-						</span>
-					</b-nav-form>
+					<!-- admin links -->
+					<b-nav-dropdown v-if="loggedIn" class="mx-2" text="👨🏾‍🦱 admin">
+						<b-dropdown-item v-for="link in adminLinks" :key="link.title" :to="link.route">
+							{{ link.title }}
+						</b-dropdown-item>
+						<b-dropdown-divider />
+						<b-dropdown-item>
+							<span
+								class="simple-link danger"
+								@click="logout">
+								✌️ logout
+							</span>
+						</b-dropdown-item>
+					</b-nav-dropdown>
 					<!-- theme -->
 					<b-nav-form class="mx-2">
 						<b-form-checkbox
@@ -57,7 +63,8 @@
 		name: "TheNavbar",
 		computed: {
 			...mapGetters({
-				getNavItems: "base/nav/getLinks"
+				links: "base/nav/getLinks",
+				adminLinks: "base/nav/getAdminLinks"
 			}),
 			loggedIn () {
 				return this.$auth.loggedIn;

@@ -25,13 +25,11 @@ export const state = function () {
 };
 
 export const getters = {
-	getLinks (state, getters, rootState) {
-		const loginStatus = rootState.auth.loggedIn;
-
-		// if login status is true, return admin links instead
-		return loginStatus === true ?
-			state.links.concat(state.adminLinks) :
-			state.links;
+	getLinks (state) {
+		return [...state.links];
+	},
+	getAdminLinks (state) {
+		return [...state.adminLinks];
 	},
 	isSidebarVisible (state) {
 		return state.showSidebar;

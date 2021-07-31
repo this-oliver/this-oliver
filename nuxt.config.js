@@ -30,6 +30,11 @@ export default {
 		{ src: "~/plugins/mixin" }
 	],
 
+	// Global routing middlewares to run for every route change
+	router: {
+		middleware: "sidebar"
+	},
+
 	// Auto import components: https://go.nuxtjs.dev/config-components
 	components: true,
 
