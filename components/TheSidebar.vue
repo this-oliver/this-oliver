@@ -9,7 +9,7 @@
 		<b-row class="ml-2" align-v="stretch">
 			<!-- title -->
 			<b-col class="my-3" cols="12">
-				<nuxt-link class="brand" to="/name">
+				<nuxt-link class="brand" to="/">
 					Oliver
 				</nuxt-link>
 			</b-col>

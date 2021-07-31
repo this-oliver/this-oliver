@@ -52,5 +52,15 @@ export const actions = {
 		} catch (error) {
 			context.commit("base/toaster/addError", { title: "Getting User", message: error.message }, { root: true });
 		}
+	},
+	async incrementVisits (context) {
+		try {
+			const response = await this.$api.user.incrementVisits();
+			const user = response.data;
+			context.commit("setUser", user);
+			return user;
+		} catch (error) {
+			context.commit("base/toaster/addError", { title: "Patching User", message: error.message }, { root: true });
+		}
 	}
 };

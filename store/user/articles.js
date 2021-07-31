@@ -48,5 +48,28 @@ export const actions = {
 		} catch (error) {
 			context.commit("base/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
 		}
+	},
+	async incrementViews (context, id) {
+		try {
+			const response = await this.$api.article.incrementViews(id);
+			const article = response.data;
+
+			return article;
+		} catch (error) {
+			context.commit("base/toaster/addError", { title: "Patching Article", message: error.message }, { root: true });
+		}
+	},
+	async like (context, id) {
+		try {
+			const response = await this.$api.article.incrementLikes(id);
+			const article = response.data;
+
+			const articleIndex = context.state.articles.findIndex(item => item._id === id);
+			context.state.articles[articleIndex] = article;
+
+			return article;
+		} catch (error) {
+			context.commit("base/toaster/addError", { title: "Patching Article", message: error.message }, { root: true });
+		}
 	}
 };

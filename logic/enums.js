@@ -4,3 +4,7 @@ export const EXPERIENCES = {
 	projects: "projects",
 	other: "other"
 };
+
+export const STORAGE = {
+	visitor: "oli_visit"
+};

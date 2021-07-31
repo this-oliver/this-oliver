@@ -37,6 +37,24 @@ export default $axios => ({
 			throw response;
 		}
 	},
+	async incrementViews (id) {
+		const response = await $axios.patch(`/articles/${id}/views`);
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async incrementLikes (id) {
+		const response = await $axios.patch(`/articles/${id}/likes`);
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
 	async delete (token, id) {
 		const response = await $axios.delete(`/articles/${id}`, {
 			headers: { Authorization: `Bearer ${token}` }

@@ -9,7 +9,7 @@
 		</b-row>
 		<b-row v-else>
 			<b-col cols="12">
-				<article-single :article="article" />
+				<article-single :article="getArticle" @refresh="refreshArticle" />
 			</b-col>
 		</b-row>
 	</div>
@@ -26,6 +26,7 @@
 		async asyncData ({ store, params, error }) {
 			const id = params.id;
 			const article = await store.dispatch("user/articles/get", id);
+			await store.dispatch("user/articles/incrementViews", id);
 
 			if (article === null) {
 				return error({ statusCode: 404, message: "article couldn't load" });
@@ -33,10 +34,25 @@
 
 			return { article };
 		},
+		data () {
+			return {
+				refreshedArticle: null
+			};
+		},
 		head () {
 			return {
 				title: this.article.title
 			};
+		},
+		computed: {
+			getArticle () {
+				return this.refreshedArticle || this.article;
+			}
+		},
+		methods: {
+			async refreshArticle () {
+				this.refreshedArticle = await this.$store.dispatch("user/articles/get", this.$route.params.id);
+			}
 		}
 	};
 </script>

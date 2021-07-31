@@ -9,20 +9,22 @@
 </template>
 
 <script>
+	import { mapGetters } from "vuex";
 	import ArticleList from "~/components/article/ArticleList.vue";
 	export default {
 		name: "ArticleListPage",
 		components: {
 			ArticleList
 		},
-		async asyncData ({ store }) {
-			const articles = await store.dispatch("user/articles/index");
-			return { articles };
-		},
 		head () {
 			return {
 				title: "Articles"
 			};
+		},
+		computed: {
+			...mapGetters({
+				articles: "user/articles/getArticles"
+			})
 		}
 	};
 </script>

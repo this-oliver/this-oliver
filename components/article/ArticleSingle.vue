@@ -1,40 +1,49 @@
 <template>
-	<div id="article-single">
+	<div id="article">
 		<!-- article -->
 		<b-row>
-			<b-col id="article-info" sm="11" md="4">
-				<b-row align-v="stretch">
-					<!-- title -->
-					<b-col class="layout-title" cols="12">
-						{{ article.title }}
-					</b-col>
-					<!-- time ago -->
-					<b-col class="my-2" cols="12">
-						<i>{{ getTimeAgo }}</i>
-					</b-col>
-					<!-- tags -->
-					<b-col class="my-2" cols="auto">
-						<small>
-							<b-badge
-								v-for="tag in article.tags"
-								:key="tag._id"
-								class="mr-1 mt-1">
-								{{ tag.name }}
-							</b-badge>
-						</small>
-					</b-col>
-				</b-row>
+			<!-- title -->
+			<b-col class="general-title" sm="11" md="auto">
+				{{ article.title }}
 			</b-col>
-			<!-- content -->
+			<b-col cols="12" />
+			<!-- time ago -->
+			<b-col class="my-2" sm="11" md="auto">
+				<i>{{ getTimeAgo }}</i>
+			</b-col>
+			<b-col cols="12" />
+			<!-- tags -->
+			<b-col class="my-2" sm="11" md="auto">
+				<small>
+					<b-badge
+						v-for="tag in article.tags"
+						:key="tag._id"
+						class="mr-1 mt-1">
+						{{ tag.name }}
+					</b-badge>
+				</small>
+			</b-col>
+		</b-row>
+
+		<!-- content -->
+		<b-row>
 			<b-col id="article-content" sm="11" md="8">
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<span v-html="getContent" />
 			</b-col>
-			<!-- back btn -->
+		</b-row>
+		<!-- back btn -->
+		<b-row align-h="around">
 			<b-col class="my-2" cols="auto">
 				<a class="simple-link" @click="$router.go(-1)">
 					&larr; articles
 				</a>
+			</b-col>
+			<b-col class="my-2" cols="auto">
+				<b-button pill :variant="getBootstrapOutlineTheme" @click="like">
+					👏
+					{{ article.likes }}
+				</b-button>
 			</b-col>
 		</b-row>
 	</div>
@@ -52,6 +61,7 @@
 				required: true
 			}
 		},
+		emits: ["refresh"],
 		computed: {
 			getContent () {
 				return getMarkdown(this.article.content);
@@ -59,17 +69,19 @@
 			getTimeAgo () {
 				return getTimeAgo(this.article.createdAt);
 			}
+		},
+		methods: {
+			async like () {
+				await this.$store.dispatch("user/articles/like", this.article._id);
+				this.$emit("refresh");
+			}
 		}
 	};
 </script>
 
 <style scoped>
-#article-single{
+#article{
 	max-width: 100vw;
-}
-
-#article-info {
-	max-width: 25vw;
 }
 
 #article-content {

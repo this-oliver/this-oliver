@@ -6,5 +6,13 @@ export default $axios => ({
 		} else {
 			throw response;
 		}
+	},
+	async incrementVisits () {
+		const response = await $axios.patch("/user/visits");
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
 	}
 });

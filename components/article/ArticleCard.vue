@@ -1,13 +1,11 @@
 <template>
 	<div>
 		<b-row>
-			<b-col cols="1">
+			<b-col cols="10">
+				<!-- title -->
 				<b-row>
-					<b-col cols="12">
-						<span class="card-title"> 📰 </span>
-					</b-col>
-					<b-col v-if="editMode" cols="12">
-						<small>
+					<b-col cols="auto">
+						<small v-if="editMode">
 							<span v-if="article.publish">
 								<check-circle variant="success" />
 							</span>
@@ -15,23 +13,14 @@
 								<dash-circle variant="warning" />
 							</span>
 						</small>
-					</b-col>
-				</b-row>
-			</b-col>
-			<b-col cols="10">
-				<b-row>
-					<b-col cols="12">
 						<nuxt-link class="simple-link" :to="editMode == true ? `/admin/articles/${article._id}` : `/articles/${article._id}`">
 							<b>{{ article.title }}</b>
 						</nuxt-link>
 					</b-col>
-					<b-col cols="11">
-						<small>
-							<!-- eslint-disable-next-line vue/no-v-html -->
-							<span v-html="getContent" />
-						</small>
-					</b-col>
-					<b-col cols="12">
+				</b-row>
+				<!-- date -->
+				<b-row>
+					<b-col cols="auto" class="mx-1">
 						<small>
 							<b>
 								{{ getTimeAgo }}
@@ -39,10 +28,31 @@
 						</small>
 					</b-col>
 				</b-row>
+				<!-- content -->
+				<b-row>
+					<b-col cols="auto">
+						<small>
+							<!-- eslint-disable-next-line vue/no-v-html -->
+							<span v-html="getContent" />
+						</small>
+					</b-col>
+				</b-row>
+				<b-row align-h="end">
+					<b-col cols="auto" class="mx-1">
+						<small>
+							👏 {{ article.likes }}
+						</small>
+					</b-col>
+					<b-col v-if="adminMode" cols="auto" class="mx-1">
+						<small>
+							🔎 {{ article.views }}
+						</small>
+					</b-col>
+				</b-row>
 			</b-col>
 		</b-row>
 		<!-- actions -->
-		<b-row v-if="editMode" align-h="end">
+		<b-row align-h="end">
 			<b-col v-if="editMode" cols="3">
 				<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/update`">
 					update
@@ -73,6 +83,10 @@
 			article: {
 				type: Object,
 				required: true
+			},
+			adminMode: {
+				type: Boolean,
+				default: false
 			},
 			editMode: {
 				type: Boolean,

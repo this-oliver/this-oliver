@@ -2,6 +2,9 @@
 	<div>
 		<b-row align-h="center">
 			<b-col class="mt-3" sm="11" md="8">
+				👀 {{ user.visits }}
+			</b-col>
+			<b-col class="mt-3" sm="11" md="8">
 				<about-me :short="user.bio.short" :long="user.bio.long" :edit-mode="true" />
 			</b-col>
 		</b-row>
