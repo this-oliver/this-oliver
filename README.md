@@ -11,12 +11,13 @@ Should fulfil following purpose:
 ## Wish List
 
 - post, edit and delete work and school experiences ✅
-- show my articles/blogs ✅
-- show number of viewers (admin mode + backend)? 🔜
+- show my articles ✅
+- show article views and likes ✅
+- count visitors ✅
 
 ## Production Status Update
 
 | Enviroment | Host |
 |-|-|
-| Live Status | [![Netlify Status](https://api.netlify.com/api/v1/badges/72aa6d1d-222e-438a-bfb2-5ae1989f1c7a/deploy-status)](https://app.netlify.com/sites/jovial-raman-b131f9/deploys) |
-| API Status | [![CircleCI](https://circleci.com/gh/olivermanzi/olivermanzi-api/tree/master.svg?style=svg)](https://circleci.com/gh/olivermanzi/olivermanzi-api/tree/master) |
+| Frontend Status | [![Netlify Status](https://api.netlify.com/api/v1/badges/72aa6d1d-222e-438a-bfb2-5ae1989f1c7a/deploy-status)](https://app.netlify.com/sites/jovial-raman-b131f9/deploys) |
+| Backend Status | [![CircleCI](https://circleci.com/gh/olivermanzi/olivermanzi-api/tree/master.svg?style=svg)](https://circleci.com/gh/olivermanzi/olivermanzi-api/tree/master) |
