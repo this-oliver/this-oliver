@@ -20,7 +20,7 @@ body {
 	font-weight: bold;
 }
 
-.layout-title {
+.general-title {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 2rem;
 	font-weight: bold;
@@ -85,7 +85,7 @@ body {
 		font-weight: bold;
 	}
 
-	.layout-title {
+	.general-title {
 		font-size: 1.75rem;
 		font-weight: bold;
 	}

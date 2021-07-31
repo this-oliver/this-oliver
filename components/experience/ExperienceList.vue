@@ -3,7 +3,7 @@
 		<b-row :align-h="editMode == true ? 'between' : 'center'" align-v="baseline">
 			<b-col
 				v-if="hideTitle === false"
-				class="layout-title center-text"
+				class="general-title center-text"
 				cols="8">
 				experience
 			</b-col>

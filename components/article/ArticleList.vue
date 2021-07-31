@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<b-row :align-h="editMode == true ? 'between' : 'center'" align-v="baseline">
+		<b-row align-h="between" align-v="baseline">
 			<b-col
 				v-if="hideTitle == false"
-				class="layout-title center-text"
-				cols="7">
+				class="general-title center-text"
+				cols="auto">
 				articles
 			</b-col>
 			<b-col
 				v-if="editMode"
-				cols="2">
+				cols="auto">
 				<nuxt-link
 					class="simple-link"
 					to="/admin/articles/create">
