@@ -30,7 +30,7 @@
 						</b-link>
 					</b-nav-form>
 					<!-- logout -->
-					<b-nav-form v-if="$auth.loggedIn" class="mx-2">
+					<b-nav-form v-if="loggedIn" class="mx-2">
 						<span
 							class="simple-link danger"
 							@click="logout">
@@ -58,7 +58,10 @@
 		computed: {
 			...mapGetters({
 				getNavItems: "base/nav/getLinks"
-			})
+			}),
+			loggedIn () {
+				return this.$auth.loggedIn;
+			}
 		},
 		methods: {
 			...mapMutations({

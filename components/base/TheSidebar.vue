@@ -33,7 +33,7 @@
 			</b-col>
 			<!-- logout -->
 			<b-col
-				v-if="$auth.loggedIn"
+				v-if="loggedIn"
 				class="mt-auto"
 				cols="8">
 				<b-link
@@ -76,7 +76,10 @@
 			...mapGetters({
 				getNavItems: "base/nav/getLinks",
 				isSidebarVisible: "base/nav/isSidebarVisible"
-			})
+			}),
+			loggedIn () {
+				return this.$auth.loggedIn;
+			}
 		},
 		methods: {
 			...mapMutations({

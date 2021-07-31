@@ -12,11 +12,11 @@ export const state = function () {
 		],
 		adminLinks: [
 			{
-				title: "articles",
+				title: "🔑 articles",
 				route: "/admin/articles"
 			},
 			{
-				title: "experience",
+				title: "🔑 experience",
 				route: "/admin/experiences"
 			}
 		],
@@ -29,7 +29,9 @@ export const getters = {
 		const loginStatus = rootState.auth.loggedIn;
 
 		// if login status is true, return admin links instead
-		return (loginStatus === true) ? state.adminLinks : state.links;
+		return loginStatus === true ?
+			state.links.concat(state.adminLinks) :
+			state.links;
 	},
 	isSidebarVisible (state) {
 		return state.showSidebar;
