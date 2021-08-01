@@ -10,9 +10,6 @@
 	export default {
 		name: "Landing",
 		async asyncData ({ store, $auth }) {
-			await store.dispatch("user/initUser");
-			await store.dispatch("user/articles/index");
-
 			// check if client has visited website before
 			const hasVisited = $auth.$storage.getUniversal(STORAGE.visitor);
 

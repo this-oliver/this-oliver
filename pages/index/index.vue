@@ -9,7 +9,6 @@
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
 	import AboutMe from "~/components/about/AboutMe.vue";
 	import { getTextDescription } from "~/utils/string";
 
@@ -18,9 +17,12 @@
 		components: {
 			AboutMe
 		},
+		async asyncData ({ store }) {
+			const oliver = await store.dispatch("user/initUser");
+			return { oliver };
+		},
 		head () {
 			return {
-				title: "About Me",
 				meta: [
 					{ charset: "utf-8" },
 					{ name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -30,9 +32,6 @@
 			};
 		},
 		computed: {
-			...mapGetters({
-				oliver: "user/getUser"
-			}),
 			getShortBio () {
 				return (this.oliver) ? this.oliver.bio.short : null;
 			},

@@ -24,10 +24,14 @@
 		components: {
 			ArticleSingle
 		},
-		async asyncData ({ store, params, error }) {
+		async asyncData ({ $auth, store, params, error }) {
 			const id = params.id;
 			const article = await store.dispatch("user/articles/get", id);
-			await store.dispatch("user/articles/incrementViews", id);
+
+			// if admin is not logged in, increment article view
+			if (!$auth.loggedIn) {
+				await store.dispatch("user/articles/incrementViews", id);
+			}
 
 			if (article === null) {
 				return error({ statusCode: 404, message: "article couldn't load" });

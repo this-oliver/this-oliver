@@ -40,11 +40,11 @@
 							{{ link.title }}
 						</b-dropdown-item>
 						<b-dropdown-divider />
-						<b-dropdown-item>
+						<b-dropdown-item-button>
 							<span class="red-text" @click="logout">
 								✌️ logout
 							</span>
-						</b-dropdown-item>
+						</b-dropdown-item-button>
 					</b-dropdown>
 				</b-col>
 			</b-row>
@@ -88,8 +88,9 @@
 				toggleTheme: "base/ui/toggleTheme",
 				showSidebar: "base/nav/showSidebar"
 			}),
-			logout () {
-				this.$store.dispatch("authentication/logout");
+			async logout () {
+				await this.$auth.logout();
+				this.showSidebar(false);
 				this.$router.push("/");
 			}
 		}

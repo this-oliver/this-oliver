@@ -7,9 +7,6 @@
 <script>
 	export default {
 		layout: "admin",
-		middleware: "auth",
-		async asyncData ({ $auth }) {
-			await $auth.fetchUser();
-		}
+		middleware: "auth"
 	};
 </script>

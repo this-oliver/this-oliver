@@ -18,8 +18,9 @@
 	export default {
 		name: "AdminPage",
 		components: { AboutMe },
-		layout: "admin",
-		middleware: "auth",
+		async asyncData ({ $auth }) {
+			await $auth.fetchUser();
+		},
 		computed: {
 			...mapGetters({
 				user: "admin/getUser"

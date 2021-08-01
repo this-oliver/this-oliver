@@ -75,8 +75,8 @@
 				toggleTheme: "base/ui/toggleTheme",
 				showSidebar: "base/nav/showSidebar"
 			}),
-			logout () {
-				this.$store.dispatch("authentication/logout");
+			async logout () {
+				await this.$auth.logout();
 				this.$router.push("/");
 			}
 		}
