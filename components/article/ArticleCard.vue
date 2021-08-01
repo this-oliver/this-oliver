@@ -59,7 +59,7 @@
 				</nuxt-link>
 			</b-col>
 			<b-col v-if="editMode" cols="3">
-				<span class="danger simple-link" @click="deleteArticle(article._id)">
+				<span class="red-text simple-link" @click="deleteArticle(article._id)">
 					delete
 				</span>
 			</b-col>

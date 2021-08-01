@@ -37,7 +37,7 @@
 						<b-dropdown-divider />
 						<b-dropdown-item>
 							<span
-								class="simple-link danger"
+								class="red-text"
 								@click="logout">
 								✌️ logout
 							</span>

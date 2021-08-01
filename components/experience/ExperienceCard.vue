@@ -32,7 +32,7 @@
 				</nuxt-link>
 			</b-col>
 			<b-col v-if="editMode" cols="3">
-				<span class="danger simple-link" @click="deleteXp(experience._id)">
+				<span class="red-text simple-link" @click="deleteXp(experience._id)">
 					delete
 				</span>
 			</b-col>
