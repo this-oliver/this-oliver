@@ -18,7 +18,13 @@
 		},
 		head () {
 			return {
-				title: "Articles"
+				title: "Articles",
+				meta: [
+					{ charset: "utf-8" },
+					{ name: "viewport", content: "width=device-width, initial-scale=1" },
+					{ hid: "description", name: "description", content: "Articles about tech and entreprenurial stuff." }
+				],
+				link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 			};
 		},
 		computed: {

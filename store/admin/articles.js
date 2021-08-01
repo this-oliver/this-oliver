@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { sortLatestArticles } from "../../utils/time";
+import { sortLatestArticles } from "../../logic/article";
 
 export const state = function () {
 	return {

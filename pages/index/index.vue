@@ -11,11 +11,23 @@
 <script>
 	import { mapGetters } from "vuex";
 	import AboutMe from "~/components/about/AboutMe.vue";
+	import { getTextDescription } from "~/utils/string";
 
 	export default {
 		name: "About",
 		components: {
 			AboutMe
+		},
+		head () {
+			return {
+				title: "About Me",
+				meta: [
+					{ charset: "utf-8" },
+					{ name: "viewport", content: "width=device-width, initial-scale=1" },
+					{ hid: "description", name: "description", content: `${getTextDescription(this.getShortBio)}...` }
+				],
+				link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+			};
 		},
 		computed: {
 			...mapGetters({

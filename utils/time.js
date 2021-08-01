@@ -19,54 +19,20 @@ export const getTimeAgo = (date) => {
 };
 
 /**
- * Returns list of articles sorted by created date
- * @param {Array} list - array of article objects
- * @returns {Array}
+ * Returns -1 if time1 is after time2, 1 if time1 is before time2 and 0 if both dates are equal
+ * @param {Date} time1 - date
+ * @param {Date} time2 - date
+ * @returns {Number}
  */
-export const sortLatestArticles = (list) => {
-	const articles = list;
-	const compare = (articleA, articleB) => {
-		const a = Moment(articleA.createdAt);
-		const b = Moment(articleB.createdAt);
+export const compareDates = (time1, time2) => {
+	const a = Moment(time1);
+	const b = Moment(time2);
 
-		if (a.isAfter(b)) {
-			return -1;
-		} else if (a.isBefore(b)) {
-			return 1;
-		} else {
-			return 0;
-		}
-	};
-
-	return articles.sort(compare);
-};
-
-/**
- * Returns list of experiences sorted by created date
- * @param {Array} articles - array of article objects
- * @returns {Array}
- */
-export const sortLatestExperiences = (experiences) => {
-	const compare = (a, b) => {
-		return b.startYear - a.startYear;
-	};
-
-	experiences.sort(compare);
-
-	const present = [];
-
-	for (let i = 0; i < experiences.length; i++) {
-		const xp = experiences[i];
-
-		if (xp.endYear === null) {
-			present.push(xp);
-			experiences.splice(i, 1);
-
-			if (experiences.length === i) {
-				break;
-			}
-		}
+	if (a.isAfter(b)) {
+		return -1;
+	} else if (a.isBefore(b)) {
+		return 1;
+	} else {
+		return 0;
 	}
-
-	return present.concat(experiences);
 };

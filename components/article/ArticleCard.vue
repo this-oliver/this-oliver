@@ -76,6 +76,7 @@
 	import { mapActions } from "vuex";
 	import { BIconCheckCircleFill, BIconDashCircleFill } from "bootstrap-vue";
 	import { getTimeAgo } from "../../utils/time";
+	import { getTextDescription } from "../../utils/string";
 	import { cleanMarkdown } from "../../utils/markdown";
 
 	export default {
@@ -100,26 +101,7 @@
 		},
 		computed: {
 			getContent () {
-				const MAX_LENGTH = 100;
-				let content = this.article.content;
-
-				if (content.length > MAX_LENGTH) {
-					const MAX_WORDS = 15;
-					const words = content.split(" ");
-					let text = "";
-
-					for (let i = 0; i < words.length; i++) {
-						if (i > MAX_WORDS) {
-							break;
-						}
-
-						const word = words[i];
-						text = text + `${word} `;
-					}
-
-					content = `${text}...`;
-				}
-
+				const content = `${getTextDescription(this.article.content)}...`;
 				return cleanMarkdown(content);
 			},
 			getTimeAgo () {

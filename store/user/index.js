@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { sortLatestExperiences } from "../../utils/time";
+import { sortLatestExperiences } from "../../logic/user";
 import { setCache,
 	getCache,
 	ENUMS as CachEnums } from "../../utils/cache";

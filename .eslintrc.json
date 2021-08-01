@@ -16,7 +16,6 @@
 		"indent": ["error", "tab"],
 		"quotes": ["error", "double"],
 		"semi": ["error", "always"],
-		"operator-linebreak": ["error", "after"],
     "function-paren-newline": ["error", "never"],
     "function-call-argument-newline": ["error", "never"],
 		/* vue rules below */

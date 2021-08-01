@@ -16,6 +16,7 @@
 </template>
 
 <script>
+	import { getTextDescription } from "../../../utils/string";
 	import ArticleSingle from "~/components/article/ArticleSingle.vue";
 
 	export default {
@@ -41,7 +42,13 @@
 		},
 		head () {
 			return {
-				title: this.article.title
+				title: this.article.title,
+				meta: [
+					{ charset: "utf-8" },
+					{ name: "viewport", content: "width=device-width, initial-scale=1" },
+					{ hid: "description", name: "description", content: `${getTextDescription(this.article.content)}...` }
+				],
+				link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 			};
 		},
 		computed: {
@@ -52,7 +59,6 @@
 		methods: {
 			async refreshArticle () {
 				const id = this.$route.params.id;
-
 				// refresh articles
 				await this.$store.dispatch("user/articles/index");
 				// get new version of current article
