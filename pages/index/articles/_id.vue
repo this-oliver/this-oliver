@@ -51,7 +51,13 @@
 		},
 		methods: {
 			async refreshArticle () {
-				this.refreshedArticle = await this.$store.dispatch("user/articles/get", this.$route.params.id);
+				const id = this.$route.params.id;
+
+				// refresh articles
+				await this.$store.dispatch("user/articles/index");
+				// get new version of current article
+				const articles = this.$store.getters["user/articles/getArticles"];
+				this.refreshedArticle = articles.find(({ _id }) => _id === id);
 			}
 		}
 	};
