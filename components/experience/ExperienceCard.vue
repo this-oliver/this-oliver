@@ -1,42 +1,46 @@
 <template>
 	<div>
-		<b-row>
-			<b-col cols="1">
-				<span class="card-title">{{ getExperienceEmoji(experience.type) }}</span>
-			</b-col>
-			<b-col cols="10">
-				<b-row>
-					<b-col cols="12">
-						<b>{{ experience.title }}</b>
+		<b-card>
+			<b-row>
+				<b-col cols="1">
+					<span class="card-title">{{ getExperienceEmoji(experience.type) }}</span>
+				</b-col>
+				<b-col cols="10">
+					<b-row>
+						<b-col cols="12">
+							<b>{{ experience.title }}</b>
+						</b-col>
+						<b-col cols="12">
+							<small>
+								<b>
+									{{ `${experience.org} (${experience.startYear}-${getEndYear})` }}
+								</b>
+							</small>
+						</b-col>
+						<b-col cols="12">
+							<small>
+								<!-- eslint-disable-next-line vue/no-v-html -->
+								<span v-html="getDesc" />
+							</small>
+						</b-col>
+					</b-row>
+				</b-col>
+			</b-row>
+			<template v-if="editMode" #footer>
+				<b-row align-h="end">
+					<b-col cols="3">
+						<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/update`">
+							update
+						</nuxt-link>
 					</b-col>
-					<b-col cols="12">
-						<small>
-							<b>
-								{{ `${experience.org} (${experience.startYear}-${getEndYear})` }}
-							</b>
-						</small>
-					</b-col>
-					<b-col cols="12">
-						<small>
-							<!-- eslint-disable-next-line vue/no-v-html -->
-							<span v-html="getDesc" />
-						</small>
+					<b-col cols="3">
+						<span class="red-text simple-link" @click="deleteXp(experience._id)">
+							delete
+						</span>
 					</b-col>
 				</b-row>
-			</b-col>
-		</b-row>
-		<b-row v-if="editMode" align-h="end">
-			<b-col v-if="editMode" cols="3">
-				<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/update`">
-					update
-				</nuxt-link>
-			</b-col>
-			<b-col v-if="editMode" cols="3">
-				<span class="red-text simple-link" @click="deleteXp(experience._id)">
-					delete
-				</span>
-			</b-col>
-		</b-row>
+			</template>
+		</b-card>
 	</div>
 </template>
 

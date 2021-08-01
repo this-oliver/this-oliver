@@ -17,16 +17,17 @@
 				</nuxt-link>
 			</b-col>
 		</b-row>
-		<hr v-if="hideTitle == false || editMode == true">
+		<hr v-if="hideTitle == false || editMode == true" class="divider">
 		<b-row v-if="getArticles.length > 0">
 			<b-col
-				v-for="(article, index) in getArticles"
+				v-for="article in getArticles"
 				:key="article._id"
-				cols="12">
+				cols="12"
+				class="my-1">
 				<article-card
 					:article="article"
+					:admin-mode="adminMode"
 					:edit-mode="editMode" />
-				<hr v-if="index < getArticles.length - 1">
 			</b-col>
 		</b-row>
 		<b-row
@@ -52,6 +53,10 @@
 				default: null
 			},
 			hideTitle: {
+				type: Boolean,
+				default: false
+			},
+			adminMode: {
 				type: Boolean,
 				default: false
 			},

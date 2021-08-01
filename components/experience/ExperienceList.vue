@@ -17,7 +17,7 @@
 				</nuxt-link>
 			</b-col>
 		</b-row>
-		<hr v-if="hideTitle == false || editMode == true">
+		<hr class="divider" v-if="hideTitle == false || editMode == true">
 		<b-row v-if="experiences.length > 0">
 			<b-col
 				v-for="(experience, index) in experiences"
@@ -28,7 +28,7 @@
 					:experience="experience"
 					:short-mode="true"
 					:edit-mode="editMode" />
-				<hr v-if="index < experiences.length - 1">
+				<hr class="divider" v-if="index < experiences.length - 1">
 			</b-col>
 		</b-row>
 		<b-row

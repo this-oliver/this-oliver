@@ -1,69 +1,74 @@
 <template>
-	<div>
-		<b-row>
-			<b-col cols="10">
-				<!-- title -->
-				<b-row>
-					<b-col cols="auto">
-						<small v-if="editMode">
-							<span v-if="article.publish">
-								<check-circle variant="success" />
-							</span>
-							<span v-else>
-								<dash-circle variant="warning" />
-							</span>
-						</small>
-						<nuxt-link class="simple-link" :to="editMode == true ? `/admin/articles/${article._id}` : `/articles/${article._id}`">
-							<b>{{ article.title }}</b>
-						</nuxt-link>
+	<div class="clickable" @click="goToArticle">
+		<b-card>
+			<!-- title -->
+			<b-row>
+				<b-col cols="auto">
+					<small v-if="editMode">
+						<span v-if="article.publish">
+							<check-circle variant="success" />
+						</span>
+						<span v-else>
+							<dash-circle variant="warning" />
+						</span>
+					</small>
+					<b>{{ article.title }}</b>
+				</b-col>
+			</b-row>
+			<!-- date -->
+			<b-row>
+				<b-col cols="auto">
+					<small>
+						<b>
+							{{ getTimeAgo }}
+						</b>
+					</small>
+				</b-col>
+			</b-row>
+			<!-- content -->
+			<b-row>
+				<b-col cols="auto">
+					<small>
+						<!-- eslint-disable-next-line vue/no-v-html -->
+						<span v-html="getContent" />
+					</small>
+				</b-col>
+			</b-row>
+			<template #footer>
+				<b-row :align-h="editMode ? 'between' : 'end'">
+					<b-col sm="12" md="auto">
+						<!-- views and likes -->
+						<b-row>
+							<b-col cols="auto" class="mx-1">
+								<small>
+									👏 {{ article.likes }}
+								</small>
+							</b-col>
+							<b-col v-if="adminMode" cols="auto" class="mx-1">
+								<small>
+									🔎 {{ article.views }}
+								</small>
+							</b-col>
+						</b-row>
+					</b-col>
+					<b-col sm="12" md="auto">
+						<!-- actions -->
+						<b-row v-if="editMode">
+							<b-col class="mx-1" cols="auto">
+								<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/update`">
+									update
+								</nuxt-link>
+							</b-col>
+							<b-col class="mx-1" cols="auto">
+								<span class="red-text simple-link" @click="deleteArticle(article._id)">
+									delete
+								</span>
+							</b-col>
+						</b-row>
 					</b-col>
 				</b-row>
-				<!-- date -->
-				<b-row>
-					<b-col cols="auto" class="mx-1">
-						<small>
-							<b>
-								{{ getTimeAgo }}
-							</b>
-						</small>
-					</b-col>
-				</b-row>
-				<!-- content -->
-				<b-row>
-					<b-col cols="auto">
-						<small>
-							<!-- eslint-disable-next-line vue/no-v-html -->
-							<span v-html="getContent" />
-						</small>
-					</b-col>
-				</b-row>
-				<b-row align-h="end">
-					<b-col cols="auto" class="mx-1">
-						<small>
-							👏 {{ article.likes }}
-						</small>
-					</b-col>
-					<b-col v-if="adminMode" cols="auto" class="mx-1">
-						<small>
-							🔎 {{ article.views }}
-						</small>
-					</b-col>
-				</b-row>
-			</b-col>
-		</b-row>
-		<!-- actions -->
-		<b-row align-h="end">
-			<b-col v-if="editMode" cols="3">
-				<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/update`">
-					update
-				</nuxt-link>
-			</b-col>
-			<b-col v-if="editMode" cols="3">
-				<span class="red-text simple-link" @click="deleteArticle(article._id)">
-					delete
-				</span>
-			</b-col>
-		</b-row>
+			</template>
+		</b-card>
 	</div>
 </template>
 
@@ -124,7 +129,11 @@
 		methods: {
 			...mapActions({
 				deleteArticle: "admin/articles/delete"
-			})
+			}),
+			goToArticle () {
+				const url = this.editMode === true ? `/admin/articles/${this.article._id}` : `/articles/${this.article._id}`;
+				this.$router.push(url);
+			}
 		}
 	};
 </script>
