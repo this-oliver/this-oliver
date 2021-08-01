@@ -7,11 +7,13 @@
 			<the-notification-bar />
 		</div>
 		<!-- content -->
-		<b-row class="app-content" align-h="center">
-			<b-col sm="11" md="10">
-				<nuxt />
-			</b-col>
-		</b-row>
+		<b-container>
+			<b-row class="app-content" align-h="center">
+				<b-col sm="11" md="10">
+					<nuxt />
+				</b-col>
+			</b-row>
+		</b-container>
 		<!-- footer -->
 		<the-footer class="app-footer" />
 	</div>

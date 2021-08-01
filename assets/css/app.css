@@ -21,11 +21,6 @@ body {
 }
 
 @media screen and (max-width: 480px) {
-	.app-content {
-		padding-left: 1em;
-		padding-right: 1em;
-	}
-
 	.app-footer {
 		display: grid;
 		place-items: center;
