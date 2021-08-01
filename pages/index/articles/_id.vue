@@ -65,6 +65,6 @@
 
 <style scoped>
 #article-content{
-	min-height: 60vh;
+	min-height: 50vh;
 }
 </style>

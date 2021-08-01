@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<b-row align-h="between">
-			<b-col md="auto" class="general-title mx-2">
+			<b-col cols="6" class="general-title">
 				About Me
 				<b-button
 					v-if="editMode"
@@ -13,7 +13,7 @@
 					update
 				</b-button>
 			</b-col>
-			<b-col md="auto">
+			<b-col cols="auto" md="auto">
 				<b-button-group>
 					<b-button
 						class="mx-1"

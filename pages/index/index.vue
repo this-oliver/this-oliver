@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<b-row align-h="center" class="mt-3">
-			<b-col sm="11" md="8">
+			<b-col sm="11" md="10">
 				<about-me :short="getShortBio" :long="getLongBio" />
 			</b-col>
 		</b-row>
