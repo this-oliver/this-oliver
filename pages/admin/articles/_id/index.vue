@@ -36,9 +36,3 @@
 		}
 	};
 </script>
-
-<style scoped>
-#article-content{
-	min-height: 50vh;
-}
-</style>

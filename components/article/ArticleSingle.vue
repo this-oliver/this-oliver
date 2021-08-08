@@ -3,17 +3,17 @@
 		<!-- article -->
 		<b-row>
 			<!-- title -->
-			<b-col class="general-title" sm="11" md="auto">
+			<b-col class="general-title" cols="auto">
 				{{ article.title }}
 			</b-col>
 			<b-col cols="12" />
 			<!-- time ago -->
-			<b-col class="my-2" sm="11" md="auto">
+			<b-col class="my-2" cols="auto">
 				<i>{{ getTimeAgo }}</i>
 			</b-col>
 			<b-col cols="12" />
 			<!-- tags -->
-			<b-col class="my-2" sm="11" md="auto">
+			<b-col class="my-2" cols="auto">
 				<small>
 					<b-badge
 						v-for="tag in article.tags"
@@ -26,8 +26,8 @@
 		</b-row>
 
 		<!-- content -->
-		<b-row>
-			<b-col id="article-content" sm="11" md="8">
+		<b-row align-h="center">
+			<b-col id="article-content" cols="12">
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<span v-html="getContent" />
 			</b-col>
