@@ -26,7 +26,6 @@
 				class="my-1">
 				<article-card
 					:article="article"
-					:admin-mode="adminMode"
 					:edit-mode="editMode" />
 			</b-col>
 		</b-row>
@@ -53,10 +52,6 @@
 				default: null
 			},
 			hideTitle: {
-				type: Boolean,
-				default: false
-			},
-			adminMode: {
 				type: Boolean,
 				default: false
 			},

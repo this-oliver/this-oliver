@@ -1,30 +1,33 @@
 <template>
-	<div class="clickable" @click="goToArticle">
-		<b-card>
+	<div>
+		<base-card :path="getUrl">
 			<!-- title -->
-			<b-row>
+			<b-row align-h="between">
 				<b-col cols="auto">
-					<small v-if="editMode">
-						<span v-if="article.publish">
-							<check-circle variant="success" />
-						</span>
-						<span v-else>
-							<dash-circle variant="warning" />
-						</span>
-					</small>
 					<b>{{ article.title }}</b>
+				</b-col>
+				<!-- publish flag -->
+				<b-col v-if="editMode" cols="auto">
+					<span v-if="article.publish">
+						<check-circle variant="success" />
+					</span>
+					<span v-else>
+						<dash-circle variant="warning" />
+					</span>
 				</b-col>
 			</b-row>
 			<!-- date -->
 			<b-row>
 				<b-col cols="auto">
 					<small>
-						<b>
-							{{ getTimeAgo }}
-						</b>
+						<b-badge variant="primary"> {{ getTimeAgo }} </b-badge>
 					</small>
 				</b-col>
 			</b-row>
+			<!-- tags -->
+			<small>
+				<b-badge v-for="tag in article.tags" :key="tag" class="mx-1"> {{ tag }} </b-badge>
+			</small>
 			<!-- content -->
 			<b-row>
 				<b-col cols="auto">
@@ -34,26 +37,27 @@
 					</small>
 				</b-col>
 			</b-row>
+			<!-- footer -->
 			<template #footer>
-				<b-row :align-h="editMode ? 'between' : 'end'">
+				<b-row align-h="between">
+					<!-- views and likes -->
 					<b-col sm="12" md="auto">
-						<!-- views and likes -->
 						<b-row>
 							<b-col cols="auto" class="mx-1">
 								<small>
 									👏 {{ article.likes }}
 								</small>
 							</b-col>
-							<b-col v-if="adminMode" cols="auto" class="mx-1">
+							<b-col v-if="editMode" cols="auto" class="mx-1">
 								<small>
 									🔎 {{ article.views }}
 								</small>
 							</b-col>
 						</b-row>
 					</b-col>
-					<b-col sm="12" md="auto">
-						<!-- actions -->
-						<b-row v-if="editMode">
+					<!-- actions -->
+					<b-col v-if="editMode" sm="12" md="auto">
+						<b-row>
 							<b-col class="mx-1" cols="auto">
 								<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/edit`">
 									update
@@ -68,13 +72,14 @@
 					</b-col>
 				</b-row>
 			</template>
-		</b-card>
+		</base-card>
 	</div>
 </template>
 
 <script>
 	import { mapActions } from "vuex";
 	import { BIconCheckCircleFill, BIconDashCircleFill } from "bootstrap-vue";
+	import BaseCardVue from "../base/BaseCard.vue";
 	import { getTimeAgo } from "../../utils/time";
 	import { getTextDescription } from "../../utils/string";
 	import { cleanMarkdown } from "../../utils/markdown";
@@ -82,6 +87,7 @@
 	export default {
 		name: "ArticleCard",
 		components: {
+			"base-card": BaseCardVue,
 			"check-circle": BIconCheckCircleFill,
 			"dash-circle": BIconDashCircleFill
 		},
@@ -89,10 +95,6 @@
 			article: {
 				type: Object,
 				required: true
-			},
-			adminMode: {
-				type: Boolean,
-				default: false
 			},
 			editMode: {
 				type: Boolean,
@@ -106,16 +108,15 @@
 			},
 			getTimeAgo () {
 				return getTimeAgo(this.article.createdAt);
+			},
+			getUrl () {
+				return this.editMode === true ? `/admin/articles/${this.article._id}` : `/articles/${this.article._id}`;
 			}
 		},
 		methods: {
 			...mapActions({
 				deleteArticle: "admin/articles/delete"
-			}),
-			goToArticle () {
-				const url = this.editMode === true ? `/admin/articles/${this.article._id}` : `/articles/${this.article._id}`;
-				this.$router.push(url);
-			}
+			})
 		}
 	};
 </script>

@@ -12,7 +12,6 @@
 	import ArticleForm from "~/components/article/ArticleForm.vue";
 
 	export default {
-		name: "EditArticlePage",
 		components: { ArticleForm },
 		async asyncData ({ params, store }) {
 			const id = params.id;
