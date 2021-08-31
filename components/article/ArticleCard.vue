@@ -32,10 +32,6 @@
 					</small>
 				</b-col>
 			</b-row>
-			<!-- tags -->
-			<small>
-				<b-badge v-for="tag in article.tags" :key="tag" class="mx-1"> {{ tag.name }} </b-badge>
-			</small>
 			<!-- content -->
 			<b-row>
 				<b-col cols="auto">
