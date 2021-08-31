@@ -13,8 +13,6 @@
 
 	export default {
 		name: "CreateExperiencePage",
-		components: { ExperienceForm },
-		layout: "admin",
-		middleware: "auth"
+		components: { ExperienceForm }
 	};
 </script>

@@ -13,8 +13,6 @@
 
 	export default {
 		name: "CreateArticlePage",
-		components: { ArticleForm },
-		layout: "admin",
-		middleware: "auth"
+		components: { ArticleForm }
 	};
 </script>

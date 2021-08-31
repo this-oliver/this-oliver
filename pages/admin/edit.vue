@@ -15,8 +15,6 @@
 	export default {
 		name: "AdminPage",
 		components: { AboutForm },
-		layout: "admin",
-		middleware: "auth",
 		async asyncData ({ store }) {
 			await store.dispatch("admin/initUser");
 		},

@@ -19,5 +19,6 @@ Should fulfil following purpose:
 
 | Enviroment | Host |
 |-|-|
-| Frontend Status | [![Netlify Status](https://api.netlify.com/api/v1/badges/72aa6d1d-222e-438a-bfb2-5ae1989f1c7a/deploy-status)](https://app.netlify.com/sites/jovial-raman-b131f9/deploys) |
+| Frontend Production Status | [![Netlify Status](https://api.netlify.com/api/v1/badges/72aa6d1d-222e-438a-bfb2-5ae1989f1c7a/deploy-status)](https://app.netlify.com/sites/manzi-prod/deploys) |
+| Frontend Development Status | [![Netlify Status](https://api.netlify.com/api/v1/badges/790876b7-5fd3-406c-91d2-f248a24e065c/deploy-status)](https://app.netlify.com/sites/manzi-dev/deploys) |
 | Backend Status | [![CircleCI](https://circleci.com/gh/olivermanzi/olivermanzi-api/tree/master.svg?style=svg)](https://circleci.com/gh/olivermanzi/olivermanzi-api/tree/master) |

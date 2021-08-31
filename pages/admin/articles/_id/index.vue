@@ -19,11 +19,10 @@
 	import ArticleSingle from "~/components/article/ArticleSingle.vue";
 
 	export default {
-		name: "ArticleSinglePage",
+		name: "ArticlePage",
 		components: {
 			ArticleSingle
 		},
-		layout: "admin",
 		async asyncData ({ store, params, error }) {
 			const id = params.id;
 			const article = await store.dispatch("admin/articles/get", id);
@@ -36,9 +35,3 @@
 		}
 	};
 </script>
-
-<style scoped>
-#article-content{
-	min-height: 50vh;
-}
-</style>

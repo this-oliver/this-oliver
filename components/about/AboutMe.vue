@@ -9,7 +9,7 @@
 					pill
 					size="sm"
 					variant="warning"
-					to="/admin/update">
+					to="/admin/edit">
 					update
 				</b-button>
 			</b-col>

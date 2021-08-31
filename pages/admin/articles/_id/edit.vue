@@ -12,10 +12,7 @@
 	import ArticleForm from "~/components/article/ArticleForm.vue";
 
 	export default {
-		name: "UpdateArticlePage",
 		components: { ArticleForm },
-		layout: "admin",
-		middleware: "auth",
 		async asyncData ({ params, store }) {
 			const id = params.id;
 			const article = await store.dispatch("admin/articles/get", id);

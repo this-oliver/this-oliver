@@ -2,7 +2,7 @@
 	<div>
 		<b-row class="mt-3">
 			<b-col cols="12">
-				<article-list :articles="articles" :admin-mode="true" :edit-mode="true" />
+				<article-list :articles="articles" :edit-mode="true" />
 			</b-col>
 		</b-row>
 	</div>
@@ -15,7 +15,6 @@
 		components: {
 			ArticleList
 		},
-		layout: "admin",
 		async asyncData ({ store }) {
 			const articles = await store.dispatch("admin/articles/index");
 			return { articles };

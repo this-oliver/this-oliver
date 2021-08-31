@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<b-card>
+		<base-card>
 			<b-row>
 				<b-col cols="1">
 					<span class="card-title">{{ getExperienceEmoji(experience.type) }}</span>
@@ -29,7 +29,7 @@
 			<template v-if="editMode" #footer>
 				<b-row align-h="end">
 					<b-col cols="3">
-						<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/update`">
+						<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/edit`">
 							update
 						</nuxt-link>
 					</b-col>
@@ -40,7 +40,7 @@
 					</b-col>
 				</b-row>
 			</template>
-		</b-card>
+		</base-card>
 	</div>
 </template>
 
@@ -49,8 +49,12 @@
 	import { getMarkdown } from "../../utils/markdown";
 
 	import { EXPERIENCES } from "../../logic/enums";
+	import BaseCardVue from "../base/BaseCard.vue";
 	export default {
 		name: "ExperienceCard",
+		components: {
+			"base-card": BaseCardVue
+		},
 		props: {
 			experience: {
 				type: Object,

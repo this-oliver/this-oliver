@@ -13,11 +13,10 @@
 	import ExperienceListVue from "~/components/experience/ExperienceList.vue";
 
 	export default {
-		name: "AdminExperiencesPage",
+		name: "ExperiencesPage",
 		components: {
 			"experience-list": ExperienceListVue
 		},
-		layout: "admin",
 		computed: {
 			...mapGetters({
 				experiences: "admin/getExperiences"

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import { getTextDescription } from "../../../utils/string";
+	import { getTextDescription } from "~/utils/string";
 	import ArticleSingle from "~/components/article/ArticleSingle.vue";
 
 	export default {
@@ -24,14 +24,9 @@
 		components: {
 			ArticleSingle
 		},
-		async asyncData ({ $auth, store, params, error }) {
+		async asyncData ({ store, params, error }) {
 			const id = params.id;
 			const article = await store.dispatch("user/articles/get", id);
-
-			// if admin is not logged in, increment article view
-			if (!$auth.loggedIn) {
-				await store.dispatch("user/articles/incrementViews", id);
-			}
 
 			if (article === null) {
 				return error({ statusCode: 404, message: "article couldn't load" });
@@ -72,9 +67,3 @@
 		}
 	};
 </script>
-
-<style scoped>
-#article-content{
-	min-height: 50vh;
-}
-</style>
