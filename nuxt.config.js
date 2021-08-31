@@ -5,13 +5,22 @@ export default {
 	// Target: https://go.nuxtjs.dev/config-target
 	target: "static",
 
+	// SPA fallback: https://nuxtjs.org/docs/2.x/deployment/netlify-deployment
+	generate: {
+		fallback: true
+	},
+
 	// Global page headers: https://go.nuxtjs.dev/config-head
 	head: {
 		title: "Oliver Manzi",
 		meta: [
 			{ charset: "utf-8" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1" },
-			{ hid: "description", name: "description", content: "A software engineering and entreprenurial portfolio." }
+			{
+				hid: "description",
+				name: "description",
+				content: "A software engineering and entreprenurial portfolio."
+			}
 		],
 		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 	},
