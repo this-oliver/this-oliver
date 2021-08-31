@@ -9,7 +9,7 @@
 			<b-col cols="12" />
 			<!-- time ago -->
 			<b-col class="my-2" cols="auto">
-				<i>{{ getTimeAgo }}</i>
+				<i>{{ getDate }}</i>
 			</b-col>
 			<b-col cols="12" />
 			<!-- tags -->
@@ -51,7 +51,7 @@
 
 <script>
 	import { getMarkdown } from "../../utils/markdown";
-	import { getTimeAgo } from "../../utils/time";
+	import { getDate } from "../../utils/time";
 
 	export default {
 		name: "ArticleSingle",
@@ -66,8 +66,8 @@
 			getContent () {
 				return getMarkdown(this.article.content);
 			},
-			getTimeAgo () {
-				return getTimeAgo(this.article.createdAt);
+			getDate () {
+				return getDate(this.article.createdAt);
 			}
 		},
 		methods: {

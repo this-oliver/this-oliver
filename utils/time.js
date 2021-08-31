@@ -9,13 +9,22 @@ export const getCurrentYear = () => {
 };
 
 /**
- * gets a representation of time that is readable to human eye
+ * returns a representation of time that is readable to human eye that based on current time
  * @param {Date} date
  * @return {String}
  */
 export const getTimeAgo = (date) => {
 	const time = Moment(date);
 	return time.fromNow();
+};
+
+/**
+ * gets a representation of time that is readable to human eye
+ * @param {Date} date
+ * @return {String}
+ */
+export const getDate = (date) => {
+	return Moment(date).format("Do MMM YYYY (H:mm a)");
 };
 
 /**

@@ -20,7 +20,15 @@
 			<b-row>
 				<b-col cols="auto">
 					<small>
-						<b-badge variant="primary"> {{ getTimeAgo }} </b-badge>
+						<b-badge variant="primary"> {{ getDate }} </b-badge>
+					</small>
+				</b-col>
+			</b-row>
+			<!-- tags -->
+			<b-row>
+				<b-col cols="auto">
+					<small>
+						<b-badge v-for="tag in article.tags" :key="tag" class="mr-1"> {{ tag.name }} </b-badge>
 					</small>
 				</b-col>
 			</b-row>
@@ -80,7 +88,7 @@
 	import { mapActions } from "vuex";
 	import { BIconCheckCircleFill, BIconDashCircleFill } from "bootstrap-vue";
 	import BaseCardVue from "../base/BaseCard.vue";
-	import { getTimeAgo } from "../../utils/time";
+	import { getDate } from "../../utils/time";
 	import { getTextDescription } from "../../utils/string";
 	import { cleanMarkdown } from "../../utils/markdown";
 
@@ -106,8 +114,8 @@
 				const content = `${getTextDescription(this.article.content)}...`;
 				return cleanMarkdown(content);
 			},
-			getTimeAgo () {
-				return getTimeAgo(this.article.createdAt);
+			getDate () {
+				return getDate(this.article.createdAt);
 			},
 			getUrl () {
 				return this.editMode === true ? `/admin/articles/${this.article._id}` : `/articles/${this.article._id}`;
