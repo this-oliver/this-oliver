@@ -12,10 +12,8 @@
 	import ExperienceForm from "~/components/experience/ExperienceForm.vue";
 
 	export default {
-		name: "UpdateExperiencePage",
+		name: "EditExperiencePage",
 		components: { ExperienceForm },
-		layout: "admin",
-		middleware: "auth",
 		async asyncData ({ params, store }) {
 			const id = params.id;
 			const experience = await store.dispatch("admin/experiences/get", id);

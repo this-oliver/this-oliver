@@ -29,7 +29,7 @@
 			<template v-if="editMode" #footer>
 				<b-row align-h="end">
 					<b-col cols="3">
-						<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/update`">
+						<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/edit`">
 							update
 						</nuxt-link>
 					</b-col>

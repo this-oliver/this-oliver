@@ -55,7 +55,7 @@
 						<!-- actions -->
 						<b-row v-if="editMode">
 							<b-col class="mx-1" cols="auto">
-								<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/update`">
+								<nuxt-link class="simple-link" :to="`/admin/articles/${article._id}/edit`">
 									update
 								</nuxt-link>
 							</b-col>

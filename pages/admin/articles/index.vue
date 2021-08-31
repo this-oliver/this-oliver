@@ -15,7 +15,6 @@
 		components: {
 			ArticleList
 		},
-		layout: "admin",
 		async asyncData ({ store }) {
 			const articles = await store.dispatch("admin/articles/index");
 			return { articles };
