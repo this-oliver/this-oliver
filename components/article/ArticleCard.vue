@@ -26,7 +26,7 @@
 			</b-row>
 			<!-- tags -->
 			<small>
-				<b-badge v-for="tag in article.tags" :key="tag" class="mx-1"> {{ tag }} </b-badge>
+				<b-badge v-for="tag in article.tags" :key="tag" class="mx-1"> {{ tag.name }} </b-badge>
 			</small>
 			<!-- content -->
 			<b-row>
