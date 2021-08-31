@@ -10,18 +10,18 @@
 				</b-row>
 
 				<!-- default slot -->
-				<div class="card-content">
+				<div>
 					<slot />
 				</div>
 			</div>
-
-			<!-- footer slot -->
-			<b-row>
-				<b-col cols="12">
-					<slot name="footer" />
-				</b-col>
-			</b-row>
 		</b-card>
+
+		<!-- footer slot -->
+		<b-row class="mt-2">
+			<b-col cols="12">
+				<slot name="footer" />
+			</b-col>
+		</b-row>
 	</div>
 </template>
 
@@ -43,10 +43,3 @@
 		}
 	};
 </script>
-
-<style scoped>
-.card-content {
-	margin-top: .5em;
-	margin-bottom: .5em;
-}
-</style>

@@ -37,14 +37,14 @@
 		<b-row class="mt-3" align-h="center">
 			<b-col cols="12">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div class="bio-text" v-html="getMarkdown" />
+				<div class="bio-text" v-html="getParsedContent" />
 			</b-col>
 		</b-row>
 	</div>
 </template>
 
 <script>
-	import { getMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 
 	export default {
 		name: "AboutMe",
@@ -68,11 +68,11 @@
 			};
 		},
 		computed: {
-			getMarkdown () {
+			getParsedContent () {
 				if (this.showShortBio) {
-					return this.short ? getMarkdown(this.short) : ""; // if short is empty, show empty string
+					return this.short ? MarkdownToHtml(this.short) : ""; // if short is empty, show empty string
 				} else {
-					return this.long ? getMarkdown(this.long) : ""; // if long is empty, show empty string
+					return this.long ? MarkdownToHtml(this.long) : ""; // if long is empty, show empty string
 				}
 			}
 		},

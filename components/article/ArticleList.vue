@@ -20,13 +20,14 @@
 		<hr v-if="hideTitle == false || editMode == true" class="divider">
 		<b-row v-if="getArticles.length > 0">
 			<b-col
-				v-for="article in getArticles"
+				v-for="(article, index) in getArticles"
 				:key="article._id"
 				cols="12"
 				class="my-1">
 				<article-card
 					:article="article"
 					:edit-mode="editMode" />
+				<hr v-if="index < getArticles.length - 1" class="divider">
 			</b-col>
 		</b-row>
 		<b-row

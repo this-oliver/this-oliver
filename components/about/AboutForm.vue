@@ -100,7 +100,7 @@
 			size="xl">
 			<span v-if="form.short && form.short.length > 0">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getMarkDown(form.short)" />
+				<span v-html="getParsedContent(form.short)" />
 			</span>
 			<span v-else>...</span>
 		</b-modal>
@@ -111,7 +111,7 @@
 			size="xl">
 			<span v-if="form.long && form.long.length > 0">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getMarkDown(form.long)" />
+				<span v-html="getParsedContent(form.long)" />
 			</span>
 			<span v-else>...</span>
 		</b-modal>
@@ -120,7 +120,7 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 	import { getWordCount } from "../../utils/string";
 
 	export default {
@@ -163,9 +163,9 @@
 			...mapActions({
 				update: "admin/patch"
 			}),
-			getMarkDown (text) {
+			getParsedContent (text) {
 				if (text) {
-					return getMarkdown(text);
+					return MarkdownToHtml(text);
 				} else {
 					return null;
 				}

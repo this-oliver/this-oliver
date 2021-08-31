@@ -1,89 +1,78 @@
-import MarkdDownIt from "markdown-it";
-import Mila from "markdown-it-link-attributes";
-import MIATTR from "markdown-it-attrs";
-
-import HtmlSanitizer from "sanitize-html";
-
-const initMarkDown = () => {
-	const MD = new MarkdDownIt();
-
-	MD.use(Mila, {
-		attrs: {
-			target: "_blank",
-			rel: "noopener"
-		}
-	});
-
-	MD.use(MIATTR, {
-		allowedAttributes: ["id", "class"] // empty array = all attributes are allowed
-	});
-
-	return MD;
-};
+import Marked from "marked";
+import SanitizeHtml from "sanitize-html";
 
 /**
- * Returns sanitized html
- * @param {String} dirtyHtml - html
- * @returns {String}
+ * RenderConfig is a Marked renderer config that styles
+ * markdown headers and links so that they match the app's
+ * existing style
  */
-export const sanitizeHtml = (dirtyHtml) => {
-	if (!dirtyHtml) {
-		throw new Error("(Markdown Error) Missing dirty html");
-	}
+const renderConfig = {
+	heading (text, level) {
+		function getHeaderClass (classLevel) {
+			switch (classLevel) {
+			case 1:
+				return "article-section";
+			case 2:
+				return "article-subsection";
+			default:
+				return "article-subsection";
+			}
+		}
 
-	const options = {
-		allowedTags: ["b", "i", "em", "strong", "a", "hr"],
-		allowedAttributes: {
-			a: ["href"]
-		},
-		allowedIframeHostnames: ["www.youtube.com"],
-		selfClosing: ["img", "br", "hr"]
-	};
-	return HtmlSanitizer(dirtyHtml, options);
+		return `
+            <h${level} class="${getHeaderClass(level)}">
+              ${text}
+            </h${level}>`;
+	},
+	link (href, title, text) {
+		return `
+            <a href="${href} target="_blank">
+              ${text}
+            </a>`;
+	}
 };
 
 /**
- * Returns markdown render of text
+ * liteRenderConfig is a Marked renderer config that hides certain
+ * markdown properties (like headers). This config is meant for
+ * descriptive purposes like article card descriptions
+ */
+const liteRenderConfig = {
+	// hide headers
+	heading (text, level) {
+		return "";
+	},
+	// show links
+	link (href, title, text) {
+		return `
+            <a href="${href} target="_blank">
+              ${text}
+            </a>`;
+	}
+};
+
+/**
+ * Converts markdown into html
  * @param {String} text - text
+ * @param {Boolean} lite - parse lightly
  * @returns {String}
  */
-export const getMarkdown = (text) => {
+export const MarkdownToHtml = (text, lite = false) => {
 	if (!text) {
 		throw new Error("(Markdown Error) Missing text");
 	}
 
-	const MarkDown = initMarkDown();
-	return MarkDown.render(text);
-};
+	// get render config
+	const renderer = lite ? liteRenderConfig : renderConfig;
 
-/**
- * Returns clean markdown
- * @param {String} text - markdown text
- * @returns {String}
- */
-export const cleanMarkdown = (text) => {
-	if (!text) {
-		throw new Error("(Markdown Error) Missing text");
-	}
+	// set render config
+	Marked.use({ renderer });
 
-	text = Array.from(text);
-	let value = "";
+	// render markedown into html
+	const dirtyHtml = Marked(text);
 
-	for (let i = 0; i < text.length; i++) {
-		const char = text[i];
+	// clean html
+	const cleanHtml = SanitizeHtml(dirtyHtml);
 
-		if (char === "#") {
-			text.splice(i, 1);
-		} else if (
-			i + 1 < text.length &&
-			char === "\\" &&
-			text[i + 1] === "n"
-		) {
-			text.splice(i, 2);
-		} else {
-			value += char;
-		}
-	}
-
-	return value;
+	return cleanHtml;
 };

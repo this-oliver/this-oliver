@@ -2,9 +2,11 @@
 	<div>
 		<base-card>
 			<b-row>
+				<!-- icon -->
 				<b-col cols="1">
 					<span class="card-title">{{ getExperienceEmoji(experience.type) }}</span>
 				</b-col>
+				<!-- content -->
 				<b-col cols="10">
 					<b-row>
 						<b-col cols="12">
@@ -20,7 +22,7 @@
 						<b-col cols="12">
 							<small>
 								<!-- eslint-disable-next-line vue/no-v-html -->
-								<span v-html="getDesc" />
+								<span v-html="getParsedContent" />
 							</small>
 						</b-col>
 					</b-row>
@@ -46,7 +48,7 @@
 
 <script>
 	import { mapActions } from "vuex";
-	import { getMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 
 	import { EXPERIENCES } from "../../logic/enums";
 	import BaseCardVue from "../base/BaseCard.vue";
@@ -70,8 +72,8 @@
 			}
 		},
 		computed: {
-			getDesc () {
-				return getMarkdown(this.experience.description);
+			getParsedContent () {
+				return MarkdownToHtml(this.experience.description);
 			},
 			getEndYear () {
 				const endYear = this.experience.endYear;

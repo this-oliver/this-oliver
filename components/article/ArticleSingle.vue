@@ -1,9 +1,9 @@
 <template>
 	<div id="article">
-		<!-- article -->
+		<!-- article details -->
 		<b-row>
 			<!-- title -->
-			<b-col class="general-title" cols="auto">
+			<b-col class="article-title" cols="auto">
 				{{ article.title }}
 			</b-col>
 			<b-col cols="12" />
@@ -29,9 +29,10 @@
 		<b-row align-h="center">
 			<b-col id="article-content" cols="12">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getContent" />
+				<span v-html="getParsedContent" />
 			</b-col>
 		</b-row>
+
 		<!-- back btn -->
 		<b-row align-h="around">
 			<b-col class="my-2" cols="auto">
@@ -50,7 +51,7 @@
 </template>
 
 <script>
-	import { getMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 	import { getDate } from "../../utils/time";
 
 	export default {
@@ -63,8 +64,8 @@
 		},
 		emits: ["refresh"],
 		computed: {
-			getContent () {
-				return getMarkdown(this.article.content);
+			getParsedContent () {
+				return MarkdownToHtml(this.article.content);
 			},
 			getDate () {
 				return getDate(this.article.createdAt);

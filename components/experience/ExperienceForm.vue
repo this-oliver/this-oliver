@@ -177,7 +177,7 @@
 			size="xl">
 			<span v-if="form.description && form.description.length > 0">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getMarkDown(form.description)" />
+				<span v-html="getParsedContent(form.description)" />
 			</span>
 			<span v-else>...</span>
 		</b-modal>
@@ -187,7 +187,7 @@
 <script>
 	import { mapActions } from "vuex";
 
-	import { getMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 	import { getWordCount } from "../../utils/string";
 
 	import { EXPERIENCES } from "../../logic/enums";
@@ -270,9 +270,9 @@
 					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
 				}
 			},
-			getMarkDown (text) {
+			getParsedContent (text) {
 				if (text) {
-					return getMarkdown(text);
+					return MarkdownToHtml(text);
 				} else {
 					return null;
 				}
