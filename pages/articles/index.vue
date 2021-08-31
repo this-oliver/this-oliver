@@ -12,7 +12,6 @@
 	import ArticleList from "~/components/article/ArticleList.vue";
 
 	export default {
-		name: "ArticleListPage",
 		components: {
 			ArticleList
 		},

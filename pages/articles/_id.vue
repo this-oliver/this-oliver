@@ -20,7 +20,6 @@
 	import ArticleSingle from "~/components/article/ArticleSingle.vue";
 
 	export default {
-		name: "ArticleSinglePage",
 		components: {
 			ArticleSingle
 		},

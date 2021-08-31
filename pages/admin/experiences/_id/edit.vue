@@ -12,7 +12,6 @@
 	import ExperienceForm from "~/components/experience/ExperienceForm.vue";
 
 	export default {
-		name: "EditExperiencePage",
 		components: { ExperienceForm },
 		async asyncData ({ params, store }) {
 			const id = params.id;

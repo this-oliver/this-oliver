@@ -13,7 +13,6 @@
 	import AboutForm from "~/components/about/AboutForm.vue";
 
 	export default {
-		name: "AdminPage",
 		components: { AboutForm },
 		async asyncData ({ store }) {
 			await store.dispatch("admin/initUser");
