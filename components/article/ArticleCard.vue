@@ -20,15 +20,6 @@
 				<b-col cols="auto" class="card-subtitle">
 					{{ getDate }}
 				</b-col>
-				<!-- publish flag -->
-				<b-col v-if="editMode" cols="auto">
-					<span v-if="article.publish">
-						<check-circle variant="success" />
-					</span>
-					<span v-else>
-						<dash-circle variant="warning" />
-					</span>
-				</b-col>
 			</b-row>
 
 			<!-- content -->
