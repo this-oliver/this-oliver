@@ -29,17 +29,17 @@
 				return [
 					{
 						title: "Github",
-						src: require("~/assets/icons/github.svg"),
+						src: "/images/icons/github.svg",
 						link: "https://github.com/olivermanzi"
 					},
 					{
 						title: "LinkedIn",
-						src: require("~/assets/icons/linkedin.svg"),
+						src: "/images/icons/linkedin.svg",
 						link: "https://www.linkedin.com/in/oliver-manzi/"
 					},
 					{
 						title: "FetchQr",
-						src: require("~/assets/icons/fetch.png"),
+						src: "/images/icons/fetch.png",
 						link: "https://fetchqr.com"
 					}
 				];

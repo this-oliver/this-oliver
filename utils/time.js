@@ -24,7 +24,7 @@ export const getTimeAgo = (date) => {
  * @return {String}
  */
 export const getDate = (date) => {
-	return Moment(date).format("Do MMM YYYY (H:mm a)");
+	return Moment(date).format("Do MMM YYYY");
 };
 
 /**

@@ -10,7 +10,6 @@
 	import RegsiterForm from "~/components/auth/RegisterForm.vue";
 
 	export default {
-		name: "RegisterPage",
 		components: { RegsiterForm }
 	};
 </script>

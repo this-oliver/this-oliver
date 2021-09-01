@@ -12,7 +12,6 @@
 	import ExperienceForm from "~/components/experience/ExperienceForm.vue";
 
 	export default {
-		name: "CreateExperiencePage",
 		components: { ExperienceForm }
 	};
 </script>

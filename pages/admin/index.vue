@@ -16,7 +16,6 @@
 	import AboutMe from "~/components/about/AboutMe.vue";
 
 	export default {
-		name: "AdminPage",
 		components: { AboutMe },
 		async asyncData ({ $auth }) {
 			await $auth.fetchUser();

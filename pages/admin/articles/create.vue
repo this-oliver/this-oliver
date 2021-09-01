@@ -12,7 +12,6 @@
 	import ArticleForm from "~/components/article/ArticleForm.vue";
 
 	export default {
-		name: "CreateArticlePage",
 		components: { ArticleForm }
 	};
 </script>

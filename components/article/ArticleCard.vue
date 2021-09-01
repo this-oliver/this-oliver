@@ -3,8 +3,22 @@
 		<base-card :path="getUrl">
 			<!-- title -->
 			<b-row align-h="between">
-				<b-col cols="auto">
-					<b>{{ article.title }}</b>
+				<b-col sm="12" md="8" class="card-title">
+					<!-- publish flag -->
+					<span v-if="editMode">
+						<span v-if="article.publish">
+							<check-circle variant="success" />
+						</span>
+						<span v-else>
+							<dash-circle variant="warning" />
+						</span>
+					</span>
+
+					{{ article.title }}
+				</b-col>
+				<!-- date -->
+				<b-col cols="auto" class="card-subtitle">
+					{{ getDate }}
 				</b-col>
 				<!-- publish flag -->
 				<b-col v-if="editMode" cols="auto">
@@ -16,28 +30,22 @@
 					</span>
 				</b-col>
 			</b-row>
-			<!-- date -->
-			<b-row>
-				<b-col cols="auto">
-					<small>
-						<b-badge variant="primary"> {{ getDate }} </b-badge>
-					</small>
-				</b-col>
-			</b-row>
-			<!-- tags -->
-			<b-row>
-				<b-col cols="auto">
-					<small>
-						<b-badge v-for="tag in article.tags" :key="tag" class="mr-1"> {{ tag.name }} </b-badge>
-					</small>
-				</b-col>
-			</b-row>
+
 			<!-- content -->
 			<b-row>
 				<b-col cols="auto">
 					<small>
 						<!-- eslint-disable-next-line vue/no-v-html -->
-						<span v-html="getContent" />
+						<span v-html="getParsedContent" />
+					</small>
+				</b-col>
+			</b-row>
+
+			<b-row>
+				<!-- tags -->
+				<b-col cols="auto">
+					<small>
+						<b-badge v-for="tag in article.tags" :key="tag._id" class="mr-1"> {{ tag.name }} </b-badge>
 					</small>
 				</b-col>
 			</b-row>
@@ -86,7 +94,7 @@
 	import BaseCardVue from "../base/BaseCard.vue";
 	import { getDate } from "../../utils/time";
 	import { getTextDescription } from "../../utils/string";
-	import { cleanMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 
 	export default {
 		name: "ArticleCard",
@@ -106,9 +114,9 @@
 			}
 		},
 		computed: {
-			getContent () {
+			getParsedContent () {
 				const content = `${getTextDescription(this.article.content)}...`;
-				return cleanMarkdown(content);
+				return MarkdownToHtml(content, true);
 			},
 			getDate () {
 				return getDate(this.article.createdAt);

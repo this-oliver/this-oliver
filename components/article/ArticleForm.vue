@@ -141,7 +141,7 @@
 			size="xl">
 			<span v-if="form.content && form.content.length > 0">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getMarkDown(form.content)" />
+				<span v-html="getParsedContent(form.content)" />
 			</span>
 			<span v-else>...</span>
 		</b-modal>
@@ -149,7 +149,7 @@
 </template>
 
 <script>
-	import { getMarkdown } from "../../utils/markdown";
+	import { MarkdownToHtml } from "../../utils/markdown";
 	import { getWordCount } from "../../utils/string";
 
 	export default {
@@ -249,9 +249,9 @@
 					this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
 				}
 			},
-			getMarkDown (text) {
+			getParsedContent (text) {
 				if (text) {
-					return getMarkdown(text);
+					return MarkdownToHtml(text);
 				} else {
 					return null;
 				}

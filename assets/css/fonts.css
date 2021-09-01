@@ -79,12 +79,33 @@ body {
 /* cards */
 
 .card-title {
-	font-size: 2rem;
+	font-size: 1.7rem;
 	font-weight: bold;
 }
 
 .card-subtitle {
-	font-size: 1.5rem;
+	font-size: 1.15rem;
+	font-weight: bold;
+}
+
+/* articles */
+.article-title {
+	font-size: 3em;
+	font-weight: bold;
+}
+
+.article-subtitle {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.article-section {
+	font-size: 1.75em;
+	font-weight: bold;
+}
+
+.article-subsection {
+	font-size: 1.5em;
 	font-weight: bold;
 }
 

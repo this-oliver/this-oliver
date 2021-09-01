@@ -19,7 +19,6 @@
 	import ArticleSingle from "~/components/article/ArticleSingle.vue";
 
 	export default {
-		name: "ArticlePage",
 		components: {
 			ArticleSingle
 		},
