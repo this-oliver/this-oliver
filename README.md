@@ -27,9 +27,7 @@ I'm interested in entreprenurship 🛠, blockchain ⛓, jazz 🎺  and art galle
 
 > ps: *[click me](./docs/project.md) if you wanna see my (very basic) notes when building [olivermanzi.com](www.olivermanzi.com)*
 
----
-
 <p align="center">
-<a target="_blank" href="https://olivermanzi.com/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge&logo=bitcoin"></img></a>	
+<a target="_blank" href="https://olivermanzi.com/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge"></img></a>	
 <a target="_blank" href="https://www.linkedin.com/in/oliver-manzi/"><img src="https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=Linkedin"></img></a>
 <a target="_blank" href="mailto:olivermanzi.dev@gmail.com"><img src="https://img.shields.io/badge/-Gmail-black?style=for-the-badge&logo=Gmail"></img></a>
