@@ -16,7 +16,7 @@
 					placeholder="title" />
 			</b-col>
 		</b-row>
-		<!-- content -->
+		<!-- article title -->
 		<b-row
 			class="mt-2"
 			align-h="between">
@@ -36,14 +36,19 @@
 					preview
 				</span>
 			</b-col>
-			<b-col
-				class="mt-2"
-				cols="12">
+		</b-row>
+		<!-- article content -->
+		<b-row align-h="center">
+			<b-col cols="6">
 				<b-textarea
 					v-model="form.content"
-					rows="8"
+					rows="15"
 					:state="validateContent"
 					placeholder="enter content" />
+			</b-col>
+			<b-col cols="6" class="preview">
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<span v-html="getParsedContent(form.content)" />
 			</b-col>
 		</b-row>
 		<!-- tags -->
@@ -136,14 +141,10 @@
 		<!-- modals -->
 		<b-modal
 			v-model="showPreview"
-			:title="`preview: ${form.title}`"
 			hide-footer
 			size="xl">
-			<span v-if="form.content && form.content.length > 0">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getParsedContent(form.content)" />
-			</span>
-			<span v-else>...</span>
+			<!-- eslint-disable-next-line vue/no-v-html -->
+			<span v-html="getParsedContent(form.content)" />
 		</b-modal>
 	</div>
 </template>
@@ -259,3 +260,11 @@
 		}
 	};
 </script>
+
+<style scoped>
+.preview {
+	text-overflow: ellipsis;
+
+	background-color: white;
+}
+</style>

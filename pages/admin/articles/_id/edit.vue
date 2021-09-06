@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<b-row align-h="center">
-			<b-col class="mt-3" sm="11" md="8">
+			<b-col class="mt-3" cols="11">
 				<article-form :article="article" :edit-mode="true" />
 			</b-col>
 		</b-row>

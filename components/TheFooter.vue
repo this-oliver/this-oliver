@@ -10,7 +10,8 @@
 		<div class="footer-copyright">
 			<small class="bold-text">
 				<nuxt-link to="/admin">
-					🤠
+					<span v-if="hasVisited">👋</span>
+					<span v-else>🤠</span>
 				</nuxt-link>
 				Oliver Manzi
 				<small>
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+	import { STORAGE } from "~/logic/enums";
 	export default {
 		name: "TheFooter",
 		computed: {
@@ -43,6 +45,15 @@
 						link: "https://fetchqr.com"
 					}
 				];
+			},
+			hasVisited () {
+				const hasVisited = this.$auth.$storage.getUniversal(STORAGE.visitor);
+
+				if (hasVisited) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 	};

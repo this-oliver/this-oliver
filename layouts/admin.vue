@@ -9,7 +9,7 @@
 		<!-- content -->
 		<b-container>
 			<b-row class="app-content" align-h="center">
-				<b-col sm="11" md="10">
+				<b-col cols="11">
 					<nuxt />
 				</b-col>
 			</b-row>
