@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<!-- title -->
 		<b-row :align-h="editMode == true ? 'between' : 'center'" align-v="baseline">
 			<b-col
 				v-if="hideTitle === false"
@@ -17,10 +18,11 @@
 				</nuxt-link>
 			</b-col>
 		</b-row>
+		<!-- experiences -->
 		<hr v-if="hideTitle == false || editMode == true" class="divider">
 		<b-row v-if="experiences.length > 0">
 			<b-col
-				v-for="(experience, index) in experiences"
+				v-for="(experience, index) in getExperiences"
 				:key="experience._id"
 				cols="12">
 				<experience-card
@@ -60,6 +62,31 @@
 			editMode: {
 				type: Boolean,
 				default: false
+			}
+		},
+		computed: {
+			getExperiences () {
+				return this.experiences ? this.sortExperiences(this.experiences) : [];
+			}
+		},
+		methods: {
+			// sort experiences: latest to earliest
+			sortExperiences (experiences) {
+				return experiences.sort((experienceA, experienceB) => {
+					/**
+						 * when comparing A and B:
+						 * - return 1 to sort B before A,
+						 * - return -1 to sort A before B, and
+						 * - return 0 to sort A and B equally
+						 */
+					if (experienceA.startYear < experienceB.startYear) {
+						return 1;
+					} else if (experienceA.startYear > experienceB.startYear) {
+						return -1;
+					} else {
+						return 0;
+					}
+				});
 			}
 		}
 	};

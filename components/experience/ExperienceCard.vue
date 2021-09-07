@@ -1,35 +1,38 @@
 <template>
 	<div>
 		<base-card>
-			<b-row>
-				<!-- icon -->
-				<b-col cols="1">
-					<span class="card-title">{{ getExperienceEmoji(experience.type) }}</span>
+			<b-row align-h="between" align-v="center" class="mb-2">
+				<!-- title -->
+				<b-col cols="9" class="experience-card-title">
+					{{ experience.title }}
 				</b-col>
-				<!-- content -->
-				<b-col cols="10">
-					<b-row>
-						<b-col cols="12">
-							<b>{{ experience.title }}</b>
-						</b-col>
-						<b-col cols="12">
-							<small>
-								<b>
-									{{ `${experience.org} (${experience.startYear}-${getEndYear})` }}
-								</b>
-							</small>
-						</b-col>
-						<b-col cols="12">
-							<small>
-								<!-- eslint-disable-next-line vue/no-v-html -->
-								<span v-html="getParsedContent" />
-							</small>
-						</b-col>
-					</b-row>
+				<!-- icon -->
+				<b-col cols="2" class="experience-card-badge mr-2">
+					{{ getExperienceEmoji(experience.type) }}
 				</b-col>
 			</b-row>
-			<template v-if="editMode" #footer>
-				<b-row align-h="end">
+			<hr>
+			<b-row class="experience-card-subtitle">
+				<!-- org -->
+				<b-col cols="12">
+					{{ experience.org }}
+				</b-col>
+				<!-- duration -->
+				<b-col cols="12">
+					<b-badge variant="dark">
+						{{ `${experience.startYear} - ${getEndYear}` }}
+					</b-badge>
+				</b-col>
+			</b-row>
+			<!-- content -->
+			<b-row class="mt-2">
+				<b-col cols="12">
+					<!-- eslint-disable-next-line vue/no-v-html -->
+					<span v-html="getParsedContent" />
+				</b-col>
+			</b-row>
+			<template #footer>
+				<b-row v-if="editMode" align-h="end">
 					<b-col cols="3">
 						<nuxt-link class="simple-link" :to="`/admin/experiences/${experience._id}/edit`">
 							update
@@ -99,3 +102,30 @@
 		}
 	};
 </script>
+
+<style scoped>
+.experience-card-title {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.experience-card-subtitle {
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+
+.experience-card-badge {
+	font-size: 2rem;
+}
+
+@media screen and (max-width: 480px) {
+	.experience-card-title {
+		font-size: 1.25rem;
+		font-weight: bold;
+	}
+
+	.experience-card-badge {
+		font-size: 1.5rem;
+	}
+}
+</style>

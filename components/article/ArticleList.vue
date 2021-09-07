@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<b-row align-h="between" align-v="baseline">
+		<!-- title -->
+		<b-row :align-h="editMode == true ? 'between' : 'center'" align-v="baseline">
 			<b-col
 				v-if="hideTitle == false"
 				class="general-title center-text"
@@ -17,6 +18,7 @@
 				</nuxt-link>
 			</b-col>
 		</b-row>
+		<!-- articles -->
 		<hr v-if="hideTitle == false || editMode == true" class="divider">
 		<b-row v-if="getArticles.length > 0">
 			<b-col
@@ -63,7 +65,32 @@
 		},
 		computed: {
 			getArticles () {
-				return this.articles ? this.articles : [];
+				return this.articles ? this.sortArticles([...this.articles]) : [];
+			}
+		},
+		methods: {
+			// sort articles: latest to earliest
+			sortArticles (articles) {
+				if (articles.length > 0) {
+					return articles.sort((articleA, articleB) => {
+						/**
+						 * when comparing A and B:
+						 * - return 1 to sort B before A,
+						 * - return -1 to sort A before B, and
+						 * - return 0 to sort A and B equally
+						 */
+						if (this.$moment(articleA.createdAt).isSame(articleB.createdAt)) {
+							// if a is the same day as b, return zero
+							return 0;
+						} else if (this.$moment(articleA.createdAt).isBefore(articleB.createdAt)) {
+							// if A was created before (earlier than) B, return 1
+							return 1;
+						} else {
+							// if A was created after (later than) B, return -1
+							return -1;
+						}
+					});
+				}
 			}
 		}
 	};
