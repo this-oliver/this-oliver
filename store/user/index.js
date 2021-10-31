@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-import { sortLatestExperiences } from "../../logic/user";
-import { setCache,
-	getCache,
-	ENUMS as CachEnums } from "../../utils/cache";
+import { sortLatestExperiences } from "~/logic/experience";
+import { setCache, getCache, ENUMS as CachEnums } from "~/utils/cache";
 
 export const state = function () {
 	return {

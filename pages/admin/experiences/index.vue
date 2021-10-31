@@ -1,25 +1,42 @@
 <template>
-	<div>
-		<b-row class="mt-3">
-			<b-col cols="12">
-				<experience-list :experiences="experiences" :edit-mode="true" />
-			</b-col>
-		</b-row>
-	</div>
+	<base-page>
+		<template #title>
+			<!-- title -->
+			<v-row
+				justify="space-around"
+				align="center">
+				<v-col cols="auto">
+					<h1>experience</h1>
+				</v-col>
+				<v-col cols="auto">
+					<v-btn
+						icon
+						to="/admin/experiences/create">
+						<v-icon>add</v-icon>
+					</v-btn>
+				</v-col>
+			</v-row>
+		</template>
+		<experience-list
+			:experiences="experiences"
+			:edit-mode="true" />
+	</base-page>
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
-	import ExperienceListVue from "~/components/experience/ExperienceList.vue";
+import { mapGetters } from "vuex";
+import BasePage from "~/components/base/BasePage.vue";
+import ExperienceList from "~/components/experience/ExperienceList.vue";
 
-	export default {
-		components: {
-			"experience-list": ExperienceListVue
-		},
-		computed: {
+export default {
+	components: {
+		ExperienceList,
+		BasePage
+	},
+	computed: {
 			...mapGetters({
 				experiences: "admin/getExperiences"
 			})
-		}
-	};
+	}
+};
 </script>

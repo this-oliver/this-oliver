@@ -59,14 +59,12 @@ export default {
 
 	// Modules: https://go.nuxtjs.dev/config-modules
 	modules: [
-		// https://go.nuxtjs.dev/bootstrap
-		"bootstrap-vue/nuxt",
-		// https://go.nuxtjs.dev/axios
-		"@nuxtjs/axios",
 		// https://auth.nuxtjs.org
 		"@nuxtjs/auth-next",
-		// https://go.nuxtjs.dev/pwa
-		"@nuxtjs/pwa"
+		// https://go.nuxtjs.dev/axios
+		"@nuxtjs/axios",
+		// https://vuetifyjs.com/en/
+		"@nuxtjs/vuetify"
 	],
 
 	auth: {
@@ -107,13 +105,6 @@ export default {
 		VUE_APP_JWT_SECRET: process.env.VUE_APP_JWT_SECRET
 	},
 
-	// PWA module configuration: https://go.nuxtjs.dev/pwa
-	pwa: {
-		manifest: {
-			lang: "en"
-		}
-	},
-
 	// Build Configuration: https://go.nuxtjs.dev/config-build
 	build: {},
 
@@ -122,6 +113,13 @@ export default {
 		config: {
 			// hides source code from browser
 			productionSourceMap: false
+		}
+	},
+
+	// Vuetify config
+	vuetify: {
+		defaultAssets: {
+			icons: "md"
 		}
 	}
 };

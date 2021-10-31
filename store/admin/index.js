@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { sortLatestExperiences } from "../../logic/user";
+import { sortLatestExperiences } from "~/logic/experience";
 
 export const getters = {
 	getUser (state, getters, rootState) {

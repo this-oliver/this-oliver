@@ -1,17 +1,14 @@
 <template>
-	<div>
-		<b-row align-h="center">
-			<b-col class="mt-3" cols="11">
-				<article-form />
-			</b-col>
-		</b-row>
-	</div>
+	<base-page>
+		<article-form />
+	</base-page>
 </template>
 
 <script>
-	import ArticleForm from "~/components/article/ArticleForm.vue";
+import ArticleForm from "~/components/article/ArticleForm.vue";
+import BasePage from "~/components/base/BasePage.vue";
 
-	export default {
-		components: { ArticleForm }
-	};
+export default {
+	components: { ArticleForm, BasePage }
+};
 </script>

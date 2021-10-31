@@ -7,16 +7,15 @@ if (!Vue._GLOBAL_MIXIN_) {
 	Vue.mixin({
 		computed: {
 			...mapGetters({
-				isDarkTheme: "base/ui/isDarkTheme",
-				getTheme: "base/ui/getTheme",
-				getBootstrapTheme: "base/ui/getBootstrapTheme",
-				getBootstrapOutlineTheme: "base/ui/getBootstrapOutlineTheme",
-				getOppositeBootstrapTheme: "base/ui/getOppositeBootstrapTheme",
-				getOppositeBootstrapOutlineTheme: "base/ui/getOppositeBootstrapOutlineTheme"
+				isDarkMode: "base/theme/isDarkMode"
 			}),
 			inAdminMode () {
 				return false;
-			}
+			},
+			// screen size
+			isScreenMobile() { return this.$vuetify.breakpoint.name === "xs"; },
+			isScreenTablet() { return this.$vuetify.breakpoint.name === "sm"; },
+			isScreenDesktop() { return this.$vuetify.breakpoint.name === "md" || this.$vuetify.breakpoint.name === "lg"; }
 		}
 	});
 }

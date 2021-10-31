@@ -1,143 +1,92 @@
 <template>
-	<div>
-		<!-- name -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				class="form-subtitle"
-				md="auto">
-				username
-			</b-col>
-			<b-col md="8">
-				<b-form-input
-					v-model="form.name"
-					:state="validateName"
-					placeholder="name" />
-			</b-col>
-		</b-row>
-		<!-- email -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				class="form-subtitle"
-				md="auto">
-				email
-			</b-col>
-			<b-col md="8">
-				<b-form-input
-					v-model="form.email"
-					:state="validateEmail"
-					placeholder="email" />
-			</b-col>
-		</b-row>
-		<!-- password -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				class="form-subtitle"
-				md="2">
-				password
-			</b-col>
-			<b-col md="auto">
-				<b-form inline>
-					<b-form-input
-						v-model="form.password"
-						class="mr-1"
-						type="password"
-						:state="validatePassword"
-						placeholder="password" />
-					<b-form-input
-						v-model="form.password2"
-						class="mr-1"
-						type="password"
-						:state="validatePassword2"
-						placeholder="re-enter password" />
-				</b-form>
-			</b-col>
-		</b-row>
+	<base-form>
+		<input-text
+			v-model="form.name"
+			label="username" />
+		<input-email v-model="form.email" />
+		<input-password v-model="form.password" />
+		<input-password v-model="form.password2" />
 
 		<!-- actions -->
-		<b-row
+		<v-row
 			v-if="editMode"
 			class="mt-2"
-			align-h="between">
-			<b-col
+			justify="space-between">
+			<v-col
 				class="mt-1"
 				sm="3"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="secondary"
+					color="secondary"
 					@click="$router.go(-1)">
 					back
-				</b-button>
-			</b-col>
-			<b-col
+				</v-btn>
+			</v-col>
+			<v-col
 				class="mt-1"
 				sm="11"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="warning"
+					color="warning"
 					:disabled="!validateForm"
 					@click="updateUser({ name: form.name, email: form.email })">
 					update
-				</b-button>
-			</b-col>
-		</b-row>
-		<b-row
+				</v-btn>
+			</v-col>
+		</v-row>
+		<v-row
 			v-else
 			class="mt-2"
-			align-h="end">
-			<b-col
+			justify="end">
+			<v-col
 				v-if="!editMode"
 				class="mt-1"
 				sm="11"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="primary"
+					color="primary"
 					:disabled="!validateForm"
 					@click="
 						postUser({
 							name: form.name,
 							email: form.email,
 							password: form.password
-						})
-					">
+						})">
 					post
-				</b-button>
-			</b-col>
-		</b-row>
-	</div>
+				</v-btn>
+			</v-col>
+		</v-row>
+	</base-form>
 </template>
 
 <script>
-	import { mapActions, mapGetters } from "vuex";
-	import { isEmail } from "../../utils/validator";
+import { mapActions, mapGetters } from "vuex";
+import { isEmail } from "../../utils/validate";
+import InputText from "../base/InputText.vue";
 
-	export default {
-		name: "UserForm",
-		props: {
-			editMode: {
-				type: Boolean,
-				default: false
+export default {
+	name: "UserForm",
+	components: { InputText },
+	props: {
+		editMode: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data () {
+		return {
+			form: {
+				name: null,
+				email: null,
+				password: null,
+				password2: null
 			}
-		},
-		data () {
-			return {
-				form: {
-					name: null,
-					email: null,
-					password: null,
-					password2: null
-				}
-			};
-		},
-		computed: {
+		};
+	},
+	computed: {
 			...mapGetters({
 				user: "user/getUser"
 			}),
@@ -174,12 +123,12 @@
 						this.validatePassword2 === true
 					);
 			}
-		},
-		methods: {
+	},
+	methods: {
 			...mapActions({
 				postUser: "admin/register",
 				updateUser: "admin/patch"
 			})
-		}
-	};
+	}
+};
 </script>

@@ -1,28 +1,5 @@
-html,
-body {
-	height: 100%;
-	width: 100%;
-}
+/* app styles */
 
-.app-container {
-	min-height: 100vh;
-
-	display: grid;
-	grid-template-rows: auto 1fr auto;
-}
-
-.app-content {
-	min-height: 50vh;
-}
-
-.app-footer {
-	margin-top: 1.5em;
-	margin-bottom: 1.5em;
-}
-
-@media screen and (max-width: 480px) {
-	.app-footer {
-		display: grid;
-		place-items: center;
-	}
+.main-content{
+	margin-bottom: 10vh;
 }
