@@ -1,34 +1,35 @@
 <template>
 	<div>
-		<v-row justify="space-between">
+		<v-row justify="center">
 			<v-col
-				cols="6"
-				class="general-title">
-				About Me
+				cols="12"
+				class="text-center">
+				<h1>About Me</h1>
+			</v-col>
+			<v-col
+				v-if="editMode"
+				cols="6">
 				<v-btn
-					v-if="editMode"
 					class="mx-1"
-					pill
-					size="sm"
 					color="warning"
 					to="/admin/edit">
 					update
 				</v-btn>
 			</v-col>
-			<v-col
-				cols="auto"
-				md="auto">
+			<v-col cols="auto">
 				<v-btn
 					class="mx-1"
-					color="error"
-					:outlined="showShortBio === false"
+					small
+					color="primary"
+					:outlined="showShortBio === true"
 					@click="toggleBio">
 					short
 				</v-btn>
 				<v-btn
 					class="mx-1"
-					color="primary"
-					:outlined="showShortBio === true"
+					small
+					color="error"
+					:outlined="showShortBio === false"
 					@click="toggleBio">
 					long
 				</v-btn>
