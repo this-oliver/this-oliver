@@ -3,7 +3,7 @@
 		app
 		absolute
 		padless
-		class="rounded-lg py-2"
+		class="rounded-lg py-2 px-2"
 		rounded="rounded-t">
 		<v-row
 			justify="space-between"
