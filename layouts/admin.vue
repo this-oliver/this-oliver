@@ -24,8 +24,8 @@ export default {
 	name: "Admin",
 	components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar },
 	created(){
-		this.$store.commit("base/theme/setDarkMode", true);
-		this.$vuetify.theme.dark = this.$store.getters["base/theme/isDarkMode"];
+		this.$store.commit("app/theme/setDarkMode", true);
+		this.$vuetify.theme.dark = this.$store.getters["app/theme/isDarkMode"];
 	}
 };
 </script>

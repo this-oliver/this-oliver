@@ -59,9 +59,9 @@ export default {
 	name: "TheNavbar",
 	computed: {
 			...mapGetters({
-				links: "base/nav/getLinks",
-				adminLinks: "base/nav/getAdminLinks",
-				showSidebar: "base/nav/showSidebar"
+				links: "app/nav/getLinks",
+				adminLinks: "app/nav/getAdminLinks",
+				showSidebar: "app/nav/showSidebar"
 			}),
 			loggedIn () {
 				return this.$auth.loggedIn;
@@ -69,7 +69,7 @@ export default {
 	},
 	methods: {
 			...mapMutations({
-				setSidebar: "base/nav/setSidebar"
+				setSidebar: "app/nav/setSidebar"
 			}),
 			async logout () {
 				await this.$auth.logout();

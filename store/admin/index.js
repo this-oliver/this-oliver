@@ -39,7 +39,7 @@ export const actions = {
 			context.commit("setUser", user);
 			return user;
 		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Patching User", message: error.message }, { root: true });
+			context.commit("app/toaster/addError", { title: "Patching User", message: error.message }, { root: true });
 		}
 	},
 	reset (context) {

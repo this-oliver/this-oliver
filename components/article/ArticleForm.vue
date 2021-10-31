@@ -192,7 +192,7 @@ export default {
 				await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish });
 				this.$router.push("/admin/articles");
 			} catch (error) {
-				this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
+				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
 			}
 		},
 		async updateArticle () {
@@ -200,15 +200,15 @@ export default {
 				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
 				this.$router.push("/admin/articles");
 			} catch (error) {
-				this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
+				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
 			}
 		},
 		async saveArticle () {
 			try {
 				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
-				this.$store.commit("base/toaster/addSuccess", { title: `Article ${this.article._id}`, message: "Saved" });
+				this.$store.commit("app/toaster/addSuccess", { title: `Article ${this.article._id}`, message: "Saved" });
 			} catch (error) {
-				this.$store.commit("base/toaster/addError", { title: "Article", message: error.message });
+				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
 			}
 		},
 		getParsedContent (text) {

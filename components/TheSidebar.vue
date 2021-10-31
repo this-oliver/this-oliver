@@ -54,12 +54,12 @@ export default {
 	name: "TheSidebar",
 	computed: {
 			...mapGetters({
-				links: "base/nav/getLinks",
-				adminLinks: "base/nav/getAdminLinks"
+				links: "app/nav/getLinks",
+				adminLinks: "app/nav/getAdminLinks"
 			}),
 			showSidebar: {
-				get: function() { return this.$store.getters["base/nav/showSidebar"];},
-				set: function(value) { return this.$store.commit("base/nav/setSidebar", value);}
+				get: function() { return this.$store.getters["app/nav/showSidebar"];},
+				set: function(value) { return this.$store.commit("app/nav/setSidebar", value);}
 			},
 			loggedIn () {
 				return this.$auth.loggedIn;
@@ -70,7 +70,7 @@ export default {
 			}),
 			async logout () {
 				await this.$auth.logout();
-				this.$store.commit("base/nav/setSidebar", false);
+				this.$store.commit("app/nav/setSidebar", false);
 				this.$router.push("/");
 			}
 	}

@@ -40,9 +40,9 @@ export default {
 	},
 	computed: {
 			...mapGetters({
-				success: "base/toaster/getSuccess",
-				warnings: "base/toaster/getWarnings",
-				errors: "base/toaster/getErrors"
+				success: "app/toaster/getSuccess",
+				warnings: "app/toaster/getWarnings",
+				errors: "app/toaster/getErrors"
 			})
 	},
 	watch: {
@@ -56,7 +56,7 @@ export default {
 				// toast success title and message
 				this.toastSuccess(title, message);
 				// remove success
-				this.$store.commit("base/toaster/removeSuccess");
+				this.$store.commit("app/toaster/removeSuccess");
 			}
 		},
 		warnings (newWarnings) {
@@ -69,7 +69,7 @@ export default {
 				// toast warning title and message
 				this.toastWarning(title, message);
 				// remove warning
-				this.$store.commit("base/toaster/removeWarning");
+				this.$store.commit("app/toaster/removeWarning");
 			}
 		},
 		errors (newErrors) {
@@ -82,7 +82,7 @@ export default {
 				// toast error title and message
 				this.toastErrors(title, message);
 				// remove error
-				this.$store.commit("base/toaster/removeError");
+				this.$store.commit("app/toaster/removeError");
 			}
 		}
 	},

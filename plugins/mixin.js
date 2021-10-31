@@ -7,7 +7,7 @@ if (!Vue._GLOBAL_MIXIN_) {
 	Vue.mixin({
 		computed: {
 			...mapGetters({
-				isDarkMode: "base/theme/isDarkMode"
+				isDarkMode: "app/theme/isDarkMode"
 			}),
 			inAdminMode () {
 				return false;
