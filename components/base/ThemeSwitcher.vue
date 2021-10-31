@@ -8,7 +8,7 @@
 				light_mode
 			</v-icon>
 		</v-list-item-icon>
-		{{ $t("components.sidebar.theme") }}
+		theme
 		<v-spacer />
 		<v-list-item-action>
 			<v-switch
@@ -32,10 +32,11 @@
 	<v-btn
 		v-else
 		:block="block"
+		:text="!hideText"
 		@click="setDarkTheme(!showDarkTheme)">
 		<span v-if="!hideText">
-			<span v-if="showDarkTheme">{{ $t("components.sidebar.theme-dark") }}</span>
-			<span v-else>{{ $t("components.sidebar.theme-light") }}</span>
+			<span v-if="showDarkTheme">dark</span>
+			<span v-else>light</span>
       &nbsp;
 		</span>
 		<v-icon v-if="showDarkTheme">
@@ -69,16 +70,16 @@ export default {
 	},
 	computed: {
 		showDarkTheme:  {
-			get: function(){ return this.$store.getters["global/theme/isDarkTheme"];},
+			get: function(){ return this.$store.getters["app/theme/isDarkMode"];},
 			set: function(value){
-				this.$store.commit("global/theme/setDarkTheme", value);
+				this.$store.commit("app/theme/setDarkMode", value);
 				this.$vuetify.theme.dark = value;
 			}
 		}
 	},
 	methods: {
 		setDarkTheme(value){
-			this.$store.commit("global/theme/setDarkTheme", value);
+			this.$store.commit("app/theme/setDarkMode", value);
 			this.$vuetify.theme.dark = value;
 		}
 	}

@@ -23,7 +23,9 @@
 				{{ link.title }}
 			</v-btn>
 
-			<v-menu offset-y>
+			<v-menu
+				offset-y
+				class="mx-2">
 				<template #activator="{ on, attrs }">
 					<v-btn
 						text
@@ -43,6 +45,8 @@
 					</v-list-item>
 				</v-list>
 			</v-menu>
+
+			<theme-switcher :icon-mode="true" />
 		</div>
 
 
@@ -55,8 +59,12 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import ThemeSwitcher from "~/components/base/ThemeSwitcher.vue";
 export default {
 	name: "TheNavbar",
+	components: {
+		ThemeSwitcher
+	},
 	computed: {
 			...mapGetters({
 				links: "app/nav/getLinks",

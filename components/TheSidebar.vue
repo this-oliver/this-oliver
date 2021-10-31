@@ -19,39 +19,56 @@
 			<v-list-item
 				v-for="link in links"
 				:key="link.title"
+				exact
 				:to="link.route">
 				{{ link.title }}
 			</v-list-item>
 		</v-list>
 
-		<template #append>
-			<v-list
-				v-if="loggedIn"
-				nav
-				class="mb-4">
-				<v-subheader>👨🏾‍🦱 admin</v-subheader>
-				<v-list-item
-					v-for="link in adminLinks"
-					:key="link.title"
-					:to="link.route">
-					{{ link.title }}
-				</v-list-item>
+		<v-divider v-if="loggedIn" />
+
+		<v-list
+			v-if="loggedIn"
+			class="mt-2"
+			nav>
+			<v-subheader>👨🏾‍🦱 admin</v-subheader>
+			<v-list-item
+				v-for="link in adminLinks"
+				:key="link.title"
+				exact
+				:to="link.route">
+				{{ link.title }}
+			</v-list-item>
+			<v-list-item>
 				<v-btn
 					block
 					color="error"
 					@click="logout">
 					logout
 				</v-btn>
-			</v-list>
+			</v-list-item>
+		</v-list>
+
+		<v-divider />
+		<theme-switcher
+			class="mt-2 mb-4"
+			:list-mode="true" />
+
+		<template #append>
+			<theme-switcher
+				class="mt-2 mb-4"
+				:list-mode="true" />
 		</template>
 	</v-navigation-drawer>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import ThemeSwitcher from "./base/ThemeSwitcher.vue";
 
 export default {
 	name: "TheSidebar",
+	components: { ThemeSwitcher },
 	computed: {
 			...mapGetters({
 				links: "app/nav/getLinks",
