@@ -1,176 +1,98 @@
 <template>
-	<div>
-		<!-- title -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				sm="6"
-				md="auto">
-				<span class="form-subtitle mr-3">title</span>
-			</b-col>
-			<b-col
-				class="mt-2"
-				cols="12">
-				<b-form-input
+	<base-form title="experience form">
+		<v-row justify="space-between">
+			<v-col cols="12">
+				<input-text
 					v-model="form.title"
-					class="mr-2 mr-sm-0 mb-xs-1"
-					placeholder="title" />
-			</b-col>
-		</b-row>
-		<!-- org -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				sm="6"
-				md="auto">
-				<span class="form-subtitle mr-3">org</span>
-			</b-col>
-			<b-col
-				class="mt-2"
-				cols="12">
-				<b-form-input
+					label="title" />
+			</v-col>
+			<v-col cols="12">
+				<input-text
 					v-model="form.org"
-					class="mr-2 mr-sm-0 mb-xs-1"
-					placeholder="org" />
-			</b-col>
-		</b-row>
-		<!-- years -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				sm="6"
-				md="auto">
-				<span class="form-subtitle mr-3">years</span>
-			</b-col>
-			<b-col
-				class="mt-2"
-				cols="12">
-				<b-form inline>
-					<b-form-input
-						v-model="form.startYear"
-						class="mr-2"
-						type="number"
-						placeholder="start" />
-					<b-form-input
-						v-model="form.endYear"
-						class="mr-2"
-						type="number"
-						placeholder="end" />
-				</b-form>
-			</b-col>
-		</b-row>
-		<!-- description -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				sm="6"
-				md="auto">
-				<span class="form-subtitle mr-3">description</span>
-				<small>{{ getDescriptionLength }}</small>
-			</b-col>
-			<b-col
-				sm="auto"
-				md="auto">
-				<span
-					class="simple-link"
-					variant="outline-primary"
-					@click="previewDescription = true">
-					preview
-				</span>
-			</b-col>
-			<b-col
-				class="mt-2"
-				cols="12">
-				<b-textarea
+					label="org" />
+			</v-col>
+			<v-col
+				cols="12"
+				md="6">
+				<input-text
+					v-model="form.startYear"
+					label="start year" />
+			</v-col>
+			<v-col
+				cols="12"
+				md="6">
+				<input-text
+					v-model="form.endYear"
+					label="end year" />
+			</v-col>
+			<v-col cols="12">
+				<input-text-block
 					v-model="form.description"
-					placeholder="description"
-					rows="4" />
-			</b-col>
-		</b-row>
-		<!-- type -->
-		<b-row
-			class="mt-2"
-			align-h="between">
-			<b-col
-				sm="6"
-				md="auto">
-				<span class="form-subtitle mr-3">type</span>
-			</b-col>
-			<b-col
-				class="mt-2"
-				cols="12">
-				<b-form-select
+					label="description" />
+			</v-col>
+			<v-col cols="12">
+				<input-select
 					v-model="form.type"
-					:options="getExperienceOptions">
-					<template #first>
-						<b-form-select-option
-							:value="null"
-							disabled>
-							type
-						</b-form-select-option>
-					</template>
-				</b-form-select>
-			</b-col>
-		</b-row>
+					label="type"
+					:items="getExperienceOptions" />
+			</v-col>
+		</v-row>
+
 		<!-- actions -->
-		<b-row
+		<v-row
 			class="mt-2"
-			align-h="between">
-			<b-col
+			justify="space-between">
+			<v-col
 				class="mt-1"
 				sm="3"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="secondary"
+					color="secondary"
 					@click="$router.go(-1)">
 					back
-				</b-button>
-			</b-col>
-			<b-col
+				</v-btn>
+			</v-col>
+			<v-col
 				v-if="editMode"
 				class="mt-1 ml-auto"
 				sm="11"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="outline-danger"
+					color="outline-error"
 					@click="deleteExperience">
 					delete
-				</b-button>
-			</b-col>
-			<b-col
+				</v-btn>
+			</v-col>
+			<v-col
 				v-if="editMode"
 				class="mt-1"
 				sm="11"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="dark"
+					color="dark"
 					@click="updateExperience">
 					update
-				</b-button>
-			</b-col>
-			<b-col
+				</v-btn>
+			</v-col>
+			<v-col
 				v-if="!editMode"
 				class="mt-1"
 				sm="11"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="primary"
+					color="primary"
 					@click="postExperience">
 					post
-				</b-button>
-			</b-col>
-		</b-row>
+				</v-btn>
+			</v-col>
+		</v-row>
 
 		<!-- modals -->
-		<b-modal
+		<v-dialog
 			v-model="previewDescription"
 			title="preview: short"
 			hide-footer
@@ -180,67 +102,72 @@
 				<span v-html="getParsedContent(form.description)" />
 			</span>
 			<span v-else>...</span>
-		</b-modal>
-	</div>
+		</v-dialog>
+	</base-form>
 </template>
 
 <script>
-	import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 
-	import { MarkdownToHtml } from "../../utils/markdown";
-	import { getWordCount } from "../../utils/string";
+import { MarkdownToHtml } from "../../utils/markdown";
+import { getWordCount } from "../../utils/string";
 
-	import { EXPERIENCES } from "../../logic/enums";
-	export default {
-		name: "ExperienceForm",
-		props: {
-			editMode: {
-				type: Boolean,
-				default: false
+import { EXPERIENCES } from "../../logic/enums";
+import BaseForm from "../base/BaseForm.vue";
+import InputText from "../base/InputText.vue";
+import InputTextBlock from "../base/InputTextBlock.vue";
+import InputSelect from "../base/InputSelect.vue";
+export default {
+	name: "ExperienceForm",
+	components: { BaseForm, InputText, InputTextBlock, InputSelect },
+	props: {
+		editMode: {
+			type: Boolean,
+			default: false
+		},
+		experience: {
+			type: Object,
+			default: null
+		}
+	},
+	data () {
+		return {
+			form: {
+				title: null,
+				org: null,
+				startYear: null,
+				endYear: null,
+				description: null,
+				type: null
 			},
-			experience: {
-				type: Object,
-				default: null
+			previewDescription: false
+		};
+	},
+	computed: {
+		getDescriptionLength () {
+			const desc = this.form.description;
+			return getWordCount(desc);
+		},
+		getExperienceOptions () {
+			const types = [];
+			for (const key in EXPERIENCES) {
+				types.push({ value: EXPERIENCES[key], text: EXPERIENCES[key] });
 			}
-		},
-		data () {
-			return {
-				form: {
-					title: null,
-					org: null,
-					startYear: null,
-					endYear: null,
-					description: null,
-					type: null
-				},
-				previewDescription: false
-			};
-		},
-		computed: {
-			getDescriptionLength () {
-				const desc = this.form.description;
-				return getWordCount(desc);
-			},
-			getExperienceOptions () {
-				const types = [];
-				for (const key in EXPERIENCES) {
-					types.push({ value: EXPERIENCES[key], text: EXPERIENCES[key] });
-				}
-				return types;
-			}
-		},
-		created () {
-			const experience = this.experience;
-			if (this.editMode && experience !== null) {
-				this.form.title = experience.title;
-				this.form.org = experience.org;
-				this.form.startYear = experience.startYear;
-				this.form.endYear = experience.endYear;
-				this.form.description = experience.description;
-				this.form.type = experience.type;
-			}
-		},
-		methods: {
+			return types;
+		}
+	},
+	created () {
+		const experience = this.experience;
+		if (this.editMode && experience !== null) {
+			this.form.title = experience.title;
+			this.form.org = experience.org;
+			this.form.startYear = experience.startYear;
+			this.form.endYear = experience.endYear;
+			this.form.description = experience.description;
+			this.form.type = experience.type;
+		}
+	},
+	methods: {
 			...mapActions({
 				postExperience: "admin/experiences/post",
 				updateExperience: "admin/experiences/patch",
@@ -251,7 +178,7 @@
 					await this.$store.dispatch("admin/experiences/post", { title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
 					this.$router.push("/admin/experiences");
 				} catch (error) {
-					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
+					this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 				}
 			},
 			async updateExperience () {
@@ -259,7 +186,7 @@
 					await this.$store.dispatch("admin/experiences/patch", { id: this.$route.params.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
 					this.$router.push("/admin/experiences");
 				} catch (error) {
-					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
+					this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 				}
 			},
 			async deleteExperience () {
@@ -267,7 +194,7 @@
 					await this.$store.dispatch("admin/experiences/delete", this.$route.params.experience._id);
 					this.$router.push("/admin/experiences");
 				} catch (error) {
-					this.$store.commit("base/toaster/addError", { title: "Experience", message: error.message });
+					this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 				}
 			},
 			getParsedContent (text) {
@@ -277,6 +204,6 @@
 					return null;
 				}
 			}
-		}
-	};
+	}
+};
 </script>

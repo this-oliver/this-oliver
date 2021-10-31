@@ -31,13 +31,13 @@ export const getters = {
 	getAdminLinks (state) {
 		return [...state.adminLinks];
 	},
-	isSidebarVisible (state) {
+	showSidebar (state) {
 		return state.showSidebar;
 	}
 };
 
 export const mutations = {
-	showSidebar (state, show) {
+	setSidebar (state, show) {
 		state.showSidebar = show;
 	}
 };

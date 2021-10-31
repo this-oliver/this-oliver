@@ -1,17 +1,21 @@
 <template>
-	<div>
-		<b-row align-h="center">
-			<b-col cols="auto">
-				<b-badge variant="warning">
+	<base-page>
+		<v-row justify="center">
+			<v-col cols="auto">
+				<v-chip color="warning">
 					🔍 the page you are looking for is not available
-				</b-badge>
-			</b-col>
-		</b-row>
-	</div>
+				</v-chip>
+			</v-col>
+		</v-row>
+	</base-page>
 </template>
 
 <script>
-	export default {
-		name: "Missing"
-	};
+import BasePage from "~/components/base/BasePage.vue";
+export default {
+	name: "Missing",
+	components: {
+		BasePage
+	}
+};
 </script>

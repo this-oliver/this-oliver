@@ -34,7 +34,7 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
+			context.commit("app/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
 	async index (context) {
@@ -46,7 +46,7 @@ export const actions = {
 
 			return articles;
 		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
+			context.commit("app/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
 		}
 	},
 	async incrementViews (context, id) {
@@ -56,7 +56,7 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Patching Article", message: error.message }, { root: true });
+			context.commit("app/toaster/addError", { title: "Patching Article", message: error.message }, { root: true });
 		}
 	},
 	async like (context, id) {
@@ -69,7 +69,7 @@ export const actions = {
 
 			return article;
 		} catch (error) {
-			context.commit("base/toaster/addError", { title: "Patching Article", message: error.message }, { root: true });
+			context.commit("app/toaster/addError", { title: "Patching Article", message: error.message }, { root: true });
 		}
 	}
 };

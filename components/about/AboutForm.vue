@@ -1,165 +1,156 @@
 <template>
-	<div>
+	<base-form title="about you">
 		<!-- short bio -->
-		<b-row
+		<v-row
 			class="mt-2"
-			align-h="between">
-			<b-col
+			justify="space-between">
+			<v-col
 				sm="6"
 				md="auto">
 				<span class="form-subtitle mr-3">short</span>
 				<small>{{ getShortLength }}</small>
-			</b-col>
-			<b-col
+			</v-col>
+			<v-col
 				sm="auto"
 				md="auto">
 				<span
 					class="simple-link"
-					variant="outline-primary"
+					color="outline-primary"
 					@click="showShortBioForm=true">
 					preview
 				</span>
-			</b-col>
-			<b-col
+			</v-col>
+			<v-col
 				class="mt-2"
 				cols="12">
-				<b-textarea
-					v-model="form.short"
-					rows="8" />
-			</b-col>
-		</b-row>
+				<input-text-block v-model="form.short" />
+			</v-col>
+		</v-row>
 		<!-- long bio -->
-		<b-row
+		<v-row
 			class="mt-2"
-			align-h="between">
-			<b-col
+			justify="space-between">
+			<v-col
 				sm="6"
 				md="auto">
 				<span class="form-subtitle mr-3">long</span>
 				<small>{{ getLongLength }}</small>
-			</b-col>
-			<b-col
+			</v-col>
+			<v-col
 				sm="auto"
 				md="auto">
 				<span
 					class="simple-link"
-					variant="outline-primary"
+					color="outline-primary"
 					@click="showLongBioForm=true">
 					preview
 				</span>
-			</b-col>
-			<b-col
+			</v-col>
+			<v-col
 				class="mt-2"
 				cols="12">
-				<b-textarea
-					v-model="form.long"
-					rows="8" />
-			</b-col>
-		</b-row>
+				<input-text-block v-model="form.short" />
+			</v-col>
+		</v-row>
 		<!-- actions -->
-		<b-row
+		<v-row
 			class="mt-2"
-			align-h="between">
-			<b-col
+			justify="space-between">
+			<v-col
 				class="mt-1"
 				sm="3"
 				md="3">
-				<b-button
+				<v-btn
 					block
-					variant="secondary"
+					color="secondary"
 					@click="$router.go(-1)">
 					back
-				</b-button>
-			</b-col>
-			<b-col
+				</v-btn>
+			</v-col>
+			<v-col
 				class="mt-1"
 				sm="8"
 				md="3">
-				<b-button
+				<v-btn
 					v-if="editMode"
 					block
-					variant="warning"
+					color="warning"
 					@click="update({name: null, email: null, short: form.short, long: form.long})">
 					update
-				</b-button>
-				<b-button
+				</v-btn>
+				<v-btn
 					v-else
 					block
-					variant="primary"
+					color="primary"
 					@click="post">
 					post
-				</b-button>
-			</b-col>
-		</b-row>
+				</v-btn>
+			</v-col>
+		</v-row>
 
 		<!-- modals -->
-		<b-modal
-			v-model="showShortBioForm"
-			title="preview: short"
-			hide-footer
-			size="xl">
+		<v-dialog v-model="showShortBioForm">
 			<span v-if="form.short && form.short.length > 0">
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<span v-html="getParsedContent(form.short)" />
 			</span>
 			<span v-else>...</span>
-		</b-modal>
-		<b-modal
-			v-model="showLongBioForm"
-			title="preview: long"
-			hide-footer
-			size="xl">
+		</v-dialog>
+		<v-dialog v-model="showLongBioForm">
 			<span v-if="form.long && form.long.length > 0">
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<span v-html="getParsedContent(form.long)" />
 			</span>
 			<span v-else>...</span>
-		</b-modal>
-	</div>
+		</v-dialog>
+	</base-form>
 </template>
 
 <script>
-	import { mapActions } from "vuex";
-	import { MarkdownToHtml } from "../../utils/markdown";
-	import { getWordCount } from "../../utils/string";
+import { mapActions } from "vuex";
+import { MarkdownToHtml } from "../../utils/markdown";
+import { getWordCount } from "../../utils/string";
+import BaseForm from "../base/BaseForm.vue";
+import InputTextBlock from "../base/InputTextBlock.vue";
 
-	export default {
-		name: "AboutForm",
-		props: {
-			editMode: {
-				type: Boolean,
-				default: false
-			}
-		},
-		data () {
-			return {
-				form: {
-					short: null,
-					long: null
-				},
-				showShortBioForm: false,
-				showLongBioForm: false
-			};
-		},
-		computed: {
-			getShortLength () {
-				const short = this.form.short;
-				return getWordCount(short);
+export default {
+	name: "AboutForm",
+	components: { BaseForm, InputTextBlock },
+	props: {
+		editMode: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data () {
+		return {
+			form: {
+				short: null,
+				long: null
 			},
-			getLongLength () {
-				const long = this.form.long;
-				return getWordCount(long);
-			}
+			showShortBioForm: false,
+			showLongBioForm: false
+		};
+	},
+	computed: {
+		getShortLength () {
+			const short = this.form.short;
+			return getWordCount(short);
 		},
-		created () {
-			if (this.editMode) {
-				const user = this.$store.getters["admin/getUser"];
-				if (!user) { return; }
-				this.form.short = user.bio.short;
-				this.form.long = user.bio.long;
-			}
-		},
-		methods: {
+		getLongLength () {
+			const long = this.form.long;
+			return getWordCount(long);
+		}
+	},
+	created () {
+		if (this.editMode) {
+			const user = this.$store.getters["admin/getUser"];
+			if (!user) { return; }
+			this.form.short = user.bio.short;
+			this.form.long = user.bio.long;
+		}
+	},
+	methods: {
 			...mapActions({
 				update: "admin/patch"
 			}),
@@ -170,6 +161,6 @@
 					return null;
 				}
 			}
-		}
-	};
+	}
+};
 </script>

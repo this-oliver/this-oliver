@@ -1,36 +1,39 @@
 <template>
-	<div>
-		<b-row v-if="!article" align-h="center">
-			<b-col cols="auto">
-				<b-badge variant="warning">
+	<base-page>
+		<v-row
+			v-if="!article"
+			justify="center">
+			<v-col cols="auto">
+				<v-chip color="warning">
 					🚦 article could not load
-				</b-badge>
-			</b-col>
-		</b-row>
-		<b-row v-else>
-			<b-col cols="12">
+				</v-chip>
+			</v-col>
+		</v-row>
+		<v-row v-else>
+			<v-col cols="12">
 				<article-single :article="article" />
-			</b-col>
-		</b-row>
-	</div>
+			</v-col>
+		</v-row>
+	</base-page>
 </template>
 
 <script>
-	import ArticleSingle from "~/components/article/ArticleSingle.vue";
+import ArticleSingle from "~/components/article/ArticleSingle.vue";
+import BasePage from "~/components/base/BasePage.vue";
 
-	export default {
-		components: {
-			ArticleSingle
-		},
-		async asyncData ({ store, params, error }) {
-			const id = params.id;
-			const article = await store.dispatch("admin/articles/get", id);
-
-			if (article === null) {
-				return error({ statusCode: 404, message: "article couldn't load" });
-			}
-
-			return { article };
-		}
-	};
+export default {
+	components: {
+		ArticleSingle,
+		BasePage
+	},
+	data(){
+		return {
+			article: null
+		};
+	},
+	async mounted () {
+		const id = this.$route.params.id;
+		this.article = await this.$store.dispatch("admin/articles/get", id);
+	}
+};
 </script>

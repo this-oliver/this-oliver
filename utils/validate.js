@@ -4,9 +4,8 @@
  * @returns {Boolean}
  */
 export const isNotEmpty = (string) => {
-	if (string === null) {
-		throw new Error("(IsNotEmpty) String Not Provided");
-	}
+	if (string === null) return false;
+
 	if (string.length <= 0) {
 		return false;
 	}
@@ -19,9 +18,7 @@ export const isNotEmpty = (string) => {
  * @returns {Boolean}
  */
 export const isEmail = (email) => {
-	if (email === null) {
-		throw new Error("(isEmail) Email Not Provided");
-	}
+	if (email === null) return false;
 	const emailPattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
 	return email.match(emailPattern) !== null;
 };
@@ -32,9 +29,7 @@ export const isEmail = (email) => {
  * @returns {Boolean}
  */
 export const isValidPasswordLength = (password) => {
-	if (password === null) {
-		throw new Error("(isValidPasswordLength) Password Not Provided");
-	}
+	if (password === null) return false;
 	return password.length >= 8;
 };
 
@@ -46,4 +41,14 @@ export const isValidPasswordLength = (password) => {
  */
 export const equalObjectIds = (id1, id2) => {
 	return String(id1) === String(id2);
+};
+
+/**
+ * Returns true if values match
+ * @param {String} val1
+ * @param {String} val2
+ * @returns {Boolean}
+ */
+export const isMatching = (val1, val2) => {
+	return val1 === val2;
 };

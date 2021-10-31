@@ -1,13 +1,11 @@
-body {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1.25rem;
+/* font styles  */
+html, body {
+	word-break: break-word;
 }
 
 .brand {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-weight: bolder;
-	font-size: 2.5rem;
-	color: inherit;
 }
 
 /* general */
@@ -34,8 +32,13 @@ body {
 	cursor: pointer;
 }
 
+.hide-link {
+	color: inherit !important;
+	text-decoration: none;
+}
+
 .simple-link {
-	color: inherit;
+	color: inherit !important;
 	text-decoration: underline;
 }
 
@@ -52,24 +55,7 @@ body {
 	margin-top: 1.5em;
 }
 
-/* page */
-
-.page-title {
-	font-size: 5rem;
-	font-weight: bold;
-}
-
-.page-subtitle {
-	font-size: 2.5rem;
-	font-weight: bold;
-}
-
 /* forms */
-
-.form-title {
-	font-size: 2rem;
-	font-weight: bold;
-}
 
 .form-subtitle {
 	font-size: 1.5rem;
@@ -117,13 +103,6 @@ body {
 	.brand {
 		font-family: monospace;
 		font-weight: bolder;
-		font-size: 2rem;
-	}
-
-	.page-title {
-		font-family: monospace;
-		font-size: 5rem;
-		font-weight: bold;
 	}
 
 	.general-title {

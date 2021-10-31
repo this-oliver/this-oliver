@@ -1,60 +1,71 @@
 <template>
-	<div>
-		<b-row align-h="center" class="mt-3">
-			<b-col sm="11" md="10">
-				<about-me :short="getShortBio" :long="getLongBio" />
-			</b-col>
-		</b-row>
-	</div>
+	<base-page>
+		<v-row
+			justify="center"
+			class="mt-3">
+			<v-col
+				sm="11"
+				md="10">
+				<about-me
+					:short="getShortBio"
+					:long="getLongBio" />
+			</v-col>
+		</v-row>
+	</base-page>
 </template>
 
 <script>
-	import AboutMe from "~/components/about/AboutMe.vue";
-	import { STORAGE } from "~/logic/enums";
-	import { getTextDescription } from "~/utils/string";
+import { mapGetters } from "vuex";
 
-	export default {
-		components: {
-			AboutMe
+import AboutMe from "~/components/about/AboutMe.vue";
+import BasePage from "~/components/base/BasePage.vue";
+
+import { STORAGE } from "~/logic/enums";
+import { getTextDescription } from "~/utils/string";
+
+export default {
+	components: {
+		BasePage,
+		AboutMe
+	},
+	head () {
+		return {
+			meta: [
+				{ charset: "utf-8" },
+				{ name: "viewport", content: "width=device-width, initial-scale=1" },
+				{ hid: "description", name: "description", content: `${getTextDescription(this.getShortBio)}...` }
+			],
+			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+		};
+	},
+	computed: {
+		...mapGetters({
+			oliver: "user/getUser"
+		}),
+		getShortBio () {
+			return (this.oliver) ? this.oliver.bio.short : "My name is Oliver and I'm a software engineer. I'm studying information security. My interests are coding, entrepreneurship and blockchain technology.";
 		},
-		async asyncData ({ store, $auth }) {
-			// check if client has visited website before
-			const hasVisited = $auth.$storage.getUniversal(STORAGE.visitor);
+		getLongBio () {
+			return (this.oliver) ? this.oliver.bio.long : "My name is Oliver and I'm a coder with a software engineering background (BSc) that is currently studying information security (Msc) because I think it's interesting. I have worked at large enterprises and small startups.";
+		}
+	},
+	async mounted () {
+		// retreive oliver
+		await this.$store.dispatch("user/initUser");
 
-			// if user has never visited page
-			if (!hasVisited) {
-				try {
-					// increment visit count
-					await store.dispatch("user/incrementVisits");
-					// place a cookie on user device
-					$auth.$storage.setUniversal(STORAGE.visitor, STORAGE.visitor);
-				} catch (error) {
-				}
-			}
+		// check if client has visited website before
+		const hasVisited = this.$auth.$storage.getUniversal(STORAGE.visitor);
 
-			// retreive oliver
-			const oliver = await store.dispatch("user/initUser");
-
-			// return oliver
-			return { oliver };
-		},
-		head () {
-			return {
-				meta: [
-					{ charset: "utf-8" },
-					{ name: "viewport", content: "width=device-width, initial-scale=1" },
-					{ hid: "description", name: "description", content: `${getTextDescription(this.getShortBio)}...` }
-				],
-				link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
-			};
-		},
-		computed: {
-			getShortBio () {
-				return (this.oliver) ? this.oliver.bio.short : "My name is Oliver and I'm a software engineer. I'm studying information security. My interests are coding, entrepreneurship and blockchain technology.";
-			},
-			getLongBio () {
-				return (this.oliver) ? this.oliver.bio.long : "My name is Oliver and I'm a coder with a software engineering background (BSc) that is currently studying information security (Msc) because I think it's interesting. I have worked at large enterprises and small startups.";
+		// if user has never visited page
+		if (!hasVisited) {
+			try {
+				// increment visit count
+				await this.$store.dispatch("user/incrementVisits");
+				// place a cookie on user device
+				this.$auth.$storage.setUniversal(STORAGE.visitor, STORAGE.visitor);
+			} catch (error) {
 			}
 		}
-	};
+	}
+};
 </script>
