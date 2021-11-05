@@ -8,8 +8,10 @@
 		<span v-html="getParsedContent" />
 
 		<!-- date -->
-		<v-row>
-			<v-col cols="12">
+		<v-row dense>
+			<v-col
+				v-if="article.tags.length"
+				cols="12">
 				<!-- tags -->
 				<v-chip
 					v-for="tag in article.tags"
