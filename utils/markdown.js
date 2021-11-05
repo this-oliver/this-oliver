@@ -10,11 +10,11 @@ const renderConfig = {
 	heading (text, level) {
 		function getHeaderClass (classLevel) {
 			switch (classLevel) {
-			case 1:
+			case 1: // header
 				return "article-section";
-			case 2:
+			case 2: // sub header
 				return "article-subsection";
-			default:
+			default: // sub sub header
 				return "article-subsection";
 			}
 		}
