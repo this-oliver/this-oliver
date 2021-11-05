@@ -62,9 +62,6 @@
 				</v-col>
 				<!-- actions -->
 				<v-col
-					v-if="isScreenMobile"
-					cols="12" />
-				<v-col
 					v-if="editMode"
 					cols="auto"
 					sm="auto"
