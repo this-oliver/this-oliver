@@ -1,19 +1,19 @@
 <template>
 	<base-page>
+		<v-row v-if="article">
+			<v-col cols="12">
+				<article-single
+					:article="getArticle"
+					@refresh="refreshArticle" />
+			</v-col>
+		</v-row>
 		<v-row
-			v-if="!article"
+			v-else
 			justify="center">
 			<v-col cols="auto">
 				<v-chip color="warning">
 					🚦 article could not load
 				</v-chip>
-			</v-col>
-		</v-row>
-		<v-row v-else>
-			<v-col cols="12">
-				<article-single
-					:article="getArticle"
-					@refresh="refreshArticle" />
 			</v-col>
 		</v-row>
 	</base-page>
@@ -37,11 +37,11 @@ export default {
 	},
 	head () {
 		return {
-			title: this.article.title,
+			title: this.getArticle ? this.getArticle.title : "Article",
 			meta: [
 				{ charset: "utf-8" },
 				{ name: "viewport", content: "width=device-width, initial-scale=1" },
-				{ hid: "description", name: "description", content: `${getTextDescription(this.article.content)}...` }
+				{ hid: "description", name: "description", content: `${getTextDescription(this.getArticle ? this.getArticle.content : "")}...` }
 			],
 			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 		};
