@@ -1,14 +1,16 @@
 <template>
-	<div
-		:class="path ? 'clickable' : ''"
-		@click="goToPath">
-		<v-card class="pa-2">
-			<!-- header slot -->
-			<slot name="header" />
+	<div>
+		<div
+			:class="path ? 'clickable' : ''"
+			@click="goToPath">
+			<v-card class="pa-2">
+				<!-- header slot -->
+				<slot name="header" />
 
-			<!-- default slot -->
-			<slot />
-		</v-card>
+				<!-- default slot -->
+				<slot />
+			</v-card>
+		</div>
 
 		<!-- footer slot -->
 		<div class="mt-1">

@@ -21,6 +21,10 @@ import { isNotEmpty } from "~/utils/validate";
 
 export default {
 	props: {
+		value: {
+			type: [String, Number],
+			default: undefined
+		},
 		label: {
 			type: String,
 			default: undefined
@@ -32,10 +36,6 @@ export default {
 		persistantHint: {
 			type: Boolean,
 			default: false
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
 		},
 		required: {
 			type: Boolean,
@@ -73,18 +73,25 @@ export default {
 			if (this.skipValidate) return null;
 			else if (this.required) return this.validate(this.text);
 			else return null;
-
 		}
 	},
 	watch: {
+		value(value){
+			this.text = value;
+		},
 		text(text){
 			if(this.validate(text) === true) return this.$emit("input", text);
 			else return this.$emit("input", null);
 		}
 	},
-	mounted(){
-		if(this.$attrs.value) this.text = this.$attrs.value;
-		else if (this.value) this.text = this.value;
+	created() {
+		if(this.$attrs.value) {
+			this.text = this.$attrs.value;
+		}
+
+		else if (this.value) {
+			this.text = this.value;
+		};
 	},
 	methods: {
 		validate(text) {

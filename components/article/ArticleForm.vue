@@ -7,6 +7,7 @@
 			<v-col cols="12">
 				<input-text
 					v-model="form.title"
+					:value="form.title"
 					label="title"
 					:required="true" />
 			</v-col>
@@ -18,7 +19,8 @@
 				md="6">
 				<input-text-block
 					v-model="form.content"
-					label="content" />
+					label="content"
+					:required="true" />
 				<small>{{ getArticleLength }} words</small>
 			</v-col>
 			<v-col
