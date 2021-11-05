@@ -2,15 +2,9 @@
 	<base-page>
 		<v-row justify="center">
 			<v-col
-				class="mt-3"
-				sm="11"
-				md="8">
+				cols="11"
+				sm="8">
 				👀 {{ user.visits }}
-			</v-col>
-			<v-col
-				class="mt-3"
-				sm="11"
-				md="8">
 				<about-me
 					:short="user.bio.short"
 					:long="user.bio.long"

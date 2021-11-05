@@ -7,19 +7,10 @@
 				<h1>About Me</h1>
 			</v-col>
 			<v-col
-				v-if="editMode"
-				cols="6">
+				cols="auto"
+				class="mr-sm-auto">
 				<v-btn
 					class="mx-1"
-					color="warning"
-					to="/admin/edit">
-					update
-				</v-btn>
-			</v-col>
-			<v-col cols="auto">
-				<v-btn
-					class="mx-1"
-					small
 					color="primary"
 					:outlined="showShortBio === true"
 					@click="toggleBio">
@@ -27,18 +18,28 @@
 				</v-btn>
 				<v-btn
 					class="mx-1"
-					small
 					color="error"
 					:outlined="showShortBio === false"
 					@click="toggleBio">
 					long
 				</v-btn>
 			</v-col>
+			<v-col
+				v-if="editMode"
+				cols="7"
+				sm="auto"
+				class="text-center ml-sm-auto">
+				<v-btn
+					class="mx-1"
+					color="warning"
+					to="/admin/edit">
+					update
+				</v-btn>
+			</v-col>
 		</v-row>
-		<v-row
-			class="mt-3"
-			justify="center">
-			<v-col cols="12">
+
+		<v-row class="mt-3">
+			<v-col>
 				<!-- eslint-disable-next-line vue/no-v-html -->
 				<div
 					class="bio-text"
