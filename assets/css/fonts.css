@@ -36,12 +36,5 @@ html, body {
 }
 
 @media screen and (max-width: 480px) {
-	body {
-		font-family: Helvetica, sans-serif;
-		font-size: 1.15rem;
-	}
-	.brand {
-		font-family: monospace;
-		font-weight: bolder;
-	}
+	/* add styling for mobile phones */
 }
