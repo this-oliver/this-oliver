@@ -23,36 +23,42 @@
 				:to="link.route">
 				{{ link.title }}
 			</v-list-item>
+
+			<v-menu
+				v-if="loggedIn"
+				:close-on-content-click="false"
+				:nudge-width="200"
+				offset-x>
+				<template #activator="{ on, attrs }">
+					<v-list-item
+						class="mt-2"
+						v-bind="attrs"
+						v-on="on">
+						👨🏾‍🦱 admin dashboard
+					</v-list-item>
+				</template>
+
+				<v-list>
+					<v-subheader>👨🏾‍🦱 admin</v-subheader>
+					<v-list-item
+						v-for="link in adminLinks"
+						:key="link.title"
+						exact
+						:to="link.route">
+						{{ link.title }}
+					</v-list-item>
+					<v-divider class="mt-2" />
+					<v-list-item class="mt-2">
+						<v-btn
+							block
+							color="error"
+							@click="logout">
+							logout
+						</v-btn>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 		</v-list>
-
-		<v-divider v-if="loggedIn" />
-
-		<v-list
-			v-if="loggedIn"
-			class="mt-2"
-			nav>
-			<v-subheader>👨🏾‍🦱 admin</v-subheader>
-			<v-list-item
-				v-for="link in adminLinks"
-				:key="link.title"
-				exact
-				:to="link.route">
-				{{ link.title }}
-			</v-list-item>
-			<v-list-item>
-				<v-btn
-					block
-					color="error"
-					@click="logout">
-					logout
-				</v-btn>
-			</v-list-item>
-		</v-list>
-
-		<v-divider />
-		<theme-switcher
-			class="mt-2 mb-4"
-			:list-mode="true" />
 
 		<template #append>
 			<theme-switcher

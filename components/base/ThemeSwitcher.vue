@@ -2,13 +2,12 @@
 	<v-list-item v-if="listMode">
 		<v-list-item-icon>
 			<v-icon v-if="showDarkTheme">
-				dark_mode
-			</v-icon>
-			<v-icon v-else>
 				light_mode
 			</v-icon>
+			<v-icon v-else>
+				dark_mode
+			</v-icon>
 		</v-list-item-icon>
-		theme
 		<v-spacer />
 		<v-list-item-action>
 			<v-switch
@@ -23,10 +22,10 @@
 		:block="block"
 		@click="setDarkTheme(!showDarkTheme)">
 		<v-icon v-if="showDarkTheme">
-			dark_mode
+			light_mode
 		</v-icon>
 		<v-icon v-else>
-			light_mode
+			dark_mode
 		</v-icon>
 	</v-btn>
 	<v-btn
@@ -35,15 +34,15 @@
 		:text="!hideText"
 		@click="setDarkTheme(!showDarkTheme)">
 		<span v-if="!hideText">
-			<span v-if="showDarkTheme">dark</span>
-			<span v-else>light</span>
+			<span v-if="showDarkTheme">light</span>
+			<span v-else>dark</span>
       &nbsp;
 		</span>
 		<v-icon v-if="showDarkTheme">
-			dark_mode
+			light_mode
 		</v-icon>
 		<v-icon v-else>
-			light_mode
+			dark_mode
 		</v-icon>
 	</v-btn>
 </template>
