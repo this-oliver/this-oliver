@@ -7,7 +7,7 @@
 			<v-col
 				sm="6"
 				md="auto">
-				<span class="form-subtitle mr-3">short</span>
+				<span class="mr-3">short</span>
 				<small>{{ getShortLength }}</small>
 			</v-col>
 			<v-col
@@ -33,7 +33,7 @@
 			<v-col
 				sm="6"
 				md="auto">
-				<span class="form-subtitle mr-3">long</span>
+				<span class="mr-3">long</span>
 				<small>{{ getLongLength }}</small>
 			</v-col>
 			<v-col

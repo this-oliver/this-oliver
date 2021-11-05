@@ -30,6 +30,10 @@ export default {
 		};
 	},
 	watch: {
+		value(value){
+			this.email = value;
+		},
+
 		email(email){
 			if(this.validate(email) === true) return this.$emit("input", email);
 			else return this.$emit("input", null);

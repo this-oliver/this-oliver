@@ -157,8 +157,9 @@ export default {
 		}
 	},
 	created () {
-		const experience = this.experience;
-		if (this.editMode && experience !== null) {
+		if (this.editMode) {
+			const experience = this.experience;
+
 			this.form.title = experience.title;
 			this.form.org = experience.org;
 			this.form.startYear = experience.startYear;
