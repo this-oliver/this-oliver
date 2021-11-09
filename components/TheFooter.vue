@@ -1,10 +1,10 @@
 <template>
 	<v-footer
 		app
-		absolute
 		padless
-		class="rounded-lg py-2 px-2"
-		rounded="rounded-t">
+		absolute
+		:color="showDarkMode ? 'dark' : 'white'"
+		class="rounded-t-lg py-2 px-2">
 		<v-row
 			justify="space-between"
 			class="px-2">
@@ -37,10 +37,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { STORAGE } from "~/logic/enums";
 export default {
 	name: "TheFooter",
 	computed: {
+		...mapGetters({
+			showDarkMode: "app/theme/isDarkMode"
+		}),
 		getFooterItems () {
 			return [
 				{

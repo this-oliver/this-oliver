@@ -1,8 +1,8 @@
 <template>
 	<v-app-bar
 		app
-		dense
-		flat>
+		flat
+		:color="showDarkMode ? 'dark' : 'white'">
 		<h2>
 			<nuxt-link
 				class="brand hide-link"
@@ -24,6 +24,7 @@
 			</v-btn>
 
 			<v-menu
+				v-if="loggedIn"
 				offset-y
 				class="mx-2">
 				<template #activator="{ on, attrs }">
@@ -49,7 +50,6 @@
 			<theme-switcher :icon-mode="true" />
 		</div>
 
-
 		<v-app-bar-nav-icon
 			v-else
 			class="mr-2 mr-lg-4"
@@ -69,7 +69,8 @@ export default {
 			...mapGetters({
 				links: "app/nav/getLinks",
 				adminLinks: "app/nav/getAdminLinks",
-				showSidebar: "app/nav/showSidebar"
+				showSidebar: "app/nav/showSidebar",
+				showDarkMode: "app/theme/isDarkMode"
 			}),
 			loggedIn () {
 				return this.$auth.loggedIn;
