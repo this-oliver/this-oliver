@@ -23,7 +23,7 @@
 			<v-col
 				class="mt-2"
 				cols="12">
-				<input-text-block v-model="form.short" />
+				<input-text-block v-model="form.short" label="short bio"/>
 			</v-col>
 		</v-row>
 		<!-- long bio -->
@@ -49,7 +49,7 @@
 			<v-col
 				class="mt-2"
 				cols="12">
-				<input-text-block v-model="form.short" />
+				<input-text-block v-model="form.long" label="long bio" />
 			</v-col>
 		</v-row>
 		<!-- actions -->
@@ -75,7 +75,7 @@
 					v-if="editMode"
 					block
 					color="warning"
-					@click="update({name: null, email: null, short: form.short, long: form.long})">
+					@click="update()">
 					update
 				</v-btn>
 				<v-btn
@@ -151,16 +151,20 @@ export default {
 		}
 	},
 	methods: {
-			...mapActions({
-				update: "admin/patch"
-			}),
-			getParsedContent (text) {
-				if (text) {
-					return MarkdownToHtml(text);
-				} else {
-					return null;
-				}
+		...mapActions({
+			patch: "admin/patch"
+		}),
+		async update(){
+			await this.patch({name: null, email: null, short: this.form.short, long: this.form.long});
+			this.$router.push("/admin");
+		},
+		getParsedContent (text) {
+			if (text) {
+				return MarkdownToHtml(text);
+			} else {
+				return null;
 			}
+		}
 	}
 };
 </script>
