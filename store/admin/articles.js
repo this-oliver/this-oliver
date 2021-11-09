@@ -45,7 +45,7 @@ export const actions = {
 		try {
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.admin.getArticle(token, id);
+			const response = await this.$api.article.get(token, id);
 			const article = response.data;
 
 			return article;
@@ -56,7 +56,7 @@ export const actions = {
 	async index (context) {
 		try {
 			const token = this.$auth.strategy.token.get();
-			const response = await this.$api.admin.indexArticles(token);
+			const response = await this.$api.article.index(token);
 			const articles = response.data;
 
 			context.commit("setArticles", articles);
