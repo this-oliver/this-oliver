@@ -21,11 +21,6 @@ html, body {
 	text-decoration: none;
 }
 
-.hide-link {
-	color: inherit !important;
-	text-decoration: none;
-}
-
 .simple-link {
 	color: inherit !important;
 	text-decoration: underline;

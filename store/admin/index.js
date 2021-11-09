@@ -30,19 +30,19 @@ export const actions = {
 	},
 	async patch (context, { name, email, short, long }) {
 		try {
-			const id = context.state.user._id;
+			const id = context.rootState.auth.user._id;
 			const token = this.$auth.strategy.token.get();
 
 			const response = await this.$api.admin.patch(token, id, name, email, short, long);
 			const user = response.data;
 
-			context.commit("setUser", user);
+			await this.$auth.fetchUser();
 			return user;
 		} catch (error) {
 			context.commit("app/toaster/addError", { title: "Patching User", message: error.message }, { root: true });
 		}
 	},
-	reset (context) {
-		context.commit("setUser", null);
+	async reset (context) {
+		await this.$auth.logout(/* .... */);
 	}
 };
