@@ -66,27 +66,27 @@ export default {
 		ThemeSwitcher
 	},
 	computed: {
-			...mapGetters({
-				links: "app/nav/getLinks",
-				adminLinks: "app/nav/getAdminLinks",
-				showSidebar: "app/nav/showSidebar",
-				showDarkMode: "app/theme/isDarkMode"
-			}),
-			loggedIn () {
-				return this.$auth.loggedIn;
-			}
+		...mapGetters({
+			links: "app/nav/getLinks",
+			adminLinks: "app/nav/getAdminLinks",
+			showSidebar: "app/nav/showSidebar",
+			showDarkMode: "app/theme/isDarkMode"
+		}),
+		loggedIn () {
+			return this.$auth.loggedIn;
+		}
 	},
 	methods: {
-			...mapMutations({
-				setSidebar: "app/nav/setSidebar"
-			}),
-			async logout () {
-				await this.$auth.logout();
-				this.$router.push("/");
-			},
-			goTo(path){
-				if(this.$route.path !== path) this.$router.push(path);
-			}
+		...mapMutations({
+			setSidebar: "app/nav/setSidebar"
+		}),
+		async logout () {
+			await this.$auth.logout();
+			this.$router.push("/");
+		},
+		goTo(path){
+			if(this.$route.path !== path) this.$router.push(path);
+		}
 	}
 };
 </script>

@@ -30,6 +30,28 @@ export default $axios => ({
 			throw response;
 		}
 	},
+	async indexTags(token){
+		const response = token ? await $axios.get("/admin/tags", {
+			headers: { Authorization: `Bearer ${token}` }
+		}) : await $axios.get("/tags");
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async indexArticlesByTag(token, id){
+		const response = token ? await $axios.get(`/admin/tags/${id}/articles`, {
+			headers: { Authorization: `Bearer ${token}` }
+		}) : await $axios.get(`/tags/${id}/articles`);
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
 	async patch (token, id, patch) {
 		const response = await $axios.patch(`/articles/${id}`, patch, {
 			headers: { Authorization: `Bearer ${token}` }

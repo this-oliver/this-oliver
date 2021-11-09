@@ -39,11 +39,11 @@ export default {
 		};
 	},
 	computed: {
-			...mapGetters({
-				success: "app/toaster/getSuccess",
-				warnings: "app/toaster/getWarnings",
-				errors: "app/toaster/getErrors"
-			})
+		...mapGetters({
+			success: "app/toaster/getSuccess",
+			warnings: "app/toaster/getWarnings",
+			errors: "app/toaster/getErrors"
+		})
 	},
 	watch: {
 		success (newSuccess) {

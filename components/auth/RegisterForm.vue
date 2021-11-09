@@ -87,48 +87,48 @@ export default {
 		};
 	},
 	computed: {
-			...mapGetters({
-				user: "user/getUser"
-			}),
-			validateName () {
-				const text = this.form.name;
-				if (!text) { return null; }
-				return text.length > 0;
-			},
-			validateEmail () {
-				const text = this.form.email;
-				if (!text) { return null; }
-				return text.length === 0 ? null : isEmail(text);
-			},
-			validatePassword () {
-				const text = this.form.password;
-				if (!text) { return null; }
-				return text.length > 0;
-			},
-			validatePassword2 () {
-				const text = this.form.password2;
-				if (!text) { return null; }
-				return text.length > 0 && text === this.form.password;
-			},
-			validateForm () {
-				return (this.editMode) ?
-					(
-						this.validateName !== false &&
-						this.validateEmail !== false &&
-						this.validatePassword2 !== false
-					) :
-					(
-						this.validateName === true &&
-						this.validateEmail === true &&
-						this.validatePassword2 === true
-					);
-			}
+		...mapGetters({
+			user: "user/getUser"
+		}),
+		validateName () {
+			const text = this.form.name;
+			if (!text) { return null; }
+			return text.length > 0;
+		},
+		validateEmail () {
+			const text = this.form.email;
+			if (!text) { return null; }
+			return text.length === 0 ? null : isEmail(text);
+		},
+		validatePassword () {
+			const text = this.form.password;
+			if (!text) { return null; }
+			return text.length > 0;
+		},
+		validatePassword2 () {
+			const text = this.form.password2;
+			if (!text) { return null; }
+			return text.length > 0 && text === this.form.password;
+		},
+		validateForm () {
+			return (this.editMode) ?
+				(
+					this.validateName !== false &&
+					this.validateEmail !== false &&
+					this.validatePassword2 !== false
+				) :
+				(
+					this.validateName === true &&
+					this.validateEmail === true &&
+					this.validatePassword2 === true
+				);
+		}
 	},
 	methods: {
-			...mapActions({
-				postUser: "admin/register",
-				updateUser: "admin/patch"
-			})
+		...mapActions({
+			postUser: "admin/register",
+			updateUser: "admin/patch"
+		})
 	}
 };
 </script>

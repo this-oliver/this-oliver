@@ -34,9 +34,9 @@ export default {
 		BasePage
 	},
 	computed: {
-			...mapGetters({
-				experiences: "admin/getExperiences"
-			})
+		...mapGetters({
+			experiences: "admin/getExperiences"
+		})
 	}
 };
 </script>

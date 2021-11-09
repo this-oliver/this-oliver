@@ -92,21 +92,21 @@ export default {
 		}
 	},
 	methods: {
-			...mapActions({
-				deleteXp: "admin/experiences/delete"
-			}),
-			getExperienceEmoji (type) {
-				switch (type) {
-				case EXPERIENCES.job:
-					return "💼";
-				case EXPERIENCES.education:
-					return "🎓";
-				case EXPERIENCES.projects:
-					return "🧪";
-				default:
-					return "🧪";
-				}
+		...mapActions({
+			deleteXp: "admin/experiences/delete"
+		}),
+		getExperienceEmoji (type) {
+			switch (type) {
+			case EXPERIENCES.job:
+				return "💼";
+			case EXPERIENCES.education:
+				return "🎓";
+			case EXPERIENCES.projects:
+				return "🧪";
+			default:
+				return "🧪";
 			}
+		}
 	}
 };
 </script>

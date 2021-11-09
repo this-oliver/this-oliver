@@ -23,7 +23,9 @@
 			<v-col
 				class="mt-2"
 				cols="12">
-				<input-text-block v-model="form.short" label="short bio"/>
+				<input-text-block
+					v-model="form.short"
+					label="short bio" />
 			</v-col>
 		</v-row>
 		<!-- long bio -->
@@ -49,7 +51,9 @@
 			<v-col
 				class="mt-2"
 				cols="12">
-				<input-text-block v-model="form.long" label="long bio" />
+				<input-text-block
+					v-model="form.long"
+					label="long bio" />
 			</v-col>
 		</v-row>
 		<!-- actions -->
