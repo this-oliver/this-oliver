@@ -1,5 +1,5 @@
 <template>
-	<div class="mb-4 pa-2">
+	<div class="mb-2 pa-2">
 		<slot name="title">
 			<div class="mt-2 mx-2 text-center base-page-title">
 				<h1>{{ title }}</h1>
