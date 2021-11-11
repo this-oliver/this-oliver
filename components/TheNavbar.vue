@@ -13,7 +13,12 @@
 
 		<v-spacer />
 
-		<div v-if="isScreenDesktop">
+		<v-app-bar-nav-icon
+			v-if="isScreenMobile"
+			class="mr-2 mr-lg-4"
+			@click="setSidebar(!showSidebar)" />
+
+		<div v-else>
 			<v-btn
 				v-for="link in links"
 				:key="link.title"
@@ -49,11 +54,6 @@
 
 			<theme-switcher :icon-mode="true" />
 		</div>
-
-		<v-app-bar-nav-icon
-			v-else
-			class="mr-2 mr-lg-4"
-			@click="setSidebar(!showSidebar)" />
 	</v-app-bar>
 </template>
 
