@@ -12,6 +12,10 @@ export const state = function () {
 		],
 		adminLinks: [
 			{
+				title: "🔑 about",
+				route: "/admin"
+			},
+			{
 				title: "🔑 articles",
 				route: "/admin/articles"
 			},

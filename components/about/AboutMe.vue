@@ -6,9 +6,7 @@
 				class="text-center">
 				<h1>About Me</h1>
 			</v-col>
-			<v-col
-				cols="auto"
-				class="mr-sm-auto">
+			<v-col cols="auto">
 				<v-btn
 					class="mx-1"
 					color="primary"
@@ -39,11 +37,9 @@
 		</v-row>
 
 		<v-row class="mt-3">
-			<v-col>
+			<v-col class="bio-text">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div
-					class="bio-text"
-					v-html="getParsedContent" />
+				<div v-html="getParsedContent" />
 			</v-col>
 		</v-row>
 	</div>

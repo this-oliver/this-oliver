@@ -4,8 +4,8 @@
 			justify="center"
 			class="mt-sm-3">
 			<v-col
-				sm="11"
-				md="10">
+				cols="11"
+				sm="8">
 				<about-me
 					:short="getShortBio"
 					:long="getLongBio" />
