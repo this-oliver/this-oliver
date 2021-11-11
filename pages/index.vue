@@ -1,11 +1,15 @@
 <template>
 	<base-page>
-		<v-row
-			justify="center"
-			class="mt-sm-3">
+		<base-image
+			src="./images/me.webp"
+			size="contain"
+			:width="isScreenMobile ? 100 : 200"
+			class="text-center" />
+
+		<v-row justify="center">
 			<v-col
 				cols="11"
-				sm="8">
+				md="8">
 				<about-me
 					:short="getShortBio"
 					:long="getLongBio" />
@@ -18,6 +22,7 @@
 import { mapGetters } from "vuex";
 
 import AboutMe from "~/components/about/AboutMe.vue";
+import BaseImage from "~/components/base/BaseImage.vue";
 import BasePage from "~/components/base/BasePage.vue";
 
 import { STORAGE } from "~/logic/enums";
@@ -25,6 +30,7 @@ import { getTextDescription } from "~/utils/string";
 
 export default {
 	components: {
+		BaseImage,
 		BasePage,
 		AboutMe
 	},

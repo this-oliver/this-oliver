@@ -34,12 +34,12 @@
 						class="mt-2"
 						v-bind="attrs"
 						v-on="on">
-						👨🏾‍🦱 admin dashboard
+						🚨 admin dashboard
 					</v-list-item>
 				</template>
 
 				<v-list>
-					<v-subheader>👨🏾‍🦱 admin</v-subheader>
+					<v-subheader>🚨 admin</v-subheader>
 					<v-list-item
 						v-for="link in adminLinks"
 						:key="link.title"
