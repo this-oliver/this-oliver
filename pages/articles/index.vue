@@ -1,12 +1,8 @@
 <template>
 	<base-page title="Articles">
-		<v-row justify="center">
-			<v-col cols="12">
-				<article-list
-					:articles="articles"
-					:tags="tags" />
-			</v-col>
-		</v-row>
+		<article-list
+			:articles="articles"
+			:tags="tags" />
 	</base-page>
 </template>
 

@@ -1,8 +1,6 @@
 <template>
 	<base-page title="experiences">
-		<experience-list
-			class="mt-2"
-			:experiences="experiences" />
+		<experience-list :experiences="experiences" />
 	</base-page>
 </template>
 
