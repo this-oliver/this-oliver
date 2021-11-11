@@ -12,7 +12,10 @@
 				v-for="tag in tags"
 				:key="tag._id"
 				:color="tag.color"
-				class="ma-1">
+				class="ma-1"
+				:text="isTagSelected(tag)"
+				:elevation="isTagSelected(tag) ? 2 : 0"
+				@click="selectTag(tag)">
 				{{ tag.name }}
 			</v-btn>
 		</v-col>
@@ -23,7 +26,7 @@
 			order-md="2">
 			<v-row>
 				<v-col
-					v-for="(article) in articles"
+					v-for="article in getArticles"
 					:key="article._id"
 					cols="12">
 					<article-card
@@ -62,6 +65,63 @@ export default {
 		editMode: {
 			type: Boolean,
 			default: false
+		}
+	},
+	data(){
+		return {
+			/* tag ids */
+			selectedTags: []
+		};
+	},
+	computed: {
+		getArticles(){
+			const selectedTags = this.selectedTags;
+
+			if(selectedTags.length == 0){
+				return this.articles;
+			}else {
+				return this.articles.filter(function(article){
+					let found = false;
+
+					for(let i = 0; i < article.tags.length; i++){
+						const tag = article.tags[i];
+
+						const included = selectedTags.includes(tag._id);
+						if(included){
+							found = true;
+							break;
+						}
+					}
+
+					return found;
+				});
+			}
+			return true;
+		}
+	},
+	methods: {
+		selectTag(tag = null){
+			if(tag == null) return;
+
+			let found = false;
+
+			for(let i = 0; i < this.selectedTags.length; i++){
+				const id = this.selectedTags[i];
+
+				if(tag._id === id){
+					found = true;
+					this.selectedTags.splice(i, 1);
+					break;
+				}
+			}
+
+			if(!found){
+				this.selectedTags.push(tag._id);
+			}
+		},
+		isTagSelected(tag = null){
+			if(tag == null) return false;
+			return this.selectedTags.includes(tag._id);
 		}
 	}
 };
