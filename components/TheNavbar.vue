@@ -37,7 +37,7 @@
 						text
 						v-bind="attrs"
 						v-on="on">
-						👨🏾‍🦱 admin
+						🚨 admin
 					</v-btn>
 				</template>
 				<v-list>
@@ -62,9 +62,7 @@ import { mapGetters, mapMutations } from "vuex";
 import ThemeSwitcher from "~/components/base/ThemeSwitcher.vue";
 export default {
 	name: "TheNavbar",
-	components: {
-		ThemeSwitcher
-	},
+	components: { ThemeSwitcher },
 	computed: {
 		...mapGetters({
 			links: "app/nav/getLinks",
