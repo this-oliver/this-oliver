@@ -169,42 +169,42 @@ export default {
 		}
 	},
 	methods: {
-			...mapActions({
-				postExperience: "admin/experiences/post",
-				updateExperience: "admin/experiences/patch",
-				deleteExperience: "admin/experiences/delete"
-			}),
-			async postExperience () {
-				try {
-					await this.$store.dispatch("admin/experiences/post", { title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
-					this.$router.push("/admin/experiences");
-				} catch (error) {
-					this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
-				}
-			},
-			async updateExperience () {
-				try {
-					await this.$store.dispatch("admin/experiences/patch", { id: this.$route.params.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
-					this.$router.push("/admin/experiences");
-				} catch (error) {
-					this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
-				}
-			},
-			async deleteExperience () {
-				try {
-					await this.$store.dispatch("admin/experiences/delete", this.$route.params.experience._id);
-					this.$router.push("/admin/experiences");
-				} catch (error) {
-					this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
-				}
-			},
-			getParsedContent (text) {
-				if (text) {
-					return MarkdownToHtml(text);
-				} else {
-					return null;
-				}
+		...mapActions({
+			postExperience: "admin/experiences/post",
+			updateExperience: "admin/experiences/patch",
+			deleteExperience: "admin/experiences/delete"
+		}),
+		async postExperience () {
+			try {
+				await this.$store.dispatch("admin/experiences/post", { title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
+				this.$router.push("/admin/experiences");
+			} catch (error) {
+				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 			}
+		},
+		async updateExperience () {
+			try {
+				await this.$store.dispatch("admin/experiences/patch", { id: this.$route.params.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
+				this.$router.push("/admin/experiences");
+			} catch (error) {
+				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
+			}
+		},
+		async deleteExperience () {
+			try {
+				await this.$store.dispatch("admin/experiences/delete", this.$route.params.experience._id);
+				this.$router.push("/admin/experiences");
+			} catch (error) {
+				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
+			}
+		},
+		getParsedContent (text) {
+			if (text) {
+				return MarkdownToHtml(text);
+			} else {
+				return null;
+			}
+		}
 	}
 };
 </script>

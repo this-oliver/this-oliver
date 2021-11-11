@@ -29,7 +29,7 @@ export const mutations = {
 export const actions = {
 	async get (context, id) {
 		try {
-			const response = await this.$api.article.get(id);
+			const response = await this.$api.article.get(null, id);
 			const article = response.data;
 
 			return article;
@@ -47,6 +47,28 @@ export const actions = {
 			return articles;
 		} catch (error) {
 			context.commit("app/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
+		}
+	},
+	async indexTags (context) {
+		try {
+			const response = await this.$api.article.indexTags();
+			const tags = response.data;
+
+			context.commit("setTags", tags);
+
+			return tags;
+		} catch (error) {
+			context.commit("app/toaster/addError", { title: "Getting Tags", message: error.message }, { root: true });
+		}
+	},
+	async indexArticlesByTag (context, tagId) {
+		try {
+			const response = await this.$api.article.indexArticlesByTag(tagId);
+			const articles = response.data;
+
+			return articles;
+		} catch (error) {
+			context.commit("app/toaster/addError", { title: "Getting Articles By Tag", message: error.message }, { root: true });
 		}
 	},
 	async incrementViews (context, id) {

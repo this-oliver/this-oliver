@@ -8,8 +8,10 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async get (id) {
-		const response = await $axios.get(`/articles/${id}`);
+	async get (token, id) {
+		const response = token ? await $axios.get(`/admin/articles/${id}`, {
+			headers: { Authorization: `Bearer ${token}` }
+		}) : await $axios.get(`/articles/${id}`);
 
 		if (response.status === 200) {
 			return response;
@@ -17,8 +19,32 @@ export default $axios => ({
 			throw response;
 		}
 	},
-	async index () {
-		const response = await $axios.get("/articles");
+	async index (token) {
+		const response = token ? await $axios.get("/admin/articles", {
+			headers: { Authorization: `Bearer ${token}` }
+		}) : await $axios.get("/articles");
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async indexTags(token){
+		const response = token ? await $axios.get("/admin/tags", {
+			headers: { Authorization: `Bearer ${token}` }
+		}) : await $axios.get("/tags");
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async indexArticlesByTag(token, id){
+		const response = token ? await $axios.get(`/admin/tags/${id}/articles`, {
+			headers: { Authorization: `Bearer ${token}` }
+		}) : await $axios.get(`/tags/${id}/articles`);
 
 		if (response.status === 200) {
 			return response;

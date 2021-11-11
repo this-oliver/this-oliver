@@ -76,26 +76,26 @@ export default {
 	name: "TheSidebar",
 	components: { ThemeSwitcher },
 	computed: {
-			...mapGetters({
-				links: "app/nav/getLinks",
-				adminLinks: "app/nav/getAdminLinks"
-			}),
-			showSidebar: {
-				get: function() { return this.$store.getters["app/nav/showSidebar"];},
-				set: function(value) { return this.$store.commit("app/nav/setSidebar", value);}
-			},
-			loggedIn () {
-				return this.$auth.loggedIn;
-			}
+		...mapGetters({
+			links: "app/nav/getLinks",
+			adminLinks: "app/nav/getAdminLinks"
+		}),
+		showSidebar: {
+			get: function() { return this.$store.getters["app/nav/showSidebar"];},
+			set: function(value) { return this.$store.commit("app/nav/setSidebar", value);}
+		},
+		loggedIn () {
+			return this.$auth.loggedIn;
+		}
 	},
 	methods: {
-			...mapMutations({
-			}),
-			async logout () {
-				await this.$auth.logout();
-				this.$store.commit("app/nav/setSidebar", false);
-				this.$router.push("/");
-			}
+		...mapMutations({
+		}),
+		async logout () {
+			await this.$auth.logout();
+			this.$store.commit("app/nav/setSidebar", false);
+			this.$router.push("/");
+		}
 	}
 };
 </script>

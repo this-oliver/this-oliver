@@ -22,10 +22,6 @@ import TheNotificationBar from "~/components/TheNotificationBar.vue";
 
 export default {
 	name: "Admin",
-	components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar },
-	created(){
-		this.$store.commit("app/theme/setDarkMode", true);
-		this.$vuetify.theme.dark = this.$store.getters["app/theme/isDarkMode"];
-	}
+	components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar }
 };
 </script>

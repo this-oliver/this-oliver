@@ -2,7 +2,7 @@
 	<base-page>
 		<v-row
 			justify="center"
-			class="mt-3">
+			class="mt-sm-3">
 			<v-col
 				sm="11"
 				md="10">

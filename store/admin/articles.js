@@ -45,7 +45,7 @@ export const actions = {
 		try {
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.admin.getArticle(token, id);
+			const response = await this.$api.article.get(token, id);
 			const article = response.data;
 
 			return article;
@@ -56,7 +56,7 @@ export const actions = {
 	async index (context) {
 		try {
 			const token = this.$auth.strategy.token.get();
-			const response = await this.$api.admin.indexArticles(token);
+			const response = await this.$api.article.index(token);
 			const articles = response.data;
 
 			context.commit("setArticles", articles);
@@ -64,7 +64,31 @@ export const actions = {
 			return articles;
 		} catch (error) {
 			console.log({ apiError: error });
-			context.commit("app/toaster/addError", { title: "Getting User Articles", message: error.message }, { root: true });
+			context.commit("app/toaster/addError", { title: "Getting Articles", message: error.message }, { root: true });
+		}
+	},
+	async indexTags (context) {
+		try {
+			const token = this.$auth.strategy.token.get();
+			const response = await this.$api.article.indexTags(token);
+			const tags = response.data;
+
+			context.commit("setTags", tags);
+
+			return tags;
+		} catch (error) {
+			context.commit("app/toaster/addError", { title: "Getting Tags", message: error.message }, { root: true });
+		}
+	},
+	async indexArticlesByTag (context, tagId) {
+		try {
+			const token = this.$auth.strategy.token.get();
+			const response = await this.$api.article.indexArticlesByTag(token, tagId);
+			const articles = response.data;
+
+			return articles;
+		} catch (error) {
+			context.commit("app/toaster/addError", { title: "Getting Articles By Tag", message: error.message }, { root: true });
 		}
 	},
 	async patch (context, { id, patch }) {
@@ -75,7 +99,7 @@ export const actions = {
 			const article = response.data;
 
 			const userId = this.$auth.user._id;
-			await context.dispatch("indexUserSecrets", userId);
+			await context.dispatch("index");
 
 			return article;
 		} catch (error) {
@@ -90,7 +114,7 @@ export const actions = {
 			const article = response.data;
 
 			const userId = this.$auth.user._id;
-			await context.dispatch("indexUserSecrets", userId);
+			await context.dispatch("index");
 
 			return article;
 		} catch (error) {

@@ -17,9 +17,14 @@
 				</v-col>
 			</v-row>
 		</template>
-		<article-list
-			:articles="articles"
-			:edit-mode="true" />
+		<v-row justify="center">
+			<v-col cols="12">
+				<article-list
+					:articles="articles"
+					:tags="tags"
+					:edit-mode="true" />
+			</v-col>
+		</v-row>
 	</base-page>
 </template>
 
@@ -27,18 +32,22 @@
 import { mapGetters } from "vuex";
 import ArticleList from "~/components/article/ArticleList.vue";
 import BasePage from "~/components/base/BasePage.vue";
+
 export default {
+	name: "ArticlesPage",
 	components: {
 		ArticleList,
 		BasePage
 	},
 	computed:{
 		...mapGetters({
-			articles: "admin/articles/getArticles"
+			articles: "admin/articles/getArticles",
+			tags: "admin/articles/getTags"
 		})
 	},
 	async mounted () {
 		await this.$store.dispatch("admin/articles/index");
+		await this.$store.dispatch("admin/articles/indexTags");
 	}
 };
 </script>

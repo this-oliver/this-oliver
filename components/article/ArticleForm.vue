@@ -36,6 +36,7 @@
 				md="6">
 				<v-combobox
 					v-model="form.tags"
+					:items="getTags"
 					label="tags"
 					chips
 					multiple
@@ -110,6 +111,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { MarkdownToHtml } from "../../utils/markdown";
 import { getWordCount } from "../../utils/string";
 import InputText from "../base/InputText.vue";
@@ -139,6 +141,17 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			tags: "admin/articles/getTags"
+		}),
+		getTags(){
+			return this.tags.map((tag) => {
+				return {
+					text: tag.name,
+					value: tag._id
+				};
+			});
+		},
 		getArticleLength () {
 			const content = this.form.content;
 			return getWordCount(content);
@@ -168,8 +181,11 @@ export default {
 		}
 	},
 	async created () {
-		let article = this.$route.params.article;
+		await this.$store.dispatch("admin/articles/indexTags");
+
 		if (this.editMode) {
+			let article = null;
+
 			if (!article) {
 				article = await this.$store.dispatch("admin/articles/get", this.$route.params.id);
 				this.fallBackArticle = article;

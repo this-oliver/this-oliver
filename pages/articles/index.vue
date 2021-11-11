@@ -1,6 +1,12 @@
 <template>
-	<base-page title="articles">
-		<article-list :articles="articles" />
+	<base-page title="Articles">
+		<v-row justify="center">
+			<v-col cols="12">
+				<article-list
+					:articles="articles"
+					:tags="tags" />
+			</v-col>
+		</v-row>
 	</base-page>
 </template>
 
@@ -11,28 +17,35 @@ import ArticleList from "~/components/article/ArticleList.vue";
 import BasePage from "~/components/base/BasePage.vue";
 
 export default {
+	name: "ArticlesPage",
 	components: {
 		ArticleList,
 		BasePage
 	},
-	head () {
+	head() {
 		return {
 			title: "Articles",
 			meta: [
 				{ charset: "utf-8" },
 				{ name: "viewport", content: "width=device-width, initial-scale=1" },
-				{ hid: "description", name: "description", content: "Articles about tech and entreprenurial stuff." }
+				{
+					hid: "description",
+					name: "description",
+					content: "Articles about tech and entreprenurial stuff."
+				}
 			],
 			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 		};
 	},
 	computed: {
 		...mapGetters({
-			articles: "user/articles/getArticles"
+			articles: "user/articles/getArticles",
+			tags: "user/articles/getTags"
 		})
 	},
-	async mounted () {
+	async mounted() {
 		await this.$store.dispatch("user/articles/index");
+		await this.$store.dispatch("user/articles/indexTags");
 	}
 };
 </script>

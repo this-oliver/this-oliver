@@ -3,12 +3,37 @@
 		v-if="articles.length > 0"
 		justify="center">
 		<v-col
-			v-for="(article) in articles"
-			:key="article._id"
-			cols="12">
-			<article-card
-				:article="article"
-				:edit-mode="editMode" />
+			v-if="tags && tags.length > 0"
+			cols="auto"
+			md="3"
+			order="2"
+			order-md="1">
+			<v-btn
+				v-for="tag in tags"
+				:key="tag._id"
+				:color="tag.color"
+				class="ma-1"
+				:text="isTagSelected(tag)"
+				:elevation="isTagSelected(tag) ? 2 : 0"
+				@click="selectTag(tag)">
+				{{ tag.name }}
+			</v-btn>
+		</v-col>
+		<v-col
+			cols="12"
+			md="8"
+			order="1"
+			order-md="2">
+			<v-row>
+				<v-col
+					v-for="article in getArticles"
+					:key="article._id"
+					cols="12">
+					<article-card
+						:article="article"
+						:edit-mode="editMode" />
+				</v-col>
+			</v-row>
 		</v-col>
 	</v-row>
 	<v-row
@@ -31,11 +56,72 @@ export default {
 	props: {
 		articles: {
 			type: Array,
+			required: true
+		},
+		tags: {
+			type: Array,
 			default: null
 		},
 		editMode: {
 			type: Boolean,
 			default: false
+		}
+	},
+	data(){
+		return {
+			/* tag ids */
+			selectedTags: []
+		};
+	},
+	computed: {
+		getArticles(){
+			const selectedTags = this.selectedTags;
+
+			if(selectedTags.length == 0){
+				return this.articles;
+			}else {
+				return this.articles.filter(function(article){
+					let found = false;
+
+					for(let i = 0; i < article.tags.length; i++){
+						const tag = article.tags[i];
+
+						const included = selectedTags.includes(tag._id);
+						if(included){
+							found = true;
+							break;
+						}
+					}
+
+					return found;
+				});
+			}
+			return true;
+		}
+	},
+	methods: {
+		selectTag(tag = null){
+			if(tag == null) return;
+
+			let found = false;
+
+			for(let i = 0; i < this.selectedTags.length; i++){
+				const id = this.selectedTags[i];
+
+				if(tag._id === id){
+					found = true;
+					this.selectedTags.splice(i, 1);
+					break;
+				}
+			}
+
+			if(!found){
+				this.selectedTags.push(tag._id);
+			}
+		},
+		isTagSelected(tag = null){
+			if(tag == null) return false;
+			return this.selectedTags.includes(tag._id);
 		}
 	}
 };

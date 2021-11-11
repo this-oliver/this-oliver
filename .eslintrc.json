@@ -8,7 +8,9 @@
 		"plugin:vue/vue3-recommended"
 	],
 	"parserOptions": {
-		"parser": "babel-eslint"
+		"parser": "@babel/eslint-parser",
+		"sourceType": "module",
+		"requireConfigFile": false
 	},
 	"rules": {
 		"indent": ["error", "tab"],
@@ -23,6 +25,7 @@
 		"vue/script-indent": ["warn", "tab"],
 		"vue/custom-event-name-casing": ["error"],
 		"vue/attribute-hyphenation": ["error", "always"],
+		"vue/multi-word-component-names": ["off"],
 		"vue/html-closing-bracket-newline": [ "error", { "singleline": "never", "multiline": "never" } ],
 		"vue/html-indent": [ "error", "tab", { "attribute": 1, "baseIndent": 1, "closeBracket": 0, "alignAttributesVertically": true }],
 		// vuetify specific
