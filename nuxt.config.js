@@ -42,7 +42,7 @@ export default {
 			{
 				hid: "og:image",
 				property: "og:image",
-				content: "/images/me.png"
+				content: "/images/me.webp"
 			}
 		],
 		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
