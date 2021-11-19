@@ -6,5 +6,6 @@ export const EXPERIENCES = {
 };
 
 export const STORAGE = {
-	visitor: "oli_visit"
+	visitor: "oli_visit",
+	cookie: "oli_g_cookie"
 };

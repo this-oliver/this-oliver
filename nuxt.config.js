@@ -32,7 +32,8 @@ export default {
 	plugins: [
 		{ src: "~/plugins/api" },
 		{ src: "~/plugins/error" },
-		{ src: "~/plugins/mixin" }
+		{ src: "~/plugins/mixin" },
+		{ src: "~/plugins/google-tag.js" }
 	],
 
 	// Global routing middlewares to run for every route change
@@ -91,13 +92,9 @@ export default {
 		baseURL: `${process.env.VUE_APP_API}/api` // Used as fallback if no runtime config is provided
 	},
 
-	publicRuntimeConfig: {
-		axios: {
-			browserBaseURL: `${process.env.VUE_APP_API}/api`
-		}
-	},
-
-	privateRuntimeConfig: {
+	// env variabes
+	env: {
+		VUE_APP_GOOGLE_ANALYTICS: process.env.VUE_APP_GOOGLE_ANALYTICS,
 		VUE_APP_JWT_SECRET: process.env.VUE_APP_JWT_SECRET
 	},
 
