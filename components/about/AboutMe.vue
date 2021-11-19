@@ -9,6 +9,7 @@
 			<v-col cols="auto">
 				<v-btn
 					class="mx-1"
+					elevation="0"
 					color="primary"
 					:outlined="showShortBio === true"
 					@click="toggleBio">
@@ -17,6 +18,7 @@
 				<v-btn
 					class="mx-1"
 					color="error"
+					elevation="0"
 					:outlined="showShortBio === false"
 					@click="toggleBio">
 					long
@@ -29,6 +31,7 @@
 				class="text-center ml-sm-auto">
 				<v-btn
 					class="mx-1"
+					elevation="0"
 					color="warning"
 					to="/admin/edit">
 					update
