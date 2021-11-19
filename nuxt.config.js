@@ -1,3 +1,5 @@
+const metaTitle = "Oliver Manzi";
+const metaDescription = "A software engineering and entreprenurial portfolio.";
 export default {
 	// Server-side rendering: https://go.nuxtjs.dev/ssr-mode
 	ssr: false,
@@ -12,14 +14,35 @@ export default {
 
 	// Global page headers: https://go.nuxtjs.dev/config-head
 	head: {
-		title: "Oliver Manzi",
+		title: metaTitle,
 		meta: [
 			{ charset: "utf-8" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1" },
 			{
 				hid: "description",
 				name: "description",
-				content: "A software engineering and entreprenurial portfolio."
+				content: metaDescription
+			},
+			// og meta tags
+			{
+				hid: "og:type",
+				property: "og:type",
+				content: "website"
+			},
+			{
+				hid: "og:title",
+				property: "og:title",
+				content: metaTitle
+			},
+			{
+				hid: "og:description",
+				property: "og:description",
+				content: metaDescription
+			},
+			{
+				hid: "og:image",
+				property: "og:image",
+				content: "/images/me.webp"
 			}
 		],
 		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
