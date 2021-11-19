@@ -1,30 +1,21 @@
 <template>
 	<base-card>
-		<v-row justify="space-between">
-			<!-- title -->
-			<v-col cols="10">
-				<h3>{{ experience.title }}</h3>
-			</v-col>
-			<!-- icon -->
-			<v-col
-				cols="auto"
-				class="mr-2">
-				{{ getExperienceEmoji(experience.type) }}
-			</v-col>
-		</v-row>
-
-		<v-row justify="space-between">
-			<!-- org -->
-			<v-col cols="9">
-				<h4>{{ experience.org }}</h4>
-			</v-col>
+		<!-- title -->
+		<h3>{{ experience.title }}</h3>
+		<!-- org -->
+		<h4 class="mt-1">
+			{{ experience.org }}
+		</h4>
+		<v-chip-group class="mt-1">
+			<!-- type -->
+			<v-chip :color="getExperienceColor(experience.type)">
+				{{ experience.type }}
+			</v-chip>
 			<!-- duration -->
-			<v-col cols="auto">
-				<v-chip>
-					{{ `${experience.startYear} - ${getEndYear}` }}
-				</v-chip>
-			</v-col>
-		</v-row>
+			<v-chip>
+				{{ `${experience.startYear} - ${getEndYear}` }}
+			</v-chip>
+		</v-chip-group>
 
 		<v-row class="mt-2">
 			<!-- content -->
@@ -95,16 +86,16 @@ export default {
 		...mapActions({
 			deleteXp: "admin/experiences/delete"
 		}),
-		getExperienceEmoji (type) {
+		getExperienceColor (type) {
 			switch (type) {
 			case EXPERIENCES.job:
-				return "💼";
+				return "error";
 			case EXPERIENCES.education:
-				return "🎓";
+				return "primary";
 			case EXPERIENCES.projects:
-				return "🧪";
+				return "success";
 			default:
-				return "🧪";
+				return "success";
 			}
 		}
 	}
