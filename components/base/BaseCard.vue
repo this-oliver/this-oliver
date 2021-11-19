@@ -1,18 +1,21 @@
 <template>
 	<div>
+		<div class="py-1 px-3">
+			<slot name="header" />
+		</div>
+
 		<div
 			:class="path ? 'clickable' : ''"
 			@click="goToPath">
-			<v-card class="pa-2">
-				<!-- header slot -->
-				<slot name="header" />
-
-				<!-- default slot -->
+			<v-card
+				class="py-2 px-3 rounded-lg"
+				:outlined="outlined"
+				:elevation="elevation">
+				<slot name="title" />
 				<slot />
 			</v-card>
 		</div>
 
-		<!-- footer slot -->
 		<div class="mt-1">
 			<slot name="footer" />
 		</div>
@@ -26,6 +29,14 @@ export default {
 		path: {
 			type: String,
 			default: null
+		},
+		outlined: {
+			type: Boolean,
+			default: true
+		},
+		elevation: {
+			type: Number,
+			default: 0
 		}
 	},
 	methods: {
