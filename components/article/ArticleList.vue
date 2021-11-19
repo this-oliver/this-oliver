@@ -1,6 +1,35 @@
 <template>
+	<div
+		v-if="loading"
+		class="text-center">
+		<v-progress-circular
+			:size="50"
+			color="primary"
+			indeterminate />
+
+		<v-progress-circular
+			:width="3"
+			color="red"
+			indeterminate />
+
+		<v-progress-circular
+			:size="70"
+			:width="7"
+			color="purple"
+			indeterminate />
+
+		<v-progress-circular
+			:width="3"
+			color="green"
+			indeterminate />
+
+		<v-progress-circular
+			:size="50"
+			color="amber"
+			indeterminate />
+	</div>
 	<v-row
-		v-if="articles.length > 0"
+		v-else-if="articles.length > 0"
 		justify="center">
 		<v-col
 			v-if="tags && tags.length > 0"
@@ -61,6 +90,10 @@ export default {
 		tags: {
 			type: Array,
 			default: null
+		},
+		loading: {
+			type: Boolean,
+			default: false
 		},
 		editMode: {
 			type: Boolean,

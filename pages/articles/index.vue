@@ -2,7 +2,8 @@
 	<base-page title="Articles">
 		<article-list
 			:articles="articles"
-			:tags="tags" />
+			:tags="tags"
+			:loading="loading" />
 	</base-page>
 </template>
 
@@ -17,6 +18,11 @@ export default {
 	components: {
 		ArticleList,
 		BasePage
+	},
+	data(){
+		return {
+			loading: true
+		};
 	},
 	head() {
 		return {
@@ -42,6 +48,7 @@ export default {
 	async mounted() {
 		await this.$store.dispatch("user/articles/index");
 		await this.$store.dispatch("user/articles/indexTags");
+		this.loading = false;
 	}
 };
 </script>

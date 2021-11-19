@@ -22,7 +22,8 @@
 				<article-list
 					:articles="articles"
 					:tags="tags"
-					:edit-mode="true" />
+					:edit-mode="true"
+					:loading="loading" />
 			</v-col>
 		</v-row>
 	</base-page>
@@ -39,6 +40,11 @@ export default {
 		ArticleList,
 		BasePage
 	},
+	data(){
+		return {
+			loading: true
+		};
+	},
 	computed:{
 		...mapGetters({
 			articles: "admin/articles/getArticles",
@@ -48,6 +54,7 @@ export default {
 	async mounted () {
 		await this.$store.dispatch("admin/articles/index");
 		await this.$store.dispatch("admin/articles/indexTags");
+		this.loading = false;
 	}
 };
 </script>

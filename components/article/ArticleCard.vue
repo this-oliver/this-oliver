@@ -17,7 +17,8 @@
 					v-for="tag in article.tags"
 					:key="tag._id"
 					small
-					class="mr-1">
+					class="mr-1"
+					:color="tag.color">
 					{{ tag.name }}
 				</v-chip>
 			</v-col>
