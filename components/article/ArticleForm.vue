@@ -206,7 +206,7 @@ export default {
 	methods: {
 		async postArticle () {
 			try {
-				await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish });
+				await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.getFormattedTags(), publish: this.form.publish });
 				this.$router.push("/admin/articles");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
@@ -214,7 +214,7 @@ export default {
 		},
 		async updateArticle () {
 			try {
-				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
+				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.getFormattedTags(), publish: this.form.publish } });
 				this.$router.push("/admin/articles");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
@@ -222,11 +222,25 @@ export default {
 		},
 		async saveArticle () {
 			try {
-				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
+				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.getFormattedTags(), publish: this.form.publish } });
 				this.$store.commit("app/toaster/addSuccess", { title: `Article ${this.article._id}`, message: "Saved" });
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
 			}
+		},
+		getFormattedTags(){
+			const tags = this.form.tags;
+			const formattedTags = [];
+
+			tags.forEach(tag => {
+				if(typeof tag === "string"){
+					formattedTags.push({name: tag, id: null});
+				} else {
+					formattedTags.push({name: tag.text, id: tag.value});
+				}
+			});
+
+			return formattedTags;
 		},
 		getParsedContent (text) {
 			if (text) {
