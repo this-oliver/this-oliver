@@ -1,44 +1,50 @@
 <template>
-	<div id="article">
-		<!-- article details -->
-		<!-- title -->
-		<h1>{{ article.title }}</h1>
-		<!-- time ago -->
-		<h4>{{ getDate }}</h4>
-		<!-- tags -->
-		<v-chip
-			v-for="tag in article.tags"
-			:key="tag._id"
-			class="mr-1 mt-1">
-			{{ tag.name }}
-		</v-chip>
+	<v-row justify-md="center">
+		<v-col
+			cols="12"
+			md="4">
+			<!-- article details -->
+			<!-- title -->
+			<h1>{{ article.title }}</h1>
+			<!-- time ago -->
+			<h4>{{ getDate }}</h4>
+			<!-- tags -->
+			<v-chip
+				v-for="tag in article.tags"
+				:key="tag._id"
+				class="mr-1 mt-1">
+				{{ tag.name }}
+			</v-chip>
+		</v-col>
 
-		<!-- content -->
-		<div
+		<v-col
 			id="article-content"
-			class="mt-2">
+			class="mt-2 mt-md-0"
+			md="8">
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<span v-html="getParsedContent" />
-		</div>
+		</v-col>
 
-		<!-- back btn -->
-		<v-row justify="space-around">
-			<v-col cols="auto">
-				<a
-					class="simple-link"
-					@click="$router.go(-1)">
-					&larr; more articles
-				</a>
-			</v-col>
-			<v-col cols="auto">
-				<v-btn
-					rounded
-					@click="like">
-					{{ `👏 ${article.likes}` }}
-				</v-btn>
-			</v-col>
-		</v-row>
-	</div>
+		<v-col cols="12">
+			<!-- back btn -->
+			<v-row justify="space-around">
+				<v-col cols="auto">
+					<a
+						class="simple-link"
+						@click="$router.go(-1)">
+						&larr; more articles
+					</a>
+				</v-col>
+				<v-col cols="auto">
+					<v-btn
+						rounded
+						@click="like">
+						{{ `👏 ${article.likes}` }}
+					</v-btn>
+				</v-col>
+			</v-row>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -72,11 +78,7 @@ export default {
 </script>
 
 <style scoped>
-#article{
-	max-width: 100vw;
-}
-
 #article-content {
-	min-height: 50vh;
+	min-height: 60vh;
 }
 </style>
