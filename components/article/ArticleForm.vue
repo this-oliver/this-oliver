@@ -11,25 +11,18 @@
 					:required="true" />
 			</v-col>
 		</v-row>
+
 		<!-- article content -->
 		<v-row justify="center">
-			<v-col
-				cols="12"
-				md="6">
-				<input-text-block
-					v-model="form.content"
-					label="content"
-					:required="true" />
-				<small>{{ getArticleLength }} words</small>
+			<v-col cols="12">
+				<base-editor v-model="form.content" />
 			</v-col>
-			<v-col
-				cols="12"
-				md="6">
-				<v-sheet>
-					<!-- eslint-disable-next-line vue/no-v-html -->
-					<span v-html="getParsedContent(form.content)" />
-				</v-sheet>
-			</v-col>
+		</v-row>
+
+		<!-- actions -->
+		<v-row
+			class="mt-2"
+			justify="space-between">
 			<!-- tags -->
 			<v-col
 				cols="12"
@@ -50,12 +43,6 @@
 					v-model="form.publish"
 					label="publish" />
 			</v-col>
-		</v-row>
-
-		<!-- actions -->
-		<v-row
-			class="mt-2"
-			justify="space-between">
 			<v-col
 				class="mt-1"
 				sm="3"
@@ -112,14 +99,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { MarkdownToHtml } from "../../utils/markdown";
 import { getWordCount } from "../../utils/string";
+
+import BaseEditor from "../base/BaseEditor.vue";
 import InputText from "../base/InputText.vue";
-import InputTextBlock from "../base/InputTextBlock.vue";
 
 export default {
 	name: "ArticleForm",
-	components: { InputText, InputTextBlock },
+	components: { InputText, BaseEditor },
 	props: {
 		editMode: {
 			type: Boolean,
@@ -206,7 +193,7 @@ export default {
 	methods: {
 		async postArticle () {
 			try {
-				await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish });
+				await this.$store.dispatch("admin/articles/post", { title: this.form.title, content: this.form.content, tags: this.getFormattedTags(), publish: this.form.publish });
 				this.$router.push("/admin/articles");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
@@ -214,7 +201,7 @@ export default {
 		},
 		async updateArticle () {
 			try {
-				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
+				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.getFormattedTags(), publish: this.form.publish } });
 				this.$router.push("/admin/articles");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
@@ -222,18 +209,25 @@ export default {
 		},
 		async saveArticle () {
 			try {
-				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.form.tags, publish: this.form.publish } });
+				await this.$store.dispatch("admin/articles/patch", { id: this.$route.params.id, patch: { title: this.form.title, content: this.form.content, tags: this.getFormattedTags(), publish: this.form.publish } });
 				this.$store.commit("app/toaster/addSuccess", { title: `Article ${this.article._id}`, message: "Saved" });
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Article", message: error.message });
 			}
 		},
-		getParsedContent (text) {
-			if (text) {
-				return MarkdownToHtml(text);
-			} else {
-				return null;
-			}
+		getFormattedTags(){
+			const tags = this.form.tags;
+			const formattedTags = [];
+
+			tags.forEach(tag => {
+				if(typeof tag === "string"){
+					formattedTags.push({name: tag, id: null});
+				} else {
+					formattedTags.push({name: tag.text, id: tag.value});
+				}
+			});
+
+			return formattedTags;
 		}
 	}
 };
