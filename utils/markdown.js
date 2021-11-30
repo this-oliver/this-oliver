@@ -1,5 +1,5 @@
 import Marked from "marked";
-import SanitizeHtml from "sanitize-html";
+import HtmlSanitizer from "sanitize-html";
 
 /**
  * RenderConfig is a Marked renderer config that styles
@@ -7,14 +7,15 @@ import SanitizeHtml from "sanitize-html";
  * existing style
  */
 const renderConfig = {
-	heading (text, level) {
-		function getHeaderClass (classLevel) {
+	heading(text, level) {
+		function getHeaderClass(classLevel) {
 			switch (classLevel) {
 			case 1: // header
 				return "article-section";
 			case 2: // sub header
 				return "article-subsection";
-			default: // sub sub header
+			default:
+				// sub sub header
 				return "article-subsection";
 			}
 		}
@@ -24,7 +25,7 @@ const renderConfig = {
               ${text}
             </h${level}>`;
 	},
-	link (href, title, text) {
+	link(href, title, text) {
 		return `
             <a href="${href} target="_blank">
               ${text}
@@ -39,11 +40,11 @@ const renderConfig = {
  */
 const liteRenderConfig = {
 	// hide headers
-	heading (text, level) {
+	heading(text, level) {
 		return "";
 	},
 	// show links
-	link (href, title, text) {
+	link(href, title, text) {
 		return `
             <a href="${href} target="_blank">
               ${text}
@@ -75,4 +76,13 @@ export const MarkdownToHtml = (text, lite = false) => {
 	const cleanHtml = SanitizeHtml(dirtyHtml);
 
 	return cleanHtml;
+};
+
+/**
+ * Returns a sanitized html document
+ * @param {String} dirtyHtml - html
+ * @returns String
+ */
+export const SanitizeHtml = (dirtyHtml) => {
+	return HtmlSanitizer(dirtyHtml);
 };

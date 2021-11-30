@@ -1,18 +1,10 @@
 <template>
 	<base-page>
-		<base-image
-			src="./images/me.webp"
-			size="contain"
-			:width="isScreenMobile ? 100 : 200"
-			class="text-center" />
-
 		<v-row justify="center">
 			<v-col
 				cols="11"
 				md="8">
-				<about-me
-					:short="getShortBio"
-					:long="getLongBio" />
+				<about-me :bio="getShortBio" />
 			</v-col>
 		</v-row>
 	</base-page>
@@ -22,7 +14,6 @@
 import { mapGetters } from "vuex";
 
 import AboutMe from "~/components/about/AboutMe.vue";
-import BaseImage from "~/components/base/BaseImage.vue";
 import BasePage from "~/components/base/BasePage.vue";
 
 import { STORAGE } from "~/logic/enums";
@@ -30,7 +21,6 @@ import { getTextDescription } from "~/utils/string";
 
 export default {
 	components: {
-		BaseImage,
 		BasePage,
 		AboutMe
 	},
@@ -50,9 +40,6 @@ export default {
 		}),
 		getShortBio () {
 			return (this.oliver) ? this.oliver.bio.short : "My name is Oliver and I'm a software engineer. I'm studying information security. My interests are coding, entrepreneurship and blockchain technology.";
-		},
-		getLongBio () {
-			return (this.oliver) ? this.oliver.bio.long : "My name is Oliver and I'm a coder with a software engineering background (BSc) that is currently studying information security (Msc) because I think it's interesting. I have worked at large enterprises and small startups.";
 		}
 	},
 	async mounted () {

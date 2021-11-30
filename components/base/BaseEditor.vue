@@ -2,74 +2,107 @@
 	<div id="base-editor">
 		<v-btn-toggle v-if="editor">
 			<base-editor-button
-				:is-active="editor.isActive('heading', { level: 1 })"
-				@click="editor.chain().focus().toggleHeading({ level: 1 }).run()">
-				h1
-			</base-editor-button>
-			<base-editor-button
-				:is-active="editor.isActive('heading', { level: 2 })"
-				@click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
-				h2
-			</base-editor-button>
-			<base-editor-button
-				:is-active="editor.isActive('heading', { level: 3 })"
-				@click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
-				h3
-			</base-editor-button>
-			<base-editor-button
-				:is-active="editor.isActive('paragraph')"
-				@click="editor.chain().focus().setParagraph().run()">
-				paragraph
-			</base-editor-button>
-			<base-editor-button
+				is-text
 				:is-active="editor.isActive('bold')"
 				@click="editor.chain().focus().toggleBold().run()">
 				bold
 			</base-editor-button>
 			<base-editor-button
+				is-text
 				:is-active="editor.isActive('italic')"
 				@click="editor.chain().focus().toggleItalic().run()">
 				italic
 			</base-editor-button>
 			<base-editor-button
+				is-text
 				:is-active="editor.isActive('strike')"
 				@click="editor.chain().focus().toggleStrike().run()">
 				strike
 			</base-editor-button>
 			<base-editor-button
+				is-text
 				:is-active="editor.isActive('highlight')"
 				@click="editor.chain().focus().toggleHighlight().run()">
 				highlight
 			</base-editor-button>
 			<base-editor-button
+				is-text
+				:is-active="editor.isActive({ textAlign: 'left' })"
+				@click="editor.chain().focus().setTextAlign('left').run()">
+				left
+			</base-editor-button>
+			<base-editor-button
+				is-text
+				:is-active="editor.isActive({ textAlign: 'center' })"
+				@click="editor.chain().focus().setTextAlign('center').run()">
+				center
+			</base-editor-button>
+			<base-editor-button
+				is-text
+				:is-active="editor.isActive({ textAlign: 'right' })"
+				@click="editor.chain().focus().setTextAlign('right').run()">
+				right
+			</base-editor-button>
+			<base-editor-button
+				is-text
 				:is-active="editor.isActive('link')"
 				@click="setLink">
 				setLink
 			</base-editor-button>
 			<base-editor-button
-				:disabled="!editor.isActive('link')"
+				is-text
+				:is-disabled="!editor.isActive('link')"
 				@click="editor.chain().focus().unsetLink().run()">
 				unsetLink
 			</base-editor-button>
 		</v-btn-toggle>
+
+		<t-bubble-menu
+			v-if="editor"
+			:editor="editor">
+			<base-editor-button
+				hide-outline
+				:is-active="editor.isActive('heading', { level: 1 })"
+				@click="editor.chain().focus().toggleHeading({ level: 1 }).run()">
+				h1
+			</base-editor-button>
+			<base-editor-button
+				hide-outline
+				:is-active="editor.isActive('heading', { level: 2 })"
+				@click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
+				h2
+			</base-editor-button>
+			<base-editor-button
+				hide-outline
+				:is-active="editor.isActive('heading', { level: 3 })"
+				@click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
+				h3
+			</base-editor-button>
+			<base-editor-button
+				hide-outline
+				:is-active="editor.isActive('paragraph')"
+				@click="editor.chain().focus().setParagraph().run()">
+				paragraph
+			</base-editor-button>
+		</t-bubble-menu>
 
 		<t-editor-content :editor="editor" />
 	</div>
 </template>
 
 <script>
-import { Editor, EditorContent as TEditorContent } from "@tiptap/vue-2";
-import TStarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent as TEditorContent, BubbleMenu as TBubbleMenu } from "@tiptap/vue-2";
 import THighlight from "@tiptap/extension-highlight";
-import TTypography from "@tiptap/extension-typography";
 import TLink from "@tiptap/extension-link";
+import TStarterKit from "@tiptap/starter-kit";
+import TTextAlign from "@tiptap/extension-text-align";
+import TTypography from "@tiptap/extension-typography";
 import BaseEditorButton from "./BaseEditorButton.vue";
-
-
 
 export default {
 	components: {
 		TEditorContent,
+		TBubbleMenu,
 		BaseEditorButton
 	},
 
@@ -108,6 +141,7 @@ export default {
 			extensions: [
 				TStarterKit,
 				THighlight,
+				TTextAlign,
 				TTypography,
 				TLink.configure({
 					openOnClick: false

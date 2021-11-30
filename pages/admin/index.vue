@@ -6,8 +6,7 @@
 				sm="8">
 				👀 {{ user.visits }}
 				<about-me
-					:short="user.bio.short"
-					:long="user.bio.long"
+					:bio="user.bio.short"
 					:edit-mode="true" />
 			</v-col>
 		</v-row>
@@ -27,7 +26,7 @@ export default {
 		})
 	},
 	async mounted(){
-		await this.$auth.fetchUser();
+		await this.$store.dispatch("admin/initUser");
 	}
 };
 </script>

@@ -98,8 +98,7 @@
 			hide-footer
 			size="xl">
 			<span v-if="form.description && form.description.length > 0">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getParsedContent(form.description)" />
+				<base-html :html="getParsedContent(form.description)" />
 			</span>
 			<span v-else>...</span>
 		</v-dialog>
@@ -117,9 +116,10 @@ import BaseForm from "../base/BaseForm.vue";
 import InputText from "../base/InputText.vue";
 import InputTextBlock from "../base/InputTextBlock.vue";
 import InputSelect from "../base/InputSelect.vue";
+import BaseHtml from "../base/BaseHtml.vue";
 export default {
 	name: "ExperienceForm",
-	components: { BaseForm, InputText, InputTextBlock, InputSelect },
+	components: { BaseForm, InputText, InputTextBlock, InputSelect, BaseHtml },
 	props: {
 		editMode: {
 			type: Boolean,

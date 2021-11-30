@@ -20,8 +20,7 @@
 		<v-row class="mt-2">
 			<!-- content -->
 			<v-col cols="12">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getParsedContent" />
+				<base-html :html="getParsedContent" />
 			</v-col>
 		</v-row>
 
@@ -54,10 +53,12 @@ import { MarkdownToHtml } from "../../utils/markdown";
 
 import { EXPERIENCES } from "../../logic/enums";
 import BaseCardVue from "../base/BaseCard.vue";
+import BaseHtml from "../base/BaseHtml.vue";
 export default {
 	name: "ExperienceCard",
 	components: {
-		"base-card": BaseCardVue
+		"base-card": BaseCardVue,
+		BaseHtml
 	},
 	props: {
 		experience: {

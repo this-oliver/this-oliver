@@ -2,32 +2,15 @@
 	<div>
 		<v-row justify="center">
 			<v-col
+				v-if="editMode"
 				cols="12"
+				md="auto"
 				class="text-center">
 				<h1>About Me</h1>
 			</v-col>
-			<v-col cols="auto">
-				<v-btn
-					class="mx-1"
-					elevation="0"
-					color="primary"
-					:outlined="showShortBio === true"
-					@click="toggleBio">
-					short
-				</v-btn>
-				<v-btn
-					class="mx-1"
-					color="error"
-					elevation="0"
-					:outlined="showShortBio === false"
-					@click="toggleBio">
-					long
-				</v-btn>
-			</v-col>
 			<v-col
 				v-if="editMode"
-				cols="7"
-				sm="auto"
+				cols="auto"
 				class="text-center ml-sm-auto">
 				<v-btn
 					class="mx-1"
@@ -41,49 +24,25 @@
 
 		<v-row class="mt-3">
 			<v-col class="bio-text">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div v-html="getParsedContent" />
+				<base-html :html="bio" />
 			</v-col>
 		</v-row>
 	</div>
 </template>
 
 <script>
-import { MarkdownToHtml } from "../../utils/markdown";
-
+import BaseHtml from "../base/BaseHtml.vue";
 export default {
 	name: "AboutMe",
+	components: { BaseHtml },
 	props: {
-		short: {
-			type: String,
-			required: true
-		},
-		long: {
+		bio: {
 			type: String,
 			required: true
 		},
 		editMode: {
 			type: Boolean,
 			default: false
-		}
-	},
-	data () {
-		return {
-			showShortBio: true
-		};
-	},
-	computed: {
-		getParsedContent () {
-			if (this.showShortBio) {
-				return this.short ? MarkdownToHtml(this.short) : ""; // if short is empty, show empty string
-			} else {
-				return this.long ? MarkdownToHtml(this.long) : ""; // if long is empty, show empty string
-			}
-		}
-	},
-	methods: {
-		toggleBio () {
-			this.showShortBio = !this.showShortBio;
 		}
 	}
 };

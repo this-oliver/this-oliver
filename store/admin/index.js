@@ -12,7 +12,18 @@ export const getters = {
 };
 
 export const actions = {
-	async register (context, { name, email, password }) {
+	async initAdmin(context) {
+		try {
+			await this.$auth.fetchUser();
+		} catch (error) {
+			context.commit(
+				"app/toaster/addError",
+				{ title: "Initiating User", message: error.message },
+				{ root: true }
+			);
+		}
+	},
+	async register(context, { name, email, password }) {
 		await context.dispatch("user/reset", null, { root: true });
 		try {
 			const response = await this.$api.auth.register(name, email, password);
@@ -28,21 +39,32 @@ export const actions = {
 			});
 		}
 	},
-	async patch (context, { name, email, short, long }) {
+	async patch(context, { name, email, short, long }) {
 		try {
 			const id = context.rootState.auth.user._id;
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.user.patch(token, id, name, email, short, long);
+			const response = await this.$api.user.patch(
+				token,
+				id,
+				name,
+				email,
+				short,
+				long
+			);
 			const user = response.data;
 
 			await this.$auth.fetchUser();
 			return user;
 		} catch (error) {
-			context.commit("app/toaster/addError", { title: "Patching User", message: error.message }, { root: true });
+			context.commit(
+				"app/toaster/addError",
+				{ title: "Patching User", message: error.message },
+				{ root: true }
+			);
 		}
 	},
-	async reset (context) {
+	async reset(context) {
 		await this.$auth.logout(/* .... */);
 	}
 };
