@@ -1,9 +1,11 @@
 <template>
 	<v-btn
 		small
-		text
-		outlined
-		:disabled="disabled"
+		elevation="0"
+		:text="isText"
+		:color="color"
+		:disabled="isDisabled"
+		:outlined="!hideOutline"
 		@click="emitClick">
 		<slot />
 	</v-btn>
@@ -13,11 +15,23 @@
 export default {
 	name: "BaseEditorButton",
 	props: {
+		color: {
+			type: String,
+			default: "dark"
+		},
 		isActive: {
 			type: Boolean,
 			default: false
 		},
-		disabled: {
+		isText: {
+			type: Boolean,
+			default: false
+		},
+		isDisabled: {
+			type: Boolean,
+			default: false
+		},
+		hideOutline: {
 			type: Boolean,
 			default: false
 		}
