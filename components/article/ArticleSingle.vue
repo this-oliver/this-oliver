@@ -21,8 +21,7 @@
 			id="article-content"
 			class="mt-2 mt-md-0"
 			md="8">
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<span v-html="getParsedContent" />
+			<base-html :html="getParsedContent" />
 		</v-col>
 
 		<v-col cols="12">
@@ -50,9 +49,11 @@
 <script>
 import { MarkdownToHtml } from "../../utils/markdown";
 import { getDate } from "../../utils/time";
+import BaseHtml from "../base/BaseHtml.vue";
 
 export default {
 	name: "ArticleSingle",
+	components: { BaseHtml },
 	props: {
 		article: {
 			type: Object,

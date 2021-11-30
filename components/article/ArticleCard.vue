@@ -4,8 +4,7 @@
 		<h3>{{ article.title }}</h3>
 
 		<!-- content -->
-		<!-- eslint-disable-next-line vue/no-v-html -->
-		<span v-html="getParsedContent" />
+		<base-html :html="getParsedContent" />
 
 		<!-- date -->
 		<v-row dense>
@@ -95,11 +94,13 @@ import BaseCardVue from "../base/BaseCard.vue";
 import { getDate } from "../../utils/time";
 import { getTextDescription } from "../../utils/string";
 import { MarkdownToHtml } from "../../utils/markdown";
+import BaseHtml from "../base/BaseHtml.vue";
 
 export default {
 	name: "ArticleCard",
 	components: {
-		"base-card": BaseCardVue
+		"base-card": BaseCardVue,
+		BaseHtml
 	},
 	props: {
 		article: {
