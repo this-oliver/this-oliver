@@ -27,7 +27,7 @@ export default {
 		})
 	},
 	async mounted(){
-		await this.$auth.fetchUser();
+		await this.$store.dispatch("admin/initUser");
 	}
 };
 </script>
