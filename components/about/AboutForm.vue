@@ -1,61 +1,22 @@
 <template>
-	<base-form title="about you">
-		<!-- short bio -->
-		<v-row
-			class="mt-2"
-			justify="space-between">
-			<v-col
-				sm="6"
-				md="auto">
-				<span class="mr-3">short</span>
-				<small>{{ getShortLength }}</small>
-			</v-col>
-			<v-col
-				sm="auto"
-				md="auto">
-				<span
-					class="simple-link"
-					color="outline-primary"
-					@click="showShortBioForm=true">
-					preview
-				</span>
-			</v-col>
-			<v-col
-				class="mt-2"
-				cols="12">
-				<input-text-block
-					v-model="form.short"
-					label="short bio" />
-			</v-col>
-		</v-row>
-		<!-- long bio -->
-		<v-row
-			class="mt-2"
-			justify="space-between">
-			<v-col
-				sm="6"
-				md="auto">
-				<span class="mr-3">long</span>
-				<small>{{ getLongLength }}</small>
-			</v-col>
-			<v-col
-				sm="auto"
-				md="auto">
-				<span
-					class="simple-link"
-					color="outline-primary"
-					@click="showLongBioForm=true">
-					preview
-				</span>
-			</v-col>
-			<v-col
-				class="mt-2"
-				cols="12">
-				<input-text-block
-					v-model="form.long"
-					label="long bio" />
-			</v-col>
-		</v-row>
+	<base-form title="Edit Bio">
+		<v-tabs v-model="currentTab">
+			<v-tab>Short Bio</v-tab>
+			<v-tab>Long Bio</v-tab>
+		</v-tabs>
+
+		<v-tabs-items v-model="currentTab">
+			<!-- short bio -->
+			<v-tab-item class="pa-2">
+				<base-editor v-model="form.short" />
+			</v-tab-item>
+
+			<!-- long bio -->
+			<v-tab-item class="pa-2">
+				<base-editor v-model="form.long" />
+			</v-tab-item>
+		</v-tabs-items>
+
 		<!-- actions -->
 		<v-row
 			class="mt-2"
@@ -91,35 +52,19 @@
 				</v-btn>
 			</v-col>
 		</v-row>
-
-		<!-- modals -->
-		<v-dialog v-model="showShortBioForm">
-			<span v-if="form.short && form.short.length > 0">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getParsedContent(form.short)" />
-			</span>
-			<span v-else>...</span>
-		</v-dialog>
-		<v-dialog v-model="showLongBioForm">
-			<span v-if="form.long && form.long.length > 0">
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<span v-html="getParsedContent(form.long)" />
-			</span>
-			<span v-else>...</span>
-		</v-dialog>
 	</base-form>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import { MarkdownToHtml } from "../../utils/markdown";
 import { getWordCount } from "../../utils/string";
+
+import BaseEditor from "../base/BaseEditor.vue";
 import BaseForm from "../base/BaseForm.vue";
-import InputTextBlock from "../base/InputTextBlock.vue";
 
 export default {
 	name: "AboutForm",
-	components: { BaseForm, InputTextBlock },
+	components: { BaseForm, BaseEditor },
 	props: {
 		editMode: {
 			type: Boolean,
@@ -132,8 +77,7 @@ export default {
 				short: null,
 				long: null
 			},
-			showShortBioForm: false,
-			showLongBioForm: false
+			currentTab: null
 		};
 	},
 	computed: {
@@ -161,13 +105,6 @@ export default {
 		async update(){
 			await this.patch({name: null, email: null, short: this.form.short, long: this.form.long});
 			this.$router.push("/admin");
-		},
-		getParsedContent (text) {
-			if (text) {
-				return MarkdownToHtml(text);
-			} else {
-				return null;
-			}
 		}
 	}
 };
