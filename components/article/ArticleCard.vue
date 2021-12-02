@@ -1,6 +1,7 @@
 <template>
 	<base-card :path="getUrl">
 		<v-row
+			dense
 			justify="start"
 			justify-md="space-between">
 			<!-- title -->
@@ -45,34 +46,29 @@
 			</v-col>
 		</v-row>
 
-		<template #left-side>
-			<!-- footer -->
-			<v-row justify="space-between">
-				<v-col
-					v-if="editMode"
-					md="12">
-					<!-- publish flag -->
-					<v-icon
-						v-if="article.publish"
-						color="success">
-						check_circle
-					</v-icon>
-					<v-icon
-						v-else
-						color="warning">
-						remove_circle
-					</v-icon>
-				</v-col>
-			</v-row>
+		<template
+			v-if="editMode"
+			#left-side>
+			<!-- publish flag -->
+			<v-icon
+				v-if="article.publish"
+				color="success">
+				check_circle
+			</v-icon>
+			<v-icon
+				v-else
+				color="warning">
+				remove_circle
+			</v-icon>
 		</template>
 
-		<template #right-side>
+		<template
+			v-if="editMode"
+			#right-side>
+			<!-- actions -->
 			<v-row justify="space-between">
-				<!-- actions -->
 				<v-col
-					v-if="editMode"
 					cols="auto"
-					sm="auto"
 					class="mx-1">
 					<nuxt-link
 						class="simple-link"
@@ -81,9 +77,7 @@
 					</nuxt-link>
 				</v-col>
 				<v-col
-					v-if="editMode"
 					cols="auto"
-					sm="auto"
 					class="mx-1">
 					<span
 						class="red--text simple-link"

@@ -1,8 +1,10 @@
 <template>
 	<v-row
+		:dense="slotLeftSideFilled || slotRightSideFilled || slotFooterFilled"
 		justify="center"
 		align="center">
 		<v-col
+			v-if="slotLeftSideFilled"
 			cols="12"
 			md="1"
 			order="2"
@@ -27,6 +29,7 @@
 		</v-col>
 
 		<v-col
+			v-if="slotRightSideFilled"
 			cols="12"
 			md="1"
 			order="3"
@@ -35,6 +38,7 @@
 		</v-col>
 
 		<v-col
+			v-if="slotFooterFilled"
 			cols="12"
 			order="4"
 			order-md="4"
@@ -59,6 +63,18 @@ export default {
 		elevation: {
 			type: Number,
 			default: 0
+		}
+	},
+	computed:{
+		slotLeftSideFilled(){
+			console.log({slot: this.$slots});
+			return this.$slots["left-side"];
+		},
+		slotRightSideFilled(){
+			return this.$slots["right-side"];
+		},
+		slotFooterFilled(){
+			return this.$slots.footer;
 		}
 	},
 	methods: {
