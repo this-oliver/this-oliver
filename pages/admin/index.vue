@@ -26,7 +26,7 @@ export default {
 		})
 	},
 	async mounted(){
-		await this.$store.dispatch("admin/initUser");
+		await this.$store.dispatch("admin/initAdmin");
 	}
 };
 </script>

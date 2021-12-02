@@ -98,7 +98,6 @@ export const actions = {
 			const response = await this.$api.article.patch(token, id, patch);
 			const article = response.data;
 
-			const userId = this.$auth.user._id;
 			await context.dispatch("index");
 
 			return article;
@@ -113,7 +112,6 @@ export const actions = {
 			const response = await this.$api.article.delete(token, id);
 			const article = response.data;
 
-			const userId = this.$auth.user._id;
 			await context.dispatch("index");
 
 			return article;

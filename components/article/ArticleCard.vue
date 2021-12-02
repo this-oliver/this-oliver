@@ -1,17 +1,40 @@
 <template>
 	<base-card :path="getUrl">
-		<!-- title -->
-		<h3>{{ article.title }}</h3>
-
-		<!-- content -->
-		<base-html :html="getParsedContent" />
-
-		<!-- date -->
-		<v-row dense>
+		<v-row
+			dense
+			justify="start"
+			justify-md="space-between">
+			<!-- title -->
+			<v-col
+				cols="12"
+				md="8">
+				<h2>{{ article.title }}</h2>
+			</v-col>
+			<!-- date -->
+			<v-col
+				cols="12"
+				md="3">
+				<b>{{ getDate }}</b>
+			</v-col>
+			<!-- likes -->
+			<v-col
+				cols="auto"
+				class="mx-1">
+				{{ `👏 ${article.likes}` }}
+			</v-col>
+			<!-- views -->
+			<v-col
+				v-if="editMode"
+				cols="auto"
+				class="mx-1 mr-md-auto">
+				{{ `🔎 ${article.views}` }}
+			</v-col>
+			<!-- tags -->
 			<v-col
 				v-if="article.tags.length"
-				cols="12">
-				<!-- tags -->
+				cols="12"
+				md="auto"
+				class="ml-md-auto">
 				<v-chip
 					v-for="tag in article.tags"
 					:key="tag._id"
@@ -21,50 +44,31 @@
 					{{ tag.name }}
 				</v-chip>
 			</v-col>
-			<v-col cols="auto">
-				{{ getDate }}
-			</v-col>
 		</v-row>
 
-		<template #footer>
-			<!-- footer -->
+		<template
+			v-if="editMode"
+			#left-side>
+			<!-- publish flag -->
+			<v-icon
+				v-if="article.publish"
+				color="success">
+				check_circle
+			</v-icon>
+			<v-icon
+				v-else
+				color="warning">
+				remove_circle
+			</v-icon>
+		</template>
+
+		<template
+			v-if="editMode"
+			#right-side>
+			<!-- actions -->
 			<v-row justify="space-between">
-				<!-- views and likes -->
 				<v-col
-					v-if="editMode"
-					cols="2"
-					sm="auto"
-					class="mx-1">
-					<!-- publish flag -->
-					<v-icon
-						v-if="article.publish"
-						color="success">
-						check_circle
-					</v-icon>
-					<v-icon
-						v-else
-						color="warning">
-						remove_circle
-					</v-icon>
-				</v-col>
-				<v-col
-					v-if="editMode"
-					cols="2"
-					sm="auto"
-					class="mx-1">
-					{{ `🔎 ${article.views}` }}
-				</v-col>
-				<v-col
-					cols="2"
-					sm="auto"
-					class="mx-1 mr-sm-auto">
-					{{ `👏 ${article.likes}` }}
-				</v-col>
-				<!-- actions -->
-				<v-col
-					v-if="editMode"
 					cols="auto"
-					sm="auto"
 					class="mx-1">
 					<nuxt-link
 						class="simple-link"
@@ -73,9 +77,7 @@
 					</nuxt-link>
 				</v-col>
 				<v-col
-					v-if="editMode"
 					cols="auto"
-					sm="auto"
 					class="mx-1">
 					<span
 						class="red--text simple-link"
@@ -90,17 +92,13 @@
 
 <script>
 import { mapActions } from "vuex";
-import BaseCardVue from "../base/BaseCard.vue";
 import { getDate } from "../../utils/time";
-import { getTextDescription } from "../../utils/string";
-import { MarkdownToHtml } from "../../utils/markdown";
-import BaseHtml from "../base/BaseHtml.vue";
+import BaseCard from "../base/BaseCard.vue";
 
 export default {
 	name: "ArticleCard",
 	components: {
-		"base-card": BaseCardVue,
-		BaseHtml
+		BaseCard
 	},
 	props: {
 		article: {
@@ -113,10 +111,6 @@ export default {
 		}
 	},
 	computed: {
-		getParsedContent () {
-			const content = `${getTextDescription(this.article.content)}...`;
-			return MarkdownToHtml(content, true);
-		},
 		getDate () {
 			return getDate(this.article.createdAt);
 		},

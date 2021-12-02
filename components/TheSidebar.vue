@@ -34,12 +34,12 @@
 						class="mt-2"
 						v-bind="attrs"
 						v-on="on">
-						🚨 admin dashboard
+						🚨 Admin Dashboard
 					</v-list-item>
 				</template>
 
 				<v-list>
-					<v-subheader>🚨 admin</v-subheader>
+					<v-subheader>🚨 Admin</v-subheader>
 					<v-list-item
 						v-for="link in adminLinks"
 						:key="link.title"
@@ -53,7 +53,7 @@
 							block
 							color="error"
 							@click="logout">
-							logout
+							Logout
 						</v-btn>
 					</v-list-item>
 				</v-list>
