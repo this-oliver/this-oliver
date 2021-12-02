@@ -6,13 +6,14 @@
 				justify="space-around"
 				align="center">
 				<v-col cols="auto">
-					<h1>articles</h1>
+					<h1>Articles</h1>
 				</v-col>
 				<v-col cols="auto">
 					<v-btn
-						icon
+						text
+						outlined
 						to="/admin/articles/create">
-						<v-icon>add</v-icon>
+						new article
 					</v-btn>
 				</v-col>
 			</v-row>

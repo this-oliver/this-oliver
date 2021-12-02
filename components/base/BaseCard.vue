@@ -1,10 +1,20 @@
 <template>
-	<div>
-		<div class="py-1 px-3">
-			<slot name="header" />
-		</div>
+	<v-row
+		justify="center"
+		align="center">
+		<v-col
+			cols="12"
+			md="1"
+			order="2"
+			order-md="1">
+			<slot name="left-side" />
+		</v-col>
 
-		<div
+		<v-col
+			cols="12"
+			md="10"
+			order="1"
+			order-md="2"
 			:class="path ? 'clickable' : ''"
 			@click="goToPath">
 			<v-card
@@ -14,12 +24,24 @@
 				<slot name="title" />
 				<slot />
 			</v-card>
-		</div>
+		</v-col>
 
-		<div class="mt-1">
+		<v-col
+			cols="12"
+			md="1"
+			order="3"
+			order-md="3">
+			<slot name="right-side" />
+		</v-col>
+
+		<v-col
+			cols="12"
+			order="4"
+			order-md="4"
+			class="mt-1">
 			<slot name="footer" />
-		</div>
-	</div>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
