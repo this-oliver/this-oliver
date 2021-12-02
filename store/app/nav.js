@@ -2,25 +2,25 @@ export const state = function () {
 	return {
 		links: [
 			{
-				title: "articles",
+				title: "Articles",
 				route: "/articles"
 			},
 			{
-				title: "experience",
+				title: "Experience",
 				route: "/experiences"
 			}
 		],
 		adminLinks: [
 			{
-				title: "🔑 about",
+				title: "🔑 About",
 				route: "/admin"
 			},
 			{
-				title: "🔑 articles",
+				title: "🔑 Articles",
 				route: "/admin/articles"
 			},
 			{
-				title: "🔑 experience",
+				title: "🔑 Experience",
 				route: "/admin/experiences"
 			}
 		],
