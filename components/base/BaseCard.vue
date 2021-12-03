@@ -67,7 +67,6 @@ export default {
 	},
 	computed:{
 		slotLeftSideFilled(){
-			console.log({slot: this.$slots});
 			return this.$slots["left-side"];
 		},
 		slotRightSideFilled(){
