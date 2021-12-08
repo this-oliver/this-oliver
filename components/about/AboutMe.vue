@@ -22,11 +22,9 @@
 			</v-col>
 		</v-row>
 
-		<v-row class="mt-3">
-			<v-col class="bio-text">
-				<base-html :html="bio" />
-			</v-col>
-		</v-row>
+		<base-html
+			class="mt-3"
+			:html="bio" />
 	</div>
 </template>
 

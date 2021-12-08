@@ -1,6 +1,8 @@
 <template>
 	<base-page>
-		<v-row justify="center">
+		<v-row
+			id="about-me-content"
+			justify="center">
 			<v-col
 				cols="11"
 				md="8">
@@ -62,3 +64,16 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+#about-me-content {
+	margin-top: 20%;
+}
+
+@media screen and (max-width: 480px) {
+	/* add styling for mobile phones */
+	#about-me-content {
+		margin-top: 0%;
+	}
+}
+</style>
