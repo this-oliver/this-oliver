@@ -67,7 +67,7 @@ export default {
 
 <style scoped>
 #about-me-content {
-	margin-top: 20%;
+	margin-top: 10%;
 }
 
 @media screen and (max-width: 480px) {
