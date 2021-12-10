@@ -184,7 +184,7 @@ export default {
 		},
 		async updateExperience () {
 			try {
-				await this.$store.dispatch("admin/experiences/patch", { id: this.$route.params.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
+				await this.$store.dispatch("admin/experiences/patch", { id: this.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
 				this.$router.push("/admin/experiences");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
@@ -192,7 +192,7 @@ export default {
 		},
 		async deleteExperience () {
 			try {
-				await this.$store.dispatch("admin/experiences/delete", this.$route.params.experience._id);
+				await this.$store.dispatch("admin/experiences/delete", this.experience._id);
 				this.$router.push("/admin/experiences");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
