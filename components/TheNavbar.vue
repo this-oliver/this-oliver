@@ -3,7 +3,7 @@
 		id="navigation-bar"
 		app
 		flat
-		:color="showDarkMode ? 'dark' : 'white'">
+		:color="showDarkMode ? '#131313' : 'white'">
 		<h2>
 			<nuxt-link
 				class="brand hide-link"
