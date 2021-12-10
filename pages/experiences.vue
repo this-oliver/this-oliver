@@ -27,7 +27,7 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			experiences: "user/getExperiences"
+			experiences: "user/experiences/getExperiences"
 		})
 	}
 };

@@ -1,13 +1,8 @@
 /* eslint-disable no-console */
-import { sortLatestExperiences } from "~/logic/experience";
 
 export const getters = {
 	getUser (state, getters, rootState) {
 		return rootState.auth.user;
-	},
-	getExperiences (state, getters, rootState) {
-		const user = rootState.auth.user;
-		return user ? sortLatestExperiences([...user.experiences]) : [];
 	}
 };
 

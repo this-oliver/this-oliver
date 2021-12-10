@@ -1,4 +1,13 @@
 /* eslint-disable no-console */
+import { sortLatestExperiences } from "~/logic/experience";
+
+export const getters = {
+	getExperiences(state, getters, rootState) {
+		const user = rootState.auth.user;
+		return user ? sortLatestExperiences([...user.experiences]) : [];
+	}
+};
+
 export const actions = {
 	async post (context, { title, org, startYear, endYear, description, type }) {
 		try {
@@ -21,7 +30,7 @@ export const actions = {
 	},
 	get (context, id) {
 		try {
-			const experiences = context.rootGetters["user/getExperiences"];
+			const experiences = context.getters["getExperiences"];
 
 			if (!experiences) { throw new Error("Experiences are missing"); }
 
