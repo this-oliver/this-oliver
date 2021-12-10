@@ -44,7 +44,7 @@ export const actions = {
 
 			const response = await this.$api.experience.patch(token, id, title, org, startYear, endYear, description, type);
 
-			await context.dispatch("user/get", null, { root: true });
+			await context.dispatch("admin/init", null, { root: true });
 
 			return response.data;
 		} catch (error) {

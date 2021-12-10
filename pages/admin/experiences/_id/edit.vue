@@ -1,6 +1,7 @@
 <template>
 	<base-page>
 		<experience-form
+			v-if="experience"
 			:experience="experience"
 			:edit-mode="true" />
 	</base-page>
