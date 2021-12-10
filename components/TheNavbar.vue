@@ -1,5 +1,6 @@
 <template>
 	<v-app-bar
+		id="navigation-bar"
 		app
 		flat
 		:color="showDarkMode ? 'dark' : 'white'">
@@ -88,3 +89,16 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+#navigation-bar{
+  margin: 0 15%;
+}
+
+@media screen and (max-width: 480px) {
+	/* add styling for mobile phones */
+	#navigation-bar {
+		margin: 0;
+	}
+}
+</style>
