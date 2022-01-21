@@ -21,7 +21,7 @@
 		"@tiptap/extension-typography": "^2.0.0-beta.19",
 		"@tiptap/starter-kit": "^2.0.0-beta.145",
 		"@tiptap/vue-2": "^2.0.0-beta.69",
-		"core-js": "^3.19.0",
+		"core-js": "^3.20.3",
 		"jsonwebtoken": "^8.5.1",
 		"markdown-it": "^12.2.0",
 		"marked": "^3.0.8",
