@@ -3,7 +3,7 @@
 		v-if="experiences.length > 0"
 		justify="center">
 		<v-col
-			v-for="(experience) in experiences"
+			v-for="experience in experiences"
 			:key="experience._id"
 			cols="12"
 			md="8"
