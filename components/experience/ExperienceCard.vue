@@ -52,12 +52,12 @@ import { mapActions } from "vuex";
 import { MarkdownToHtml } from "../../utils/markdown";
 
 import { EXPERIENCES } from "../../logic/enums";
-import BaseCardVue from "../base/BaseCard.vue";
+import BaseCard from "../base/BaseCard.vue";
 import BaseHtml from "../base/BaseHtml.vue";
 export default {
 	name: "ExperienceCard",
 	components: {
-		"base-card": BaseCardVue,
+		BaseCard,
 		BaseHtml
 	},
 	props: {
