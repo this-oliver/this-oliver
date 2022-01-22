@@ -1,4 +1,4 @@
-import Marked from "marked";
+import { marked as Marked } from "marked";
 import HtmlSanitizer from "sanitize-html";
 
 /**
