@@ -122,7 +122,7 @@ export default {
 			form: {
 				title: null,
 				content: null,
-				tags: null,
+				tags: [],
 				publish: false
 			}
 		};
