@@ -35,7 +35,7 @@
 		"@nuxtjs/vuetify": "^1.12.3",
 		"eslint": "^8.1.0",
 		"eslint-plugin-nuxt": "^3.0.0",
-		"eslint-plugin-vue": "^8.3.0"
+		"eslint-plugin-vue": "^8.4.0"
 	},
 	"type": "module",
 	"engines": {
