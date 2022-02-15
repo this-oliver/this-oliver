@@ -41,7 +41,7 @@ export default {
 			oliver: "user/getUser"
 		}),
 		getShortBio () {
-			return (this.oliver) ? this.oliver.bio.short : "My name is Oliver and I'm a software engineer. I'm studying information security. My interests are coding, entrepreneurship and blockchain technology.";
+			return (this.oliver) ? this.oliver.bio.short : "<h1>👋</h1><p>My name is Oliver. I code stuff. I secure stuff. I’ve spent the last four years studying software engineering and entrepreneurship and building software applications for startups and enterprises.</p> <p>Currently, I'm studying Information Security at LTU and hope to add this skill to my toolbox.</p> <p>In my free time, I like to travel, hang out with friends, listen to music, learn new things and sometimes work on, Fetch, a table ordering web application for bars and restaurants which I have come to see as a nice way for me to apply my studies to real life use-cases.</p>";
 		}
 	},
 	async mounted () {
