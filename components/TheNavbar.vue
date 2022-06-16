@@ -50,6 +50,15 @@
 						@click="goTo(link.route)">
 						<v-list-item-title>{{ link.title }}</v-list-item-title>
 					</v-list-item>
+					<v-list-item
+						text
+						class="mx-2"
+						color="error"
+						@click="logout">
+						<v-list-item-title>
+							<b class="red--text">🔐 Logout</b>
+						</v-list-item-title>
+					</v-list-item>
 				</v-list>
 			</v-menu>
 
@@ -81,7 +90,7 @@ export default {
 		}),
 		async logout () {
 			await this.$auth.logout();
-			this.$router.push("/");
+			this.goTo("/");
 		},
 		goTo(path){
 			if(this.$route.path !== path) this.$router.push(path);

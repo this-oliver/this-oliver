@@ -4,9 +4,9 @@
 			<v-col
 				cols="11"
 				sm="8">
-				👀 {{ user.visits }}
+				👀 {{ getUserVisits }}
 				<about-me
-					:bio="user.bio.short"
+					:bio="getUserBio"
 					:edit-mode="true" />
 			</v-col>
 		</v-row>
@@ -23,7 +23,13 @@ export default {
 	computed: {
 		...mapGetters({
 			user: "admin/getUser"
-		})
+		}),
+		getUserBio(){
+			return this.user?.bio.short;
+		},
+		getUserVisits(){
+			return this.user?.visits;
+		}
 	},
 	async mounted(){
 		await this.$store.dispatch("admin/initAdmin");

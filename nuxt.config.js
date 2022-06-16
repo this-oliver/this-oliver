@@ -90,7 +90,7 @@ export default {
 	auth: {
 		redirect: {
 			login: "/auth/login",
-			logout: "/auth/login"
+			logout: "/"
 		},
 		strategies: {
 			local: {

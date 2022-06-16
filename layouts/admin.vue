@@ -9,6 +9,7 @@
 				<nuxt />
 			</div>
 		</v-main>
+
 		<!-- footer -->
 		<the-footer />
 	</v-app>
