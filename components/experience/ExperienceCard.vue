@@ -1,5 +1,9 @@
 <template>
-	<base-card>
+	<base-card v-if="skeletonMode">
+		<v-skeleton-loader type="list-item-three-line" />
+	</base-card>
+
+	<base-card v-else>
 		<!-- title -->
 		<h3>{{ experience.title }}</h3>
 		<!-- org -->
@@ -72,13 +76,21 @@ export default {
 		shortMode: {
 			type: Boolean,
 			default: true
+		},
+		skeletonMode: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
 		getParsedContent () {
+			if(this.skeletonMode) return "";
+
 			return MarkdownToHtml(this.experience.description);
 		},
 		getEndYear () {
+			if(this.skeletonMode) return "";
+
 			const endYear = this.experience.endYear;
 			return endYear || "Present";
 		}

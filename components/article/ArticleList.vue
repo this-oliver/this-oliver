@@ -1,33 +1,12 @@
 <template>
-	<div
-		v-if="loading"
-		class="text-center">
-		<v-progress-circular
-			:size="50"
-			color="primary"
-			indeterminate />
-
-		<v-progress-circular
-			:width="3"
-			color="red"
-			indeterminate />
-
-		<v-progress-circular
-			:size="70"
-			:width="7"
-			color="purple"
-			indeterminate />
-
-		<v-progress-circular
-			:width="3"
-			color="green"
-			indeterminate />
-
-		<v-progress-circular
-			:size="50"
-			color="amber"
-			indeterminate />
+	<div v-if="loading">
+		<article-card
+			v-for="skeleton in [0,1,2,3,4, 5]"
+			:key="skeleton"
+			:article="{}"
+			:skeleton-mode="true" />
 	</div>
+
 	<v-row
 		v-else-if="articles.length > 0"
 		justify="center">
@@ -122,7 +101,6 @@ export default {
 					return found;
 				});
 			}
-			return true;
 		}
 	},
 	methods: {

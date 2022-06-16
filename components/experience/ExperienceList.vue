@@ -1,6 +1,14 @@
 <template>
+	<div v-if="loading">
+		<experience-card
+			v-for="skeleton in [0,1,2,3,4, 5]"
+			:key="skeleton"
+			:experience="{}"
+			:skeleton-mode="true" />
+	</div>
+
 	<v-row
-		v-if="experiences.length > 0"
+		v-else-if="experiences.length > 0"
 		justify="center">
 		<v-col
 			v-for="experience in experiences"
@@ -14,6 +22,7 @@
 				:edit-mode="editMode" />
 		</v-col>
 	</v-row>
+
 	<v-row
 		v-else
 		justify="center">
@@ -36,6 +45,10 @@ export default {
 			required: true
 		},
 		editMode: {
+			type: Boolean,
+			default: false
+		},
+		loading: {
 			type: Boolean,
 			default: false
 		}

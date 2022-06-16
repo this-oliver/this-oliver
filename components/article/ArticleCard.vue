@@ -1,5 +1,11 @@
 <template>
-	<base-card :path="getUrl">
+	<base-card v-if="skeletonMode">
+		<v-skeleton-loader type="list-item-three-line" />
+	</base-card>
+
+	<base-card
+		v-else
+		:path="getUrl">
 		<v-row
 			dense
 			justify="start"
@@ -108,14 +114,24 @@ export default {
 		editMode: {
 			type: Boolean,
 			default: false
+		},
+		skeletonMode: {
+			type: Boolean,
+			default: false
 		}
 	},
 	computed: {
 		getDate () {
-			return getDate(this.article.createdAt);
+			return this.skeletonMode
+				? getDate()
+				: getDate(this.article.createdAt);
 		},
 		getUrl () {
-			return this.editMode === true ? `/admin/articles/${this.article._id}` : `/articles/${this.article._id}`;
+			if(this.skeletonMode) return "#";
+
+			return this.editMode
+				? `/admin/articles/${this.article._id}`
+				: `/articles/${this.article._id}`;
 		}
 	},
 	methods: {
