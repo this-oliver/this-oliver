@@ -20,7 +20,7 @@
 					icon
 					v-bind="attrs"
 					@click="item.show = false">
-					<v-icon>close</v-icon>
+					<base-icon icon="close" />
 				</v-btn>
 			</template>
 		</v-snackbar>
@@ -29,9 +29,11 @@
 
 <script>
 import { mapGetters } from "vuex";
+import BaseIcon from "./base/BaseIcon.vue";
 
 export default {
 	name: "TheNotificationToast",
+	components: { BaseIcon },
 	data(){
 		return {
 			count: 0,

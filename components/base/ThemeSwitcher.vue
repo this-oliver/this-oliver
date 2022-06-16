@@ -1,12 +1,12 @@
 <template>
 	<v-list-item v-if="listMode">
 		<v-list-item-icon>
-			<v-icon v-if="showDarkTheme">
-				light_mode
-			</v-icon>
-			<v-icon v-else>
-				dark_mode
-			</v-icon>
+			<base-icon
+				v-if="showDarkTheme"
+				icon="light_mode" />
+			<base-icon
+				v-else
+				icon="dark_mode" />
 		</v-list-item-icon>
 		<v-spacer />
 		<v-list-item-action>
@@ -21,12 +21,12 @@
 		icon
 		:block="block"
 		@click="setDarkTheme(!showDarkTheme)">
-		<v-icon v-if="showDarkTheme">
-			light_mode
-		</v-icon>
-		<v-icon v-else>
-			dark_mode
-		</v-icon>
+		<base-icon
+			v-if="showDarkTheme"
+			icon="light_mode" />
+		<base-icon
+			v-else
+			icon="dark_mode" />
 	</v-btn>
 	<v-btn
 		v-else
@@ -38,17 +38,19 @@
 			<span v-else>dark</span>
       &nbsp;
 		</span>
-		<v-icon v-if="showDarkTheme">
-			light_mode
-		</v-icon>
-		<v-icon v-else>
-			dark_mode
-		</v-icon>
+		<base-icon
+			v-if="showDarkTheme"
+			icon="light_mode" />
+		<base-icon
+			v-else
+			icon="dark_mode" />
 	</v-btn>
 </template>
 
 <script>
+import BaseIcon from "./BaseIcon.vue";
 export default {
+	components: { BaseIcon },
 	props: {
 		listMode: {
 			type: Boolean,

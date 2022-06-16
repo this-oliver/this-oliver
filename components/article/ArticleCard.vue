@@ -50,16 +50,14 @@
 			v-if="editMode"
 			#left-side>
 			<!-- publish flag -->
-			<v-icon
+			<base-icon
 				v-if="article.publish"
-				color="success">
-				check_circle
-			</v-icon>
-			<v-icon
+				icon="check_circle"
+				color="success" />
+			<base-icon
 				v-else
-				color="warning">
-				remove_circle
-			</v-icon>
+				icon="remove_circle"
+				color="warning" />
 		</template>
 
 		<template
@@ -94,11 +92,13 @@
 import { mapActions } from "vuex";
 import { getDate } from "../../utils/time";
 import BaseCard from "../base/BaseCard.vue";
+import BaseIcon from "../base/BaseIcon.vue";
 
 export default {
 	name: "ArticleCard",
 	components: {
-		BaseCard
+		BaseCard,
+		BaseIcon
 	},
 	props: {
 		article: {

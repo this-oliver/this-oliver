@@ -11,12 +11,12 @@
 			<v-btn
 				icon
 				@click="showPassword = !showPassword">
-				<v-icon v-if="showPassword">
-					visibility
-				</v-icon>
-				<v-icon v-else>
-					visibility_off
-				</v-icon>
+				<base-icon
+					v-if="showPassword"
+					icon="visibility" />
+				<base-icon
+					v-else
+					icon="visibility_off" />
 			</v-btn>
 		</template>
 	</v-text-field>
@@ -24,8 +24,10 @@
 
 <script>
 import { isValidPasswordLength, isMatching } from "~/utils/validate";
+import BaseIcon from "./BaseIcon.vue";
 
 export default {
+	components: { BaseIcon },
 	props: {
 		/**
 		 * ask user to re-enter their password
