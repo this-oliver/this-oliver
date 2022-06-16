@@ -8,12 +8,12 @@
 		<v-tabs-items v-model="currentTab">
 			<!-- short bio -->
 			<v-tab-item class="pa-2">
-				<base-editor v-model="form.short" />
+				<input-text-editor v-model="form.short" />
 			</v-tab-item>
 
 			<!-- long bio -->
 			<v-tab-item class="pa-2">
-				<base-editor v-model="form.long" />
+				<input-text-editor v-model="form.long" />
 			</v-tab-item>
 		</v-tabs-items>
 
@@ -59,12 +59,12 @@
 import { mapActions } from "vuex";
 import { getWordCount } from "../../utils/string";
 
-import BaseEditor from "../base/BaseEditor.vue";
 import BaseForm from "../base/BaseForm.vue";
+import InputTextEditor from "../base/InputTextEditor.vue";
 
 export default {
 	name: "AboutForm",
-	components: { BaseForm, BaseEditor },
+	components: { BaseForm, InputTextEditor },
 	props: {
 		editMode: {
 			type: Boolean,

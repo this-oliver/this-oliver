@@ -15,7 +15,7 @@
 		<!-- article content -->
 		<v-row justify="center">
 			<v-col cols="12">
-				<base-editor v-model="form.content" />
+				<input-text-editor v-model="form.content" />
 			</v-col>
 		</v-row>
 
@@ -101,12 +101,12 @@
 import { mapGetters } from "vuex";
 import { getWordCount } from "../../utils/string";
 
-import BaseEditor from "../base/BaseEditor.vue";
 import InputText from "../base/InputText.vue";
+import InputTextEditor from "../base/InputTextEditor.vue";
 
 export default {
 	name: "ArticleForm",
-	components: { InputText, BaseEditor },
+	components: { InputText, InputTextEditor },
 	props: {
 		editMode: {
 			type: Boolean,
