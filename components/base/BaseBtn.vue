@@ -11,8 +11,9 @@
 		:large="large"
 		:light="!isBtnDark"
 		:outlined="outline"
+		:rounded="rounded"
 		:text="text"
-		:tile="tile"
+		:tile="isTile"
 		:to="to"
 		:small="small"
 		@click="emitClick">
@@ -68,6 +69,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		rounded: {
+			type: Boolean,
+			default: false
+		},
 		text: {
 			type: Boolean,
 			default: false
@@ -92,6 +97,9 @@ export default {
 		},
 		isBtnDark(){
 			return this.light ? false : true;
+		},
+		isTile(){
+			return this.rounded ? false : this.tile;
 		}
 	},
 	methods: {

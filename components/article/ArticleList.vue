@@ -1,58 +1,81 @@
 <template>
-	<div v-if="loading">
-		<article-card
-			v-for="skeleton in [0,1,2,3,4, 5]"
-			:key="skeleton"
-			:article="{}"
-			:skeleton-mode="true" />
-	</div>
-
-	<v-row
-		v-else-if="articles.length > 0"
-		justify="center">
+	<v-row>
+		<!-- tags -->
 		<v-col
 			cols="12"
-			md="9">
-			<article-card
-				v-for="article in getArticles"
-				:key="article._id"
-				:article="article"
-				:edit-mode="editMode" />
+			md="2"
+			order="2"
+			order-md="1">
+			<v-row v-if="!loading">
+				<v-col
+					v-if="tags.length > 0"
+					cols="auto"
+					md="6"
+					class="text-center">
+					<base-btn
+						v-for="tag in tags"
+						:key="tag._id"
+						:color="tag.color"
+						:text="selectedTags.length > 0 && !isTagSelected(tag)"
+						:elevation="selectedTags.length > 0 && !isTagSelected(tag) ? 1 : 0"
+						rounded
+						class="ma-1"
+						@click="selectTag(tag)">
+						{{ tag.name }}
+					</base-btn>
+				</v-col>
+			</v-row>
 		</v-col>
+
+		<!-- articles -->
 		<v-col
-			v-if="tags && tags.length > 0"
-			cols="auto"
-			md="6"
-			class="text-center">
-			<v-btn
-				v-for="tag in tags"
-				:key="tag._id"
-				:color="tag.color"
-				class="ma-1"
-				rounded
-				:text="isTagSelected(tag)"
-				:elevation="isTagSelected(tag) ? 2 : 0"
-				@click="selectTag(tag)">
-				{{ tag.name }}
-			</v-btn>
-		</v-col>
-	</v-row>
-	<v-row
-		v-else
-		justify="center">
-		<v-col cols="auto">
-			...
+			cols="12"
+			md="8"
+			order="1"
+			order-md="2">
+			<v-row>
+				<v-col
+					v-if="loading"
+					:cols="cardCol"
+					:md="cardColMd">
+					<article-card
+						v-for="skeleton in [0,1,2,3,4, 5]"
+						:key="skeleton"
+						:article="{}"
+						:skeleton-mode="true" />
+				</v-col>
+
+				<v-col
+					v-else-if="articles.length <= 0"
+					cols="auto"
+					class="mx-auto text-center">
+					Nothing here at the moment...
+				</v-col>
+
+				<v-col
+					v-else
+					:cols="cardCol"
+					:md="cardColMd">
+					<article-card
+						v-for="article in getArticles"
+						:key="article._id"
+						:article="article"
+						:edit-mode="editMode" />
+				</v-col>
+			</v-row>
 		</v-col>
 	</v-row>
 </template>
 
 <script>
 import ArticleCard from "~/components/article/ArticleCard.vue";
+import BaseBtn from "../base/BaseBtn.vue";
 
 export default {
 	name: "ArticleList",
 	components: {
-		ArticleCard
+		ArticleCard,
+		BaseBtn
 	},
 	props: {
 		articles: {
@@ -74,7 +97,8 @@ export default {
 	},
 	data(){
 		return {
-			/* tag ids */
+			cardCol: "12",
+			cardColMd: "12",
 			selectedTags: []
 		};
 	},
