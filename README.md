@@ -21,14 +21,13 @@
 - I'm currently studying information security 🔐
 - I'm interested in entreprenurship 🛠 and blockchain ⛓
 - I like jazz 🎺 and art galleries 🖼
-- *psss [click me](./docs/project.md) to see notes on the [olivermanzi.com](www.olivermanzi.com) source code*
+- *psss [click me](./docs/project.md) to see notes on the [oliverrr.net](www.oliverrr.net) source code*
 
 <br>
 <br>
 <br>
 <p align="center">
-<a target="_blank" href="https://olivermanzi.com/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge"></img></a>	
-<a target="_blank" href="https://www.linkedin.com/in/oliver-manzi/"><img src="https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=Linkedin"></img></a>
+<a target="_blank" href="https://oliverrr.net/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge"></img></a>	
 <a target="_blank" href="mailto:olivermanzi.dev@gmail.com"><img src="https://img.shields.io/badge/-Gmail-black?style=for-the-badge&logo=Gmail"></img></a>
 </p>
 

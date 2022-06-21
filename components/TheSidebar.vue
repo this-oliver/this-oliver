@@ -9,7 +9,7 @@
 					<nuxt-link
 						class="hide-link"
 						to="/">
-						Oliver Manzi
+						Oliver
 					</nuxt-link>
 				</h2>
 			</div>

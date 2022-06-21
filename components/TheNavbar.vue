@@ -8,7 +8,7 @@
 			<nuxt-link
 				class="brand hide-link"
 				to="/">
-				Oliver Manzi
+				Oliver
 			</nuxt-link>
 		</h2>
 
