@@ -12,7 +12,7 @@
 					<v-btn
 						icon
 						to="/admin/experiences/create">
-						<v-icon>add</v-icon>
+						<base-icon icon="add" />
 					</v-btn>
 				</v-col>
 			</v-row>
@@ -25,13 +25,15 @@
 
 <script>
 import { mapGetters } from "vuex";
+import BaseIcon from "~/components/base/BaseIcon.vue";
 import BasePage from "~/components/base/BasePage.vue";
 import ExperienceList from "~/components/experience/ExperienceList.vue";
 
 export default {
 	components: {
 		ExperienceList,
-		BasePage
+		BasePage,
+		BaseIcon
 	},
 	computed: {
 		...mapGetters({

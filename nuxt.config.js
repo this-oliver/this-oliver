@@ -1,4 +1,4 @@
-const metaTitle = "Oliver Manzi";
+const metaTitle = "Oliver";
 const metaDescription = "A software engineering and entreprenurial portfolio.";
 export default {
 	// Server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -90,7 +90,7 @@ export default {
 	auth: {
 		redirect: {
 			login: "/auth/login",
-			logout: "/auth/login"
+			logout: "/"
 		},
 		strategies: {
 			local: {

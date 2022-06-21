@@ -29,13 +29,13 @@ export const actions = {
 	async initUser (context) {
 		try {
 			const response = await this.$api.user.get();
-			const oliver = response.data;
+			const user = response.data;
 
-			if (oliver) {
-				context.commit("setUser", oliver);
+			if (user) {
+				context.commit("setUser", user);
 			}
 
-			return oliver;
+			return user;
 		} catch (error) {
 			context.commit("app/toaster/addError", { title: "Initiating User", message: error.message }, { root: true });
 		}

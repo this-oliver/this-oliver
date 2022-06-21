@@ -27,7 +27,7 @@
 				class="text-center">
 				<span v-if="hasVisited">👋</span>
 				<span v-else>🤠</span>
-				Oliver Manzi
+				Oliver
 				<small>
 					&copy; 2020
 				</small>
@@ -50,12 +50,7 @@ export default {
 				{
 					title: "Github",
 					src: "/images/icons/github.svg",
-					link: "https://github.com/olivermanzi"
-				},
-				{
-					title: "LinkedIn",
-					src: "/images/icons/linkedin.svg",
-					link: "https://www.linkedin.com/in/oliver-manzi/"
+					link: "https://github.com/this-oliver"
 				},
 				{
 					title: "FetchQr",

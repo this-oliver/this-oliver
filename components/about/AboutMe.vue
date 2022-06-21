@@ -16,7 +16,7 @@
 					class="mx-1"
 					elevation="0"
 					color="warning"
-					to="/admin/edit">
+					to="/admin/profile/edit">
 					update
 				</v-btn>
 			</v-col>
