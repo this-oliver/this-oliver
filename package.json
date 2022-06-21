@@ -27,7 +27,7 @@
 		"marked": "^4.0.16",
 		"nuxt": "^2.13.3",
 		"sanitize-html": "^2.7.0",
-		"vue-gtag": "^1.16.1"
+		"vue-gtag": "^2.0.1"
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.5.4",
