@@ -22,7 +22,7 @@
 		"@tiptap/extension-typography": "^2.0.0-beta.22",
 		"@tiptap/starter-kit": "^2.0.0-beta.145",
 		"@tiptap/vue-2": "^2.0.0-beta.69",
-		"core-js": "^3.23.2",
+		"core-js": "^3.25.0",
 		"jsonwebtoken": "^8.5.1",
 		"marked": "^4.0.16",
 		"nuxt": "^2.13.3",
