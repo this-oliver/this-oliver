@@ -24,7 +24,7 @@
 		"@tiptap/vue-2": "^2.0.0-beta.69",
 		"core-js": "^3.23.2",
 		"jsonwebtoken": "^8.5.1",
-		"marked": "^4.0.16",
+		"marked": "^4.1.0",
 		"nuxt": "^2.13.3",
 		"sanitize-html": "^2.7.0",
 		"vue-gtag": "^2.0.1"
