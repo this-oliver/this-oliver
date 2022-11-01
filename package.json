@@ -4,12 +4,6 @@
   "description": "my sexy portfolio",
   "author": "oliver  <hello@oliverrr.net>",
   "main": "index.js",
-  "scripts": {
-    "start:client": "cd frontend && npm start",
-    "start:server": "cd backend && npm start",
-    "dev:client": "cd frontend && npm run dev",
-    "dev:server": "cd backend && npm run dev"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/this-oliver/this-oliver.git"

@@ -5,9 +5,9 @@
 	"private": true,
 	"scripts": {
 		"dev": "nuxt",
-		"build": "nuxt build",
 		"start": "nuxt start",
-		"generate": "nuxt --openssl-legacy-provider generate",
+		"build:ssr": "nuxt build",
+		"build:ssg": "nuxt generate",
 		"lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
 		"lint": "npm run lint:js"
 	},
@@ -27,8 +27,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"marked": "^4.0.16",
 		"nuxt": "^2.13.3",
-		"sanitize-html": "^2.7.0",
-		"vue-gtag": "^1.16.1"
+		"sanitize-html": "^2.7.0"
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.5.4",
