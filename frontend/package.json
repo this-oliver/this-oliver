@@ -4,10 +4,10 @@
 	"author": "oliver  <hello@oliverrr.net>",
 	"private": true,
 	"scripts": {
-		"dev": "nuxt",
-		"start": "nuxt start",
-		"build:ssr": "nuxt build",
-		"build:ssg": "nuxt --openssl-legacy-provider generate",
+		"dev": "npx nuxt",
+		"start": "npx nuxt start",
+		"build:ssr": "npx nuxt build",
+		"build:ssg": "npx nuxt generate",
 		"lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
 		"lint": "npm run lint:js"
 	},

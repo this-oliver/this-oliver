@@ -5,7 +5,7 @@ export default {
 	ssr: false,
 
 	// Target: https://go.nuxtjs.dev/config-target
-	//target: "server",
+	target: "static",
 
 	// SPA fallback: https://nuxtjs.org/docs/2.x/deployment/netlify-deployment
 	generate: {
