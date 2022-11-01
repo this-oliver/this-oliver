@@ -49,7 +49,7 @@ export default {
 			return [
 				{
 					title: "Github",
-					src: "/images/icons/github.svg",
+					src: null,
 					link: "https://github.com/this-oliver"
 				}
 				/*{

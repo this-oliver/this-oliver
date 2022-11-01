@@ -1,4 +1,4 @@
-const metaTitle = "Oliver 🤠";
+const metaTitle = "Oliver's Personal Website";
 const metaDescription = "A software engineering and entreprenurial portfolio.";
 export default {
 	// Server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -42,7 +42,7 @@ export default {
 			{
 				hid: "og:image",
 				property: "og:image",
-				content: "/images/me.webp"
+				content: "/favicon-32x32.png"
 			}
 		],
 		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
