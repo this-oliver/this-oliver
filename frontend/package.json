@@ -7,7 +7,7 @@
 		"dev": "nuxt",
 		"start": "nuxt start",
 		"build:ssr": "nuxt build",
-		"build:ssg": "nuxt generate",
+		"build:ssg": "nuxt --openssl-legacy-provider generate",
 		"lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
 		"lint": "npm run lint:js"
 	},
