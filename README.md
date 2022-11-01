@@ -19,16 +19,15 @@
 
 - I've got a background in software engineering 💾
 - I'm currently studying information security 🔐
-- I'm interested in entreprenurship 🛠 and blockchain ⛓
-- I like jazz 🎺 and art galleries 🖼
-- *psss [click me](./docs/project.md) to see notes on the [oliverrr.net](www.oliverrr.net) source code*
+- I'm interested in people 🤠, entreprenurship 🛠 and sustainability 🌍
+- I like jazz 🎺, art galleries 🖼 and traveling 🧳
 
 <br>
 <br>
 <br>
 <p align="center">
 <a target="_blank" href="https://oliverrr.net/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge"></img></a>	
-<a target="_blank" href="mailto:olivermanzi.dev@gmail.com"><img src="https://img.shields.io/badge/-Gmail-black?style=for-the-badge&logo=Gmail"></img></a>
+<a target="_blank" href="mailto:hello@oliverrr.net"><img src="https://img.shields.io/badge/-Gmail-black?style=for-the-badge&logo=Gmail"></img></a>
 </p>
 
 <p align="center">

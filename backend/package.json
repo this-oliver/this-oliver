@@ -1,0 +1,33 @@
+{
+  "name": "oliverrr",
+  "version": "2.0.0",
+  "author": "oliver  <hello@oliverrr.net>",
+  "license": "ISC",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "npm run prod",
+    "dev": "NODE_ENV=dev nodemon ./src/server.js",
+    "prod": "NODE_ENV=prod node ./src/server.js",
+    "test": "NODE_ENV=test mocha './tests/**/*.test.js'"
+  },
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "chroma-js": "^2.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.10"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^7.1.2",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": ">=12.16.2"
+  }
+}
