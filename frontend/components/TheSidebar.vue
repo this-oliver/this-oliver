@@ -25,32 +25,34 @@
 					{{ link.title }}
 				</base-btn>
 			</v-list-item>
+		</v-list>
 
-			<v-list>
-				<v-divider class="mt-2" />
-				<b>🚨 Admin</b>
-				<v-list-item
-					v-for="link in adminLinks"
-					:key="link.title">
-					<base-btn
-						color="primary"
-						:block="true"
-						@click="goTo(link.route)">
-						{{ link.title }}
-					</base-btn>
-				</v-list-item>
-				<v-divider
-					class="mt-2"
-					inset />
-				<v-list-item class="mt-2">
-					<base-btn
-						block
-						color="error"
-						@click="logout">
-						Logout
-					</base-btn>
-				</v-list-item>
-			</v-list>
+		<v-list
+			v-if="loggedIn"
+			nav>
+			<v-divider class="mt-2" />
+			<b>🚨 Admin</b>
+			<v-list-item
+				v-for="link in adminLinks"
+				:key="link.title">
+				<base-btn
+					color="primary"
+					:block="true"
+					@click="goTo(link.route)">
+					{{ link.title }}
+				</base-btn>
+			</v-list-item>
+			<v-divider
+				class="mt-2"
+				inset />
+			<v-list-item class="mt-2">
+				<base-btn
+					block
+					color="error"
+					@click="logout">
+					Logout
+				</base-btn>
+			</v-list-item>
 		</v-list>
 
 		<template #append>
