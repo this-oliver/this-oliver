@@ -53,10 +53,11 @@ export default {
 
 	// Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
 	plugins: [
-		{ src: "~/plugins/api" },
-		{ src: "~/plugins/error" },
-		{ src: "~/plugins/mixin", mode: "client" },
-		{ src: "~/plugins/vuetify", mode: "client" }
+		{ src: "~/plugins/api.js" },
+		{ src: "~/plugins/error.js" },
+		{ src: "~/plugins/mixin.client.js" },
+		{ src: "~/plugins/theme.client.js" },
+		{ src: "~/plugins/vuetify.client.js" }
 	],
 
 	// Global routing middlewares to run for every route change
