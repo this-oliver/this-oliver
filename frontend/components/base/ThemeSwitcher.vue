@@ -78,6 +78,9 @@ export default {
 			}
 		}
 	},
+	created() {
+		this.$vuetify.theme.dark = this.showDarkTheme;
+	},
 	methods: {
 		setDarkTheme(value){
 			this.$store.commit("app/theme/setDarkMode", value);
