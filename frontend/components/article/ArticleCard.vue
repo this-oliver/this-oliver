@@ -12,8 +12,22 @@
 			class="article-link">
 			<v-row
 				dense
-				justify="start"
-				justify-md="space-between">
+				justify="start">
+				<!-- likes -->
+				<v-col
+					cols="2"
+					class="mx-1">
+					<b>{{ article.likes }}</b>
+					likes
+				</v-col>
+				<!-- views -->
+				<v-col
+					v-if="editMode"
+					cols="2"
+					class="mx-1">
+					<b>{{ article.views }}</b>
+					views
+				</v-col>
 				<!-- title -->
 				<v-col cols="12">
 					<h2>{{ article.title }}</h2>
@@ -21,21 +35,8 @@
 				<!-- date -->
 				<v-col
 					cols="12"
-					md="3">
+					md="4">
 					<b>{{ getDate }}</b>
-				</v-col>
-				<!-- likes -->
-				<v-col
-					cols="auto"
-					class="mx-1">
-					{{ `👏 ${article.likes}` }}
-				</v-col>
-				<!-- views -->
-				<v-col
-					v-if="editMode"
-					cols="auto"
-					class="mx-1 mr-md-auto">
-					{{ `🔎 ${article.views}` }}
 				</v-col>
 				<!-- tags -->
 				<v-col
