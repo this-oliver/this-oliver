@@ -12,7 +12,7 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: error.message, 
+			message: error.message,
 		};
 	}
 
@@ -24,19 +24,21 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: error.message, 
+			message: error.message,
 		};
 	}
 
 	// create article
 	try {
-		const article = await ArticleSchema.create(new ArticleSchema({
-			title: title,
-			author: user._id,
-			content: content,
-			tags: tagList,
-			publish: publish, 
-		}));
+		const article = await ArticleSchema.create(
+			new ArticleSchema({
+				title: title,
+				author: user._id,
+				content: content,
+				tags: tagList,
+				publish: publish,
+			})
+		);
 
 		user.articles.push(article._id);
 		await user.save();
@@ -45,14 +47,14 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: error.message || error, 
+			message: error.message || error,
 		};
 	}
 };
 
 exports.indexArticles = async (showSecrets = false) => {
 	try {
-		if(showSecrets){
+		if (showSecrets) {
 			const articles = await ArticleSchema.find()
 				.populate("tags")
 				.populate({
@@ -60,15 +62,13 @@ exports.indexArticles = async (showSecrets = false) => {
 					select: {
 						_id: 1,
 						name: 1,
-						email: 1, 
-					}, 
+						email: 1,
+					},
 				})
 				.exec();
 
 			return articles;
-		}
-
-		else {
+		} else {
 			const articles = await ArticleSchema.find({ publish: true })
 				.populate("tags")
 				.populate({
@@ -76,8 +76,8 @@ exports.indexArticles = async (showSecrets = false) => {
 					select: {
 						_id: 1,
 						name: 1,
-						email: 1, 
-					}, 
+						email: 1,
+					},
 				})
 				.exec();
 
@@ -86,39 +86,43 @@ exports.indexArticles = async (showSecrets = false) => {
 	} catch (error) {
 		throw {
 			status: 400,
-			message: error.message || error, 
+			message: error.message || error,
 		};
 	}
 };
 
 exports.indexArticlesByTag = async (tagId, showSecrets = false) => {
-	
 	try {
-		if(showSecrets){
-			const articles = await ArticleSchema.find({}, { tags: { $elemMatch : { _id: { $eq: tagId } } } })
+		if (showSecrets) {
+			const articles = await ArticleSchema.find(
+				{},
+				{ tags: { $elemMatch: { _id: { $eq: tagId } } } }
+			)
 				.populate("tags")
 				.populate({
 					path: "author",
 					select: {
 						_id: 1,
 						name: 1,
-						email: 1, 
-					}, 
+						email: 1,
+					},
 				})
 				.exec();
 
 			return articles;
-		}
-		else {
-			const articles = await ArticleSchema.find({ publish: true }, { tags: { $elemMatch : { _id: { $eq: tagId } } } })
+		} else {
+			const articles = await ArticleSchema.find(
+				{ publish: true },
+				{ tags: { $elemMatch: { _id: { $eq: tagId } } } }
+			)
 				.populate("tags")
 				.populate({
 					path: "author",
 					select: {
 						_id: 1,
 						name: 1,
-						email: 1, 
-					}, 
+						email: 1,
+					},
 				})
 				.exec();
 
@@ -127,7 +131,7 @@ exports.indexArticlesByTag = async (tagId, showSecrets = false) => {
 	} catch (error) {
 		throw {
 			status: 400,
-			message: error.message || error, 
+			message: error.message || error,
 		};
 	}
 };
@@ -136,14 +140,14 @@ exports.getArticle = async (id, showSecrets = false) => {
 	if (!id) {
 		throw {
 			status: 400,
-			message: "missing id", 
+			message: "missing id",
 		};
 	}
 
 	try {
 		let article;
 
-		if(showSecrets){
+		if (showSecrets) {
 			article = await ArticleSchema.findById(id)
 				.populate("tags")
 				.populate({
@@ -155,7 +159,7 @@ exports.getArticle = async (id, showSecrets = false) => {
 					},
 				})
 				.exec();
-		}else {
+		} else {
 			article = await ArticleSchema.findOne({ _id: id })
 				.where("publish")
 				.equals(true)
@@ -174,13 +178,13 @@ exports.getArticle = async (id, showSecrets = false) => {
 		if (!article) {
 			throw {
 				status: 404,
-				message: `article with id ${id} does not exist`, 
+				message: `article with id ${id} does not exist`,
 			};
 		}
 
 		return article;
 	} catch (error) {
-		if(error.kind === "ObjectId"){
+		if (error.kind === "ObjectId") {
 			throw {
 				status: 404,
 				message: `article with id ${id} does not exist`,
@@ -189,7 +193,7 @@ exports.getArticle = async (id, showSecrets = false) => {
 
 		throw {
 			status: error.status || 400,
-			message: error.message || error, 
+			message: error.message || error,
 		};
 	}
 };
@@ -202,7 +206,7 @@ exports.updateArticle = async (id, patch) => {
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: error.message, 
+			message: error.message,
 		};
 	}
 
@@ -210,7 +214,10 @@ exports.updateArticle = async (id, patch) => {
 		article.title = patch.title || article.title;
 		article.author = patch.author || article.author;
 		article.content = patch.content || article.content;
-		article.publish = patch.publish || article.publish;
+
+		if (patch.publish !== undefined && patch.publish !== null) {
+			article.publish = patch.publish;
+		}
 
 		if (patch.tags) {
 			article.tags = await TagData.cleanTags(patch.tags);
@@ -222,7 +229,7 @@ exports.updateArticle = async (id, patch) => {
 	} catch (error) {
 		throw {
 			status: 400,
-			message: error.message, 
+			message: error.message,
 		};
 	}
 };
@@ -241,7 +248,7 @@ exports.incrementArticleViews = async (id) => {
 
 	try {
 		article.views = article.views + 1;
-		
+
 		article = await article.save();
 
 		return article;
@@ -251,7 +258,6 @@ exports.incrementArticleViews = async (id) => {
 			message: error.message,
 		};
 	}
-	
 };
 
 exports.incrementArticleLikes = async (id) => {
@@ -268,7 +274,7 @@ exports.incrementArticleLikes = async (id) => {
 
 	try {
 		article.likes = article.likes + 1;
-		
+
 		article = await article.save();
 
 		return article;
@@ -278,7 +284,6 @@ exports.incrementArticleLikes = async (id) => {
 			message: error.message,
 		};
 	}
-	
 };
 
 exports.incrementArticleDislikes = async (id) => {
@@ -295,7 +300,7 @@ exports.incrementArticleDislikes = async (id) => {
 
 	try {
 		article.dislikes = article.dislikes + 1;
-		
+
 		article = await article.save();
 
 		return article;
@@ -305,7 +310,6 @@ exports.incrementArticleDislikes = async (id) => {
 			message: error.message,
 		};
 	}
-	
 };
 
 exports.deleteArticle = async (id) => {
@@ -317,7 +321,7 @@ exports.deleteArticle = async (id) => {
 	} catch (error) {
 		throw {
 			status: error.status || 400,
-			message: error.message || error, 
+			message: error.message || error,
 		};
 	}
 };
