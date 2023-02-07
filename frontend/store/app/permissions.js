@@ -1,9 +1,10 @@
 import { STORAGE } from "~/logic/enums";
-import { setCache, getCache, removeCache } from "~/utils/cache";
+import StorageUtil from "~/utils/storage";
+import { setCache, getCache, removeCache } from "~/utils/storage";
 
 export const state = function () {
 	return {
-		cookiesAllowed: getCache(STORAGE.cookie) || false
+		cookiesAllowed: StorageUtil.getStorage(STORAGE.cookie) || false
 	};
 };
 
@@ -16,9 +17,9 @@ export const mutations = {
 		state.cookiesAllowed = allow;
 
 		if(allow){
-			setCache(STORAGE.cookie, allow);
+			StorageUtil.setStorage(STORAGE.cookie, allow);
 		}else {
-			removeCache(STORAGE.cookie);
+			StorageUtil.removeStorage(STORAGE.cookie);
 		}
 	}
 };

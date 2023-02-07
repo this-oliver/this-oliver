@@ -6,6 +6,9 @@ export const EXPERIENCES = {
 };
 
 export const STORAGE = {
-	visitor: "oli_visit",
-	cookie: "oli_g_cookie"
+	theme: "oliverrr_dark_theme",
+	visitor: "oliverrr_visit",
+	cookie: "oliverrr_google_cookie",
+	token: "oliverrr_auth_token",
+	user: "oliverrr_user"
 };

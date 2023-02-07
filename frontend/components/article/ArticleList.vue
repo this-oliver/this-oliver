@@ -6,9 +6,7 @@
 			<v-row
 				justify="center"
 				align="baseline">
-				<v-col
-					cols="8"
-					md="10">
+				<v-col cols="8">
 					<input-text
 						v-model="searchString"
 						label="search"
@@ -48,12 +46,11 @@
 		<!-- articles -->
 		<v-col
 			cols="12"
-			md="8">
+			md="10">
 			<v-row>
 				<v-col
 					v-if="loading"
-					:cols="cardCol"
-					:md="cardColMd">
+					cols="12">
 					<article-card
 						v-for="skeleton in [0,1,2,3,4, 5]"
 						:key="skeleton"
@@ -63,8 +60,7 @@
 
 				<v-col
 					v-else-if="articles.length > 0"
-					:cols="cardCol"
-					:md="cardColMd">
+					cols="12">
 					<article-card
 						v-for="article in getArticles"
 						:key="article._id"
@@ -115,8 +111,6 @@ export default {
 	},
 	data(){
 		return {
-			cardCol: "12",
-			cardColMd: "12",
 			searchString: null,
 			selectedTags: [],
 			showFilters: false

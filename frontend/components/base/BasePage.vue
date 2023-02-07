@@ -6,21 +6,20 @@
 			</div>
 		</slot>
 
-		<div
-			v-if="noPadding"
-			class="my-2">
-			<slot />
-		</div>
-		<v-row
-			v-else
-			justify="center"
-			class="my-2">
-			<v-col
-				cols="11"
-				sm="8">
+		<div class="my-2">
+			<div v-if="noPadding">
 				<slot />
-			</v-col>
-		</v-row>
+			</div>
+			<v-row
+				v-else
+				justify="center">
+				<v-col
+					cols="11"
+					sm="8">
+					<slot />
+				</v-col>
+			</v-row>
+		</div>
 	</div>
 </template>
 

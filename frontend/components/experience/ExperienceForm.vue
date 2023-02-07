@@ -41,11 +41,12 @@
 		<!-- actions -->
 		<v-row
 			class="mt-2"
-			justify="space-between">
+			justify="space-between"
+			no-gutters>
 			<v-col
-				class="mt-1"
 				cols="12"
-				:sm="editMode ? 2 : 3">
+				sm="3"
+				class="mt-1 mx-auto">
 				<base-btn
 					block
 					color="secondary"
@@ -55,21 +56,9 @@
 			</v-col>
 			<v-col
 				v-if="editMode"
-				class="mt-1 ml-auto"
-				cols="12"
-				sm="5">
-				<base-btn
-					block
-					color="error"
-					@click="deleteExperience">
-					delete
-				</base-btn>
-			</v-col>
-			<v-col
-				v-if="editMode"
 				class="mt-1"
 				cols="12"
-				sm="5">
+				sm="3">
 				<base-btn
 					block
 					color="success"
@@ -79,7 +68,7 @@
 			</v-col>
 			<v-col
 				v-if="!editMode"
-				class="mt-1"
+				class="mt-1 mx-auto"
 				cols="12"
 				sm="9">
 				<base-btn
@@ -87,6 +76,18 @@
 					color="primary"
 					@click="postExperience">
 					post
+				</base-btn>
+			</v-col>
+			<v-col
+				v-if="editMode"
+				class="mt-1 mx-auto"
+				cols="12"
+				sm="3">
+				<base-btn
+					block
+					color="error"
+					@click="deleteExperience">
+					delete
 				</base-btn>
 			</v-col>
 		</v-row>
@@ -108,7 +109,7 @@
 <script>
 import { mapActions } from "vuex";
 
-import { MarkdownToHtml } from "../../utils/markdown";
+import { MarkdownToHtml } from "../../utils/parser";
 import { getWordCount } from "../../utils/string";
 
 import { EXPERIENCES } from "../../logic/enums";
@@ -170,15 +171,10 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions({
-			postExperience: "admin/experiences/post",
-			updateExperience: "admin/experiences/patch",
-			deleteExperience: "admin/experiences/delete"
-		}),
 		async postExperience () {
 			try {
 				await this.$store.dispatch("admin/experiences/post", { title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
-				this.$router.push("/admin/experiences");
+				this.$router.push("/experiences");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 			}
@@ -186,7 +182,7 @@ export default {
 		async updateExperience () {
 			try {
 				await this.$store.dispatch("admin/experiences/patch", { id: this.experience._id, title: this.form.title, org: this.form.org, startYear: this.form.startYear, endYear: this.form.endYear, description: this.form.description, type: this.form.type });
-				this.$router.push("/admin/experiences");
+				this.$router.push("/experiences");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 			}
@@ -194,14 +190,14 @@ export default {
 		async deleteExperience () {
 			try {
 				await this.$store.dispatch("admin/experiences/delete", this.experience._id);
-				this.$router.push("/admin/experiences");
+				this.$router.push("/experiences");
 			} catch (error) {
 				this.$store.commit("app/toaster/addError", { title: "Experience", message: error.message });
 			}
 		},
 		getParsedContent (text) {
 			if (text) {
-				return MarkdownToHtml(text);
+				return MarkdownToHtml(text, { darkMode: this.isDarkMode });
 			} else {
 				return null;
 			}

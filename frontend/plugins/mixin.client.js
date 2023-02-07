@@ -9,9 +9,6 @@ if (!Vue._GLOBAL_MIXIN_) {
 			...mapGetters({
 				isDarkMode: "app/theme/isDarkMode"
 			}),
-			inAdminMode () {
-				return false;
-			},
 			// screen size
 			isScreenMobile() { return this.$vuetify.breakpoint.name === "xs"; },
 			isScreenTablet() { return this.$vuetify.breakpoint.name === "sm"; },

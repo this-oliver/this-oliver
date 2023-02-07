@@ -13,8 +13,17 @@ export const actions = {
 		try {
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.experience.post(token, title, org, startYear, endYear, description, type);
+			const response = await this.$api.experience.post(
+				token,
+				title,
+				org,
+				startYear,
+				endYear,
+				description,
+				type
+			);
 
+			// refresh the user
 			await context.dispatch("admin/init", null, { root: true });
 
 			return response.data;
@@ -51,8 +60,18 @@ export const actions = {
 		try {
 			const token = this.$auth.strategy.token.get();
 
-			const response = await this.$api.experience.patch(token, id, title, org, startYear, endYear, description, type);
+			const response = await this.$api.experience.patch(
+				token,
+				id,
+				title,
+				org,
+				startYear,
+				endYear,
+				description,
+				type
+			);
 
+			// refresh the user
 			await context.dispatch("admin/init", null, { root: true });
 
 			return response.data;

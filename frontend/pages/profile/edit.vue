@@ -15,9 +15,6 @@ export default {
 		...mapGetters({
 			user: "admin/getUser"
 		})
-	},
-	async mounted () {
-		await this.$store.dispatch("admin/init");
 	}
 };
 </script>

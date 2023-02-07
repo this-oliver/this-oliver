@@ -18,6 +18,10 @@ import BasePage from "~/components/base/BasePage.vue";
 
 export default {
 	components: { BasePage, LoginForm },
-	middleware: "isLoggedIn"
+	middleware ({ $auth, redirect }) {
+		if ($auth.isLoggedIn) {
+			return redirect("/admin");
+		}
+	}
 };
 </script>

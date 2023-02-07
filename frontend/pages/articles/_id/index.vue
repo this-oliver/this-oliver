@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 import { getTextDescription } from "~/utils/string";
 import ArticleSingle from "~/components/article/ArticleSingle.vue";
 import BasePage from "~/components/base/BasePage.vue";
@@ -29,9 +30,15 @@ export default {
 		ArticleSingle,
 		BasePage
 	},
+	async asyncData({ store, params }) {
+		const id = params.id;
+		const storeQuery = store.getters["admin/isLoggedIn"] ? "admin/articles/get" : "user/articles/get";
+		const article = await store.dispatch(storeQuery, id);
+
+		return { article };
+	},
 	data () {
 		return {
-			article: null,
 			refreshedArticle: null
 		};
 	},
@@ -47,21 +54,23 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			isLoggedIn: "admin/isLoggedIn"
+		}),
 		getArticle () {
 			return this.refreshedArticle || this.article;
 		}
-	},
-	async mounted () {
-		const id = this.$route.params.id;
-		this.article = await this.$store.dispatch("user/articles/get", id);
 	},
 	methods: {
 		async refreshArticle () {
 			const id = this.$route.params.id;
 			// refresh articles
-			await this.$store.dispatch("user/articles/index");
+			const storeIndexQuery = this.isLoggedIn ? "admin/articles/index" : "user/articles/index";
+			await this.$store.dispatch(storeIndexQuery);
+
 			// get new version of current article
-			const articles = this.$store.getters["user/articles/getArticles"];
+			const storeGetQuery = this.isLoggedIn ? "admin/articles/get" : "user/articles/get";
+			const articles = this.$store.getters[storeGetQuery];
 			this.refreshedArticle = articles.find(({ _id }) => _id === id);
 		}
 	}

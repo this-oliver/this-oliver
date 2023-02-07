@@ -63,7 +63,7 @@ export default {
 				} });
 
 				this.$router.push({
-					path: "/admin"
+					path: "/"
 				});
 				this.loading = false;
 			} catch (error) {

@@ -30,7 +30,7 @@
 			v-for="experience in xpList"
 			:key="experience._id"
 			cols="12"
-			md="8"
+			md="10"
 			class="my-1">
 			<experience-card
 				:experience="experience"

@@ -14,13 +14,15 @@
 
 		<v-col
 			cols="12"
-			md="10"
+			md="9"
 			order="1"
 			order-md="2"
 			:class="path ? 'clickable' : ''"
 			@click="goToPath">
 			<v-card
 				class="py-2 px-3 rounded-lg"
+				:style="style"
+				:color="color"
 				:outlined="outlined"
 				:elevation="elevation">
 				<slot name="title" />
@@ -31,7 +33,7 @@
 		<v-col
 			v-if="slotRightSideFilled"
 			cols="12"
-			md="1"
+			md="2"
 			order="3"
 			order-md="3">
 			<slot name="right-side" />
@@ -54,7 +56,15 @@ export default {
 	props: {
 		path: {
 			type: String,
-			default: null
+			default: undefined
+		},
+		color: {
+			type: String,
+			default: undefined
+		},
+		colorBorder: {
+			type: String,
+			default: undefined
 		},
 		outlined: {
 			type: Boolean,
@@ -74,6 +84,16 @@ export default {
 		},
 		slotFooterFilled(){
 			return !!this.$slots.footer;
+		},
+		style() {
+			if(this.colorBorder){
+				// return colored border
+				return {
+					border: `1px solid ${this.colorBorder}`
+				};
+			}
+
+			return null;
 		}
 	},
 	methods: {

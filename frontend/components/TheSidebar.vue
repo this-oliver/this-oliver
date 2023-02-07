@@ -10,6 +10,7 @@
 						class="hide-link"
 						to="/">
 						Oliver
+						<small v-if="isLoggedIn">🔐</small>
 					</nuxt-link>
 				</h1>
 			</div>
@@ -17,7 +18,7 @@
 
 		<v-list nav>
 			<v-list-item
-				v-for="link in links"
+				v-for="link in getLinks"
 				:key="link.title">
 				<base-btn
 					:block="true"
@@ -28,24 +29,13 @@
 		</v-list>
 
 		<v-list
-			v-if="loggedIn"
-			nav>
-			<v-divider class="mt-2" />
-			<b>🚨 Admin</b>
+			nav
+			class="mt-2">
+			<v-divider />
+
 			<v-list-item
-				v-for="link in adminLinks"
-				:key="link.title">
-				<base-btn
-					color="primary"
-					:block="true"
-					@click="goTo(link.route)">
-					{{ link.title }}
-				</base-btn>
-			</v-list-item>
-			<v-divider
-				class="mt-2"
-				inset />
-			<v-list-item class="mt-2">
+				v-if="isLoggedIn"
+				class="mt-2">
 				<base-btn
 					block
 					color="error"
@@ -73,15 +63,12 @@ export default {
 	components: { ThemeSwitcher, BaseBtn },
 	computed: {
 		...mapGetters({
-			links: "app/nav/getLinks",
-			adminLinks: "app/nav/getAdminLinks"
+			isLoggedIn: "admin/isLoggedIn",
+			getLinks: "app/nav/getLinks"
 		}),
 		showSidebar: {
 			get: function() { return this.$store.getters["app/nav/showSidebar"];},
 			set: function(value) { return this.$store.commit("app/nav/setSidebar", value);}
-		},
-		loggedIn () {
-			return this.$auth.loggedIn;
 		}
 	},
 	methods: {

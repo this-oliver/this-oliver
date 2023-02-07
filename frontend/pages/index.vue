@@ -6,7 +6,10 @@
 			<v-col
 				cols="11"
 				md="8">
-				<about-me :bio="getShortBio" />
+				<span v-if="isLoggedIn"> 👀 {{ getUserVisits }}</span>
+				<about-me
+					:bio="getShortBio"
+					:edit-mode="isLoggedIn" />
 			</v-col>
 		</v-row>
 	</base-page>
@@ -19,6 +22,7 @@ import AboutMe from "~/components/about/AboutMe.vue";
 import BasePage from "~/components/base/BasePage.vue";
 
 import { STORAGE } from "~/logic/enums";
+import StorgaeUtil from "~/utils/storage";
 import { getTextDescription } from "~/utils/string";
 
 export default {
@@ -38,18 +42,22 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			user: "user/getUser"
+			isLoggedIn: "admin/isLoggedIn"
 		}),
+		user(){
+			const indexQuery = this.$store.getters["admin/isLoggedIn"] ? "admin/getUser" : "user/getUser";
+			return this.$store.getters[indexQuery];
+		},
 		getShortBio () {
-			return (this.user) ? this.user.bio.short : "<h1>👋</h1><p>My name is Oliver. I code stuff. I secure stuff. I’ve spent the last four years studying software engineering and entrepreneurship and building software applications for startups and enterprises.</p> <p>Currently, I'm studying Information Security at LTU and hope to add this skill to my toolbox.</p> <p>In my free time, I like to travel, hang out with friends, listen to music, learn new things and sometimes work on, Fetch, a table ordering web application for bars and restaurants which I have come to see as a nice way for me to apply my studies to real life use-cases.</p>";
+			return this.user?.bio?.short || "<h1>👋</h1><p>My name is Oliver. I code stuff. I secure stuff. I’ve spent the last four years studying software engineering and entrepreneurship and building software applications for startups and enterprises.</p> <p>Currently, I'm studying Information Security at LTU and hope to add this skill to my toolbox.</p> <p>In my free time, I like to travel, hang out with friends, listen to music, learn new things and sometimes work on, Fetch, a table ordering web application for bars and restaurants which I have come to see as a nice way for me to apply my studies to real life use-cases.</p>";
+		},
+		getUserVisits(){
+			return this.user?.visits || 0;
 		}
 	},
 	async mounted () {
-		// retreive user
-		await this.$store.dispatch("user/init");
-
 		// check if client has visited website before
-		const hasVisited = this.$auth.$storage.getUniversal(STORAGE.visitor);
+		const hasVisited = StorgaeUtil.getStorage(STORAGE.visitor);
 
 		// if user has never visited page
 		if (!hasVisited) {
@@ -57,7 +65,7 @@ export default {
 				// increment visit count
 				await this.$store.dispatch("user/incrementVisits");
 				// place a cookie on user device
-				this.$auth.$storage.setUniversal(STORAGE.visitor, STORAGE.visitor);
+				StorgaeUtil.setStorage(STORAGE.visitor, STORAGE.visitor);
 			} catch (error) {
 			}
 		}

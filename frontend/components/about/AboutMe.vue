@@ -1,24 +1,24 @@
 <template>
 	<div>
-		<v-row justify="center">
+		<v-row
+			v-if="editMode"
+			justify="center">
 			<v-col
-				v-if="editMode"
 				cols="12"
 				md="auto"
 				class="text-center">
 				<h1>About Me</h1>
 			</v-col>
 			<v-col
-				v-if="editMode"
 				cols="auto"
 				class="text-center ml-sm-auto">
-				<v-btn
+				<base-btn
 					class="mx-1"
-					:elevation="0"
 					color="warning"
-					to="/admin/profile/edit">
+					:elevation="0"
+					to="/profile/edit">
 					update
-				</v-btn>
+				</base-btn>
 			</v-col>
 		</v-row>
 
@@ -29,10 +29,11 @@
 </template>
 
 <script>
+import BaseBtn from "../base/BaseBtn.vue";
 import BaseHtml from "../base/BaseHtml.vue";
 export default {
 	name: "AboutMe",
-	components: { BaseHtml },
+	components: { BaseHtml, BaseBtn },
 	props: {
 		bio: {
 			type: String,

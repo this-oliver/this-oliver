@@ -3,7 +3,7 @@
 		app
 		padless
 		absolute
-		:color="showDarkMode ? 'dark' : 'white'"
+		:color="isDarkMode ? 'dark' : 'white'"
 		class="rounded-t-lg py-2 px-2">
 		<v-row
 			class="px-2"
@@ -37,14 +37,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { STORAGE } from "~/logic/enums";
+import StorageUtil from "../utils/storage";
 export default {
 	name: "TheFooter",
 	computed: {
-		...mapGetters({
-			showDarkMode: "app/theme/isDarkMode"
-		}),
 		getFooterItems () {
 			return [
 				{
@@ -70,7 +67,7 @@ export default {
 			];
 		},
 		hasVisited () {
-			const hasVisited = this.$auth.$storage.getUniversal(STORAGE.visitor);
+			const hasVisited = StorageUtil.getStorage(STORAGE.visitor);
 
 			if (hasVisited) {
 				return true;

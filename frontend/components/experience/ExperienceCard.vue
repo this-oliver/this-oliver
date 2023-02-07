@@ -12,7 +12,8 @@
 		</h4>
 		<v-chip-group class="mt-1">
 			<!-- type -->
-			<v-chip :color="getExperienceColor(experience.type)">
+			<v-chip
+				:color="getExperienceColor(experience.type)">
 				{{ getExperienceType(experience.type) }}
 			</v-chip>
 			<!-- duration -->
@@ -28,32 +29,42 @@
 			</v-col>
 		</v-row>
 
-		<template #footer>
-			<v-row
-				v-if="editMode"
-				justify="end">
-				<v-col cols="auto">
-					<nuxt-link
-						class="simple-link"
-						:to="`/admin/experiences/${experience._id}/edit`">
-						update
-					</nuxt-link>
-				</v-col>
-				<v-col cols="auto">
-					<span
-						class="red--text simple-link"
-						@click="deleteXp(experience._id)">
-						delete
-					</span>
-				</v-col>
-			</v-row>
-		</template>
+		<v-divider
+			v-if="editMode"
+			class="my-2" />
+
+		<v-row
+			v-if="editMode"
+			justify="space-between">
+			<v-col
+				cols="6"
+				md="auto">
+				<base-btn
+					color="warning"
+					:block="true"
+					:rounded="true"
+					:to="`/experiences/${experience._id}/edit`">
+					update
+				</base-btn>
+			</v-col>
+			<v-col
+				cols="6"
+				md="auto">
+				<base-btn
+					color="error"
+					:block="true"
+					:rounded="true"
+					@click="deleteExperience(experience._id)">
+					delete
+				</base-btn>
+			</v-col>
+		</v-row>
 	</base-card>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import { MarkdownToHtml } from "../../utils/markdown";
+import { MarkdownToHtml } from "../../utils/parser";
 import { capitalizeText } from "~/utils/string";
 import { getExperienceColor } from "../../logic/experience";
 import BaseCard from "../base/BaseCard.vue";
@@ -86,7 +97,7 @@ export default {
 		getParsedContent () {
 			if(this.skeletonMode) return "";
 
-			return MarkdownToHtml(this.experience.description);
+			return MarkdownToHtml(this.experience.description, { darkMode: this.isDarkMode });
 		},
 		getEndYear () {
 			if(this.skeletonMode) return "";
@@ -97,7 +108,7 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			deleteXp: "admin/experiences/delete"
+			deleteExperience: "admin/experiences/delete"
 		}),
 		getExperienceType (type) {
 			return capitalizeText(type);

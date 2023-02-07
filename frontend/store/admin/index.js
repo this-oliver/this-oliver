@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 
 export const getters = {
+	isLoggedIn(state, getters, rootState) {
+		return rootState.auth.loggedIn;
+	},
 	getUser (state, getters, rootState) {
 		return rootState.auth.user;
 	}

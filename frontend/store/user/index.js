@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 import { sortLatestExperiences } from "~/logic/experience";
-import { setCache, getCache, ENUMS as CachEnums } from "~/utils/cache";
+import StorgaUtil from "~/utils/storage";
+import { STORAGE } from "~/logic/enums";
 
 export const state = function () {
 	return {
-		user: getCache(CachEnums.USER) || null
+		user: StorgaUtil.getStorage(STORAGE.user) || null
 	};
 };
 
@@ -21,7 +22,7 @@ export const getters = {
 export const mutations = {
 	setUser (state, user) {
 		state.user = user;
-		setCache(CachEnums.USER, user);
+		StorgaUtil.setStorage(STORAGE.user, user);
 	}
 };
 

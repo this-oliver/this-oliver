@@ -5,98 +5,107 @@
 
 	<base-card
 		v-else
-		:path="getUrl">
-		<v-row
-			dense
-			justify="start"
-			justify-md="space-between">
-			<!-- title -->
-			<v-col
-				cols="12"
-				md="8">
-				<h2>{{ article.title }}</h2>
-			</v-col>
-			<!-- date -->
-			<v-col
-				cols="12"
-				md="3">
-				<b>{{ getDate }}</b>
-			</v-col>
-			<!-- likes -->
-			<v-col
-				cols="auto"
-				class="mx-1">
-				{{ `👏 ${article.likes}` }}
-			</v-col>
-			<!-- views -->
-			<v-col
-				v-if="editMode"
-				cols="auto"
-				class="mx-1 mr-md-auto">
-				{{ `🔎 ${article.views}` }}
-			</v-col>
-			<!-- tags -->
-			<v-col
-				v-if="article.tags.length"
-				cols="12"
-				md="auto"
-				class="ml-md-auto">
-				<v-chip
-					v-for="tag in article.tags"
-					:key="tag._id"
-					small
-					class="mr-1"
-					:color="tag.color">
-					{{ tag.name }}
-				</v-chip>
-			</v-col>
-		</v-row>
-
-		<template
-			v-if="editMode"
-			#left-side>
-			<!-- publish flag -->
-			<base-icon
-				v-if="article.publish"
-				icon="check_circle"
-				color="success" />
-			<base-icon
-				v-else
-				icon="remove_circle"
-				color="warning" />
-		</template>
-
-		<template
-			v-if="editMode"
-			#right-side>
-			<!-- actions -->
-			<v-row justify="space-between">
-				<v-col
-					cols="auto"
-					class="mx-1">
-					<nuxt-link
-						class="simple-link"
-						:to="`/admin/articles/${article._id}/edit`">
-						update
-					</nuxt-link>
+		:color-border="getCardBorderColor">
+		<!-- hide link style -->
+		<nuxt-link
+			:to="`/articles/${article ? article._id : '#'}`"
+			class="article-link">
+			<v-row
+				dense
+				justify="start"
+				justify-md="space-between">
+				<!-- title -->
+				<v-col cols="12">
+					<h2>{{ article.title }}</h2>
 				</v-col>
+				<!-- date -->
+				<v-col
+					cols="12"
+					md="3">
+					<b>{{ getDate }}</b>
+				</v-col>
+				<!-- likes -->
 				<v-col
 					cols="auto"
 					class="mx-1">
-					<span
-						class="red--text simple-link"
-						@click="deleteArticle(article._id)">
-						delete
-					</span>
+					{{ `👏 ${article.likes}` }}
+				</v-col>
+				<!-- views -->
+				<v-col
+					v-if="editMode"
+					cols="auto"
+					class="mx-1 mr-md-auto">
+					{{ `🔎 ${article.views}` }}
+				</v-col>
+				<!-- tags -->
+				<v-col
+					v-if="article.tags.length"
+					cols="12"
+					md="auto"
+					class="ml-md-auto">
+					<v-chip
+						v-for="tag in article.tags"
+						:key="tag._id"
+						small
+						class="mr-1"
+						:color="tag.color">
+						{{ tag.name }}
+					</v-chip>
 				</v-col>
 			</v-row>
-		</template>
+		</nuxt-link>
+
+		<v-divider
+			v-if="editMode"
+			class="my-2" />
+
+		<v-row
+			v-if="editMode"
+			justify="space-between">
+			<v-col
+				cols="12"
+				md="auto">
+				<base-btn
+					:block="true"
+					:rounded="true"
+					@click="setPublish(article.publish ? false : true)">
+					<base-icon
+						:icon="article.publish ? 'remove_circle' : 'check_circle'"
+						:color="article.publish ? 'warning' : 'success'"
+						class="mx-1" />
+					{{ article.publish ? "Hide" : "Show" }}
+				</base-btn>
+			</v-col>
+			<v-col
+				cols="6"
+				md="auto">
+				<base-btn
+					color="warning"
+					:block="true"
+					:rounded="true"
+					:to="`/articles/${article._id}/edit`">
+					update
+				</base-btn>
+			</v-col>
+			<v-col
+				cols="6"
+				md="auto">
+				<base-btn
+					color="error"
+					:block="true"
+					:rounded="true"
+					@click="deleteArticle(article._id)">
+					delete
+				</base-btn>
+			</v-col>
+		</v-row>
 	</base-card>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import { getDate } from "../../utils/time";
+import BaseBtn from "../base/BaseBtn.vue";
 import BaseCard from "../base/BaseCard.vue";
 import BaseIcon from "../base/BaseIcon.vue";
 
@@ -104,7 +113,8 @@ export default {
 	name: "ArticleCard",
 	components: {
 		BaseCard,
-		BaseIcon
+		BaseIcon,
+		BaseBtn
 	},
 	props: {
 		article: {
@@ -120,24 +130,49 @@ export default {
 			default: false
 		}
 	},
+	data() {
+		return {
+			localArticle: this.article
+		};
+	},
 	computed: {
+		getArticle(){
+			return this.localArticle;
+		},
+		getCardBorderColor () {
+			if(this.editMode){
+				return this.article.publish ? "green" : "orange";
+			}
+			return "";
+		},
 		getDate () {
 			return this.skeletonMode
 				? getDate()
 				: getDate(this.article.createdAt);
-		},
-		getUrl () {
-			if(this.skeletonMode) return "#";
-
-			return this.editMode
-				? `/admin/articles/${this.article._id}`
-				: `/articles/${this.article._id}`;
 		}
+	},
+	mounted(){
+		this.localArticle = this.article;
 	},
 	methods: {
 		...mapActions({
+			patchArticle: "admin/articles/patch",
 			deleteArticle: "admin/articles/delete"
-		})
+		}),
+		async setPublish (publish) {
+			this.localArticle = await this.patchArticle({
+				id: this.article._id,
+				patch: { publish }
+			});
+		}
 	}
 };
 </script>
+
+<style scoped>
+.article-link {
+	text-decoration: none;
+	/* remove blue color */
+	color: inherit;
+}
+</style>

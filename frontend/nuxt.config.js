@@ -56,13 +56,12 @@ export default {
 		{ src: "~/plugins/api.js" },
 		{ src: "~/plugins/error.js" },
 		{ src: "~/plugins/mixin.client.js" },
-		{ src: "~/plugins/theme.client.js" },
 		{ src: "~/plugins/vuetify.client.js" }
 	],
 
 	// Global routing middlewares to run for every route change
 	router: {
-		middleware: "sidebar"
+		middleware: ["redirect", "init", "sidebar"]
 	},
 
 	// Auto import components: https://go.nuxtjs.dev/config-components

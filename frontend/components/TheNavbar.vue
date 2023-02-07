@@ -3,25 +3,27 @@
 		id="navigation-bar"
 		app
 		flat
-		:color="showDarkMode ? '#131313' : 'white'">
+		:color="isDarkMode ? 'black' : 'off-white'"
+		rounded="b-lg">
 		<h1>
 			<nuxt-link
 				class="brand hide-link"
 				to="/">
 				Oliver
+				<small v-if="isLoggedIn">🔐</small>
 			</nuxt-link>
 		</h1>
 
 		<v-spacer />
 
 		<v-app-bar-nav-icon
-			v-if="isScreenMobile"
+			v-if="isScreenMobile || isScreenTablet"
 			class="mr-2 mr-lg-4"
 			@click="setSidebar(!showSidebar)" />
 
 		<div v-else>
 			<v-btn
-				v-for="link in links"
+				v-for="link in getLinks"
 				:key="link.title"
 				text
 				class="mx-2"
@@ -29,38 +31,13 @@
 				{{ link.title }}
 			</v-btn>
 
-			<v-menu
-				v-if="loggedIn"
-				offset-y
-				class="mx-2">
-				<template #activator="{ on, attrs }">
-					<v-btn
-						text
-						v-bind="attrs"
-						v-on="on">
-						🚨 admin
-					</v-btn>
-				</template>
-				<v-list>
-					<v-list-item
-						v-for="link in adminLinks"
-						:key="link.title"
-						text
-						class="mx-2"
-						@click="goTo(link.route)">
-						<v-list-item-title>{{ link.title }}</v-list-item-title>
-					</v-list-item>
-					<v-list-item
-						text
-						class="mx-2"
-						color="error"
-						@click="logout">
-						<v-list-item-title>
-							<b class="red--text">🔐 Logout</b>
-						</v-list-item-title>
-					</v-list-item>
-				</v-list>
-			</v-menu>
+			<v-btn
+				v-if="isLoggedIn"
+				color="error"
+				class="mx-2"
+				@click="logout">
+				<b>🔐 Logout</b>
+			</v-btn>
 
 			<theme-switcher :icon-mode="true" />
 		</div>
@@ -75,14 +52,10 @@ export default {
 	components: { ThemeSwitcher },
 	computed: {
 		...mapGetters({
-			links: "app/nav/getLinks",
-			adminLinks: "app/nav/getAdminLinks",
-			showSidebar: "app/nav/showSidebar",
-			showDarkMode: "app/theme/isDarkMode"
-		}),
-		loggedIn () {
-			return this.$auth.loggedIn;
-		}
+			isLoggedIn: "admin/isLoggedIn",
+			getLinks: "app/nav/getLinks",
+			showSidebar: "app/nav/showSidebar"
+		})
 	},
 	methods: {
 		...mapMutations({

@@ -1,6 +1,8 @@
 <template>
 	<base-page title="experiences">
-		<experience-list :experiences="experiences" />
+		<experience-list
+			:experiences="experiences"
+			:edit-mode="isLoggedIn" />
 	</base-page>
 </template>
 
@@ -15,7 +17,8 @@ export default {
 		ExperienceList
 	},
 	async asyncData({ store }) {
-		await store.dispatch("user/init");
+		const initQuery = store.getters["admin/isLoggedIn"] ? "admin/init" : "user/init";
+		await store.dispatch(initQuery);
 		return;
 	},
 	head () {
@@ -31,8 +34,12 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			experiences: "user/getExperiences"
-		})
+			isLoggedIn: "admin/isLoggedIn"
+		}),
+		experiences(){
+			const indexQuery = this.$store.getters["admin/isLoggedIn"] ? "admin/experiences/getExperiences" : "user/getExperiences";
+			return this.$store.getters[indexQuery];
+		}
 	}
 };
 </script>
