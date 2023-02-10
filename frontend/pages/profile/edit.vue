@@ -1,6 +1,9 @@
 <template>
 	<base-page>
-		<about-form :edit-mode="true" />
+		<about-form
+			v-if="user"
+			:user="user"
+			:edit-mode="true" />
 	</base-page>
 </template>
 

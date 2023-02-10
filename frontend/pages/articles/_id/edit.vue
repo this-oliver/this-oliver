@@ -2,6 +2,7 @@
 	<base-page :no-padding="true">
 		<v-row justify="center">
 			<v-col
+				v-if="article"
 				cols="11"
 				sm="10">
 				<article-form

@@ -58,6 +58,7 @@
 <script>
 import { mapActions } from "vuex";
 import { getWordCount } from "../../utils/string";
+import { isHtml, HtmlToMarkdown } from "../../utils/parser";
 
 import BaseForm from "../base/BaseForm.vue";
 import InputTextEditor from "../base/InputTextEditor.vue";
@@ -66,6 +67,10 @@ export default {
 	name: "AboutForm",
 	components: { BaseForm, InputTextEditor },
 	props: {
+		user: {
+			type: Object,
+			default: null
+		},
 		editMode: {
 			type: Boolean,
 			default: false
@@ -92,10 +97,11 @@ export default {
 	},
 	created () {
 		if (this.editMode) {
-			const user = this.$store.getters["admin/getUser"];
-			if (!user) { return; }
-			this.form.short = user.bio.short;
-			this.form.long = user.bio.long;
+			this.form.short = this.user.bio.short;
+			this.form.long = this.user.bio.long;
+
+			if(isHtml(this.form.short)) this.form.short = HtmlToMarkdown(this.form.short);
+			if(isHtml(this.form.long)) this.form.long = HtmlToMarkdown(this.form.long);
 		}
 	},
 	methods: {

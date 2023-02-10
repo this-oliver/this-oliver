@@ -3,8 +3,9 @@
 		id="navigation-bar"
 		app
 		flat
-		:color="isDarkMode ? 'black' : 'off-white'"
-		rounded="b-lg">
+		rounded="b-lg"
+		hide-on-scroll
+		:color="isDarkMode ? 'black' : 'off-white'">
 		<h1>
 			<nuxt-link
 				class="brand hide-link"

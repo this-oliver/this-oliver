@@ -26,3 +26,9 @@ export default {
 	components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar }
 };
 </script>
+
+<style scoped>
+.main-content{
+	margin-bottom: 10vh;
+}
+</style>

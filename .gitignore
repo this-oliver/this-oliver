@@ -4,3 +4,7 @@ oliverrr.code-workspace
 
 # certificates
 certificates
+
+# ignore all .env files
+.env*
+!.env.sample

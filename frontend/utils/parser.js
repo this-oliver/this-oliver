@@ -9,9 +9,8 @@ import HtmlSanitizer from "sanitize-html";
  * @returns {Boolean} true if text is html
  */
 export function isHtml (text){
-	// check if text is html
-	const htmlRegex = /<[^>]*>/;
-	return htmlRegex.test(text);
+	// check if there is an html tag in the text and if it is not a code block or inline code
+	return /<[^>]*>/.test(text) && !/(```|`)/.test(text);
 }
 
 /**
@@ -43,18 +42,27 @@ export function HtmlToMarkdown (html) {
  * @param {Object} options - options
  * @param {Boolean} options.sanitize - sanitize html
  * @param {Boolean} options.highlight - highlight code
- * @param {Boolean} options.tableStyle - style table elements
+ * @param {Object} options.link - style link elements
+ * @param {Boolean} options.link.openOutside - open links outside of app
+ * @param {Object} options.table - style table elements
+ * @param {Boolean} options.table.wrapText - wrap text in table elements
  * @param {Boolean} options.darkMode - dark mode
  * @returns {String} html
  */
-export function MarkdownToHtml (
+export function MarkdownToHtml(
 	text = "",
-	{ sanitize = false, highlight = true, tableStyle = true, darkMode = false } = {}
+	{
+		sanitize = false,
+		highlight = true,
+		link = { openOutside: true },
+		table = { wrapText: true },
+		darkMode = false
+	} = {}
 ) {
 	// styling
 	const color = darkMode ? "#fff" : "#000";
 	const css = {
-		table: `border: 1px solid ${color}; padding: 0 0.5rem; overflow-x: auto; white-space: pre; word-wrap: normal;`,
+		tableWrapper: `display: block; overflow-x: auto; white-space: ${table.wrapText ? "normal" : "nowrap"}; overflow-wrap: ${table.wrapText ? "break-word" : "normal"};`,
 		tableElements: `border: 1px solid ${color}; padding: 0 0.5rem;`,
 		pre: "overflow-x: auto; white-space: pre; word-wrap: normal;",
 		code: "padding: 0.2rem 0;"
@@ -71,27 +79,20 @@ export function MarkdownToHtml (
 			return SanitizeHtml(html);
 		},
 		heading(text, level) {
-			function getHeaderClass(classLevel) {
-				switch (classLevel) {
-				case 1:
-					// header
-					return "article-section";
-				case 2:
-					// sub header
-					return "article-subsection";
-				default:
-					// sub sub header
-					return "article-subsection";
-				}
-			}
-			return `<h${level} class="${getHeaderClass(level)}">${text}</h${level}>`;
+			const headerId = text.replace(/ /g, "-").toLowerCase();
+			const headerStyle = "margin: 1rem 0 0.5rem 0;";
+
+			return `<h${level} id="${headerId}" style="${headerStyle}">${text}</h${level}>`;
 		},
 		link(href, title, text) {
-			return `<a href="${href} target="_blank">${text}</a>`;
+			return `<a href="${href}" target="${
+				link.openOutside ? "_blank" : "_self"
+			}">${text}</a>`;
 		},
 		table(header, body) {
 			// add border to tables
-			return `<table style="${css.table}">${header}${body}</table>`;
+			//return `<table style="${tableWrapper}">${header}${body}</table>`;
+			return `<div style="${css.tableWrapper}"><table style="${css.tableWrapper}">${header}${body}</table></div>`;
 		},
 		tablecell(content, flags) {
 			// add border to table cells
@@ -105,18 +106,72 @@ export function MarkdownToHtml (
 		code(code, language) {
 			// add border to code blocks
 			return `<pre class="language-${language}" style="${css.pre}"><code class="language-${language}" style="${css.code}">${code}</code></pre>`;
+		},
+		hr() {
+			const style = "margin: 1rem 0;";
+			return `<hr style="${style}">`;
+		},
+		image(href, title, text) {
+			const imageClass = "";
+			const imageStyle = "max-width: 100%;";
+			return `<img src="${href}" alt="${text}" title="${title}" style="${imageStyle}" class="${imageClass}">`;
 		}
 	};
 
 	if (!sanitize) delete renderer.html;
 	if (!highlight) delete renderer.code;
-	if (!tableStyle) delete renderer.table;
 
 	Marked.use({ renderer });
 
 	// convert markdown to html
 	return Marked.parse(text || "");
 };
+
+/**
+ * Returns a markdown table of contents
+ *
+ * @param {string} markdown - markdown
+ * @param {Object} options - options
+ * @param {number} options.maxDepth - max depth of headers to include in table of contents
+ * @param {boolean} options.renderAsList - render table of contents as a numbered list
+ * @returns {string} markdown table of contents
+ */
+export function getMarkdownTableOfContents(
+	markdown,
+	{ maxDepth = 2, renderAsList = true } = {}
+) {
+	// setup regex for headers
+	const headerRegex = /(^#{1,6})\s(.*)/gm;
+
+	// get all headers from markdown up to maxDepth
+	const headers = [];
+	let match;
+	while ((match = headerRegex.exec(markdown)) !== null) {
+		const depth = match[1].length;
+		if (depth <= maxDepth) headers.push({ depth, text: match[2] });
+	}
+
+	let toc;
+	if (renderAsList) {
+		// render table of contents as a list
+		toc = "**Table of Contents**\n";
+		headers.forEach((header, index) => {
+			const headerId = header.text.replace(/ /g, "-").toLocaleLowerCase();
+			const item = `${index + 1}. [${header.text}](#${headerId})\n`;
+			toc += item;
+		});
+	} else {
+		// render table of contents as a table
+		toc = "| # | Header |\n| - | ------ |\n";
+		headers.forEach((header, index) => {
+			const headerId = header.text.replace(/ /g, "-").toLocaleLowerCase();
+			const item = `| ${index + 1} | [${header.text}](#${headerId}) |\n`;
+			toc += item;
+		});
+	}
+
+	return toc;
+}
 
 /**
  * Returns a sanitized html document
@@ -128,12 +183,20 @@ export function SanitizeHtml (dirtyHtml) {
 	return HtmlSanitizer(dirtyHtml, {
 		allowedTags: [...HtmlSanitizer.defaults.allowedTags, "img"],
 		allowedAttributes: {
-			a: ["href", "name", "target"],
+			a: ["href", "name", "target", "@click"],
 			img: ["src", "srcset", "alt", "title", "width", "height", "loading"],
 			pre: ["style", "class"],
 			code: ["style", "class"],
 			th: ["style"],
-			td: ["style"]
+			td: ["style"],
+			table: ["style"],
+			hr: ["id", "style"],
+			h1: ["id", "style"],
+			h2: ["id", "style"],
+			h3: ["id", "style"],
+			h4: ["id", "style"],
+			h5: ["id", "style"],
+			h6: ["id", "style"]
 		}
 	});
 };

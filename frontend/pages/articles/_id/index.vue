@@ -1,5 +1,5 @@
 <template>
-	<base-page>
+	<base-page :no-padding="true">
 		<v-row
 			v-if="!getArticle"
 			justify="center">
@@ -9,72 +9,77 @@
 				</v-chip>
 			</v-col>
 		</v-row>
-		<div v-else>
-			<v-row v-if="isLoggedIn">
-				<v-col
-					cols="12"
-					md="auto">
-					<base-btn
-						color="warning"
-						:block="true"
-						:to="`/articles/${getArticle._id}/edit`">
-						update
-					</base-btn>
-				</v-col>
-			</v-row>
-			<v-row justify-md="center">
-				<v-col
-					cols="12"
-					md="4">
-					<!-- article details -->
-					<!-- title -->
-					<h1>{{ getArticle.title }}</h1>
-					<!-- time ago -->
-					<h4>{{ getDate }}</h4>
-					<!-- tags -->
-					<v-chip
-						v-for="tag in getArticle.tags"
-						:key="tag._id"
-						class="mr-1 mt-1">
-						{{ tag.name }}
-					</v-chip>
-				</v-col>
+		<v-row
+			v-else
+			justify="center">
+			<v-col cols="11">
+				<v-row justify-md="center">
+					<v-col
+						cols="12"
+						sm="4"
+						md="3">
+						<div :style="`position: ${isScreenDesktop ? 'fixed' : null } ;`">
+							<base-btn
+								v-if="isLoggedIn"
+								outline
+								class="mt-1"
+								color="warning"
+								:block="true"
+								:to="`/articles/${getArticle._id}/edit`">
+								Update
+							</base-btn>
+							<!-- title -->
+							<h1>{{ getArticle.title }}</h1>
+							<!-- time ago -->
+							<h4>{{ getArticleDate }}</h4>
+							<!-- tags -->
+							<v-chip
+								v-for="tag in getArticle.tags"
+								:key="tag._id"
+								class="mr-1 mt-1">
+								{{ tag.name }}
+							</v-chip>
+							<div class="mt-2">
+								<v-divider class="my-2" />
+								<base-html
+									class="table-of-content"
+									:html="getArticleTocHtml" />
+							</div>
+							<div class="mt-2">
+								<v-divider class="my-2" />
+								<base-btn
+									v-for="option in getArticleOptions"
+									:key="option.text"
+									:block="true"
+									:color="option.color || null"
+									:outline="option.outline || false"
+									class="mt-1"
+									@click="option.action">
+									{{ option.text }}
+								</base-btn>
+							</div>
+						</div>
+					</v-col>
 
-				<v-col
-					id="article-content"
-					class="mt-2 mt-md-0"
-					md="8">
-					<base-html :html="getParsedContent" />
-				</v-col>
+					<v-col
+						id="article-content"
+						class="mt-2 mt-md-0"
+						sm="8"
+						md="9">
+						<base-html :html="getArticleHtml" />
+					</v-col>
 
-				<v-col cols="12">
-					<!-- back btn -->
-					<v-row justify="space-around">
-						<v-col cols="auto">
-							<a
-								class="simple-link"
-								@click="$router.go(-1)">
-								&larr; more articles
-							</a>
-						</v-col>
-						<v-col cols="auto">
-							<v-btn
-								rounded
-								@click="like">
-								{{ `👏 ${getArticle.likes}` }}
-							</v-btn>
-						</v-col>
-					</v-row>
-				</v-col>
-			</v-row>
-		</div>
+				<!-- TODO: add suggestions -->
+				</v-row>
+			</v-col>
+		</v-row>
 	</base-page>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { getDate } from "~/utils/time";
-import { MarkdownToHtml } from "~/utils/parser";
+import { MarkdownToHtml, getMarkdownTableOfContents } from "~/utils/parser";
 import { getTextDescription } from "~/utils/string";
 
 import BasePage from "~/components/base/BasePage.vue";
@@ -122,11 +127,42 @@ export default {
 		getArticle () {
 			return this.refreshedArticle || this.article;
 		},
-		getParsedContent () {
-			return MarkdownToHtml(this.getArticle.content, { darkMode: this.isDarkMode});
+		getArticleHtml () {
+			return MarkdownToHtml(
+				this.getArticle.content,
+				{
+					darkMode: this.isDarkMode,
+					table: { wrapText: false }
+				}
+			);
 		},
-		getDate () {
+		getArticleTocHtml(){
+			// get table of contents from markdown
+			const toc = getMarkdownTableOfContents(this.getArticle.content, {renderAsList: false});
+			// convert toc to html
+			return MarkdownToHtml(toc, {
+				link: {openOutside: false},
+				table: {wrapText: true},
+				darkMode: this.isDarkMode
+			});
+		},
+		getArticleDate () {
 			return getDate(this.getArticle.createdAt);
+		},
+		getArticleOptions(){
+			return [
+				{
+					text: `${this.getArticle.likes} Likes`,
+					color: this.isDarkMode ? "white" : "dark",
+					action: () => {this.like();}
+				},
+				{
+					text: "Go Back",
+					color: "secondary",
+					outline: true,
+					action: () => {this.$router.go(-1);}
+				}
+			];
 		}
 	},
 	methods: {
@@ -147,9 +183,3 @@ export default {
 	}
 };
 </script>
-
-<style scoped>
-#article-content {
-	min-height: 60vh;
-}
-</style>

@@ -177,19 +177,17 @@ export default {
 		await this.$store.dispatch("admin/articles/indexTags");
 
 		if (this.editMode) {
-			let article = null;
+			this.form.title = this.article.title;
+			this.form.publish = this.article.publish;
+			this.form.content = this.article.content;
 
-			if (!article) {
-				article = await this.$store.dispatch("admin/articles/get", this.$route.params.id);
-				this.fallBackArticle = article;
+			if(isHtml(this.article.content)){
+				this.form.content = HtmlToMarkdown(this.article.content);
 			}
-			this.form.title = article.title;
-			this.form.publish = article.publish;
-			this.form.content = isHtml(article.content) ? HtmlToMarkdown(article.content) : article.content;
 
 			const tags = [];
-			for (let i = 0; i < article.tags.length; i++) {
-				const tag = article.tags[i];
+			for (let i = 0; i < this.article.tags.length; i++) {
+				const tag = this.article.tags[i];
 				tags.push(tag.name);
 			}
 

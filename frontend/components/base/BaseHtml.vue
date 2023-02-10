@@ -19,14 +19,14 @@ export default {
 			type: String,
 			required: true
 		},
-		strict : {
+		sanitize : {
 			type: Boolean,
-			default: true
+			default: false
 		}
 	},
 	computed:{
 		getHtml(){
-			return this.strict ? SanitizeHtml(this.html) : this.html;
+			return this.sanitize ? SanitizeHtml(this.html) : this.html;
 		}
 	},
 	watch:{
