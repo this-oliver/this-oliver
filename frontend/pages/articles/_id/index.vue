@@ -3,10 +3,10 @@
 		<v-row
 			v-if="!getArticle"
 			justify="center">
-			<v-col cols="auto">
-				<v-chip color="warning">
-					🚦 article could not load
-				</v-chip>
+			<v-col
+				cols="auto"
+				class="error-text">
+				<h2>🚦 article could not load</h2>
 			</v-col>
 		</v-row>
 		<v-row
@@ -18,7 +18,7 @@
 						cols="12"
 						sm="4"
 						md="3">
-						<div :style="`position: ${isScreenDesktop ? 'fixed' : null } ;`">
+						<div id="article-info">
 							<base-btn
 								v-if="isLoggedIn"
 								outline
@@ -186,3 +186,12 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+/* style article info for large screens */
+@media (min-width: 960px) {
+	#article-info {
+		position: fixed;
+	}
+}
+</style>

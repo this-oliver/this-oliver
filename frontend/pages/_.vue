@@ -22,12 +22,3 @@ export default {
 	}
 };
 </script>
-
-<style scoped>
-.error-text {
-	/* middle of screen */
-	position: absolute;
-	top: 40%;
-
-}
-</style>
