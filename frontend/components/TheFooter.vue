@@ -11,7 +11,8 @@
 			<v-col
 				v-for="item in getFooterItems"
 				:key="item.link"
-				cols="12">
+				cols="12"
+				md="auto">
 				<a
 					class="simple-link mx-2"
 					:href="item.link"
