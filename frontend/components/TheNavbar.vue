@@ -5,12 +5,13 @@
 		flat
 		rounded="b-lg"
 		hide-on-scroll
-		:color="isDarkMode ? 'black' : 'off-white'">
+		:color="getComponentColor"
+		:class="`${getTextColor}--text`">
 		<h1>
 			<nuxt-link
 				class="brand hide-link"
 				to="/">
-				Oliver
+				Oliverrr
 				<small v-if="isLoggedIn">🔐</small>
 			</nuxt-link>
 		</h1>
@@ -20,27 +21,34 @@
 		<v-app-bar-nav-icon
 			v-if="isScreenMobile || isScreenTablet"
 			class="mr-2 mr-lg-4"
-			@click="setSidebar(!showSidebar)" />
+			:color="getComponentColor"
+			@click="setSidebar(!showSidebar)">
+			<base-icon
+				:icon="showSidebar ? 'auto_stories' : 'menu_book'"
+				:color="isDarkMode ? 'black' : 'white'" />
+		</v-app-bar-nav-icon>
 
 		<div v-else>
-			<v-btn
+			<base-btn
 				v-for="link in getLinks"
 				:key="link.title"
 				text
-				class="mx-2"
+				:class="`mx-2 ${getTextColor}--text`"
 				@click="goTo(link.route)">
 				{{ link.title }}
-			</v-btn>
+			</base-btn>
 
-			<v-btn
+			<base-btn
 				v-if="isLoggedIn"
 				color="error"
 				class="mx-2"
 				@click="logout">
 				<b>🔐 Logout</b>
-			</v-btn>
+			</base-btn>
 
-			<theme-switcher :icon-mode="true" />
+			<theme-switcher
+				:icon-mode="true"
+				:dark-mode="!isDarkMode" />
 		</div>
 	</v-app-bar>
 </template>
@@ -48,15 +56,25 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import ThemeSwitcher from "~/components/base/ThemeSwitcher.vue";
+import BaseBtn from "./base/BaseBtn.vue";
+import BaseIcon from "./base/BaseIcon.vue";
+
 export default {
 	name: "TheNavbar",
-	components: { ThemeSwitcher },
+	components: { ThemeSwitcher, BaseBtn, BaseIcon },
 	computed: {
 		...mapGetters({
 			isLoggedIn: "admin/isLoggedIn",
 			getLinks: "app/nav/getLinks",
 			showSidebar: "app/nav/showSidebar"
-		})
+		}),
+		getComponentColor(){
+			return this.isDarkMode ? "white" : "black";
+		},
+		getTextColor(){
+			// contrast component color
+			return this.isDarkMode ? "black" : "white";
+		}
 	},
 	methods: {
 		...mapMutations({

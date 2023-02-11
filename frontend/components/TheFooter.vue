@@ -1,16 +1,17 @@
 <template>
 	<v-footer
 		app
-		padless
-		:color="isDarkMode ? 'dark' : 'white'"
+		absolute
+		color="transparent"
 		class="rounded-t-lg py-2 px-2">
-		<v-row class="px-2">
+		<v-row :class="`px-2 ${isScreenDesktop ? 'text-center' : ''}`">
+			<v-col cols="12">
+				<v-divider class="mb-1" />
+			</v-col>
 			<v-col
 				v-for="item in getFooterItems"
 				:key="item.link"
-				cols="12"
-				sm="auto"
-				class="text-center">
+				cols="12">
 				<a
 					class="simple-link mx-2"
 					:href="item.link"
@@ -21,7 +22,7 @@
 			<v-col
 				cols="12"
 				sm="auto"
-				class="ml-auto text-center">
+				class="ml-auto">
 				<span v-if="hasVisited">👋</span>
 				<span v-else>🤠</span>
 				<a

@@ -20,6 +20,7 @@
 		v-else-if="iconMode"
 		icon
 		:block="block"
+		:color="getColor"
 		@click="setDarkTheme(!showDarkTheme)">
 		<base-icon
 			v-if="showDarkTheme"
@@ -32,6 +33,7 @@
 		v-else
 		:block="block"
 		:text="!hideText"
+		:color="getColor"
 		@click="setDarkTheme(!showDarkTheme)">
 		<span v-if="!hideText">
 			<span v-if="showDarkTheme">light</span>
@@ -67,6 +69,10 @@ export default {
 		hideText: {
 			type: Boolean,
 			default: false
+		},
+		darkMode: {
+			type: Boolean,
+			default: undefined
 		}
 	},
 	computed: {
@@ -76,6 +82,9 @@ export default {
 				this.$store.commit("app/theme/setDarkMode", value);
 				this.$vuetify.theme.dark = value;
 			}
+		},
+		getColor(){
+			return this.darkMode ? "white" : "black";
 		}
 	},
 	created() {

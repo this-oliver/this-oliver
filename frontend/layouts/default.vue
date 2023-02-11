@@ -1,5 +1,5 @@
 <template>
-	<v-app>
+	<v-app class="app">
 		<the-navbar />
 		<the-sidebar />
 		<the-notification-bar />
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-.main-content{
-	margin-bottom: 10vh;
+.app{
+	height: 100%;
 }
 </style>

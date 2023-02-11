@@ -9,7 +9,7 @@
 					<nuxt-link
 						class="hide-link"
 						to="/">
-						Oliver
+						Oliverrr
 						<small v-if="isLoggedIn">🔐</small>
 					</nuxt-link>
 				</h1>
