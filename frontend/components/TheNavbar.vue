@@ -4,7 +4,6 @@
 		app
 		flat
 		rounded="b-lg"
-		hide-on-scroll
 		:color="getComponentColor"
 		:class="`${getTextColor}--text`">
 		<h1>

@@ -1,13 +1,11 @@
 <template>
-	<v-app class="app">
+	<v-app id="app">
 		<the-navbar />
 		<the-sidebar />
 		<the-notification-bar />
 
 		<v-main>
-			<div class="main-content">
-				<nuxt />
-			</div>
+			<nuxt />
 		</v-main>
 
 		<!-- footer -->
@@ -26,9 +24,3 @@ export default {
 	components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar }
 };
 </script>
-
-<style scoped>
-.app{
-	height: 100%;
-}
-</style>

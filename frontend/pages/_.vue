@@ -1,10 +1,13 @@
 <template>
 	<base-page>
-		<v-row justify="center">
-			<v-col cols="auto">
-				<v-chip color="warning">
-					🔍 the page you are looking for is not available
-				</v-chip>
+		<v-row
+			justify="center"
+			align="center"
+			class="text-center">
+			<v-col
+				cols="auto"
+				class="error-text">
+				<h2>The page you are looking for is not available</h2>
 			</v-col>
 		</v-row>
 	</base-page>
@@ -19,3 +22,12 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+.error-text {
+	/* middle of screen */
+	position: absolute;
+	top: 40%;
+
+}
+</style>
