@@ -92,7 +92,7 @@ export default {
 
 <style scoped>
 #navigation-bar{
-  margin: 0 15%;
+  margin: 0 10%;
 }
 
 @media screen and (max-width: 480px) {

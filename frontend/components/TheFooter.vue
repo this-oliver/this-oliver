@@ -3,11 +3,9 @@
 		app
 		absolute
 		color="transparent"
-		class="rounded-t-lg py-2 px-2">
+		class="rounded-t-lg py-2 px-2"
+		style="margin-top: 5vh;">
 		<v-row :class="`px-2 ${isScreenDesktop ? 'text-center' : ''}`">
-			<v-col cols="12">
-				<v-divider class="mb-1" />
-			</v-col>
 			<v-col
 				v-for="item in getFooterItems"
 				:key="item.link"
@@ -21,9 +19,8 @@
 				</a>
 			</v-col>
 			<v-col
-				cols="12"
-				sm="auto"
-				class="ml-auto">
+				cols="auto"
+				class="ml-md-auto">
 				<span v-if="hasVisited">👋</span>
 				<span v-else>🤠</span>
 				<a

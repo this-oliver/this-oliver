@@ -4,7 +4,7 @@
 		<the-sidebar />
 		<the-notification-bar />
 
-		<v-main>
+		<v-main class="content">
 			<nuxt />
 		</v-main>
 
@@ -24,3 +24,9 @@ export default {
 	components: { TheNavbar, TheFooter, TheSidebar, TheNotificationBar }
 };
 </script>
+
+<style scoped>
+.content {
+	margin-bottom: 10vh;
+}
+</style>
