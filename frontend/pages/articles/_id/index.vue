@@ -39,7 +39,9 @@
 								class="mr-1 mt-1">
 								{{ tag.name }}
 							</v-chip>
-							<div class="mt-2">
+							<div
+								v-if="getArticleTocHtml.length > 0"
+								class="mt-2">
 								<v-divider class="my-2" />
 								<base-html
 									class="table-of-content"
@@ -53,7 +55,7 @@
 									:block="true"
 									:color="option.color || null"
 									:outline="option.outline || false"
-									class="mt-1"
+									:class="`mt-1 ${option.class || ''}`"
 									@click="option.action">
 									{{ option.text }}
 								</base-btn>
@@ -69,7 +71,7 @@
 						<base-html :html="getArticleHtml" />
 					</v-col>
 
-				<!-- TODO: add suggestions -->
+					<!-- TODO: add suggestions -->
 				</v-row>
 			</v-col>
 		</v-row>
@@ -153,13 +155,14 @@ export default {
 			return [
 				{
 					text: `${this.getArticle.likes} Likes`,
-					color: this.isDarkMode ? "white" : "dark",
+					color: this.isDarkMode ? "white" : "black",
+					class: `${this.isDarkMode ? "black" : "white"}--text`,
 					action: () => {this.like();}
 				},
 				{
 					text: "Go Back",
 					color: "secondary",
-					outline: true,
+					outline: !this.isDarkMode,
 					action: () => {this.$router.go(-1);}
 				}
 			];

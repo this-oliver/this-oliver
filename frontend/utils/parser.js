@@ -151,6 +151,8 @@ export function getMarkdownTableOfContents(
 		if (depth <= maxDepth) headers.push({ depth, text: match[2] });
 	}
 
+	if(headers.length === 0) return "";
+
 	let toc;
 	if (renderAsList) {
 		// render table of contents as a list
