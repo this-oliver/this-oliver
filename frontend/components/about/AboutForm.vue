@@ -76,6 +76,7 @@ export default {
 			default: false
 		}
 	},
+	emits: ["updated"],
 	data () {
 		return {
 			form: {
@@ -110,7 +111,7 @@ export default {
 		}),
 		async update(){
 			await this.patch({name: null, email: null, short: this.form.short, long: this.form.long});
-			this.$router.push("/admin");
+			this.$emit("updated");
 		}
 	}
 };
