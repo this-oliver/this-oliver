@@ -15,51 +15,50 @@
 			<v-col cols="11">
 				<v-row justify-md="center">
 					<v-col
+						id="article-info"
 						cols="12"
 						sm="4"
 						md="3">
-						<div id="article-info">
+						<base-btn
+							v-if="isLoggedIn"
+							outline
+							class="mt-1"
+							color="warning"
+							:block="true"
+							:to="`/articles/${getArticle._id}/edit`">
+							Update
+						</base-btn>
+						<!-- title -->
+						<h1>{{ getArticle.title }}</h1>
+						<!-- time ago -->
+						<h4>{{ getArticleDate }}</h4>
+						<!-- tags -->
+						<v-chip
+							v-for="tag in getArticle.tags"
+							:key="tag._id"
+							class="mr-1 mt-1">
+							{{ tag.name }}
+						</v-chip>
+						<div
+							v-if="getArticleTocHtml.length > 0"
+							class="mt-2">
+							<v-divider class="my-2" />
+							<base-html
+								class="table-of-content"
+								:html="getArticleTocHtml" />
+						</div>
+						<div class="mt-2">
+							<v-divider class="my-2" />
 							<base-btn
-								v-if="isLoggedIn"
-								outline
-								class="mt-1"
-								color="warning"
+								v-for="option in getArticleOptions"
+								:key="option.text"
 								:block="true"
-								:to="`/articles/${getArticle._id}/edit`">
-								Update
+								:color="option.color || null"
+								:outline="option.outline || false"
+								:class="`mt-1 ${option.class || ''}`"
+								@click="option.action">
+								{{ option.text }}
 							</base-btn>
-							<!-- title -->
-							<h1>{{ getArticle.title }}</h1>
-							<!-- time ago -->
-							<h4>{{ getArticleDate }}</h4>
-							<!-- tags -->
-							<v-chip
-								v-for="tag in getArticle.tags"
-								:key="tag._id"
-								class="mr-1 mt-1">
-								{{ tag.name }}
-							</v-chip>
-							<div
-								v-if="getArticleTocHtml.length > 0"
-								class="mt-2">
-								<v-divider class="my-2" />
-								<base-html
-									class="table-of-content"
-									:html="getArticleTocHtml" />
-							</div>
-							<div class="mt-2">
-								<v-divider class="my-2" />
-								<base-btn
-									v-for="option in getArticleOptions"
-									:key="option.text"
-									:block="true"
-									:color="option.color || null"
-									:outline="option.outline || false"
-									:class="`mt-1 ${option.class || ''}`"
-									@click="option.action">
-									{{ option.text }}
-								</base-btn>
-							</div>
 						</div>
 					</v-col>
 
@@ -190,8 +189,9 @@ export default {
 <style scoped>
 /* style article info for large screens */
 @media (min-width: 960px) {
-	#article-info {
-		position: fixed;
-	}
+	#article-content{
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }
 </style>
