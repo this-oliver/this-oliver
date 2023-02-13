@@ -54,7 +54,7 @@ export default {
 		getBio () {
 			const bio = this.user?.bio?.short || fallbackBio;
 			const markdown = isHtml(bio) ? HtmlToMarkdown(bio) : bio;
-			return MarkdownToHtml(markdown);
+			return MarkdownToHtml(markdown, { darkMode: this.isDarkMode, text: { fontSize: "1.5rem"}});
 		},
 		getBioText(){
 			const bio = this.user?.bio?.short || fallbackBio;

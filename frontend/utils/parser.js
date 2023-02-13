@@ -38,7 +38,7 @@ export function HtmlToMarkdown (html) {
 /**
  * Converts markdown into html
  *
- * @param {String} text - text
+ * @param {String} markdown - markdown text
  * @param {Object} options - options
  * @param {Boolean} options.sanitize - sanitize html
  * @param {Boolean} options.highlight - highlight code
@@ -46,16 +46,23 @@ export function HtmlToMarkdown (html) {
  * @param {Boolean} options.link.openOutside - open links outside of app
  * @param {Object} options.table - style table elements
  * @param {Boolean} options.table.wrapText - wrap text in table elements
+ * @param {Object} options.text - style text elements
+ * @param {String} options.text.fontSize - font size of text elements
+ * @param {Object} options.paragraph - style paragraph elements
+ * @param {String} options.paragraph.fontSize - font size of paragraph elements
+ * @param {Object} options.list - style list elements
+ * @param {String} options.list.fontSize - font size of list elements
  * @param {Boolean} options.darkMode - dark mode
  * @returns {String} html
  */
 export function MarkdownToHtml(
-	text = "",
+	markdown = "",
 	{
 		sanitize = false,
 		highlight = true,
 		link = { openOutside: true },
-		table = { wrapText: true },
+		table = { wrapText: false },
+		text = { fontSize: "1.25rem"},
 		darkMode = false
 	} = {}
 ) {
@@ -78,16 +85,16 @@ export function MarkdownToHtml(
 		html: (html) => {
 			return SanitizeHtml(html);
 		},
-		heading(text, level) {
-			const headerId = text.replace(/ /g, "-").toLowerCase();
+		heading(headerText, level) {
+			const headerId = headerText.replace(/ /g, "-").toLowerCase();
 			const headerStyle = "margin: 1rem 0 0.5rem 0;";
 
-			return `<h${level} id="${headerId}" style="${headerStyle}">${text}</h${level}>`;
+			return `<h${level} id="${headerId}" style="${headerStyle}">${headerText}</h${level}>`;
 		},
-		link(href, title, text) {
+		link(href, title, linkText) {
 			return `<a href="${href}" target="${
 				link.openOutside ? "_blank" : "_self"
-			}">${text}</a>`;
+			}">${linkText}</a>`;
 		},
 		table(header, body) {
 			// add border to tables
@@ -111,10 +118,18 @@ export function MarkdownToHtml(
 			const style = "margin: 1rem 0;";
 			return `<hr style="${style}">`;
 		},
-		image(href, title, text) {
+		image(href, title, imageText) {
 			const imageClass = "";
 			const imageStyle = "max-width: 100%;";
-			return `<img src="${href}" alt="${text}" title="${title}" style="${imageStyle}" class="${imageClass}">`;
+			return `<img src="${href}" alt="${imageText}" title="${title}" style="${imageStyle}" class="${imageClass}">`;
+		},
+		paragraph(paragraphText) {
+			const paragraphStyle = `font-size: ${text.fontSize ? text.fontSize : "1.25rem"};`;
+			return `<p style="${paragraphStyle}">${paragraphText}</p>`;
+		},
+		list(body, ordered, start) {
+			const listStyle = `font-size: ${text.fontSize ? text.fontSize : "1.25rem"};`;
+			return `<${ordered ? "ol" : "ul"} style="${listStyle}">${body}</${ordered ? "ol" : "ul"}>`;
 		}
 	};
 
@@ -124,7 +139,7 @@ export function MarkdownToHtml(
 	Marked.use({ renderer });
 
 	// convert markdown to html
-	return Marked.parse(text || "");
+	return Marked.parse(markdown || "");
 };
 
 /**
@@ -198,7 +213,8 @@ export function SanitizeHtml (dirtyHtml) {
 			h3: ["id", "style"],
 			h4: ["id", "style"],
 			h5: ["id", "style"],
-			h6: ["id", "style"]
+			h6: ["id", "style"],
+			p: ["style"]
 		}
 	});
 };

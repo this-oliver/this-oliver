@@ -131,10 +131,7 @@ export default {
 		getArticleHtml () {
 			return MarkdownToHtml(
 				this.getArticle.content,
-				{
-					darkMode: this.isDarkMode,
-					table: { wrapText: false }
-				}
+				{ darkMode: this.isDarkMode }
 			);
 		},
 		getArticleTocHtml(){
