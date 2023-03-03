@@ -3,9 +3,8 @@
  * user is logged in otherwise it redirects the user
  */
 export default function ({ store }) {
-	if(store.state.auth.loggedIn){
-		store.dispatch("admin/init");
-	}else{
+	// note: (logged in users are already initialized by @nuxtjs/auth-next plugin)
+	if(!store.state.auth.loggedIn){
 		store.dispatch("user/init");
 	}
 }

@@ -1,19 +1,23 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
-const { ArticleModel } = require("../data/article");
+const ArticleData = require("../data/article");
 const ColorHelper = require("../helpers/color");
 const { throwError } = require("../helpers/error");
 
-exports.TagModel = Mongoose.model("tag", new Schema(
+const TagSchema = new Schema(
 	{
 		name: { type: String, required: true, unique: true },
 		color: { type: String, unique: true },
 	},
 	{ timestamps: true }
-).pre('save', function(next){
+);
+
+TagSchema.pre('save', function(next){
 	this.color = ColorHelper.getRandomColor({ light: true });
 	return next();
-}));
+});
+
+exports.TagModel = Mongoose.model("tag", TagSchema);
 
 exports.createTag = async (name) => {
 	try {
@@ -26,42 +30,22 @@ exports.createTag = async (name) => {
 
 exports.indexTags = async (showSecrets = false) => {
 	try {
-		const tags = await this.TagModel.find().exec();
-		//! PATCH
-		for (let i = 0; i < tags.length; i++) {
-			const tag = tags[i];
-			if (!tag.color) {
-				tag.color = ColorHelper.getRandomColor({ light: true });
-				await tag.save();
-			}
-		}
-	} catch (error) {
-		throwError(error, 400);
-	}
-
-	try {
+		let tags;
 		if (showSecrets) {
-			return await this.TagModel.find().exec();
+			tags = await this.TagModel.find().exec();
 		} else {
-			const publicTags = [];
-			const publicArticles = await ArticleModel.find({ publish: true }).exec();
-			const tags = await this.TagModel.find().exec();
-
-			for (let i = 0; i < tags.length; i++) {
-				const tag = tags[i];
-
-				for (let x = 0; x < publicArticles.length; x++) {
-					const article = publicArticles[x];
-
-					if (article.tags.includes(tag._id)) {
-						publicTags.push(tag);
-						break;
-					}
-				}
-			}
-
-			return publicTags;
+			const publicArticles = await ArticleData.indexArticles();
+			const publicTags = publicArticles
+				.map((article) => article.tags)// get all tags from articles
+				// flatten array
+				.reduce((acc, val) => acc.concat(val), [])
+				// remove duplicates
+				.filter((value, index, self) => self.indexOf(value) === index);
+			
+			tags = publicTags;
 		}
+
+		return tags;
 	} catch (error) {
 		throwError(error, 400);
 	}

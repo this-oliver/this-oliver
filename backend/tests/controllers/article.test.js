@@ -50,6 +50,18 @@ describe("Articles in MiddleWare", function () {
 			Expect(article.title).to.equal(requestArticle.title);
 		});
 
+		it("should return article with slug ", async function () {
+			const requestArticle = Factory.models.createArticle(testUser._id);
+
+			const response = await Request.post("/api/articles")
+				.set("Authorization", `bearer ${requestToken}`)
+				.send(requestArticle)
+				.expect(201);
+
+			const article = response.body;
+			Expect(article.slug).to.exist;
+		});
+
 		it("post article with invalid article should return 400 ", async function () {
 			const requestArticle = Factory.models.createArticle(testUser._id);
 			requestArticle.title = null;
@@ -128,6 +140,14 @@ describe("Articles in MiddleWare", function () {
 		it("get single public article with valid id should return article and 200 ", async function () {
 
 			const response = await Request.get(`/api/articles/${publicArticle3.id}`).expect(200);
+			const resArticle1 = response.body;
+
+			Expect(resArticle1.title).to.equal(publicArticle3.title);
+		});
+
+		it("get single public article with valid slug should return article and 200 ", async function () {
+
+			const response = await Request.get(`/api/articles/${publicArticle3.slug}?slug=true`).expect(200);
 			const resArticle1 = response.body;
 
 			Expect(resArticle1.title).to.equal(publicArticle3.title);

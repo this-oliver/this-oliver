@@ -9,9 +9,24 @@ export default $axios => ({
 		}
 	},
 	async get (token, id) {
-		const response = token ? await $axios.get(`/admin/articles/${id}`, {
+		const response = token
+			? await $axios.get(`/admin/articles/${id}`, {
+				headers: { Authorization: `Bearer ${token}` }
+			})
+			: await $axios.get(`/articles/${id}`);
+
+		if (response.status === 200) {
+			return response;
+		} else {
+			throw response;
+		}
+	},
+	async getBySlug (token, slug) {
+		const path = token ? `/admin/articles/${slug}?slug=true` : `/articles/${slug}?slug=true`;
+
+		const response = await $axios.get(path, {
 			headers: { Authorization: `Bearer ${token}` }
-		}) : await $axios.get(`/articles/${id}`);
+		});
 
 		if (response.status === 200) {
 			return response;

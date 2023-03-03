@@ -1,6 +1,5 @@
 const ArticleData = require("../data/article");
 const TagData = require("../data/tag");
-
 const TokenHelper = require("../helpers/token");
 
 exports.postArticle = async function (req, res) {
@@ -45,9 +44,13 @@ exports.indexSecretArticles = async function (req, res) {
 
 exports.getArticle = async function (req, res) {
 	const articleId = req.params.id;
+	const isSlugId = req.query.slug === "true";
 
 	try {
-		const article = await ArticleData.getArticle(articleId);
+		const article = isSlugId 
+			? await ArticleData.getArticleBySlug(articleId) 
+			: await ArticleData.getArticle(articleId);
+		
 		return res.status(200).send(article);
 		
 	} catch (error) {
@@ -60,9 +63,12 @@ exports.getSecretArticle = async function (req, res) {
 	if(authenticated === false) return res.status(401).send("invalid credentials");
 	
 	const articleId = req.params.id;
+	const isSlugId = req.query.slug === "true";
 
 	try {
-		const article = await ArticleData.getArticle(articleId, true);
+		const article = isSlugId 
+			? await ArticleData.getArticleBySlug(articleId, true) 
+			: await ArticleData.getArticle(articleId, true);
 		return res.status(200).send(article);
 	} catch (error) {
 		return res.status(error.status).send(error.message);

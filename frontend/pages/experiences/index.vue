@@ -16,11 +16,6 @@ export default {
 		BasePage,
 		ExperienceList
 	},
-	async asyncData({ store }) {
-		const initQuery = store.getters["admin/isLoggedIn"] ? "admin/init" : "user/init";
-		await store.dispatch(initQuery);
-		return;
-	},
 	head () {
 		return {
 			title: "Experiences - Oliver's Personal Website",

@@ -3,9 +3,10 @@ const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 const UserData = require("./user");
 const TagData = require("./tag");
+const SlugHelper = require("../helpers/slug");
 const { throwError } = require("../helpers/error");
 
-exports.ArticleModel = Mongoose.model("article", new Schema(
+const ArticleSchema = new Schema(
 	{
 		title: { type: String, required: true },
 		content: { type: String, required: true },
@@ -14,10 +15,45 @@ exports.ArticleModel = Mongoose.model("article", new Schema(
 		views: { type: Number, default: 0 },
 		likes: { type: Number, default: 0 },
 		dislikes: { type: Number, default: 0 },
-		tags: [{ type: Schema.Types.ObjectId, ref: "tag" }]
+		tags: [{ type: Schema.Types.ObjectId, ref: "tag" }],
+		slug: { type: String, unique: true }
 	},
 	{ timestamps: true }
-));
+);
+
+ArticleSchema.pre('save', function(next) {
+	const article = this;
+
+	// Only generate a new slug if the article's title has changed.
+	if (!article.isModified('title') && !article.isModified('slug')) {
+		return next();
+	}
+
+	SlugHelper
+		.createSlug(article.title, article.constructor)
+		.then(slug => {
+		// Check if the generated slug already exists in the database.
+			article.constructor.findOne({ slug }, (err, existingArticle) => {
+				if (err) {
+					return next(err);
+				}
+	
+				if (existingArticle) {
+				// If a matching slug already exists, add a random suffix to the slug.
+					article.slug = `${slug}-${Math.random().toString(36).substring(2, 8)}`;
+				} else {
+					article.slug = slug;
+				}
+	
+				next();
+			});
+		}).catch(err => {
+			next(err);
+		});
+
+});
+
+exports.ArticleModel = Mongoose.model("article", ArticleSchema);
 
 exports.postArticle = async (userId, title, content, tags, publish) => {
 	let user = null;
@@ -58,11 +94,17 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 		throwError(error.message, error.status);
 	}
 };
-
+/**
+ * 
+ * @param {boolean} showSecrets - show unpublished articles
+ * @returns {Promise<Mongoose.Document[]>} articles
+ */
 exports.indexArticles = async (showSecrets = false) => {
 	try {
+		let articles = [];
+
 		if (showSecrets) {
-			const articles = await this.ArticleModel.find()
+			articles = await this.ArticleModel.find()
 				.populate("tags")
 				.populate({
 					path: "author",
@@ -73,10 +115,8 @@ exports.indexArticles = async (showSecrets = false) => {
 					},
 				})
 				.exec();
-
-			return articles;
 		} else {
-			const articles = await this.ArticleModel.find({ publish: true })
+			articles = await this.ArticleModel.find({ publish: true })
 				.populate("tags")
 				.populate({
 					path: "author",
@@ -87,9 +127,19 @@ exports.indexArticles = async (showSecrets = false) => {
 					},
 				})
 				.exec();
-
-			return articles;
 		}
+
+		// add slugs to articles that don't have one
+		return await Promise.all(
+			articles.map(async (article) => {
+				if (!article.slug) {
+					const slug = await SlugHelper.createSlug(article.title, article.constructor);
+					return await this.updateArticle(article._id, { slug });
+				}
+	
+				return article;
+			})
+		);
 	} catch (error) {
 		throwError(error.message, error.status);
 	}
@@ -187,6 +237,56 @@ exports.getArticle = async (id, showSecrets = false) => {
 	}
 };
 
+exports.getArticleBySlug = async (slug, showSecrets = false) => {
+	if (!slug) {
+		throwError("missing slug", 400);
+	}
+
+	try {
+		let article;
+
+		if (showSecrets) {
+			article = await this.ArticleModel.findOne({ slug })
+				.populate("tags")
+				.populate({
+					path: "author",
+					select: {
+						_id: 1,
+						name: 1,
+						email: 1,
+					},
+				})
+				.exec();
+		} else {
+			article = await this.ArticleModel.findOne({ slug })
+				.where("publish")
+				.equals(true)
+				.populate("tags")
+				.populate({
+					path: "author",
+					select: {
+						_id: 1,
+						name: 1,
+						email: 1,
+					},
+				})
+				.exec();
+		}
+
+		if (!article) {
+			throwError(`article with slug '${slug}' does not exist`, 404);
+		}
+
+		return article;
+	} catch (error) {
+		if (error.kind === "ObjectId") {
+			throwError(`article with slug '${slug}' does not exist`, 404);
+		}
+
+		throwError(error.message, error.status);
+	}
+};
+
 exports.updateArticle = async (id, patch) => {
 	let article = null;
 
@@ -200,6 +300,7 @@ exports.updateArticle = async (id, patch) => {
 		article.title = patch.title || article.title;
 		article.author = patch.author || article.author;
 		article.content = patch.content || article.content;
+		article.slug = patch.slug || article.slug;
 
 		if (patch.publish !== undefined && patch.publish !== null) {
 			article.publish = patch.publish;

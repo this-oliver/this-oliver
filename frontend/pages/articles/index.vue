@@ -41,14 +41,6 @@ export default {
 		ArticleList,
 		BasePage
 	},
-	async asyncData({ store }) {
-		const isLoggedIn = store.getters["admin/isLoggedIn"];
-		const queryArticles = isLoggedIn ? "admin/articles/index" : "user/articles/index";
-		const queryTags = isLoggedIn ? "admin/articles/indexTags" : "user/articles/indexTags";
-
-		await store.dispatch(queryArticles);
-		await store.dispatch(queryTags);
-	},
 	data(){
 		return {
 			loading: true
@@ -83,18 +75,14 @@ export default {
 		}
 	},
 	async mounted() {
-		if(this.isLoggedIn){
-			// fetch admin articles and tags
-			await this.$store.dispatch("admin/articles/index");
-			await this.$store.dispatch("admin/articles/indexTags");
-		}
+		const isLoggedIn = this.$store.getters["admin/isLoggedIn"];
+		const queryArticles = isLoggedIn ? "admin/articles/index" : "user/articles/index";
+		const queryTags = isLoggedIn ? "admin/articles/indexTags" : "user/articles/indexTags";
 
-		else{
-			await this.$store.dispatch("user/articles/index");
-			await this.$store.dispatch("user/articles/indexTags");
-		}
+		await this.$store.dispatch(queryArticles);
+		await this.$store.dispatch(queryTags);
+
 		this.loading = false;
-
 	}
 };
 </script>

@@ -37,6 +37,16 @@ export const actions = {
 			context.commit("app/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
+	async getBySlug (context, slug) {
+		try {
+			const response = await this.$api.article.getBySlug(null, slug);
+			const article = response.data;
+
+			return article;
+		} catch (error) {
+			context.commit("app/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
+		}
+	},
 	async index (context) {
 		try {
 			const response = await this.$api.article.index();

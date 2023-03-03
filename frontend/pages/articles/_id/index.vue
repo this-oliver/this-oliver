@@ -94,13 +94,14 @@ export default {
 		BaseBtn
 	},
 	async asyncData({ store, params }) {
-		const id = params.id;
-		const storeQuery = store.getters["admin/isLoggedIn"] ? "admin/articles/get" : "user/articles/get";
-		const article = await store.dispatch(storeQuery, id);
+		const slug = params.id;
+		const isLoggedIn = store.getters["admin/isLoggedIn"];
+		const storeQuery = isLoggedIn ? "admin/articles/getBySlug" : "user/articles/getBySlug";
+		const article = await store.dispatch(storeQuery, slug);
 
 		// increment views if viewer is not admin
-		if(!store.getters["admin/isLoggedIn"]){
-			await store.dispatch("user/articles/incrementViews", id);
+		if(!isLoggedIn){
+			await store.dispatch("user/articles/incrementViews", article._id);
 		}
 
 		return { article };
@@ -169,15 +170,15 @@ export default {
 			this.refreshedArticle = await this.$store.dispatch("user/articles/like", this.getArticle._id);
 		},
 		async refreshArticle () {
-			const id = this.$route.params.id;
 			// refresh articles
 			const storeIndexQuery = this.isLoggedIn ? "admin/articles/index" : "user/articles/index";
 			await this.$store.dispatch(storeIndexQuery);
 
 			// get new version of current article
+			const slug = this.$route.params.slug;
 			const storeGetQuery = this.isLoggedIn ? "admin/articles/get" : "user/articles/get";
 			const articles = this.$store.getters[storeGetQuery];
-			this.refreshedArticle = articles.find(({ _id }) => _id === id);
+			this.refreshedArticle = articles.find((article) => article.slug === slug);
 		}
 	}
 };

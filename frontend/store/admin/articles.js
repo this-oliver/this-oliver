@@ -53,6 +53,17 @@ export const actions = {
 			context.commit("app/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
 		}
 	},
+	async getBySlug (context, slug) {
+		try {
+			const token = this.$auth.strategy.token.get();
+			const response = await this.$api.article.getBySlug(token, slug);
+			const article = response.data;
+
+			return article;
+		} catch (error) {
+			context.commit("app/toaster/addError", { title: "Getting Article", message: error.message }, { root: true });
+		}
+	},
 	async index (context) {
 		try {
 			const token = this.$auth.strategy.token.get();
@@ -63,7 +74,6 @@ export const actions = {
 
 			return articles;
 		} catch (error) {
-			console.log({ apiError: error });
 			context.commit("app/toaster/addError", { title: "Getting Articles", message: error.message }, { root: true });
 		}
 	},

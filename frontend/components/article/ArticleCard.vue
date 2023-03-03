@@ -8,7 +8,7 @@
 		:color-border="getCardBorderColor">
 		<!-- hide link style -->
 		<nuxt-link
-			:to="`/articles/${article ? article._id : '#'}`"
+			:to="`/articles/${article ? article.slug : '#'}`"
 			class="article-link">
 			<v-row
 				dense
