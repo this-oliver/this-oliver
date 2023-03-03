@@ -9,7 +9,7 @@ const supertest = require("supertest");
 const Request = supertest(App);
 
 // data
-const UserSchema = require("../../src/models/user");
+const { UserModel } = require("../../src/data/user");
 const ArticleData = require("../../src/data/article");
 
 // helpers
@@ -28,12 +28,12 @@ describe("Admin in MiddleWare", function () {
 
 	describe("[GET]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("get user should return 200 and user", async function () {
 			const factoryUser = Factory.models.createUsers();
-			const user = await UserSchema.create(factoryUser);
+			const user = await UserModel.create(factoryUser);
 			const token = TokenHelper.getToken(user._id);
 
 			const response = await Request.get(`/api/user`)
@@ -47,7 +47,7 @@ describe("Admin in MiddleWare", function () {
 
 		it("get user should return articles that have and have not been published", async function () {
 			const factoryUser = Factory.models.createUsers();
-			const user = await UserSchema.create(factoryUser);
+			const user = await UserModel.create(factoryUser);
 			const token = TokenHelper.getToken(user._id);
 
 			const factoryPublishedArticle = Factory.models.createArticle(user._id, true, "publsihed article");
@@ -70,7 +70,7 @@ describe("Admin in MiddleWare", function () {
 					factorySecretArticle.publish
 				);
 			} catch (error) {
-				console.log({ error });
+				// do nothing
 			}
 
 			const response = await Request.get(`/api/admin`)
@@ -86,13 +86,13 @@ describe("Admin in MiddleWare", function () {
 
 	describe("[PATCH]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("patch valid user id should return 200 and updated user", async function () {
 			const factoryUsers = Factory.models.createUsers(2);
 
-			const user1 = await UserSchema.create(factoryUsers[0]);
+			const user1 = await UserModel.create(factoryUsers[0]);
 			const token = TokenHelper.getToken(user1._id);
 
 			const user2 = factoryUsers[1];

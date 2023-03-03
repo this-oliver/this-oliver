@@ -1,12 +1,12 @@
 // mongo
-const UserSchema = require("../models/user");
 const UserData = require("./user");
+const UserModel = UserData.UserModel;
 
 exports.login = async (email, password) => {
 	let user;
 
 	try {
-		user = await UserSchema.findOne({ email: email.toLowerCase() });
+		user = await UserModel.findOne({ email: email.toLowerCase() });
 
 		if (user == null) {
 			throw {
@@ -65,8 +65,8 @@ exports.register = async (name, email, password) => {
 	}
 
 	try {
-		const user = await UserSchema.create(
-			new UserSchema({
+		const user = await UserModel.create(
+			new UserModel({
 				name: name,
 				email: email,
 				password: password,

@@ -7,7 +7,7 @@ const Expect = Chai.expect;
 const Request = supertest(App);
 
 // data
-const UserSchema = require("../../src/models/user");
+const { UserModel } = require("../../src/data/user");
 
 // helpers
 const Factory = require("../factory");
@@ -25,17 +25,17 @@ describe("Authentication in Middleware", function () {
 
 	// delete all users before each test
 	beforeEach(async function () {
-		await UserSchema.deleteMany({});
+		await UserModel.deleteMany({});
 	});
 
 	describe("[LOGIN]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("login valid user returns 200", async function () {
 			const factoryUser = Factory.models.createUsers();
-			await UserSchema.create(factoryUser);
+			await UserModel.create(factoryUser);
 
 			const response = await Request
 				.post("/api/auth/login")
@@ -53,7 +53,7 @@ describe("Authentication in Middleware", function () {
 		it("login with invalid email returns 404", async function () {
 			const factoryUser = Factory.models.createUsers();
 
-			await UserSchema.create(factoryUser);
+			await UserModel.create(factoryUser);
 			await Request
 				.post("/api/auth/login")
 				.send({
@@ -66,7 +66,7 @@ describe("Authentication in Middleware", function () {
 		it("login with invalid password returns 404", async function () {
 			const factoryUser = Factory.models.createUsers();
 
-			await UserSchema.create(factoryUser);
+			await UserModel.create(factoryUser);
 			await Request
 				.post("/api/auth/login")
 				.send({
@@ -79,7 +79,7 @@ describe("Authentication in Middleware", function () {
 		it("login with invalid email and password returns 404", async function () {
 			const factoryUser = Factory.models.createUsers();
 
-			await UserSchema.create(factoryUser);
+			await UserModel.create(factoryUser);
 			await Request
 				.post("/api/auth/login")
 				.send({
@@ -92,7 +92,7 @@ describe("Authentication in Middleware", function () {
 
 	describe("[Register]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("post valid user should return 201 and user", async function () {
@@ -112,7 +112,7 @@ describe("Authentication in Middleware", function () {
 
 		it("post user with existing email should return 400", async function () {
 			const factoryUser = Factory.models.createUsers();
-			await UserSchema.create(factoryUser);
+			await UserModel.create(factoryUser);
 
 			await Request.post("/api/auth/register")
 				.send({

@@ -1,10 +1,22 @@
-const TagSchema = require("../models/tag");
-const ArticleSchema = require("../models/article");
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
+const { ArticleModel } = require("../data/article");
 const ColorHelper = require("../helpers/color");
+
+exports.TagModel = Mongoose.model("tag", new Schema(
+	{
+		name: { type: String, required: true, unique: true },
+		color: { type: String, unique: true },
+	},
+	{ timestamps: true }
+).pre('save', function(next){
+	this.color = ColorHelper.getRandomColor({ light: true });
+	return next();
+}));
 
 exports.createTag = async (name) => {
 	try {
-		const tag = await TagSchema.create(new TagSchema({ name: name }));
+		const tag = await this.TagModel.create(new this.TagModel({ name: name }));
 		return tag;
 	} catch (error) {
 		throw {
@@ -16,7 +28,7 @@ exports.createTag = async (name) => {
 
 exports.indexTags = async (showSecrets = false) => {
 	try {
-		const tags = await TagSchema.find().exec();
+		const tags = await this.TagModel.find().exec();
 		//! PATCH
 		for (let i = 0; i < tags.length; i++) {
 			const tag = tags[i];
@@ -34,11 +46,11 @@ exports.indexTags = async (showSecrets = false) => {
 
 	try {
 		if (showSecrets) {
-			return await TagSchema.find().exec();
+			return await this.TagModel.find().exec();
 		} else {
 			const publicTags = [];
-			const publicArticles = await ArticleSchema.find({ publish: true }).exec();
-			const tags = await TagSchema.find().exec();
+			const publicArticles = await ArticleModel.find({ publish: true }).exec();
+			const tags = await this.TagModel.find().exec();
 
 			for (let i = 0; i < tags.length; i++) {
 				const tag = tags[i];
@@ -72,7 +84,7 @@ exports.getTag = async (id) => {
 	}
 
 	try {
-		const tag = await TagSchema.findById(id).exec();
+		const tag = await this.TagModel.findById(id).exec();
 		return tag;
 	} catch (error) {
 		throw {

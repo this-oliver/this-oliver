@@ -9,7 +9,7 @@ const supertest = require("supertest");
 const Request = supertest(App);
 
 // data
-const UserSchema = require("../../src/models/user");
+const { UserModel } = require("../../src/data/user");
 const ArticleData = require("../../src/data/article");
 
 // helpers
@@ -27,12 +27,12 @@ describe("User in MiddleWare", function () {
 
 	describe("[GET]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("get user should return 200 and user", async function () {
 			const factoryUser = Factory.models.createUsers();
-			const user = await UserSchema.create(factoryUser);
+			const user = await UserModel.create(factoryUser);
 
 			const response = await Request.get(`/api/user`).expect(200);
 
@@ -43,7 +43,7 @@ describe("User in MiddleWare", function () {
 
 		it("get user should not return articles that haven't been published", async function () {
 			const factoryUser = Factory.models.createUsers();
-			const user = await UserSchema.create(factoryUser);
+			const user = await UserModel.create(factoryUser);
 
 			const factoryPublishedArticle = Factory.models.createArticle(
 				user._id,
@@ -73,7 +73,7 @@ describe("User in MiddleWare", function () {
 					factorySecretArticle.publish
 				);
 			} catch (error) {
-				console.log({ error });
+				// do nothing
 			}
 
 			const response = await Request.get(`/api/user`).expect(200);
@@ -87,12 +87,12 @@ describe("User in MiddleWare", function () {
 
 	describe("[PATCH]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("incrementing user visits should increase user visits by one and return 200 and user", async function () {
 			const factoryUser = Factory.models.createUsers();
-			await UserSchema.create(factoryUser);
+			await UserModel.create(factoryUser);
 
 			const firstResponse = await Request.patch(`/api/user/visits`).expect(200);
 			Expect(firstResponse.body.visits).to.equal(1);

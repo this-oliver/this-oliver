@@ -1,7 +1,22 @@
 // mongo
-const ArticleSchema = require("../models/article");
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 const UserData = require("./user");
 const TagData = require("./tag");
+
+exports.ArticleModel = Mongoose.model("article", new Schema(
+	{
+		title: { type: String, required: true },
+		content: { type: String, required: true },
+		author: { type: Schema.Types.ObjectId, ref: "user" },
+		publish: { type: Boolean, default: false },
+		views: { type: Number, default: 0 },
+		likes: { type: Number, default: 0 },
+		dislikes: { type: Number, default: 0 },
+		tags: [{ type: Schema.Types.ObjectId, ref: "tag" }],
+	},
+	{ timestamps: true }
+));
 
 exports.postArticle = async (userId, title, content, tags, publish) => {
 	let user = null;
@@ -30,8 +45,8 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 
 	// create article
 	try {
-		const article = await ArticleSchema.create(
-			new ArticleSchema({
+		const article = await this.ArticleModel.create(
+			new this.ArticleModel({
 				title: title,
 				author: user._id,
 				content: content,
@@ -55,7 +70,7 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 exports.indexArticles = async (showSecrets = false) => {
 	try {
 		if (showSecrets) {
-			const articles = await ArticleSchema.find()
+			const articles = await this.ArticleModel.find()
 				.populate("tags")
 				.populate({
 					path: "author",
@@ -69,7 +84,7 @@ exports.indexArticles = async (showSecrets = false) => {
 
 			return articles;
 		} else {
-			const articles = await ArticleSchema.find({ publish: true })
+			const articles = await this.ArticleModel.find({ publish: true })
 				.populate("tags")
 				.populate({
 					path: "author",
@@ -94,7 +109,7 @@ exports.indexArticles = async (showSecrets = false) => {
 exports.indexArticlesByTag = async (tagId, showSecrets = false) => {
 	try {
 		if (showSecrets) {
-			const articles = await ArticleSchema.find(
+			const articles = await this.ArticleModel.find(
 				{},
 				{ tags: { $elemMatch: { _id: { $eq: tagId } } } }
 			)
@@ -111,7 +126,7 @@ exports.indexArticlesByTag = async (tagId, showSecrets = false) => {
 
 			return articles;
 		} else {
-			const articles = await ArticleSchema.find(
+			const articles = await this.ArticleModel.find(
 				{ publish: true },
 				{ tags: { $elemMatch: { _id: { $eq: tagId } } } }
 			)
@@ -148,7 +163,7 @@ exports.getArticle = async (id, showSecrets = false) => {
 		let article;
 
 		if (showSecrets) {
-			article = await ArticleSchema.findById(id)
+			article = await this.ArticleModel.findById(id)
 				.populate("tags")
 				.populate({
 					path: "author",
@@ -160,7 +175,7 @@ exports.getArticle = async (id, showSecrets = false) => {
 				})
 				.exec();
 		} else {
-			article = await ArticleSchema.findOne({ _id: id })
+			article = await this.ArticleModel.findOne({ _id: id })
 				.where("publish")
 				.equals(true)
 				.populate("tags")

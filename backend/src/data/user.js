@@ -1,9 +1,60 @@
 // mongo
-const User = require("../models/user");
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
+const bcrypt = require("bcrypt");
+
+const SALT_WORK_FACTOR = 10;
+
+const UserSchema = new Schema(
+	{
+		name: { type: String, required: true },
+		email: { type: String, required: true, unique: true },
+		password: { type: String, required: true },
+		bio: {
+			short: { type: String, default: "" },
+			long: { type: String, default: "" },
+		},
+		experiences: [{ type: Schema.Types.ObjectId, ref: "experience" }],
+		articles: [{ type: Schema.Types.ObjectId, ref: "article" }],
+		visits: { type: Number, default: 0 },
+		salt: { type: String },
+	},
+	{ timestamps: true }
+).pre("save", async function (next) {
+	const thisUser = this;
+	// only hash the password if it has been modified (or is new)
+	if (!thisUser.isModified("password")) return next();
+
+	try {
+		// generate a salt
+		const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+		thisUser.salt = salt;
+		// hash the password along with our new salt
+		const hash = await bcrypt.hash(thisUser.password, salt);
+		// override the cleartext password with the hashed one
+		thisUser.password = hash;
+		next();
+	} catch (error) {
+		return next(error);
+	}
+});
+
+UserSchema.methods.verifyPassword = async function (candidate) {
+	const thisUser = this;
+	try {
+		const isMatch = await bcrypt.compare(candidate, thisUser.password);
+		return isMatch;
+	} catch (error) {
+		throw { status: 500, message: error };
+	}
+};
+
+exports.UserModel = Mongoose.model("user", UserSchema);
+
 
 exports.indexUsers = async () => {
 	try {
-		const users = await User.find()
+		const users = await this.UserModel.find()
 			.select("-password -salt")
 			.populate("experiences")
 			.exec();
@@ -21,14 +72,14 @@ exports.getOliver = async (showSecrets = false) => {
 		let user;
 
 		if(showSecrets){
-			user = await User.findOne()
+			user = await this.UserModel.findOne()
 				.select("-password -salt")
 				.populate("experiences")
 				.populate("articles")
 				.exec();
 
 		}else {
-			user = await User.findOne()
+			user = await this.UserModel.findOne()
 				.select("-password -salt")
 				.populate("experiences")
 				.populate({
@@ -48,7 +99,7 @@ exports.getOliver = async (showSecrets = false) => {
 
 exports.getUser = async (id) => {
 	try {
-		const user = await User.findOne({ _id: id })
+		const user = await this.UserModel.findOne({ _id: id })
 			.select("-password -salt")
 			.populate("experiences")
 			.populate({
@@ -76,7 +127,7 @@ exports.updateUser = async (id, patch) => {
 			};
 
 		if (patch.email && patch.email !== user.email) {
-			const emailExists = await User.findOne({ email: patch.email }).exec();
+			const emailExists = await this.UserModel.findOne({ email: patch.email }).exec();
 
 			if (emailExists) {
 				throw {
@@ -129,7 +180,7 @@ exports.incrementUserVisits = async (id) => {
 
 exports.updateUserPassword = async (userId, oldPwd, newPwd) => {
 	try {
-		let user = await User.findOne({ _id: userId });
+		let user = await this.UserModel.findOne({ _id: userId });
 		const match = await user.verifyPassword(oldPwd);
 		if (!match) {
 			throw {
@@ -140,7 +191,7 @@ exports.updateUserPassword = async (userId, oldPwd, newPwd) => {
 
 		user.password = newPwd;
 		user.save();
-		user = await User.findOne({ _id: userId });
+		user = await this.UserModel.findOne({ _id: userId });
 
 		return user;
 	} catch (error) {

@@ -8,9 +8,10 @@ const ChaiAsPromise = require("chai-as-promised");
 Chai.use(ChaiAsPromise);
 
 // data
-const UserSchema = require("../../src/models/user");
 const User = require("../../src/data/user");
 const Auth = require("../../src/data/auth");
+
+const UserModel = User.UserModel;
 
 // helpers
 const Factory = require("../factory");
@@ -27,13 +28,13 @@ describe("User in Data", function () {
 
 	describe("[POST]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("post valid user", async function () {
 			const dummy = Factory.models.createUsers();
 			await Auth.register(dummy.name, dummy.email, dummy.password);
-			const user = await UserSchema.findOne({ email: dummy.email });
+			const user = await UserModel.findOne({ email: dummy.email });
 			Expect(user.name).to.equal(dummy.name);
 		});
 
@@ -57,7 +58,7 @@ describe("User in Data", function () {
 
 	describe("[GET]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("indexUsers return empty list", async function () {
@@ -67,7 +68,7 @@ describe("User in Data", function () {
 
 		it("indexUsers should return all five users", async function () {
 			const factoryUsers = Factory.models.createUsers(5);
-			await UserSchema.create(factoryUsers);
+			await UserModel.create(factoryUsers);
 
 			const users = await User.indexUsers();
 			Expect(users.length).to.equal(5);
@@ -82,7 +83,7 @@ describe("User in Data", function () {
 		it("gets user with valid _id should return user", async function () {
 			const factoryUser = Factory.models.createUsers();
 
-			const createdUser = await UserSchema.create(factoryUser);
+			const createdUser = await UserModel.create(factoryUser);
 			const user = await User.getUser(createdUser._id);
 			Expect(user.name).to.equal(createdUser.name);
 			Expect(user.email).to.equal(createdUser.email);
@@ -91,7 +92,7 @@ describe("User in Data", function () {
 
 	describe("[PATCH]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 		it("update valid user should return updated user", async function () {
 			const factoryUsers = Factory.models.createUsers(2);
@@ -120,10 +121,10 @@ describe("User in Data", function () {
 		it("update user with email that already exists should throw error ", async function () {
 			const factoryUsers = Factory.models.createUsers(2);
 
-			const user1 = await UserSchema.create(factoryUsers[0]);
+			const user1 = await UserModel.create(factoryUsers[0]);
 			const patch = { email: user1.email };
 
-			const user2 = await UserSchema.create(factoryUsers[1]);
+			const user2 = await UserModel.create(factoryUsers[1]);
 			const updateUser = User.updateUser(user2._id, patch);
 			await Expect(updateUser).to.be.rejectedWith({
 				status: 404,
@@ -134,17 +135,17 @@ describe("User in Data", function () {
 
 	describe("[DELETE]", function () {
 		beforeEach(async function () {
-			await UserSchema.deleteMany({});
+			await UserModel.deleteMany({});
 		});
 
 		it("delete with valid _id user should be success", async function () {
 			const factoryUser = Factory.models.createUsers();
-			const user = await UserSchema.create(factoryUser);
+			const user = await UserModel.create(factoryUser);
 
-			Expect(await UserSchema.estimatedDocumentCount()).to.equal(1);
+			Expect(await UserModel.estimatedDocumentCount()).to.equal(1);
 
 			await User.deleteUser(user._id);
-			Expect(await UserSchema.estimatedDocumentCount()).to.equal(0);
+			Expect(await UserModel.estimatedDocumentCount()).to.equal(0);
 		});
 
 		it("delete with invalid _id should throw error", async function () {

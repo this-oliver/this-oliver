@@ -8,9 +8,9 @@ const Expect = Chai.expect;
 const Request = SuperTest(App);
 
 // data
-const UserSchema = require("../../src/models/user");
-const ArticleSchema = require("../../src/models/article");
+const { UserModel } = require("../../src/data/user");
 const ArticleData = require("../../src/data/article");
+const ArticleModel = ArticleData.ArticleModel;
 
 // helpers
 const Factory = require("../factory");
@@ -24,7 +24,7 @@ describe("Articles in MiddleWare", function () {
 		await Database.drop();
 
 		const factoryUser = Factory.models.createUsers();
-		testUser = await UserSchema.create(factoryUser);
+		testUser = await UserModel.create(factoryUser);
 		requestToken = TokenHelper.getToken(testUser._id);
 	});
 	
@@ -35,7 +35,7 @@ describe("Articles in MiddleWare", function () {
 
 	describe("[POST]", function () {
 		beforeEach(async function () {
-			await ArticleSchema.deleteMany({});
+			await ArticleModel.deleteMany({});
 		});
 
 		it("post article with valid token should return article and 201 ", async function () {
@@ -76,7 +76,7 @@ describe("Articles in MiddleWare", function () {
 		let privateArticle1, privateArticle2, publicArticle3;
 		
 		before(async function () {
-			await ArticleSchema.deleteMany();
+			await ArticleModel.deleteMany();
 
 			const factoryPrivateArticle1 = Factory.models.createArticle(
 				testUser._id,
@@ -122,7 +122,7 @@ describe("Articles in MiddleWare", function () {
 		});
 
 		after(async function () {
-			await ArticleSchema.deleteMany({});
+			await ArticleModel.deleteMany({});
 		});
 
 		it("get single public article with valid id should return article and 200 ", async function () {
@@ -220,7 +220,7 @@ describe("Articles in MiddleWare", function () {
 
 	describe("[PATCH]", function () {
 		beforeEach(async function () {
-			await ArticleSchema.deleteMany({});
+			await ArticleModel.deleteMany({});
 		});
 
 		it("patching article with valid fields and valid token should return new article and 200 ", async function () {
@@ -277,9 +277,6 @@ describe("Articles in MiddleWare", function () {
 		});
 
 		it("incrementing an article's likes should return article with likes + 1 and 200 ", async function () {
-			const factoryUser = Factory.models.createUsers();
-			const user = await UserSchema.create(factoryUser);
-
 			const factoryArticle1 = Factory.models.createArticle(
 				testUser._id,
 				false,
@@ -422,7 +419,7 @@ describe("Articles in MiddleWare", function () {
 
 	describe("[DELETE]", function () {
 		beforeEach(async function () {
-			await ArticleSchema.deleteMany({});
+			await ArticleModel.deleteMany({});
 		});
 
 		it("deleting article with valid id and valid token should return 203 ", async function () {

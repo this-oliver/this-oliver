@@ -51,7 +51,6 @@ exports.extractToken = (req) => {
 		try {
 			return this.verifyToken(token).data;
 		} catch (error) {
-			console.log({ decodeError: error });
 			return false;
 		}
 	}
@@ -72,7 +71,6 @@ exports.authenticateRequest = async function (req) {
 		try {
 			decoded = this.verifyToken(token);
 		} catch (error) {
-			console.log({ decodeError: error });
 			return false;
 		}
 
@@ -83,7 +81,6 @@ exports.authenticateRequest = async function (req) {
 
 			return admin._id == decoded.data;
 		} catch (error) {
-			console.log({ authError: error });
 			return false;
 		}
 	}

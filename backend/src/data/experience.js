@@ -1,6 +1,17 @@
-// mongo
-const ExperienceSchema = require("../models/xp");
+const Mongoose = require("mongoose");
+const Schema = Mongoose.Schema;
 const UserData = require("./user");
+
+exports.ExperienceModel = Mongoose.model("experience", new Schema({
+	title: { type: String, required: true },
+	org: { type: String, required: true },
+	startYear: { type: Number, required: true },
+	endYear: { type: Number },
+	description: { type: String, required: true },
+	type: { type: String, required: true },
+	author: { type: Schema.Types.ObjectId, ref: "user" }, 
+}, { timestamps: true }));
+
 
 exports.postExperience = async (userId,
 	title,
@@ -21,7 +32,7 @@ exports.postExperience = async (userId,
 	}
 
 	try {
-		const xp = await ExperienceSchema.create(new ExperienceSchema({
+		const xp = await this.ExperienceModel.create(new this.ExperienceModel({
 			title: title,
 			org: org,
 			startYear: startYear,
@@ -44,7 +55,7 @@ exports.postExperience = async (userId,
 
 exports.indexExperiences = async () => {
 	try {
-		return await ExperienceSchema.find().exec();
+		return await this.ExperienceModel.find().exec();
 	} catch (error) {
 		throw {
 			status: 400,
@@ -62,7 +73,7 @@ exports.getExperience = async (id) => {
 	}
 
 	try {
-		const xp = await ExperienceSchema.findById(id).exec();
+		const xp = await this.ExperienceModel.findById(id).exec();
 
 		if (!xp) {
 			throw {
