@@ -2,6 +2,7 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 const bcrypt = require("bcrypt");
+const { throwError } = require("../helpers/error");
 
 const SALT_WORK_FACTOR = 10;
 
@@ -45,7 +46,7 @@ UserSchema.methods.verifyPassword = async function (candidate) {
 		const isMatch = await bcrypt.compare(candidate, thisUser.password);
 		return isMatch;
 	} catch (error) {
-		throw { status: 500, message: error };
+		throwError(error, 500);
 	}
 };
 
@@ -60,10 +61,7 @@ exports.indexUsers = async () => {
 			.exec();
 		return users;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -90,10 +88,7 @@ exports.getOliver = async (showSecrets = false) => {
 		}
 		return user;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -109,10 +104,7 @@ exports.getUser = async (id) => {
 			.exec();
 		return user;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -120,20 +112,16 @@ exports.updateUser = async (id, patch) => {
 	try {
 		let user = await this.getUser(id);
 
-		if (user == null)
-			throw {
-				status: 404,
-				message: `user ${id} does not exist`, 
-			};
+		if (user == null){
+			throwError(`user ${id} does not exist`, 404);
+		}
+			
 
 		if (patch.email && patch.email !== user.email) {
 			const emailExists = await this.UserModel.findOne({ email: patch.email }).exec();
 
 			if (emailExists) {
-				throw {
-					status: 404,
-					message: `${patch.email} already exists`, 
-				};
+				throwError(`${patch.email} already exists`, 404);
 			}
 
 			user.email = patch.email || user.email;
@@ -149,10 +137,7 @@ exports.updateUser = async (id, patch) => {
 		user = await user.save();
 		return user;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -160,21 +145,16 @@ exports.incrementUserVisits = async (id) => {
 	try {
 		let user = await this.getUser(id);
 
-		if (user == null)
-			throw {
-				status: 404,
-				message: `user ${id} does not exist`, 
-			};
+		if (user == null){
+			throwError(`user ${id} does not exist`, 404);
+		}
 
 		user.visits = user.visits + 1;
 		
 		user = await user.save();
 		return user;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -183,10 +163,7 @@ exports.updateUserPassword = async (userId, oldPwd, newPwd) => {
 		let user = await this.UserModel.findOne({ _id: userId });
 		const match = await user.verifyPassword(oldPwd);
 		if (!match) {
-			throw {
-				status: 400,
-				message: "invalid credentials", 
-			};
+			throwError("invalid credentials", 400);
 		}
 
 		user.password = newPwd;
@@ -195,10 +172,7 @@ exports.updateUserPassword = async (userId, oldPwd, newPwd) => {
 
 		return user;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -207,18 +181,12 @@ exports.deleteUser = async (id) => {
 		const user = await this.getUser(id);
 
 		if (user == null) {
-			throw {
-				status: 404,
-				message: `user ${id} doesn't exists`, 
-			};
+			throwError(`user ${id} does not exist`, 404);
 		}
 		await user.remove();
 
 		return `${id} deleted`;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };

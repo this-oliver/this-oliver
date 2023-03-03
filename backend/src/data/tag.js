@@ -2,6 +2,7 @@ const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 const { ArticleModel } = require("../data/article");
 const ColorHelper = require("../helpers/color");
+const { throwError } = require("../helpers/error");
 
 exports.TagModel = Mongoose.model("tag", new Schema(
 	{
@@ -19,10 +20,7 @@ exports.createTag = async (name) => {
 		const tag = await this.TagModel.create(new this.TagModel({ name: name }));
 		return tag;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error,
-		};
+		throwError(error, 400);
 	}
 };
 
@@ -38,10 +36,7 @@ exports.indexTags = async (showSecrets = false) => {
 			}
 		}
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error,
-		};
+		throwError(error, 400);
 	}
 
 	try {
@@ -68,29 +63,20 @@ exports.indexTags = async (showSecrets = false) => {
 			return publicTags;
 		}
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error,
-		};
+		throwError(error, 400);
 	}
 };
 
 exports.getTag = async (id) => {
 	if (!id) {
-		throw {
-			status: 400,
-			message: "missing id",
-		};
+		throwError("missing id", 400);
 	}
 
 	try {
 		const tag = await this.TagModel.findById(id).exec();
 		return tag;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error,
-		};
+		throwError(error, 400);
 	}
 };
 
@@ -101,10 +87,7 @@ exports.deleteTag = async (id) => {
 
 		return `${tag.title} with id ${id} deleted`;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -141,9 +124,6 @@ exports.cleanTags = async (dirtyList) => {
 
 		return cleanList;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 };

@@ -1,6 +1,7 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 const UserData = require("./user");
+const { throwError } = require("../helpers/error");
 
 exports.ExperienceModel = Mongoose.model("experience", new Schema({
 	title: { type: String, required: true },
@@ -25,10 +26,7 @@ exports.postExperience = async (userId,
 	try {
 		user = await UserData.getUser(userId);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message, 
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -46,10 +44,7 @@ exports.postExperience = async (userId,
 		await user.save();
 		return xp;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -57,37 +52,25 @@ exports.indexExperiences = async () => {
 	try {
 		return await this.ExperienceModel.find().exec();
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
 exports.getExperience = async (id) => {
 	if (!id) {
-		throw {
-			status: 400,
-			message: "missing id", 
-		};
+		throwError("missing id", 400);
 	}
 
 	try {
 		const xp = await this.ExperienceModel.findById(id).exec();
 
 		if (!xp) {
-			throw {
-				status: 404,
-				message: `experienc with id ${id} does not exist`, 
-			};
+			throwError(`experience with id ${id} does not exist`, 404);
 		}
 
 		return xp;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -97,10 +80,7 @@ exports.updateExperience = async (id, patch) => {
 	try {
 		xp = await this.getExperience(id);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message, 
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -114,10 +94,7 @@ exports.updateExperience = async (id, patch) => {
 		xp = await xp.save();
 		return xp;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error, 
-		};
+		throwError(error, 400);
 	}
 };
 
@@ -128,9 +105,6 @@ exports.deleteExperience = async (id) => {
 
 		return `${xp.title} with id ${id} deleted`;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error, 
-		};
+		throwError(error.message, error.status);
 	}
 };

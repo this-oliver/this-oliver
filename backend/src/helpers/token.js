@@ -2,6 +2,7 @@
 const Jwt = require("jsonwebtoken");
 const SECRET = process.env.JWT_SECRET;
 const UserData = require("../data/user");
+const { throwError } = require("./error");
 
 exports.getToken = (value) => {
 	const payload = { data: value };
@@ -11,28 +12,19 @@ exports.getToken = (value) => {
 		const token = Jwt.sign(payload, SECRET, signOptions);
 		return token;
 	} catch (error) {
-		throw {
-			status: 401,
-			message: "error getting token:" + error.message || error,
-		};
+		throwError("error getting token:" + error.message || error, 401);
 	}
 };
 
 exports.verifyToken = (token) => {
 	if (!token) {
-		throw {
-			status: 400,
-			message: "missing token",
-		};
+		throwError("missing token", 400);
 	} else {
 		try {
 			const decoded = Jwt.verify(token, SECRET);
 			return decoded;
 		} catch (error) {
-			throw {
-				status: 401,
-				message: "error verifying token:" + error.message || error,
-			};
+			throwError("error verifying token:" + error.message || error, 401);
 		}
 	}
 };
@@ -76,8 +68,9 @@ exports.authenticateRequest = async function (req) {
 
 		try {
 			const admin = await UserData.getOliver();
-			if (admin === undefined || admin === null)
-				throw { status: 404, message: "host is missing" };
+			if (admin === undefined || admin === null){
+				throwError("host is missing", 404);
+			}
 
 			return admin._id == decoded.data;
 		} catch (error) {

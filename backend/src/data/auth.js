@@ -1,5 +1,7 @@
 // mongo
 const UserData = require("./user");
+const { throwError } = require("../helpers/error");
+
 const UserModel = UserData.UserModel;
 
 exports.login = async (email, password) => {
@@ -9,41 +11,26 @@ exports.login = async (email, password) => {
 		user = await UserModel.findOne({ email: email.toLowerCase() });
 
 		if (user == null) {
-			throw {
-				status: 404,
-				message: "invalid login details",
-			};
+			throwError("invalid login details", 404);
 		}
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
 		const isMatch = await user.verifyPassword(password);
 		if (!isMatch) {
-			throw {
-				status: 404,
-				message: "invalid token",
-			};
+			throwError("invalid login details", 404);
 		}
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
 		user = await UserData.getUser(user._id);
 		return user;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -52,16 +39,10 @@ exports.register = async (name, email, password) => {
 		const users = await UserData.indexUsers();
 
 		if (users.length > 0) {
-			throw {
-				status: 400,
-				message: "sorry buddy but there can only be one user in this server 🤪",
-			};
+			throwError("sorry buddy but there can only be one user in this server 🤪", 400);
 		}
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -76,9 +57,6 @@ exports.register = async (name, email, password) => {
 		const result = UserData.getUser(user._id);
 		return Promise.resolve(result);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };

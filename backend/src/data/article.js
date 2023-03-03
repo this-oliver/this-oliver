@@ -3,6 +3,7 @@ const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 const UserData = require("./user");
 const TagData = require("./tag");
+const { throwError } = require("../helpers/error");
 
 exports.ArticleModel = Mongoose.model("article", new Schema(
 	{
@@ -13,7 +14,7 @@ exports.ArticleModel = Mongoose.model("article", new Schema(
 		views: { type: Number, default: 0 },
 		likes: { type: Number, default: 0 },
 		dislikes: { type: Number, default: 0 },
-		tags: [{ type: Schema.Types.ObjectId, ref: "tag" }],
+		tags: [{ type: Schema.Types.ObjectId, ref: "tag" }]
 	},
 	{ timestamps: true }
 ));
@@ -25,10 +26,7 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 	try {
 		user = await UserData.getUser(userId);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	// handle tag
@@ -37,10 +35,7 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 	try {
 		tagList = await TagData.cleanTags(tags);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	// create article
@@ -60,10 +55,7 @@ exports.postArticle = async (userId, title, content, tags, publish) => {
 
 		return article;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -99,10 +91,7 @@ exports.indexArticles = async (showSecrets = false) => {
 			return articles;
 		}
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -144,19 +133,13 @@ exports.indexArticlesByTag = async (tagId, showSecrets = false) => {
 			return articles;
 		}
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
 exports.getArticle = async (id, showSecrets = false) => {
 	if (!id) {
-		throw {
-			status: 400,
-			message: "missing id",
-		};
+		throwError("missing id", 400);
 	}
 
 	try {
@@ -191,25 +174,16 @@ exports.getArticle = async (id, showSecrets = false) => {
 		}
 
 		if (!article) {
-			throw {
-				status: 404,
-				message: `article with id ${id} does not exist`,
-			};
+			throwError(`article with id ${id} does not exist`, 404);
 		}
 
 		return article;
 	} catch (error) {
 		if (error.kind === "ObjectId") {
-			throw {
-				status: 404,
-				message: `article with id ${id} does not exist`,
-			};
+			throwError(`article with id ${id} does not exist`, 404);
 		}
 
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -219,10 +193,7 @@ exports.updateArticle = async (id, patch) => {
 	try {
 		article = await this.getArticle(id, true);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -242,10 +213,7 @@ exports.updateArticle = async (id, patch) => {
 
 		return article;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -255,10 +223,7 @@ exports.incrementArticleViews = async (id) => {
 	try {
 		article = await this.getArticle(id, true);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -268,10 +233,7 @@ exports.incrementArticleViews = async (id) => {
 
 		return article;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -281,10 +243,7 @@ exports.incrementArticleLikes = async (id) => {
 	try {
 		article = await this.getArticle(id, true);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -294,10 +253,7 @@ exports.incrementArticleLikes = async (id) => {
 
 		return article;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -307,10 +263,7 @@ exports.incrementArticleDislikes = async (id) => {
 	try {
 		article = await this.getArticle(id, true);
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 
 	try {
@@ -320,10 +273,7 @@ exports.incrementArticleDislikes = async (id) => {
 
 		return article;
 	} catch (error) {
-		throw {
-			status: 400,
-			message: error.message,
-		};
+		throwError(error.message, error.status);
 	}
 };
 
@@ -334,9 +284,6 @@ exports.deleteArticle = async (id) => {
 
 		return `${xp.title} with id ${id} deleted`;
 	} catch (error) {
-		throw {
-			status: error.status || 400,
-			message: error.message || error,
-		};
+		throwError(error.message, error.status);
 	}
 };
