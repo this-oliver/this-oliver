@@ -6,9 +6,9 @@
   "main": "./src/server.js",
   "scripts": {
     "start": "npm run prod",
-    "dev": "NODE_ENV=dev nodemon ./src/server.js",
-    "prod": "NODE_ENV=prod node ./src/server.js",
-    "test": "NODE_ENV=test mocha './tests/**/*.test.js'"
+    "dev": "NODE_ENV=development nodemon ./src/server.js",
+    "prod": "NODE_ENV=production node ./src/server.js",
+    "test": "NODE_ENV=testing mocha './tests/**/*.test.js'"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",

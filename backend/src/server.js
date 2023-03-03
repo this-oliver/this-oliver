@@ -1,19 +1,17 @@
-require("dotenv").config();
+const { NODE_ENV, PORT, DB_URI } = require("./config/env");
 const app = require("./app");
 const db = require("./database");
-
-const port = process.env.PORT || 3001;
 
 db.connect().catch((error) => {
 	console.error(error);
 	return;
 });
 
-app.listen(port, function (err) {
+app.listen(PORT, function (err) {
 	if (err) throw err;
-	console.log("Express server listening on port " +			port +			", in " +			process.env.NODE_ENV +			" mode");
-	console.log("Backend: http://localhost:" + port + "/api/");
-	console.log("Mongo: " + process.env.MONGODB);
+	console.log(`\nExpress server listening on port ${PORT}, in ${NODE_ENV} mode`);
+	console.log(`Server: http://localhost:${PORT}/api/`);
+	console.log(`Database: ${DB_URI}\n`);
 });
 
 module.exports = app;

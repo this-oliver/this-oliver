@@ -1,4 +1,4 @@
-require("dotenv").config();
+const { NODE_ENV } = require("./config/env");
 const express = require("express");
 const cors = require("cors");
 const router = require("./router");
@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-if (process.env.NODE_ENV == "dev") {
+if (NODE_ENV == "development") {
 	const morgan = require("morgan");
 	app.use(morgan("dev"));
 }
@@ -22,7 +22,7 @@ app.use(function (err, req, res) {
 		error: {}, 
 	};
 
-	if (process.env.NODE_ENV == "dev") {
+	if (NODE_ENV == "development") {
 		err_res.error = err;
 	}
 	

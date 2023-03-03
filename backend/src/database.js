@@ -1,7 +1,7 @@
-require("dotenv").config();
+const { DB_URI } = require("./config/env");
 const Database = require("mongoose");
 
-process.env.MONGODB = process.env.DB_URI;
+process.env.MONGODB = DB_URI;
 
 exports.connection = Database.connection;
 
