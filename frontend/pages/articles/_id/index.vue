@@ -1,77 +1,66 @@
 <template>
 	<base-page :no-padding="true">
 		<v-row
-			v-if="!getArticle"
+			v-if="getArticle"
+			justify="center">
+			<v-col
+				id="article-content"
+				class="mt-1 mt-md-2"
+				cols="11"
+				sm="9"
+				md="8">
+				<!-- title -->
+				<h1 id="article-title">
+					{{ getArticle.title }}
+				</h1>
+				<!-- time ago -->
+				<h4 id="article-date">
+					{{ getArticleDate }}
+				</h4>
+				<!-- content -->
+				<base-html :html="getArticleHtml" />
+			</v-col>
+
+			<v-col cols="12" />
+			<v-col
+				cols="12"
+				sm="6"
+				md="4"
+				class="text-center">
+				<base-btn
+					v-for="option in getArticleOptions"
+					:key="option.text"
+					:color="option.color || null"
+					:outline="option.outline || false"
+					:class="`mt-1 mx-1 ${option.class || ''}`"
+					@click="option.action">
+					{{ option.text }}
+				</base-btn>
+			</v-col>
+			<v-col
+				v-if="getArticle.tags.length > 0"
+				id="article-info"
+				cols="11"
+				sm="6"
+				md="4">
+				<!-- tags -->
+				<v-chip
+					v-for="tag in getArticle.tags"
+					:key="tag._id"
+					class="mr-1 mt-1">
+					{{ tag.name }}
+				</v-chip>
+			</v-col>
+
+			<!-- TODO: add suggestions -->
+		</v-row>
+		<v-row
+			v-else
 			justify="center">
 			<v-col
 				cols="auto"
 				class="error-text">
 				<h2>🚦 article could not load</h2>
-			</v-col>
-		</v-row>
-		<v-row
-			v-else
-			justify="center">
-			<v-col cols="11">
-				<v-row justify-md="center">
-					<v-col
-						id="article-info"
-						cols="12"
-						sm="4"
-						md="3">
-						<base-btn
-							v-if="isLoggedIn"
-							outline
-							class="mt-1"
-							color="warning"
-							:block="true"
-							:to="`/articles/${getArticle._id}/edit`">
-							Update
-						</base-btn>
-						<!-- title -->
-						<h1>{{ getArticle.title }}</h1>
-						<!-- time ago -->
-						<h4>{{ getArticleDate }}</h4>
-						<!-- tags -->
-						<v-chip
-							v-for="tag in getArticle.tags"
-							:key="tag._id"
-							class="mr-1 mt-1">
-							{{ tag.name }}
-						</v-chip>
-						<div
-							v-if="getArticleTocHtml.length > 0"
-							class="mt-2">
-							<v-divider class="my-2" />
-							<base-html
-								class="table-of-content"
-								:html="getArticleTocHtml" />
-						</div>
-						<div class="mt-2">
-							<v-divider class="my-2" />
-							<base-btn
-								v-for="option in getArticleOptions"
-								:key="option.text"
-								:block="true"
-								:color="option.color || null"
-								:outline="option.outline || false"
-								:class="`mt-1 ${option.class || ''}`"
-								@click="option.action">
-								{{ option.text }}
-							</base-btn>
-						</div>
-					</v-col>
-
-					<v-col
-						id="article-content"
-						class="mt-2 mt-md-0"
-						sm="8"
-						md="9">
-						<base-html :html="getArticleHtml" />
-					</v-col>
-
-					<!-- TODO: add suggestions -->
-				</v-row>
 			</v-col>
 		</v-row>
 	</base-page>
@@ -80,7 +69,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { getDate } from "~/utils/time";
-import { MarkdownToHtml, getMarkdownTableOfContents } from "~/utils/parser";
+import { MarkdownToHtml } from "~/utils/parser";
 import { getTextDescription } from "~/utils/string";
 
 import BasePage from "~/components/base/BasePage.vue";
@@ -135,27 +124,11 @@ export default {
 				{ darkMode: this.isDarkMode }
 			);
 		},
-		getArticleTocHtml(){
-			// get table of contents from markdown
-			const toc = getMarkdownTableOfContents(this.getArticle.content, {renderAsList: false});
-			// convert toc to html
-			return MarkdownToHtml(toc, {
-				link: {openOutside: false},
-				table: {wrapText: true},
-				darkMode: this.isDarkMode
-			});
-		},
 		getArticleDate () {
 			return getDate(this.getArticle.createdAt);
 		},
 		getArticleOptions(){
-			return [
-				{
-					text: `${this.getArticle.likes} Likes`,
-					color: this.isDarkMode ? "white" : "black",
-					class: `${this.isDarkMode ? "black" : "white"}--text`,
-					action: () => {this.like();}
-				},
+			const options = [
 				{
 					text: "Go Back",
 					color: "secondary",
@@ -163,6 +136,17 @@ export default {
 					action: () => {this.$router.go(-1);}
 				}
 			];
+
+			if(this.isLoggedIn){
+				options.push({
+					text: "Update Article",
+					color: "warning",
+					outline: !this.isDarkMode,
+					action: () => {this.$router.push(`/articles/${this.getArticle._id}/edit`);}
+				});
+			}
+
+			return options;
 		}
 	},
 	methods: {
@@ -184,12 +168,40 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+#article-info a {
+	color: inherit;
+}
+
+#article-title{
+	font-size: 3rem;
+}
+
+#article-date{
+	font-size: 1.25rem;
+}
+
+.table-of-content{
+	padding: 25px 10px 5px 10px;
+}
+
+.see-through{
+	opacity: 0.5;
+}
+
 /* style article info for large screens */
 @media (min-width: 960px) {
 	#article-content{
     max-height: 90vh;
     overflow-y: auto;
   }
+
+	.table-of-content{
+	padding-top: 0;
+	}
+
+	.table-of-content{
+		min-height: 150px;
+	}
 }
 </style>

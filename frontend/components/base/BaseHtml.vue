@@ -41,3 +41,14 @@ export default {
 	}
 };
 </script>
+
+<style lang="css">
+.parsed-header-anchor {
+  display: none;
+}
+
+.parsed-header:hover .parsed-header-anchor {
+  display: inline;
+}
+
+</style>
