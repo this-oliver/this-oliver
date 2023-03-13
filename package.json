@@ -1,6 +1,6 @@
 {
   "name": "oliverrr",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "personal website",
   "author": "oliver  <hello@oliverrr.net>",
   "main": "index.js",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/this-oliver/this-oliver/issues"
   },
-  "homepage": "https://github.com/this-oliver/this-oliver#readme"
+  "homepage": "https://github.com/this-oliver/this-oliver#readme",
+  "devDependencies": {
+    "fist-bump": "^1.0.0"
+  }
 }
