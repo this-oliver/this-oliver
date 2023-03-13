@@ -87,9 +87,33 @@ export function MarkdownToHtml(
 		},
 		heading(headerText, level) {
 			const headerId = headerText.replace(/ /g, "-").toLowerCase();
-			const headerStyle = "margin: 1rem 0 0.5rem 0;";
 
-			return `<h${level} id="${headerId}" style="${headerStyle}">${headerText}</h${level}>`;
+			function getFontSize(level){
+				// extract size from text.fontSize
+				const size = text.fontSize ? text.fontSize.match(/\d+/)[0] : "1.25";
+				// convert to number and maintain decimal
+				const sizeNum = Number(size);
+
+				switch (level) {
+				case 1:
+					return sizeNum / 0.45;
+				case 2:
+					return sizeNum / 0.55;
+				case 3:
+					return sizeNum / 0.65;
+				case 4:
+					return sizeNum / 0.75;
+				default:
+					return sizeNum / 0.80;
+				}
+			}
+
+			const headerStyle = `font-size: ${getFontSize(level)}rem; padding: 1.15rem 0;`;
+
+			return `<h${level} id="${headerId}" class="parsed-header" style="${headerStyle}">
+			<span class="parsed-header-anchor"><a href="#${headerId}" class="simple-link">#</a></span>
+			${headerText}
+			</h${level}>`;
 		},
 		link(href, title, linkText) {
 			return `<a href="${href}" target="${
@@ -124,12 +148,16 @@ export function MarkdownToHtml(
 			return `<img src="${href}" alt="${imageText}" title="${title}" style="${imageStyle}" class="${imageClass}">`;
 		},
 		paragraph(paragraphText) {
-			const paragraphStyle = `font-size: ${text.fontSize ? text.fontSize : "1.25rem"};`;
+			const paragraphStyle = `font-size: ${text.fontSize ? text.fontSize : "1.25rem"}; line-height: 1.25;`;
 			return `<p style="${paragraphStyle}">${paragraphText}</p>`;
 		},
 		list(body, ordered, start) {
 			const listStyle = `font-size: ${text.fontSize ? text.fontSize : "1.25rem"};`;
-			return `<${ordered ? "ol" : "ul"} style="${listStyle}">${body}</${ordered ? "ol" : "ul"}>`;
+			return `<${ordered ? "ol" : "ul"} class="mb-2" style="${listStyle}">${body}</${ordered ? "ol" : "ul"}>`;
+		},
+		listitem(text) {
+			const listItemStyle = `font-size: ${text.fontSize ? text.fontSize : "1.25rem"};`;
+			return `<li class="mb-2" style="${listItemStyle}">${text}</li>`;
 		}
 	};
 
@@ -142,6 +170,34 @@ export function MarkdownToHtml(
 	return Marked.parse(markdown || "");
 };
 
+function _getHeaders(markdown){
+	const lines = markdown.split("\n");
+	const headers = [];
+
+	let isCodeBlock = false;
+
+	for (const line of lines) {
+		// Check if the line starts a code block
+		if (line.trim().startsWith("```")) {
+			isCodeBlock = !isCodeBlock;
+			continue;
+		}
+
+		// If we're inside a code block, ignore the line
+		if (isCodeBlock) {
+			continue;
+		}
+
+		// Check if the line is a first-level header
+		const match = line.trim().match(/^# (.+)/);
+		if (match) {
+			headers.push(match[1]);
+		}
+	}
+
+	return headers;
+}
+
 /**
  * Returns a markdown table of contents
  *
@@ -153,19 +209,9 @@ export function MarkdownToHtml(
  */
 export function getMarkdownTableOfContents(
 	markdown,
-	{ maxDepth = 2, renderAsList = true } = {}
+	{ renderAsList = true } = {}
 ) {
-	// setup regex for headers
-	const headerRegex = /(^#{1,6})\s(.*)/gm;
-
-	// get all headers from markdown up to maxDepth
-	const headers = [];
-	let match;
-	while ((match = headerRegex.exec(markdown)) !== null) {
-		const depth = match[1].length;
-		if (depth <= maxDepth) headers.push({ depth, text: match[2] });
-	}
-
+	const headers = _getHeaders(markdown);
 	if(headers.length === 0) return "";
 
 	let toc;
@@ -173,16 +219,16 @@ export function getMarkdownTableOfContents(
 		// render table of contents as a list
 		toc = "**Table of Contents**\n";
 		headers.forEach((header, index) => {
-			const headerId = header.text.replace(/ /g, "-").toLocaleLowerCase();
-			const item = `${index + 1}. [${header.text}](#${headerId})\n`;
+			const headerId = header.replace(/ /g, "-").toLocaleLowerCase();
+			const item = `${index + 1}. [${header}](#${headerId})\n`;
 			toc += item;
 		});
 	} else {
 		// render table of contents as a table
 		toc = "| # | Header |\n| - | ------ |\n";
 		headers.forEach((header, index) => {
-			const headerId = header.text.replace(/ /g, "-").toLocaleLowerCase();
-			const item = `| ${index + 1} | [${header.text}](#${headerId}) |\n`;
+			const headerId = header.replace(/ /g, "-").toLocaleLowerCase();
+			const item = `| ${index + 1} | [${header}](#${headerId}) |\n`;
 			toc += item;
 		});
 	}
