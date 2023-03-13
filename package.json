@@ -1,13 +1,10 @@
 {
   "name": "oliverrr",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "personal website",
   "author": "oliver  <hello@oliverrr.net>",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/this-oliver/this-oliver.git"
-  },
+  "repository": "this-oliver/this-oliver",
   "keywords": [
     "portfolio",
     "website",

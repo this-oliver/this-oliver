@@ -2,6 +2,7 @@
   "name": "oliverrr",
   "version": "2.0.0",
   "author": "oliver  <hello@oliverrr.net>",
+  "repository": "this-oliver/this-oliver",
   "license": "ISC",
   "main": "./src/server.js",
   "scripts": {

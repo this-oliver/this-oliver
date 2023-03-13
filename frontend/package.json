@@ -2,7 +2,7 @@
 	"name": "oliverrr",
 	"version": "2.0.1",
 	"author": "oliver  <hello@oliverrr.net>",
-	"private": true,
+	"repository": "this-oliver/this-oliver",
 	"scripts": {
 		"dev": "npx nuxt",
 		"start": "npx nuxt start",
