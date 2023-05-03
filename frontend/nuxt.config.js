@@ -49,16 +49,15 @@ export default {
 	},
 
 	// Global CSS: https://go.nuxtjs.dev/config-css
-	css: [
-		"~/assets/css/fonts.css"
-	],
+	css: ["~/assets/css/fonts.css"],
 
 	// Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
 	plugins: [
 		{ src: "~/plugins/api.js" },
 		{ src: "~/plugins/error.js" },
 		{ src: "~/plugins/mixin.client.js" },
-		{ src: "~/plugins/vuetify.client.js" }
+		{ src: "~/plugins/vuetify.client.js" },
+		{ src: "~/plugins/analytics.client.js", ssr: false }
 	],
 
 	// Global routing middlewares to run for every route change
