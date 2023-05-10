@@ -1,22 +1,15 @@
 {
   "name": "oliverrr",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "personal website",
   "author": "oliver  <hello@oliverrr.net>",
   "main": "index.js",
   "repository": "this-oliver/this-oliver",
-  "keywords": [
-    "portfolio",
-    "website",
-    "frontend",
-    "backend"
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/this-oliver/this-oliver/issues"
+  "license": "MIT",
+  "scripts": {
+    "bump": "npx fist-bump"
   },
-  "homepage": "https://github.com/this-oliver/this-oliver#readme",
   "devDependencies": {
-    "fist-bump": "file:../fist-bump/fist-bump-1.2.1.tgz"
+    "fist-bump": "^1.2.4"
   }
 }
