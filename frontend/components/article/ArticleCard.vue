@@ -13,13 +13,6 @@
 			<v-row
 				dense
 				justify="start">
-				<!-- likes -->
-				<v-col
-					cols="2"
-					class="mx-1">
-					<b>{{ article.likes }}</b>
-					likes
-				</v-col>
 				<!-- views -->
 				<v-col
 					v-if="editMode"
