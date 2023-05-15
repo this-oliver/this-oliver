@@ -1,0 +1,15 @@
+.underline {
+  border-bottom: 1px solid;
+}
+
+.plain {
+  text-decoration: none;
+  color: inherit;
+}
+
+.brutalist-outline {
+  border-top: 0.5px solid !important;
+  border-left: 0.5px solid !important;
+  border-right: 2.5px solid !important;
+  border-bottom: 2.5px solid !important;
+}

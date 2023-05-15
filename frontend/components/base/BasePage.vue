@@ -1,45 +1,28 @@
-<template>
-	<div class="mb-2 pa-2">
-		<slot name="title">
-			<div class="mt-2 mx-2 text-center base-page-title">
-				<h1>{{ title }}</h1>
-			</div>
-		</slot>
+<script setup lang="ts">
 
-		<div class="my-2">
-			<div v-if="noPadding">
-				<slot />
-			</div>
-			<v-row
-				v-else
-				justify="center">
-				<v-col
-					cols="11"
-					sm="8">
-					<slot />
-				</v-col>
-			</v-row>
-		</div>
-	</div>
-</template>
-
-<script>
-export default {
-	props: {
-		title: {
-			type: String,
-			default: undefined
-		},
-		noPadding: {
-			type: Boolean,
-			default: false
-		}
-	}
-};
+const props = defineProps({
+  title: {
+    type: String,
+    defualt: undefined
+  }
+})
 </script>
 
-<style scoped>
-.base-page-title{
-	text-transform: capitalize;
-}
-</style>
+<template>
+  <v-row
+    class="pa-1"
+    justify="center"
+    no-gutters>
+    <v-col
+      v-if="props.title"
+      class="text-center">
+      <h1>{{ props.title }}</h1>
+    </v-col>
+
+    <v-divider class="border-opacity-0" />
+
+    <v-col class="mt-2">
+      <slot />
+    </v-col>
+  </v-row>
+</template>

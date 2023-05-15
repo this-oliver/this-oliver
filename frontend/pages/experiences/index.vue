@@ -1,40 +1,105 @@
-<template>
-	<base-page title="experiences">
-		<experience-list
-			:experiences="experiences"
-			:edit-mode="isLoggedIn" />
-	</base-page>
-</template>
+<script setup lang="ts">
+import { useAuthStore } from '~/stores/auth-store'
+import { useExperienceStore } from '~/stores/experience-store'
+import { ActionItem, Experience } from '~/types'
 
-<script>
-import { mapGetters } from "vuex";
-import BasePage from "~/components/base/BasePage.vue";
-import ExperienceList from "~/components/experience/ExperienceList.vue";
+const authStore = useAuthStore()
+const experienceStore = useExperienceStore()
 
-export default {
-	components: {
-		BasePage,
-		ExperienceList
-	},
-	head () {
-		return {
-			title: "Experiences - Oliver's Personal Website",
-			meta: [
-				{ charset: "utf-8" },
-				{ name: "viewport", content: "width=device-width, initial-scale=1" },
-				{ hid: "description", name: "description", content: "Educational and work experience." }
-			],
-			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
-		};
-	},
-	computed: {
-		...mapGetters({
-			isLoggedIn: "admin/isLoggedIn"
-		}),
-		experiences(){
-			const indexQuery = this.$store.getters["admin/isLoggedIn"] ? "admin/experiences/getExperiences" : "user/getExperiences";
-			return this.$store.getters[indexQuery];
-		}
-	}
-};
+const showProjects = ref<boolean>(false)
+const showEducation = ref<boolean>(false)
+const showWork = ref<boolean>(false)
+const experiences = ref<Experience[]>([])
+
+const options = computed<ActionItem[]>(() => {
+  let base: ActionItem[] = [
+    {
+      label: 'Education',
+      color: 'primary',
+      outlined: showEducation.value,
+      action: () => { showEducation.value = !showEducation.value }
+    },
+    {
+      label: 'Work',
+      color: 'primary',
+      outlined: showWork.value,
+      action: () => { showWork.value = !showWork.value }
+    },
+    {
+      label: 'Projects',
+      color: 'primary',
+      outlined: showProjects.value,
+      action: () => { showProjects.value = !showProjects.value }
+    }
+  ]
+
+  if (authStore.isLoggedIn) {
+    base = [
+      {
+        label: 'Create xP',
+        color: 'secondary',
+        icon: 'mdi-plus',
+        to: '/experiences/create'
+      },
+      ...base
+    ]
+  }
+
+  return base
+})
+
+const getExperiences = computed<Experience[]>(() => {
+  return experiences.value.filter((experience) => {
+    if (!showEducation.value && !showProjects.value && !showWork.value) {
+      return true
+    } else if (experience.type === 'education') {
+      return showEducation.value
+    } else if (experience.type === 'job') {
+      return showWork.value
+    } else if (experience.type === 'projects') {
+      return showProjects.value
+    } else {
+      return true
+    }
+  })
+})
+
+onMounted(async () => {
+  experiences.value = await experienceStore.indexExperience()
+})
+
 </script>
+
+<template>
+  <base-page title="Experiences">
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        md="8">
+        <base-btn
+          v-for="option in options"
+          :key="option.label"
+          class="mr-1 mt-1 mt-md-0"
+          :outlined="option.outlined"
+          :color="option.color"
+          :to="option.to"
+          @click="option.action">
+          <v-icon
+            v-if="option.icon"
+            :icon="option.icon"
+            class="mr-1" />
+          {{ option.label }}
+        </base-btn>
+      </v-col>
+      <v-col
+        v-for="experience in getExperiences"
+        :key="experience"
+        cols="12"
+        md="8">
+        <experience-card
+          :experience="experience"
+          :admin-mode="authStore.isLoggedIn" />
+      </v-col>
+    </v-row>
+  </base-page>
+</template>

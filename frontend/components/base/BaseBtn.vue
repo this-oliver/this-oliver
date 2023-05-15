@@ -1,111 +1,105 @@
-<template>
-	<v-btn
-		:block="block"
-		:class="getBtnClass"
-		:color="color"
-		:dark="isBtnDark"
-		:depressed="depressed"
-		:disabled="disabled"
-		:elevation="elevation"
-		:icon="icon"
-		:large="large"
-		:light="!isBtnDark"
-		:outlined="outline"
-		:rounded="rounded"
-		:text="text"
-		:tile="isTile"
-		:to="to"
-		:small="small"
-		@click="emitClick">
-		<slot />
-	</v-btn>
-</template>
+<script setup lang="ts">
 
-<script>
+const props = defineProps({
+  color: {
+    type: String,
+    default: undefined
+  },
+  block: {
+    type: Boolean,
+    default: undefined
+  },
+  small: {
+    type: Boolean,
+    default: undefined
+  },
+  large: {
+    type: Boolean,
+    default: undefined
+  },
+  flat: {
+    type: Boolean,
+    default: undefined
+  },
+  outlined: {
+    type: Boolean,
+    default: undefined
+  },
+  text: {
+    type: Boolean,
+    default: undefined
+  },
+  plain: {
+    type: Boolean,
+    default: undefined
+  },
+  tonal: {
+    type: Boolean,
+    default: undefined
+  },
+  rounded: {
+    type: String,
+    default: undefined
+  },
+  to: {
+    type: String,
+    default: undefined
+  },
+  disabled: {
+    type: Boolean,
+    default: undefined
+  },
+  hideFromTab: {
+    type: Boolean,
+    default: undefined
+  }
+})
 
-export default {
-	props: {
-		block: {
-			type: Boolean,
-			default: false
-		},
-		btnClass: {
-			type: String,
-			default: ""
-		},
-		color: {
-			type: String,
-			default: null
-		},
-		dark: {
-			type: Boolean,
-			default: false
-		},
-		depressed: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		elevation: {
-			type: Number,
-			default: 0
-		},
-		icon: {
-			type: Boolean,
-			default: false
-		},
-		large: {
-			type: Boolean,
-			default: false
-		},
-		light: {
-			type: Boolean,
-			default: false
-		},
-		outline: {
-			type: Boolean,
-			default: false
-		},
-		rounded: {
-			type: Boolean,
-			default: false
-		},
-		text: {
-			type: Boolean,
-			default: false
-		},
-		tile: {
-			type: Boolean,
-			default: true
-		},
-		to: {
-			type: String,
-			default: null
-		},
-		small: {
-			type: Boolean,
-			default: false
-		}
-	},
-	emits: ["click"],
-	computed:{
-		getBtnClass(){
-			return this.btnClass;
-		},
-		isBtnDark(){
-			return this.light ? false : true;
-		},
-		isTile(){
-			return this.rounded ? false : this.tile;
-		}
-	},
-	methods: {
-		emitClick () {
-			this.$emit("click");
-		}
-	}
-};
+const emit = defineEmits(['click'])
+
+type ButtonStyle = 'outlined' | 'tonal' | 'plain' | 'text' | 'flat'
+const getButtonStyle = computed<ButtonStyle | undefined>(() => {
+  if (props.outlined === true) {
+    return 'outlined'
+  } else if (props.text === true) {
+    return 'text'
+  } else if (props.plain === true) {
+    return 'plain'
+  } else if (props.tonal === true) {
+    return 'tonal'
+  } else {
+    return 'flat'
+  }
+})
+
+type ButtonSize = 'small' | 'medium' | 'large'
+const getButtonSize = computed<ButtonSize>(() => {
+  if (props.small) {
+    return 'small'
+  } else if (props.large) {
+    return 'large'
+  } else {
+    return 'medium'
+  }
+})
+
+function handleClick () {
+  // emit click event
+  emit('click')
+}
 </script>
+
+<template>
+  <v-btn
+    :variant="getButtonStyle"
+    :color="props.color"
+    :size="getButtonSize"
+    :block="props.block"
+    :rounded="props.rounded"
+    :disabled="props.disabled"
+    :to="props.to"
+    class="pa-2"
+    @click="handleClick()">
+    <slot />
+  </v-btn>
+</template>

@@ -2,10 +2,11 @@
 definePageMeta({
   middleware: ['auth']
 })
+
 </script>
 
 <template>
   <base-page>
-    <experience-form />
+    <note-form />
   </base-page>
 </template>

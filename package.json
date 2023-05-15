@@ -1,9 +1,8 @@
 {
   "name": "oliverrr",
-  "version": "2.0.8",
+  "version": "3.0.0",
   "description": "personal website",
-  "author": "oliver  <hello@oliverrr.net>",
-  "main": "index.js",
+  "author": "oliver <hello@oliverrr.net>",
   "repository": "this-oliver/this-oliver",
   "license": "MIT",
   "scripts": {

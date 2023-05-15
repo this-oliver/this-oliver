@@ -1,40 +1,34 @@
-<template>
-	<v-card
-		:elevation="elevation"
-		:class="noPadding ? 'pa-2' : ''">
-		<v-card-title>
-			<slot name="title">
-				{{ title }}
-			</slot>
-		</v-card-title>
+<script setup lang="ts">
+import type { ActionItem } from '~/types'
 
-		<v-card-text>
-			<slot />
-		</v-card-text>
-
-		<v-card-actions>
-			<slot name="actions" />
-		</v-card-actions>
-
-		<slot name="footer" />
-	</v-card>
-</template>
-
-<script>
-export default {
-	props: {
-		title: {
-			type: String,
-			default: null
-		},
-		elevation: {
-			type: Number,
-			default: 1
-		},
-		noPadding: {
-			type: Boolean,
-			default: false
-		}
-	}
-};
+const props = defineProps({
+  options: {
+    type: Object as PropType<ActionItem[]>
+  }
+})
 </script>
+
+<template>
+  <v-sheet color="surface">
+    <v-row justify="center">
+      <v-col cols="10">
+        <slot name="options">
+          <base-btn
+            v-for="option in props.options"
+            :key="option.label"
+            class="mx-1"
+            :color="option.color"
+            small
+            :to="option.to"
+            @click="option.action">
+            {{ option.label }}
+          </base-btn>
+        </slot>
+      </v-col>
+
+      <v-col cols="10">
+        <slot />
+      </v-col>
+    </v-row>
+  </v-sheet>
+</template>

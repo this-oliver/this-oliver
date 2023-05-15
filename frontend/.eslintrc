@@ -1,0 +1,44 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/vue3-recommended",
+    "@nuxtjs/eslint-config-typescript"
+  ],
+  "rules": {
+    // group all exports at the end of the file
+    //"import/exports-last": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.vue"
+      ],
+      "rules": {
+        "vue/require-default-prop": "off",
+        "vue/html-closing-bracket-newline": [
+          "error",
+          {
+            "singleline": "never",
+            "multiline": "never"
+          }
+        ],
+        "vue/component-name-in-template-casing": [
+          "error",
+          "kebab-case"
+        ],
+        "vue/max-attributes-per-line": [
+          "error",
+          {
+            "singleline": {
+              "max": 1
+            },
+            "multiline": {
+              "max": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
