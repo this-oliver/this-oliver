@@ -1,9 +1,21 @@
 import type { Request, Response } from "express";
+import { ADMIN_SECRET } from "../config/env";
 import * as UserData from "../data/user";
 import * as ErrorHelper from "../helpers/error";
+import type { BaseError } from "../types/error";
 
 async function postUser(req: Request, res: Response) {
   try {
+
+    /**
+     * If an admin secret is set, check that the request contains the secret
+     * and that it matches the admin secret. Otherwise, throw an error to prevent
+     * unauthorized creation of users.
+     */
+    if(req.body.adminSecret !== ADMIN_SECRET || !ADMIN_SECRET) {
+      throw { message: "not authorized to create a user!", status: 401 } as BaseError;
+    }
+
     const user = await UserData.createUser(req.body.name, req.body.email, req.body.password);
 
     return res.status(201).send(user);
