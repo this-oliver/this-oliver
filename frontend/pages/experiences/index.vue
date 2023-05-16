@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { h } from 'vue'
 import { useAuthStore } from '~/stores/auth-store'
 import { useExperienceStore } from '~/stores/experience-store'
 import { ActionItem, Experience } from '~/types'
+import ExperienceCard from '~/components/cards/ExperienceCard.vue'
 
 const authStore = useAuthStore()
 const experienceStore = useExperienceStore()
@@ -10,6 +12,7 @@ const showProjects = ref<boolean>(false)
 const showEducation = ref<boolean>(false)
 const showWork = ref<boolean>(false)
 const experiences = ref<Experience[]>([])
+const loading = ref<boolean>(false)
 
 const options = computed<ActionItem[]>(() => {
   let base: ActionItem[] = [
@@ -64,42 +67,27 @@ const getExperiences = computed<Experience[]>(() => {
   })
 })
 
+const components = computed(() => {
+  return getExperiences.value.map((experience) => {
+    // return a NoteCard component with the note prop set to the note
+    return h(ExperienceCard, { experience, adminMode: authStore.isLoggedIn })
+  })
+})
+
 onMounted(async () => {
+  loading.value = true
   experiences.value = await experienceStore.indexExperience()
+  loading.value = false
 })
 
 </script>
 
 <template>
   <base-page title="Experiences">
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        md="8">
-        <base-btn
-          v-for="option in options"
-          :key="option.label"
-          class="mr-1 mt-1 mt-md-0"
-          :outlined="option.outlined"
-          :color="option.color"
-          :to="option.to"
-          @click="option.action">
-          <v-icon
-            v-if="option.icon"
-            :icon="option.icon"
-            class="mr-1" />
-          {{ option.label }}
-        </base-btn>
-      </v-col>
-      <v-col
-        v-for="experience in getExperiences"
-        :key="experience"
-        cols="12"
-        md="8">
-        <experience-card
-          :experience="experience"
-          :admin-mode="authStore.isLoggedIn" />
-      </v-col>
-    </v-row>
+    <base-list
+      label="experiences"
+      :options="options"
+      :loading="loading"
+      :components="components" />
   </base-page>
 </template>

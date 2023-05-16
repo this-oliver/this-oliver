@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { h } from 'vue'
 import { useNoteStore } from '~/stores/note-store'
 import { useAuthStore } from '~/stores/auth-store'
 import { ActionItem, Note, Tag } from '~/types'
+import NoteCard from '~/components/cards/NoteCard.vue'
 
 const authStore = useAuthStore()
 const noteStore = useNoteStore()
@@ -10,6 +12,7 @@ const notes = ref<Note[]>([])
 const tags = ref<Tag[]>([])
 const showFilter = ref(false)
 const tagsFilter = ref<Tag[]>([])
+const loading = ref(false)
 
 const getNotes = computed<Note[]>(() => {
   if (tagsFilter.value.length > 0) {
@@ -46,6 +49,13 @@ const options = computed<ActionItem[]>(() => {
   return base
 })
 
+const components = computed(() => {
+  return getNotes.value.map((note) => {
+    // return a NoteCard component with the note prop set to the note
+    return h(NoteCard, { note, adminMode: authStore.isLoggedIn })
+  })
+})
+
 function inFilter (tag: Tag): boolean {
   return tagsFilter.value.some(t => t._id === tag._id)
 }
@@ -59,47 +69,21 @@ function removeTagFromFilter (tag: Tag) {
 }
 
 onMounted(async () => {
+  loading.value = true
   notes.value = await noteStore.indexNotes()
   tags.value = await noteStore.indexTags()
+  loading.value = false
 })
 
 </script>
 
 <template>
-  <base-page
-    id="notes"
-    title="Notes">
-    <v-row justify="center">
-      <v-col md="8">
-        <base-btn
-          v-for="option in options"
-          :key="option.label"
-          class="mx-1"
-          :color="option.color"
-          :to="option.to"
-          @click="option.action">
-          <v-icon
-            v-if="option.icon"
-            :icon="option.icon"
-            class="mr-1" />
-          {{ option.label }}
-        </base-btn>
-      </v-col>
-
-      <v-col
-        cols="12"
-        md="8">
-        <v-row
-          v-for="note in getNotes"
-          :key="note._id">
-          <v-col>
-            <NoteCard
-              :note="note"
-              :admin-mode="authStore.isLoggedIn" />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+  <base-page title="Notes">
+    <base-list
+      label="notes"
+      :options="options"
+      :loading="loading"
+      :components="components" />
 
     <v-dialog
       v-model="showFilter"
