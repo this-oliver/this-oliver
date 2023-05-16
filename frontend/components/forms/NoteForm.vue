@@ -2,9 +2,6 @@
 import type { Note, ActionItem, Tag } from '~/types'
 import { useNoteStore } from '~/stores/note-store'
 
-const inputBackgroundColor = 'white darken-2'
-const previewBackgroundColor = 'white darken-4'
-
 const props = defineProps({
   note: {
     type: Object as PropType<Note>,
@@ -27,9 +24,6 @@ const selectedTags = ref<string[]>([])
 const tags = ref<Tag[]>([])
 const publish = ref<boolean>(true)
 
-type Mode = 'write' | 'preview' | 'split'
-const currentMode = ref<Mode>('write')
-
 const formattedTags = computed(() => {
   return tags.value.map(tag => tag.name)
 })
@@ -51,7 +45,7 @@ const options = computed<ActionItem[]>(() => {
     },
     {
       label: props.editMode ? 'Save' : 'Create',
-      color: 'primary',
+      color: 'success',
       icon: 'mdi-content-save',
       disabled: !validForm.value,
       action: async () => {
@@ -95,26 +89,6 @@ const options = computed<ActionItem[]>(() => {
           }
         }
       }
-    }
-  ]
-})
-
-const modes = computed<ActionItem[]>(() => {
-  return [
-    {
-      label: 'write',
-      color: 'primary',
-      icon: 'mdi-pencil'
-    },
-    {
-      label: 'preview',
-      color: 'primary',
-      icon: 'mdi-eye'
-    },
-    {
-      label: 'split',
-      color: 'primary',
-      icon: 'mdi-view-split-vertical'
     }
   ]
 })
@@ -181,67 +155,10 @@ onMounted(async () => {
           color="success"
           label="Publish" />
       </v-col>
+
+      <v-col cols="12">
+        <content-editor v-model="content" />
+      </v-col>
     </v-row>
-
-    <v-tabs
-      v-model="currentMode"
-      density="compact"
-      size="small">
-      <v-tab
-        v-for="mode in modes"
-        :key="mode.label"
-        :value="mode.label"
-        color="primary"
-        variant="flat">
-        {{ mode.label }}
-      </v-tab>
-    </v-tabs>
-
-    <v-window
-      id="form-content"
-      v-model="currentMode">
-      <v-window-item value="write">
-        <v-sheet :color="inputBackgroundColor">
-          <base-input-text-area
-            v-model="content"
-            class="note-input"
-            place-holder="Thoughts..." />
-        </v-sheet>
-      </v-window-item>
-
-      <v-window-item value="preview">
-        <v-sheet :color="previewBackgroundColor">
-          <markdown-card :markdown="content" />
-        </v-sheet>
-      </v-window-item>
-
-      <v-window-item value="split">
-        <v-row>
-          <v-col cols="6">
-            <v-sheet :color="inputBackgroundColor">
-              <base-input-text-area
-                v-model="content"
-                class="note-input"
-                place-holder="Thoughts..." />
-            </v-sheet>
-          </v-col>
-          <v-col cols="6">
-            <v-sheet :color="previewBackgroundColor">
-              <markdown-card :markdown="content" />
-            </v-sheet>
-          </v-col>
-        </v-row>
-      </v-window-item>
-    </v-window>
   </base-form>
 </template>
-
-<style scoped>
-#form-content{
-  min-height: 50vh;
-}
-
-.note-input {
-  min-height: 60vh;
-}
-</style>
