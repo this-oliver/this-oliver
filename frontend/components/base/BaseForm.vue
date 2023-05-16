@@ -3,29 +3,34 @@ import type { ActionItem } from '~/types'
 
 const props = defineProps({
   options: {
-    type: Object as PropType<ActionItem[]>
+    type: Array as PropType<ActionItem[]>,
+    default: () => []
   }
 })
 </script>
 
 <template>
   <v-sheet color="surface">
-    <v-row justify="center">
-      <v-col cols="10">
-        <slot name="options">
+    <slot name="options">
+      <v-row
+        v-if="props.options?.length > 0"
+        justify="center">
+        <v-col
+          v-for="option in props.options"
+          :key="option.label"
+          class="mx-1"
+          cols="auto">
           <base-btn
-            v-for="option in props.options"
-            :key="option.label"
-            class="mx-1"
             :color="option.color"
-            small
             :to="option.to"
             @click="option.action">
             {{ option.label }}
           </base-btn>
-        </slot>
-      </v-col>
+        </v-col>
+      </v-row>
+    </slot>
 
+    <v-row justify="center">
       <v-col cols="10">
         <slot />
       </v-col>

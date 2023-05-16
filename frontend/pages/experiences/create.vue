@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <base-page>
+  <base-page title="Create Experience">
     <experience-form />
   </base-page>
 </template>

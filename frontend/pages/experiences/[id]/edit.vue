@@ -17,7 +17,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-page>
+  <base-page title="Update Experience">
     <experience-form
       v-if="experience"
       :experience="experience"

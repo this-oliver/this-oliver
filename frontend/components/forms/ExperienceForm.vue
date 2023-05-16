@@ -50,7 +50,7 @@ const options = computed<ActionItem[]>(() => {
     },
     {
       label: props.editMode ? 'Save' : 'Create',
-      color: 'primary',
+      color: 'success',
       icon: props.editMode ? 'mdi-content-save' : 'mdi-plus',
       disabled: !validForm.value,
       action: async () => {

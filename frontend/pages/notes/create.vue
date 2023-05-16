@@ -6,7 +6,7 @@ definePageMeta({
 </script>
 
 <template>
-  <base-page>
+  <base-page title="Create Note">
     <note-form />
   </base-page>
 </template>

@@ -18,7 +18,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-page>
+  <base-page title="Update Note">
     <note-form
       v-if="note"
       :note="note"
