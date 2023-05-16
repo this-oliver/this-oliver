@@ -7,6 +7,7 @@ import { UserModel } from "../../src/data/models/user";
 import * as Factory from "../factory";
 import { IUser } from "../../src/types/user";
 import * as TokenHelper from "../../src/utils/token";
+import { ADMIN_SECRET } from "../../src/config/env";
 
 const Expect = Chai.expect;
 const Request = Supertest(App);
@@ -26,21 +27,29 @@ describe("User MiddleWare", function () {
       await UserModel.deleteMany({});
     });
 
-    it("post valid user should return 201 and user", async function () {
+    it("should return user and 201", async function () {
       const sampleUser = Factory.models.createUsers() as IUser;
 
       const response = await Request.post("/api/admin/users")
-        .send(sampleUser)
+        .send({...sampleUser, adminSecret: ADMIN_SECRET}) // add admin secret to create user
         .expect(201);
 
       Expect(response.body.name).to.equal(sampleUser.name);
       Expect(response.body.email).to.equal(sampleUser.email);
     });
 
-    it("post invalid user fields should return 400", async function () {
+    it("should throw 400 if user has invalid fields", async function () {
       await Request.post("/api/admin/users")
-        .send({ email: "", name: "", password: "" })
+        .send({ email: "", name: "", password: "", adminSecret: ADMIN_SECRET})
         .expect(400);
+    });
+
+    it("should throw 401 if admin secret is missing", async function () {
+      const sampleUser = Factory.models.createUsers() as IUser;
+
+      await Request.post("/api/admin/users")
+        .send({...sampleUser})
+        .expect(401);
     });
   });
 
