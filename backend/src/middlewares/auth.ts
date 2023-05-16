@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import type { BaseError } from "../types/error";
-import * as UserData from "../data/user";
-import * as ErrorHelper from "../helpers/error";
-import * as TokenHelper from "../helpers/token";
+import * as UserData from "../data/users";
+import * as ErrorHelper from "../utils/error";
+import * as TokenHelper from "../utils/token";
 import { JwtPayload } from "jsonwebtoken";
 
 const UNAUTHORIZED_MESSAGE = "invalid authentication credentials";

@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { ADMIN_SECRET } from "../config/env";
-import * as UserData from "../data/user";
-import * as ErrorHelper from "../helpers/error";
+import * as UserData from "../data/users";
+import * as ErrorHelper from "../utils/error";
 import type { BaseError } from "../types/error";
 
 async function postUser(req: Request, res: Response) {

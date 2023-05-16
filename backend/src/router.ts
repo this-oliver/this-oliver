@@ -2,10 +2,10 @@
 // eslint-disable-next-line max-len
 
 import { Router } from "express";
-import * as AuthController from "./controllers/auth";
-import * as UserController from "./controllers/user";
-import * as NoteController from "./controllers/notes";
-import * as ExperienceController from "./controllers/experiences";
+import * as AuthController from "./middlewares/auth";
+import * as UserController from "./middlewares/users";
+import * as NoteController from "./middlewares/notes";
+import * as ExperienceController from "./middlewares/experiences";
 
 const router = Router();
 

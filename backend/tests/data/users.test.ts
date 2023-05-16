@@ -1,7 +1,7 @@
 import Database from "../../src/database";
 import Chai from "chai";
 import ChaiAsPromise from "chai-as-promised";
-import * as UserData from "../../src/data/user";
+import * as UserData from "../../src/data/users";
 import { UserModel } from "../../src/data/models/user";
 import * as Factory from "../factory";
 import type { IUser } from "../../src/types/user";

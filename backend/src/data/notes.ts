@@ -2,7 +2,7 @@ import Mongoose from "mongoose";
 import { NoteModel, NoteDocument } from "./models/note";
 import type { INote } from "../types/note";
 import type { BaseError } from "../types/error";
-import * as SlugHelper from "../helpers/slug";
+import * as SlugHelper from "../utils/slug";
 
 async function postNote (title: string, content: string, tags: string[], publish: boolean): Promise<NoteDocument> {
 	// process tags

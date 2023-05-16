@@ -1,5 +1,5 @@
 import Mongoose from "mongoose";
-import * as SlugHelper from "../../helpers/slug";
+import * as SlugHelper from "../../utils/slug";
 import type { INote } from "../../types/note";
 
 const NoteSchema = new Mongoose.Schema<INote>(

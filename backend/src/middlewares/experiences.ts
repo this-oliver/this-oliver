@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import * as ExperienceData from "../data/experience";
-import * as ErrorHelper from "../helpers/error";
+import * as ExperienceData from "../data/experiences";
+import * as ErrorHelper from "../utils/error";
 
 async function postExperience (req: Request, res: Response) {
 	try {

@@ -1,5 +1,5 @@
 import { JWT_SECRET } from "../config/env";
-import * as UserData from "../data/user";
+import * as UserData from "../data/users";
 import Jwt from "jsonwebtoken";
 import type { BaseError } from "../types/error";
 import type { Request } from "express";

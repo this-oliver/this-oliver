@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import * as NoteData from "../data/note";
-import * as ErrorHelper from "../helpers/error";
+import * as NoteData from "../data/notes";
+import * as ErrorHelper from "../utils/error";
 
 async function postNote (req: Request, res: Response) {
 	try {

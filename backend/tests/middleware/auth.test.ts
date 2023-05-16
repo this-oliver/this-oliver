@@ -3,7 +3,7 @@ import Database from "../../src/database";
 import Chai from "chai";
 import Supertest from "supertest";
 import { UserModel } from "../../src/data/models/user";
-import * as UserData from "../../src/data/user";
+import * as UserData from "../../src/data/users";
 import * as Factory from "../factory";
 import type { IUser } from "../../src/types/user";
 

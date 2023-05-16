@@ -2,11 +2,11 @@ import App from "../../src/app";
 import Database from "../../src/database";
 import Chai from "chai";
 import Supertest from "supertest";
-import * as UserData from "../../src/data/user";
+import * as UserData from "../../src/data/users";
 import { UserModel } from "../../src/data/models/user";
 import * as Factory from "../factory";
 import { IUser } from "../../src/types/user";
-import * as TokenHelper from "../../src/helpers/token";
+import * as TokenHelper from "../../src/utils/token";
 
 const Expect = Chai.expect;
 const Request = Supertest(App);
