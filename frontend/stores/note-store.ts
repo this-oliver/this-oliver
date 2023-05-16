@@ -19,27 +19,27 @@ export const useNoteStore = defineStore('note', () => {
   const tags = ref<Tag[]>([])
 
   async function getNote (id: string): Promise<Note> {
-    return await request(`/articles/${id}`)
+    return await request(`/notes/${id}`)
   }
 
   async function getNoteBySlug (slug: string): Promise<Note> {
-    return await request(`/articles/${slug}?slug=true`)
+    return await request(`/notes/${slug}?slug=true`)
   }
 
   async function indexNotes (): Promise<Note[]> {
-    notes.value = _sortNotes(await request('/articles'))
+    notes.value = _sortNotes(await request('/notes'))
 
     return notes.value
   }
 
   async function indexTags (): Promise<Tag[]> {
-    tags.value = await request('/tags')
+    tags.value = await request('/notes/tags')
 
     return tags.value
   }
 
   async function postNote (note: WipNote): Promise<Note> {
-    return await request('/articles', {
+    return await request('/notes', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -49,7 +49,7 @@ export const useNoteStore = defineStore('note', () => {
   }
 
   async function patchNote (id: string, note: WipNote): Promise<Note> {
-    return await request(`/articles/${id}`, {
+    return await request(`/notes/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -59,7 +59,7 @@ export const useNoteStore = defineStore('note', () => {
   }
 
   async function deleteNote (id: string): Promise<Note> {
-    return await request(`/articles/${id}`, {
+    return await request(`/notes/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${authStore.token}`

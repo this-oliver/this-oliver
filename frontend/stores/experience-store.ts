@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth-store'
-import { Experience, User } from '~/types'
+import { Experience } from '~/types'
 
 interface WipExperience extends Partial<Experience> {
   _id?: string
@@ -12,19 +12,18 @@ export const useExperienceStore = defineStore('experience', () => {
   const authStore = useAuthStore()
 
   async function getExperience (id: string): Promise<Experience> {
-    const experiences = await indexExperience()
-
-    return experiences.find(xP => xP._id === id) as Experience
+    const experience = await request(`/experiences/${id}`)
+    return experience as Experience
   }
 
-  async function indexExperience (): Promise<Experience[]> {
-    const user = await request('/user') as User
+  async function indexExperiences (): Promise<Experience[]> {
+    const experiences = await request('/experiences')
 
-    return _sortLatestExperiences(user.experiences)
+    return _sortLatestExperiences(experiences)
   }
 
   async function postExperience (experience: WipExperience): Promise<Experience> {
-    return await request('/experiences', {
+    return await request('/admin/experiences', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -34,7 +33,7 @@ export const useExperienceStore = defineStore('experience', () => {
   }
 
   async function patchExperience (id: string, experience: WipExperience): Promise<Experience> {
-    return await request(`/experiences/${id}`, {
+    return await request(`/admin/experiences/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -44,7 +43,7 @@ export const useExperienceStore = defineStore('experience', () => {
   }
 
   async function deleteExperience (id: string): Promise<void> {
-    await request(`/experiences/${id}`, {
+    await request(`/admin/experiences/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -99,7 +98,7 @@ export const useExperienceStore = defineStore('experience', () => {
 
   return {
     getExperience,
-    indexExperience,
+    indexExperiences,
     postExperience,
     patchExperience,
     deleteExperience

@@ -76,7 +76,7 @@ const components = computed(() => {
 
 onMounted(async () => {
   loading.value = true
-  experiences.value = await experienceStore.indexExperience()
+  experiences.value = await experienceStore.indexExperiences()
   loading.value = false
 })
 

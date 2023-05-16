@@ -8,8 +8,12 @@ export const useUserStore = defineStore('user', () => {
 
   const user = ref<User | null>(null)
 
+  async function getUser (): Promise<User> {
+    return await request('/users/oliver')
+  }
+
   onMounted(async () => {
-    user.value = await request('/user')
+    user.value = await getUser()
   })
 
   return {
