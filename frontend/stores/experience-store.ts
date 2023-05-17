@@ -2,11 +2,6 @@ import { defineStore } from 'pinia'
 import { useAuthStore } from './auth-store'
 import { Experience } from '~/types'
 
-interface WipExperience extends Partial<Experience> {
-  _id?: string
-  createdAt?: string
-}
-
 export const useExperienceStore = defineStore('experience', () => {
   const { request } = useRequest()
   const authStore = useAuthStore()
@@ -22,7 +17,7 @@ export const useExperienceStore = defineStore('experience', () => {
     return _sortLatestExperiences(experiences)
   }
 
-  async function postExperience (experience: WipExperience): Promise<Experience> {
+  async function postExperience (experience: Partial<Experience>): Promise<Experience> {
     return await request('/admin/experiences', {
       method: 'POST',
       headers: {
@@ -32,7 +27,7 @@ export const useExperienceStore = defineStore('experience', () => {
     }) as Experience
   }
 
-  async function patchExperience (id: string, experience: WipExperience): Promise<Experience> {
+  async function patchExperience (id: string, experience: Partial<Experience>): Promise<Experience> {
     return await request(`/admin/experiences/${id}`, {
       method: 'PATCH',
       headers: {

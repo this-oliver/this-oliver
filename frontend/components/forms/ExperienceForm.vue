@@ -50,7 +50,8 @@ const options = computed<ActionItem[]>(() => {
     {
       label: 'Cancel',
       color: 'secondary',
-      icon: 'mdi-cancel'
+      icon: 'mdi-cancel',
+      action: () => router.push('/experiences')
     },
     {
       label: props.editMode ? 'Save' : 'Create',
@@ -59,24 +60,21 @@ const options = computed<ActionItem[]>(() => {
       disabled: !validForm.value,
       action: async () => {
         try {
+          const xp: Partial<Experience> = {
+            title: title.value,
+            org: org.value,
+            startYear: startYear.value,
+            endYear: endYear.value,
+            description: description.value,
+            type: type.value,
+            link: link.value,
+            image: image.value
+          }
+
           if (props.editMode && props.experience) {
-            await experienceStore.patchExperience(props.experience._id, {
-              title: title.value,
-              org: org.value,
-              startYear: startYear.value,
-              endYear: endYear.value,
-              description: description.value,
-              type: type.value
-            })
+            await experienceStore.patchExperience(props.experience._id, xp)
           } else {
-            await experienceStore.postExperience({
-              title: title.value,
-              org: org.value,
-              startYear: startYear.value,
-              endYear: endYear.value,
-              description: description.value,
-              type: type.value
-            })
+            await experienceStore.postExperience(xp)
           }
 
           notify('Experience Saved', `Experience ${props.editMode ? 'updated' : 'created'} successfully`, 'success')
@@ -117,6 +115,8 @@ onMounted(() => {
     endYear.value = props.experience.endYear
     description.value = props.experience.description
     type.value = props.experience.type
+    link.value = props.experience.link
+    image.value = props.experience.image
   }
 })
 </script>
@@ -132,11 +132,11 @@ onMounted(() => {
     <BaseInputText
       v-model="startYear"
       label="Start Year"
-      :place-holder="currentYear" />
+      :place-holder="`${currentYear}`" />
     <BaseInputText
       v-model="endYear"
       label="End Year"
-      :place-holder="currentYear" />
+      :place-holder="`${currentYear}`" />
     <BaseInputText
       v-model="link"
       label="Link"
