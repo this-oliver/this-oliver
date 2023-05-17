@@ -29,8 +29,7 @@ export default defineNuxtConfig({
     secret: '',
 
     public: {
-      api: '',
-      jwtSecret: ''
+      api: ''
     }
   }
 })
