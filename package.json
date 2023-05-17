@@ -10,9 +10,7 @@
     "hook": "simple-git-hooks"
   },
   "devDependencies": {
-    "fist-bump": "^1.2.4"
-  },
-  "dependencies": {
+    "fist-bump": "^1.2.4",
     "lint-staged": "^13.2.2",
     "simple-git-hooks": "^2.8.1"
   },
