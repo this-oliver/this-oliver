@@ -60,8 +60,8 @@ const noteOptions = computed<ActionItem[]>(() => {
 </script>
 
 <template>
-  <BaseCard
-    class="note-card brutalist-outline"
+  <base-card
+    class="note-card brutalist-outline pa-2 pa-md-1"
     :outlined="true">
     <color-card>
       <v-row
@@ -90,7 +90,7 @@ const noteOptions = computed<ActionItem[]>(() => {
       :to="`/notes/${props.note.slug}`">
       <h2>{{ props.note.title }}</h2>
     </RouterLink>
-  </BaseCard>
+  </base-card>
 </template>
 
 <style scoped>

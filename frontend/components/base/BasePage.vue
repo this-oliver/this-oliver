@@ -21,7 +21,7 @@ const props = defineProps({
 
     <v-divider class="border-opacity-0" />
 
-    <v-col class="mt-2">
+    <v-col class="mt-1 mt-md-2">
       <slot />
     </v-col>
   </v-row>

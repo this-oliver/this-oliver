@@ -28,10 +28,22 @@ onMounted(async () => {
           Edit
         </base-btn>
         <markdown-card
-          style="font-size: 1.5rem;"
+          id="welcome-banner"
           :markdown="description"
           disable-anchors />
       </v-col>
     </v-row>
   </base-page>
 </template>
+
+<style>
+#welcome-banner {
+  font-size: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  #welcome-banner {
+    font-size: 1.5rem;
+  }
+}
+</style>

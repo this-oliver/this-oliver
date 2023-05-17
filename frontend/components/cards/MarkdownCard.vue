@@ -137,10 +137,6 @@ onMounted(() => {
 </template>
 
 <style>
-#markdown-card{
-  height: 100%;
-}
-
 h1, h2, h3 {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
@@ -159,6 +155,7 @@ pre {
 
 code {
   font-size: small;
+  padding: 0 0.5rem;
 }
 
 code:not(pre code) {
