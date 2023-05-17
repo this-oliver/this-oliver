@@ -1,6 +1,6 @@
 {
   "name": "oliverrr",
-  "version": "3.3.10",
+  "version": "3.3.11",
   "description": "personal website",
   "author": "oliver <hello@oliverrr.net>",
   "repository": "this-oliver/this-oliver",
@@ -18,8 +18,7 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "/frontend/**/*.ts": "cd frontend && npm run lint:fix",
-    "/frontend/**/*.vue": "cd frontend && npm run lint:fix",
-    "/backend/**/*.ts": "cd backend && npm run lint:fix"
+    "./frontend/**/*.{ts, vue}": "cd frontend && npm run lint:fix",
+    "./backend/**/*.ts": "cd backend && npm run lint:fix"
   }
 }
