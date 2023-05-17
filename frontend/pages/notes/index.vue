@@ -189,7 +189,7 @@ onMounted(async () => {
         <h4>Tags</h4>
         <v-list-item
           v-for="tag in getTags"
-          :key="tag">
+          :key="tag.name">
           <template #append>
             <v-list-item-action start>
               <v-checkbox-btn
