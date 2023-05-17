@@ -85,6 +85,12 @@ const routes: Route[] = [
     protected: true,
   },
   {
+    path: "/api/admin/notes/tags",
+    method: "get",
+    handler: NoteController.indexNoteTags,
+    protected: true,
+  },
+  {
     path: "/api/admin/notes/:id",
     method: "get",
     handler: NoteController.getNote,
@@ -106,12 +112,6 @@ const routes: Route[] = [
     path: "/api/admin/notes/:id",
     method: "delete",
     handler: NoteController.deleteNote,
-    protected: true,
-  },
-  {
-    path: "/api/admin/tags",
-    method: "get",
-    handler: NoteController.indexNoteTags,
     protected: true,
   },
   {

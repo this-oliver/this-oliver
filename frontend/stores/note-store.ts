@@ -19,27 +19,37 @@ export const useNoteStore = defineStore('note', () => {
   const tags = ref<string[]>([])
 
   async function getNote (id: string): Promise<Note> {
-    return await request(`/notes/${id}`)
+    return authStore.isLoggedIn
+      ? await request(`/admin/notes/${id}`, { headers: { Authorization: `Bearer ${authStore.token}` } })
+      : await request(`/notes/${id}`)
   }
 
   async function getNoteBySlug (slug: string): Promise<Note> {
-    return await request(`/notes/${slug}?slug=true`)
+    return authStore.isLoggedIn
+      ? await request(`/admin/notes/${slug}?slug=true`, { headers: { Authorization: `Bearer ${authStore.token}` } })
+      : await request(`/notes/${slug}?slug=true`)
   }
 
   async function indexNotes (): Promise<Note[]> {
-    notes.value = _sortNotes(await request('/notes'))
+    notes.value = authStore.isLoggedIn
+      ? await request('/admin/notes', { headers: { Authorization: `Bearer ${authStore.token}` } })
+      : await request('/notes')
+
+    notes.value = _sortNotes(notes.value)
 
     return notes.value
   }
 
   async function indexTags (): Promise<string[]> {
-    tags.value = await request('/notes/tags')
+    tags.value = authStore.isLoggedIn
+      ? await request('/admin/notes/tags', { headers: { Authorization: `Bearer ${authStore.token}` } })
+      : await request('/notes/tags')
 
     return tags.value
   }
 
   async function postNote (note: WipNote): Promise<Note> {
-    return await request('/notes', {
+    return await request('/admin/notes', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -49,7 +59,7 @@ export const useNoteStore = defineStore('note', () => {
   }
 
   async function patchNote (id: string, note: WipNote): Promise<Note> {
-    return await request(`/notes/${id}`, {
+    return await request(`/admin/notes/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${authStore.token}`
@@ -59,7 +69,7 @@ export const useNoteStore = defineStore('note', () => {
   }
 
   async function deleteNote (id: string): Promise<Note> {
-    return await request(`/notes/${id}`, {
+    return await request(`/admin/notes/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${authStore.token}`
