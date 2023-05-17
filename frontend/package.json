@@ -27,6 +27,7 @@
     "@pinia/nuxt": "^0.4.9",
     "highlight.js": "^11.8.0",
     "marked": "^5.0.2",
+    "pinia": "^2.1.1",
     "sanitize-html": "^2.10.0",
     "simple-analytics-vue": "^3.0.2",
     "vue-sonner": "^0.3.2"
