@@ -1,5 +1,12 @@
+<script setup lang="ts">
+
+const theme = useTheme()
+const layoutClass = computed<string>(() => theme.dark.value ? 'dark-theme' : '')
+
+</script>
+
 <template>
-  <v-app>
+  <v-app :class="layoutClass">
     <app-nav />
     <app-sidebar />
     <app-notification />
@@ -19,3 +26,9 @@
     <app-footer />
   </v-app>
 </template>
+
+<style>
+  .dark-theme a.simple-link, .dark-theme  a.markdown-link {
+    color: #F3B1FA;
+  }
+</style>

@@ -86,7 +86,7 @@ const noteOptions = computed<ActionItem[]>(() => {
     <p>{{ noteDate }}</p>
 
     <RouterLink
-      class="plain text-primary"
+      class="plain"
       :to="`/notes/${props.note.slug}`">
       <h2>{{ props.note.title }}</h2>
     </RouterLink>

@@ -59,7 +59,7 @@ function _markdownToHtml (markdown: string, sanitize?: boolean) {
    * Opens external links in new tab
    */
   renderer.link = (href, _title, linkText) => {
-    return `<a href="${href}" target="_blank">${linkText}</a>`
+    return `<a class="markdown-link" href="${href}" target="_blank">${linkText}</a>`
   }
 
   marked.use({ renderer })

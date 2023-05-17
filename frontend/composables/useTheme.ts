@@ -6,18 +6,22 @@ export function useTheme () {
   const storage = useStorage()
   const vuetifyTheme = useVuetifyTheme()
 
-  const dark = ref<boolean>(vuetifyTheme.global.name.value === 'dark')
+  const isDark = ref<boolean>(vuetifyTheme.global.name.value === 'dark')
+
+  const dark = computed<boolean>(() => {
+    return vuetifyTheme.global.name.value === 'dark'
+  })
 
   function setDarkTheme (value: boolean) {
-    dark.value = value
+    isDark.value = value
     storage.set(LOCAL_THEME_KEY, value)
   }
 
   function toggleTheme () {
-    setDarkTheme(!dark.value)
+    setDarkTheme(!isDark.value)
   }
 
-  watch(dark, (value) => {
+  watch(isDark, (value) => {
     // manually set theme to vuetify
     vuetifyTheme.global.name.value = value ? 'dark' : 'light'
   })

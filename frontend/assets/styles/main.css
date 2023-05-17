@@ -13,3 +13,8 @@
   border-right: 2.5px solid !important;
   border-bottom: 2.5px solid !important;
 }
+
+::selection {
+  background: red;
+  color: #fff;
+}
