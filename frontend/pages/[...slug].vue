@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+// import Image from '~/assets/images/this-is-fine.gif'
 
 const route = useRoute()
 const router = useRouter()
@@ -31,33 +32,48 @@ function destorySecretAction () {
   <base-page
     class="text-center"
     :title="title">
-    <base-card
-      id="wildcard"
-      class="brutalist-outline"
-      outlined>
-      <h2 v-if="message">
-        {{ message }}
-      </h2>
-      <h2 v-else>
-        Can't find a page that matches the <code class="underline">{{ route.path }}</code> path
-      </h2>
-    </base-card>
+    <v-row justify="center">
+      <v-col
+        cols="11"
+        md="6">
+        <base-card
+          id="wildcard"
+          color="transparent">
+          <base-image
+            class="mt-2"
+            src="/images/this-is-fine.gif"
+            alt="A dog in a burning room saying 'this is fine'" />
 
-    <base-btn
-      class="brutalist-outline mt-2"
-      color="secondary"
-      outlined
-      :to="redirect"
-      @mousedown="startSecretAction"
-      @mouseup="destorySecretAction"
-      @mouseleave="destorySecretAction">
-      Go Back
-    </base-btn>
+          <h2 class="mt-2">
+            <span v-if="message">{{ message }}</span>
+            <span v-else>Can't find a page that matches the <code class="underline">{{ route.path }}</code> path</span>
+          </h2>
+        </base-card>
+      </v-col>
+
+      <v-divider class="border-opacity-0" />
+
+      <v-col
+        cols="8"
+        md="4">
+        <base-btn
+          class="brutalist-outline mt-2"
+          block
+          outlined
+          color="primary"
+          :to="redirect"
+          @mousedown="startSecretAction"
+          @mouseup="destorySecretAction"
+          @mouseleave="destorySecretAction">
+          Go Back
+        </base-btn>
+      </v-col>
+    </v-row>
   </base-page>
 </template>
 
 <style scoped>
   #wildcard {
-    margin-top: 100px;
+    margin-top: 50px;
   }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
-import BaseCard from './BaseCard.vue'
-import BaseImage from './BaseImage.vue'
+import BaseCard from '~/components/base/BaseCard.vue'
+import BaseImage from '~/components/base/BaseImage.vue'
 import { ActionItem } from '~/types'
 
 const props = defineProps({
@@ -41,7 +41,7 @@ const OopsCard = function (mode: 'missing' | 'fetching'): Component {
     ),
 
     h(BaseImage, {
-      src: 'https://media.npr.org/assets/img/2023/01/14/this-is-fine_custom-dcb93e90c4e1548ffb16978a5a8d182270c872a9-s1600-c85.webp',
+      src: '/images/this-is-fine.jpg',
       alt: "Meme of a dog in a burning room saying 'This is fine'",
       width: '100%',
       class: 'mt-2'
