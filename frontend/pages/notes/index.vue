@@ -8,20 +8,45 @@ import NoteCard from '~/components/cards/NoteCard.vue'
 const authStore = useAuthStore()
 const noteStore = useNoteStore()
 
-const notes = ref<Note[]>([])
-const tags = ref<string[]>([])
-const showFilter = ref(false)
-const tagsFilter = ref<string[]>([])
 const loading = ref(false)
 
+const showFilter = ref(false)
+const filterUnpublished = ref(false)
+const filteredTags = ref<string[]>([])
+
+const showReset = computed<boolean>(() => {
+  return filteredTags.value.length > 0 || filterUnpublished.value === true
+})
+
 const getNotes = computed<Note[]>(() => {
-  if (tagsFilter.value.length > 0) {
-    return notes.value.filter((note) => {
-      return note.tags.some(tag => inFilter(tag))
+  let filteredNotes: Note[]
+
+  if (filteredTags.value.length > 0) {
+    filteredNotes = noteStore.notes.filter((note) => {
+      return note.tags.some(tag => tagInFilter(tag))
     })
   } else {
-    return notes.value
+    filteredNotes = noteStore.notes
   }
+
+  return filterUnpublished.value
+    ? filteredNotes.filter(note => note.publish === false)
+    : filteredNotes
+})
+
+const getTags = computed<{ name: string, filtered: boolean}[]>(() => {
+  return noteStore.tags.flat()
+    .map((tag) => {
+      return {
+        name: tag,
+        filtered: tagInFilter(tag)
+      }
+    })
+    .sort((a, b) => {
+      if (a.filtered && !b.filtered) { return -1 }
+      if (!a.filtered && b.filtered) { return 1 }
+      return 0
+    })
 })
 
 const options = computed<ActionItem[]>(() => {
@@ -30,7 +55,7 @@ const options = computed<ActionItem[]>(() => {
       label: 'Filter',
       color: 'primary',
       icon: 'mdi-filter',
-      action: () => { showFilter.value = true }
+      action: () => { showFilter.value = !showFilter.value }
     }
   ]
 
@@ -56,22 +81,28 @@ const components = computed(() => {
   })
 })
 
-function inFilter (tag: string): boolean {
-  return tagsFilter.value.includes(tag)
-}
-
-function addTagToFilter (tag: string) {
-  tagsFilter.value.push(tag)
+function tagInFilter (tag: string) {
+  return filteredTags.value.includes(tag)
 }
 
 function removeTagFromFilter (tag: string) {
-  tagsFilter.value = tagsFilter.value.filter(t => t !== tag)
+  filteredTags.value = filteredTags.value.filter(t => t !== tag)
+}
+
+function addTagToFilter (tag: string) {
+  if (filteredTags.value.includes(tag)) { return }
+  filteredTags.value.push(tag)
+}
+
+function resetFilters () {
+  filteredTags.value = []
+  filterUnpublished.value = false
 }
 
 onMounted(async () => {
   loading.value = true
-  notes.value = await noteStore.indexNotes()
-  tags.value = await noteStore.indexTags()
+  await noteStore.indexNotes()
+  await noteStore.indexTags()
   loading.value = false
 })
 
@@ -85,29 +116,93 @@ onMounted(async () => {
       :loading="loading"
       :components="components" />
 
-    <v-dialog
+    <v-navigation-drawer
       v-model="showFilter"
-      width="70vw">
-      <base-card class="pa-2">
-        <v-card-title>Filter Notes</v-card-title>
+      class="pa-2"
+      temporary
+      floating
+      absolute
+      :scrim="false"
+      color="primary"
+      location="right"
+      width="60%">
+      <template #prepend>
+        <v-row
+          justify="space-between"
+          align="center">
+          <v-col cols="auto">
+            <v-toolbar-title>Filter Notes</v-toolbar-title>
+          </v-col>
 
-        <v-list>
-          <v-list-item
-            v-for="(tag, index) in tags"
-            :key="tag + index">
-            <template #prepend>
-              <v-list-item-action start>
-                <v-checkbox-btn
-                  :value="inFilter(tag)"
-                  @click="inFilter(tag) ? removeTagFromFilter(tag) : addTagToFilter(tag)" />
-              </v-list-item-action>
-            </template>
+          <v-col
+            class="text-center"
+            cols="auto">
+            <base-btn
+              text
+              @click="showFilter = false">
+              <v-icon
+                size="large"
+                icon="mdi-close" />
+            </base-btn>
+          </v-col>
+        </v-row>
+      </template>
 
-            {{ tag }}
-          </v-list-item>
-        </v-list>
-      </base-card>
-    </v-dialog>
+      <v-list>
+        <h4>
+          Reset
+        </h4>
+        <v-list-item
+          color="error"
+          :disabled="!showReset"
+          @click="resetFilters">
+          <template #append>
+            <v-list-item-action start>
+              <base-btn
+                text
+                :color="showReset ? 'error' : ''">
+                <v-icon :icon="showReset ? 'mdi-close-box-multiple-outline' : 'mdi-shimmer'" />
+              </base-btn>
+            </v-list-item-action>
+          </template>
+
+          Reset Filters
+        </v-list-item>
+
+        <v-divider class="border-outline-25 my-2" />
+
+        <h4 v-if="authStore.isLoggedIn">
+          Published
+        </h4>
+        <v-list-item v-if="authStore.isLoggedIn">
+          <template #append>
+            <v-list-item-action start>
+              <v-checkbox-btn
+                v-model="filterUnpublished"
+                color="success" />
+            </v-list-item-action>
+          </template>
+
+          Only show unpublished notes
+        </v-list-item>
+
+        <h4>Tags</h4>
+        <v-list-item
+          v-for="tag in getTags"
+          :key="tag">
+          <template #append>
+            <v-list-item-action start>
+              <v-checkbox-btn
+                v-model="tag.filtered"
+                color="success"
+                @update:model-value="(value: boolean) => value ? addTagToFilter(tag.name) : removeTagFromFilter(tag.name)" />
+            </v-list-item-action>
+          </template>
+
+          {{ tag.name }}
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
   </base-page>
 </template>
 
