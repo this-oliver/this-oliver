@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { Note, ActionItem } from '~/types'
+import { useNoteStore } from '~/stores/note-store'
 
 const props = defineProps({
   note: {
@@ -15,11 +16,44 @@ const props = defineProps({
 
 const { formatDate } = useTime()
 const noteDate = computed<string>(() => formatDate(props.note.createdAt))
-const notePublished = computed<boolean>(() => props.note.publish)
+
 const noteOptions = computed<ActionItem[]>(() => {
   return [
-    { label: 'Edit', icon: 'mdi-pencil', to: `/notes/${props.note.slug}/edit` },
-    { label: notePublished ? 'Unpublish' : 'Publish', color: notePublished ? 'warning' : 'success', icon: notePublished ? 'mdi-eye-off' : 'mdi-eye' }
+    {
+      label: 'Edit',
+      icon: 'mdi-pencil',
+      to: `/notes/${props.note.slug}/edit`
+    },
+    {
+      label: props.note.publish === true ? 'Unpublish' : 'Publish',
+      color: props.note.publish === true ? 'warning' : 'success',
+      icon: props.note.publish === true ? 'mdi-eye-off' : 'mdi-eye',
+      action: async () => {
+        const noteStore = useNoteStore()
+        const { notify } = useNotification()
+
+        try {
+          await noteStore.patchNote(props.note._id, {
+            publish: !props.note.publish
+          })
+
+          notify(
+            'Note updated successfully!',
+            `Note ${props.note.publish === true ? 'unpublished' : 'published'}`,
+            'success'
+          )
+
+          await noteStore.indexNotes()
+        } catch (error) {
+          const errorMessage = (error as Error).message
+          notify(
+            'Error updating note',
+            errorMessage,
+            'error'
+          )
+        }
+      }
+    }
   ]
 })
 
@@ -59,8 +93,8 @@ const noteOptions = computed<ActionItem[]>(() => {
   </BaseCard>
 </template>
 
-<style scoped>createdAt
-.note-card-options {
+<style scoped>
+createdAt .note-card-options {
   height: 100px;
   width: 100%;
   padding: 1rem;
