@@ -2,6 +2,7 @@
   "name": "frontend",
   "repository": "this-oliver/this-oliver",
   "scripts": {
+    "start": "node .output/server/index.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env.local",
     "generate": "nuxt generate",
@@ -31,5 +32,8 @@
     "sanitize-html": "^2.10.0",
     "simple-analytics-vue": "^3.0.2",
     "vue-sonner": "^0.3.2"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
