@@ -16,7 +16,7 @@ async function postUser(req: Request, res: Response) {
       throw { message: "not authorized to create a user!", status: 401 } as BaseError;
     }
 
-    const user = await UserData.createUser(req.body.name, req.body.email, req.body.password);
+    const user = await UserData.createUser(req.body.name, req.body.email, req.body.password, req.body.status);
 
     return res.status(201).send(user);
   } catch (error) {

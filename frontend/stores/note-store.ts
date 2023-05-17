@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { useRequest } from '~/composables/useRequest'
 import { useAuthStore } from '~/stores/auth-store'
-import type { Note, Tag } from '~/types'
+import type { Note } from '~/types'
 
 interface WipNote extends Partial<Note> {
   _id?: string
   slug?: string
-  tags?: Tag[]
+  tags?: string[]
   views?: number
   createdAt?: string
 }
@@ -16,7 +16,7 @@ export const useNoteStore = defineStore('note', () => {
   const authStore = useAuthStore()
 
   const notes = ref<Note[]>([])
-  const tags = ref<Tag[]>([])
+  const tags = ref<string[]>([])
 
   async function getNote (id: string): Promise<Note> {
     return await request(`/notes/${id}`)
@@ -32,7 +32,7 @@ export const useNoteStore = defineStore('note', () => {
     return notes.value
   }
 
-  async function indexTags (): Promise<Tag[]> {
+  async function indexTags (): Promise<string[]> {
     tags.value = await request('/notes/tags')
 
     return tags.value

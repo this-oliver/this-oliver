@@ -11,24 +11,18 @@ export interface ActionItem {
   component?: any;
 }
 
-export interface Tag {
-  _id: string;
-  name: string
-  color: string
-}
-
 export interface Note {
   _id: string;
   title: string
   content: string
   publish: boolean
   views: number
-  tags: Tag[]
+  tags: string[]
   slug: string
   createdAt: string
 }
 
-export type ExperienceType = 'job' | 'education' | 'projects' | 'other';
+export type ExperienceType = 'job' | 'education' | 'project' | 'other';
 
 export interface Experience {
   _id: string;
@@ -37,17 +31,16 @@ export interface Experience {
   startYear: number
   endYear: number
   description: string
-  type: ExperienceType;
+  type: ExperienceType
+  link?: string
+  image?: string
   createdAt: string
 }
 
 export interface User {
   _id: string
   name: string
-  bio: {
-    short: string
-    long: string
-  }
+  status: string
   articles: Note[]
   experiences: Experience[]
   visits?: number,

@@ -3,11 +3,9 @@ interface IUser {
   email: string;
   password: string;
   salt: string;
+  
+  status: string;
   visits: number;
-  bio: {
-    short: string;
-    long: string;
-  };
 }
 
 export { IUser };

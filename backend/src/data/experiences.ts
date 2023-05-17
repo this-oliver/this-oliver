@@ -22,6 +22,8 @@ async function postExperience (
 			startYear: startYear,
 			endYear: endYear,
 			description: description,
+      link: link,
+      image: image,
 			type: type
 		}));
 

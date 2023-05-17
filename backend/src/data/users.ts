@@ -3,7 +3,7 @@ import type { UserDocument } from "./models/user";
 import type { IUser } from "../types/user";
 import type { BaseError } from "../types/error";
 
-async function createUser (name: string, email: string, password: string) {
+async function createUser (name: string, email: string, password: string, status?: string) {
 	const userCount = await UserModel.countDocuments({});
 
 	if (userCount > 1) {
@@ -16,6 +16,7 @@ async function createUser (name: string, email: string, password: string) {
 			name: name,
 			email: email,
 			password: password,
+      status: status
 		})
 	);
   } catch (error) {
@@ -73,9 +74,8 @@ async function updateUser (patch: Partial<IUser>): Promise<UserDocument> {
 
 	user.name = patch.name || user.name;
 
-	if (patch.bio) {
-		user.bio.short = patch.bio.short || user.bio.short;
-		user.bio.long = patch.bio.long || user.bio.long;
+	if (patch.status) {
+    user.status = patch.status;
 	}
 
 	return await user.save();

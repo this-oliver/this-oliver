@@ -8,7 +8,7 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 
 const description = computed<string>(() => {
-  return userStore.user?.bio.short ?? DEFAULT_DESCRIPTION
+  return userStore.user?.status ?? DEFAULT_DESCRIPTION
 })
 
 onMounted(async () => {

@@ -17,7 +17,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const { notify } = useNotification()
 
-const description = ref<string>(props.user.bio.short)
+const description = ref<string>(props.user.status)
 
 const validForm = computed<boolean>(() => {
   return (
@@ -41,9 +41,7 @@ const options = computed<ActionItem[]>(() => {
       disabled: !validForm.value,
       action: async () => {
         try {
-          await userStore.updateUser({
-            bio: { short: description.value, long: props.user.bio.long }
-          })
+          await userStore.updateUser({ status: description.value })
 
           notify('User', 'User updated successfully', 'success')
           router.push('/')

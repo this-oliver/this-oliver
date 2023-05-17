@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Note, ActionItem, Tag } from '~/types'
+import type { Note, ActionItem } from '~/types'
 import { useNoteStore } from '~/stores/note-store'
 
 const props = defineProps({
@@ -16,17 +16,12 @@ const props = defineProps({
 const noteStore = useNoteStore()
 const router = useRouter()
 const { notify } = useNotification()
-const { getRandomColor } = useColor()
 
 const title = ref<string>('')
 const content = ref<string>('')
 const selectedTags = ref<string[]>([])
-const tags = ref<Tag[]>([])
+const tags = ref<string[]>([])
 const publish = ref<boolean>(true)
-
-const formattedTags = computed(() => {
-  return tags.value.map(tag => tag.name)
-})
 
 const validForm = computed<boolean>(() => {
   return (
@@ -54,14 +49,14 @@ const options = computed<ActionItem[]>(() => {
             ? await noteStore.patchNote(props.note._id, {
               title: title.value,
               content: content.value,
-              tags: _processTags(selectedTags.value),
+              tags: selectedTags.value,
               publish: publish.value
             })
 
             : await noteStore.postNote({
               title: title.value,
               content: content.value,
-              tags: _processTags(selectedTags.value),
+              tags: selectedTags.value,
               publish: publish.value
             })
 
@@ -93,29 +88,6 @@ const options = computed<ActionItem[]>(() => {
   ]
 })
 
-/**
- * Returns a list of tags that are either new or already exist.
- *
- * NOTE: New tags are converted to Tag objects with a random color and
- * old tags are returned as is.
- */
-function _processTags (sampleTags: string[]): Tag[] {
-  return sampleTags.map((tag) => {
-    // check if tag already exists
-    const existingTag = tags.value.find(t => t.name === tag)
-
-    if (existingTag) {
-      return existingTag
-    } else {
-      return {
-        _id: '',
-        name: tag,
-        color: getRandomColor()
-      }
-    }
-  })
-}
-
 onMounted(async () => {
   if (props.note) {
     title.value = props.note.title ?? ''
@@ -140,7 +112,7 @@ onMounted(async () => {
         md="8">
         <v-combobox
           v-model="selectedTags"
-          :items="formattedTags"
+          :items="tags"
           label="Tags"
           chips
           multiple

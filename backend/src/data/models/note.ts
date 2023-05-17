@@ -43,6 +43,6 @@ NoteSchema.pre('save', async function(next) {
 
 type NoteDocument = INote & Mongoose.Document;
 
-const NoteModel = Mongoose.model("article", NoteSchema);
+const NoteModel = Mongoose.model("note", NoteSchema);
 
 export { NoteModel, NoteDocument };

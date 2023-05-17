@@ -10,9 +10,9 @@ interface IExperience {
 }
 
 enum ExperienceType {
-  WORK = "job",
+  JOB = "job",
   EDUCATION = "education",
-  PROJECT = "projects", // TODO: rename
+  PROJECT = "project",
   OTHER = "other",
 }
 export { IExperience, ExperienceType }

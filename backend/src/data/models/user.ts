@@ -10,12 +10,9 @@ const UserSchema = new Mongoose.Schema<IUser>(
 		name: { type: String, required: true },
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
-		bio: {
-			short: { type: String, default: "" },
-			long: { type: String, default: "" },
-		},
-		visits: { type: Number, default: 0 },
-		salt: { type: String },
+    salt: { type: String },
+    visits: { type: Number, default: 0 },
+		status: { type: String}
 	},
 	{ timestamps: true }
 );

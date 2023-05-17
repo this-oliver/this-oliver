@@ -59,7 +59,7 @@ const getExperiences = computed<Experience[]>(() => {
       return showEducation.value
     } else if (experience.type === 'job') {
       return showWork.value
-    } else if (experience.type === 'projects') {
+    } else if (experience.type === 'project') {
       return showProjects.value
     } else {
       return true

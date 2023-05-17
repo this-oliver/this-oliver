@@ -2,16 +2,16 @@
 import { h } from 'vue'
 import { useNoteStore } from '~/stores/note-store'
 import { useAuthStore } from '~/stores/auth-store'
-import { ActionItem, Note, Tag } from '~/types'
+import { ActionItem, Note } from '~/types'
 import NoteCard from '~/components/cards/NoteCard.vue'
 
 const authStore = useAuthStore()
 const noteStore = useNoteStore()
 
 const notes = ref<Note[]>([])
-const tags = ref<Tag[]>([])
+const tags = ref<string[]>([])
 const showFilter = ref(false)
-const tagsFilter = ref<Tag[]>([])
+const tagsFilter = ref<string[]>([])
 const loading = ref(false)
 
 const getNotes = computed<Note[]>(() => {
@@ -56,16 +56,16 @@ const components = computed(() => {
   })
 })
 
-function inFilter (tag: Tag): boolean {
-  return tagsFilter.value.some(t => t._id === tag._id)
+function inFilter (tag: string): boolean {
+  return tagsFilter.value.includes(tag)
 }
 
-function addTagToFilter (tag: Tag) {
+function addTagToFilter (tag: string) {
   tagsFilter.value.push(tag)
 }
 
-function removeTagFromFilter (tag: Tag) {
-  tagsFilter.value = tagsFilter.value.filter(t => t._id !== tag._id)
+function removeTagFromFilter (tag: string) {
+  tagsFilter.value = tagsFilter.value.filter(t => t !== tag)
 }
 
 onMounted(async () => {
@@ -93,18 +93,17 @@ onMounted(async () => {
 
         <v-list>
           <v-list-item
-            v-for="tag in tags"
-            :key="tag._id">
+            v-for="(tag, index) in tags"
+            :key="tag + index">
             <template #prepend>
               <v-list-item-action start>
                 <v-checkbox-btn
-                  :color="tag.color"
                   :value="inFilter(tag)"
                   @click="inFilter(tag) ? removeTagFromFilter(tag) : addTagToFilter(tag)" />
               </v-list-item-action>
             </template>
 
-            {{ tag.name }}
+            {{ tag }}
           </v-list-item>
         </v-list>
       </base-card>

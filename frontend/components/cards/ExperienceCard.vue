@@ -21,7 +21,7 @@ const experienceColor = computed<string>(() => {
     case 'job':
       return 'job'
 
-    case 'projects':
+    case 'project':
       return 'projects'
 
     default:
@@ -35,7 +35,7 @@ const experienceEmoji = computed<string>(() => {
       return '💼'
     case 'education':
       return '🎓'
-    case 'projects':
+    case 'project':
       return '🧪'
     default:
       return '🤷‍♂️'

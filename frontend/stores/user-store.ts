@@ -28,10 +28,6 @@ export const useUserStore = defineStore('user', () => {
     return user.value as User
   }
 
-  onMounted(async () => {
-    user.value = await getUser()
-  })
-
   return {
     user,
     getUser,

@@ -21,13 +21,15 @@ const currentYear = new Date().getFullYear()
 
 const title = ref<string>()
 const org = ref<string>()
-const startYear = ref<number>(currentYear)
-const endYear = ref<number>(currentYear)
+const startYear = ref<number>()
+const endYear = ref<number>()
 const description = ref<string>()
 const type = ref<ExperienceType>()
+const link = ref<string>()
+const image = ref<string>()
 
 const types = computed<ExperienceType[]>(() => {
-  return ['job', 'education', 'projects']
+  return ['job', 'education', 'project']
 })
 
 const validForm = computed<boolean>(() => {
@@ -37,7 +39,9 @@ const validForm = computed<boolean>(() => {
     !!startYear.value &&
     !!endYear.value &&
     !!description.value &&
-    !!type.value
+    !!type.value &&
+    !!link.value &&
+    !!image.value
   )
 })
 
@@ -127,16 +131,29 @@ onMounted(() => {
       label="Org" />
     <BaseInputText
       v-model="startYear"
-      label="Start Year" />
+      label="Start Year"
+      :place-holder="currentYear" />
     <BaseInputText
       v-model="endYear"
-      label="End Year" />
+      label="End Year"
+      :place-holder="currentYear" />
+    <BaseInputText
+      v-model="link"
+      label="Link"
+      place-holder="example.com" />
+    <BaseInputText
+      v-model="image"
+      label="Image"
+      place-holder="example.com/image.webp" />
 
     <v-select
       v-model="type"
       :items="types"
       label="Type" />
 
-    <base-input-text-area v-model="description" />
+    <base-input-text-area
+      v-model="description"
+      label="Description"
+      place-holder="Describe experience" />
   </base-form>
 </template>
