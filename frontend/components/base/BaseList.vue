@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { h } from 'vue'
-import BaseCard from '~/components/base/BaseCard.vue'
 import BaseImage from '~/components/base/BaseImage.vue'
 import { ActionItem } from '~/types'
 
@@ -23,32 +21,6 @@ const props = defineProps({
   }
 })
 
-const OopsCard = function (mode: 'missing' | 'fetching'): Component {
-  return h(BaseCard, { class: 'text-center pa-2', color: 'transparent' }, [
-    h('h2', { class: 'mt-2' },
-      // return a different message depending on the mode
-      mode === 'fetching'
-        ? [
-            'Fetching ',
-            h('span', { class: 'label text-primary' }, props.label),
-            '...'
-          ]
-        : [
-            'No ',
-            h('span', { class: 'label text-primary' }, props.label),
-            ' found'
-          ]
-    ),
-
-    h(BaseImage, {
-      src: '/images/this-is-fine.jpg',
-      alt: "Meme of a dog in a burning room saying 'This is fine'",
-      width: '100%',
-      class: 'mt-2'
-    })
-  ])
-}
-
 </script>
 
 <template>
@@ -59,14 +31,16 @@ const OopsCard = function (mode: 'missing' | 'fetching'): Component {
       <base-btn
         v-for="option in props.options"
         :key="option.label"
-        class="mx-1"
+        class="mx-1 mt-2"
         :color="option.color"
         :to="option.to"
         @click="option.action">
         <v-icon
           v-if="option.icon"
           :icon="option.icon"
+          size="small"
           class="mr-1" />
+
         {{ option.label }}
       </base-btn>
     </v-col>
@@ -75,19 +49,29 @@ const OopsCard = function (mode: 'missing' | 'fetching'): Component {
       v-if="props.loading"
       cols="12"
       md="8">
-      <component
-        :is="OopsCard('fetching')" />
+      <h2 class="mt-2">
+        Fetching <span class="label text-primary">{{ props.label }}</span>...
+      </h2>
 
-      <v-progress-linear
-        color="primary"
-        indeterminate />
+      <v-skeleton-loader
+        class="mt-2"
+        type="card"
+        width="100%" />
     </v-col>
 
     <v-col
       v-else-if="props.components.length === 0"
       cols="12"
       md="8">
-      <component :is="OopsCard('missing')" />
+      <h2 class="mt-2">
+        No <span class="label text-primary">{{ props.label }}</span> found
+      </h2>
+
+      <base-image
+        src="/images/this-is-fine.jpg"
+        alt="Meme of a dog in a burning room saying 'This is fine'"
+        width="100%"
+        class="mt-2" />
     </v-col>
 
     <v-col
