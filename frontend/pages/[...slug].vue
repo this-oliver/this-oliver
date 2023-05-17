@@ -40,8 +40,11 @@ function destorySecretAction () {
         md="6">
         <base-card color="transparent">
           <base-image
-            src="/images/this-is-fine.gif"
-            alt="A dog in a burning room saying 'this is fine'" />
+            src="https://media4.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif"
+            lazy
+            alt="A dog in a burning room saying 'this is fine'"
+            width="100%"
+            height="auto" />
 
           <h2 class="mt-2">
             <span v-if="message">{{ message }}</span>

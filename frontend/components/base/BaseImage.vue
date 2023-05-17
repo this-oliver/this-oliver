@@ -69,7 +69,7 @@ const getStyle = computed<string>(() => {
   <v-img
     v-if="lazy"
     :src="src"
-    :lazy-src="src"
+    lazy-src="/images/this-is-fine.jpg"
     :alt="alt"
     :height="height"
     :width="width"
