@@ -32,15 +32,14 @@ function destorySecretAction () {
   <base-page
     class="text-center"
     :title="title">
-    <v-row justify="center">
+    <v-row
+      justify="center"
+      no-gutters>
       <v-col
         cols="11"
         md="6">
-        <base-card
-          id="wildcard"
-          color="transparent">
+        <base-card color="transparent">
           <base-image
-            class="mt-2"
             src="/images/this-is-fine.gif"
             alt="A dog in a burning room saying 'this is fine'" />
 
@@ -57,7 +56,7 @@ function destorySecretAction () {
         cols="8"
         md="4">
         <base-btn
-          class="brutalist-outline mt-2"
+          class="brutalist-outline"
           block
           outlined
           color="primary"
@@ -71,9 +70,3 @@ function destorySecretAction () {
     </v-row>
   </base-page>
 </template>
-
-<style scoped>
-  #wildcard {
-    margin-top: 50px;
-  }
-</style>
