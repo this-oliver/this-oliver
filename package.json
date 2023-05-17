@@ -1,14 +1,27 @@
 {
   "name": "oliverrr",
-  "version": "3.3.9",
+  "version": "3.3.10",
   "description": "personal website",
   "author": "oliver <hello@oliverrr.net>",
   "repository": "this-oliver/this-oliver",
   "license": "MIT",
   "scripts": {
-    "bump": "npx fist-bump"
+    "bump": "npx fist-bump",
+    "hook": "simple-git-hooks"
   },
   "devDependencies": {
     "fist-bump": "^1.2.4"
+  },
+  "dependencies": {
+    "lint-staged": "^13.2.2",
+    "simple-git-hooks": "^2.8.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "/frontend/**/*.ts": "cd frontend && npm run lint:fix",
+    "/frontend/**/*.vue": "cd frontend && npm run lint:fix",
+    "/backend/**/*.ts": "cd backend && npm run lint:fix"
   }
 }

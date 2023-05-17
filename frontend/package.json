@@ -8,6 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "lint": "eslint --ext .ts,.vue --ignore-path .gitignore .",
+    "lint:fix": "eslint --ext .ts,.vue --ignore-path .gitignore . --fix",
     "bump": "npx fist-bump"
   },
   "devDependencies": {
