@@ -74,18 +74,13 @@ async function updateNote (id: string, patch: Partial<INote>): Promise<NoteDocum
 	const note: NoteDocument = await getNote(id, true);
 
   note.slug = patch.slug || note.slug;
-  note.title = patch.title || note.title;
-  note.content = patch.content || note.content;
 
-  if (patch.publish !== undefined && patch.publish !== null) {
-    note.publish = patch.publish;
-  }
-  
-  if (patch.tags) {
-    note.tags = _processTags(patch.tags);
-  }
+  if(patch.title !== undefined) note.title = patch.title;
+  if(patch.content !== undefined) note.content = patch.content;
+  if(patch.publish !== undefined && patch.publish !== null) note.publish = patch.publish;
+  if(patch.tags !== undefined) note.tags = _processTags(patch.tags);
 
-	try {
+  try {
 		return await note.save();
 	} catch (error) {
 		if(error instanceof Mongoose.Error.ValidationError) {

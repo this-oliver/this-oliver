@@ -2,46 +2,47 @@ import Mongoose from "mongoose";
 import { ExperienceModel, ExperienceDocument } from "./models/experience";
 import type { IExperience } from "../types/experience";
 import type { BaseError } from "../types/error";
+import e from "express";
 
-async function postExperience (
-	title: string,
-	org: string,
-	startYear: number,
-	endYear: number,
-	description: string,
-	type: string,
+async function postExperience(
+  title: string,
+  org: string,
+  startYear: number,
+  endYear: number,
+  description: string,
+  type: string,
   link?: string,
   image?: string
-  ): Promise<ExperienceDocument> {
-	
-    try {
-		return await ExperienceModel.create(
-      new ExperienceModel({
-    title: title,
-			org: org,
-			startYear: startYear,
-			endYear: endYear,
-			description: description,
-      link: link,
-      image: image,
-			type: type
-		}));
+): Promise<ExperienceDocument> {
 
-	} catch (error) {
-		
-    if(error instanceof Mongoose.Error.ValidationError) {
+  try {
+    return await ExperienceModel.create(
+      new ExperienceModel({
+        title: title,
+        org: org,
+        startYear: startYear,
+        endYear: endYear,
+        description: description,
+        link: link,
+        image: image,
+        type: type
+      }));
+
+  } catch (error) {
+
+    if (error instanceof Mongoose.Error.ValidationError) {
       throw { message: error.message, status: 400 } as BaseError;
     }
 
     throw { message: (error as Error).message || error || 'Failed to create experience', status: 500 } as BaseError;
-	}
+  }
 };
 
-async function indexExperiences (): Promise<ExperienceDocument[]> {
-	return await ExperienceModel.find().exec();
+async function indexExperiences(): Promise<ExperienceDocument[]> {
+  return await ExperienceModel.find().exec();
 };
 
-async function getExperience (id: string): Promise<ExperienceDocument> {
+async function getExperience(id: string): Promise<ExperienceDocument> {
   const experience = await ExperienceModel.findById(id).exec();
 
   if (!experience) {
@@ -51,42 +52,42 @@ async function getExperience (id: string): Promise<ExperienceDocument> {
   return experience;
 };
 
-async function updateExperience (id: string, patch: Partial<IExperience>): Promise<ExperienceDocument> {
-	const experience = await getExperience(id);
+async function updateExperience(id: string, patch: Partial<IExperience>): Promise<ExperienceDocument> {
+  const experience = await getExperience(id);
 
-  experience.title = patch.title || experience.title;
-		experience.org = patch.org || experience.org;
-		experience.startYear = patch.startYear || experience.startYear;
-		experience.endYear = patch.endYear || experience.endYear;
-		experience.description = patch.description || experience.description;
-		experience.type = patch.type || experience.type;
-    experience.link = patch.link || experience.link;
-    experience.image = patch.image || experience.image;
+  if (patch.title !== undefined) experience.title = patch.title;
+  if (patch.org !== undefined) experience.org = patch.org;
+  if (patch.startYear !== undefined) experience.startYear = patch.startYear;
+  if (patch.endYear !== undefined) experience.endYear = patch.endYear;
+  if (patch.description !== undefined) experience.description = patch.description;
+  if (patch.type !== undefined) experience.type = patch.type;
+  if (patch.link !== undefined) experience.link = patch.link;
+  if (patch.image !== undefined) experience.image = patch.image;
 
-	try {
-		return await experience.save();
-	} catch (error) {
-		if(error instanceof Mongoose.Error.ValidationError) {
+  try {
+    return await experience.save();
+  } catch (error) {
+    if (error instanceof Mongoose.Error.ValidationError) {
       throw { message: error.message, status: 400 } as BaseError;
     }
 
     throw { message: (error as Error).message || error || 'Failed to update experience', status: 500 } as BaseError;
-	}
+  }
 };
 
-async function deleteExperience (id: string): Promise<ExperienceDocument> {
-	const experience = await getExperience(id);
-  
+async function deleteExperience(id: string): Promise<ExperienceDocument> {
+  const experience = await getExperience(id);
+
   try {
-		await experience.deleteOne();
+    await experience.deleteOne();
     return experience;
-	} catch (error) {
-		if(error instanceof Mongoose.Error.ValidationError) {
+  } catch (error) {
+    if (error instanceof Mongoose.Error.ValidationError) {
       throw { message: error.message, status: 400 } as BaseError;
     }
 
     throw { message: (error as Error).message || error || 'Failed to delete experience', status: 500 } as BaseError;
-	}
+  }
 };
 
 export {

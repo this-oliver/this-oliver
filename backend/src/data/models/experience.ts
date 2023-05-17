@@ -3,7 +3,7 @@ import type { IExperience } from "../../types/experience";
 
 const ExperienceSchema = new Mongoose.Schema<IExperience>({
   title: { type: String, required: true },
-  org: { type: String, required: true },
+  org: { type: String },
   startYear: { type: Number, required: true },
   endYear: { type: Number },
   description: { type: String, required: true },
