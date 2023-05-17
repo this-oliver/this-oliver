@@ -151,9 +151,6 @@ onMounted(() => {
       :items="types"
       label="Type" />
 
-    <base-input-text-area
-      v-model="description"
-      label="Description"
-      place-holder="Describe experience" />
+    <content-editor v-model="description" />
   </base-form>
 </template>

@@ -29,28 +29,24 @@ const experienceColor = computed<string>(() => {
   }
 })
 
-const experienceEmoji = computed<string>(() => {
-  switch (props.experience.type) {
-    case 'job':
-      return '💼'
-    case 'education':
-      return '🎓'
-    case 'project':
-      return '🧪'
-    default:
-      return '🤷‍♂️'
-  }
-})
-
 const experienceOptions = computed<ActionItem[]>(() => {
   return [
     { label: 'Edit', icon: 'mdi-pencil', to: `/experiences/${props.experience._id}/edit` }
   ]
 })
+
+function isEmpty (text: any): boolean {
+  if (typeof text === 'string') {
+    return text.trim() === ''
+  }
+
+  return text === null || text === undefined
+}
 </script>
 
 <template>
   <base-card
+    id="experience-card"
     class="brutalist-outline pa-2 pa-md-1"
     :outlined="true">
     <color-card :color="experienceColor">
@@ -74,33 +70,40 @@ const experienceOptions = computed<ActionItem[]>(() => {
       </v-row>
     </color-card>
 
-    <v-row
-      no-gutters
-      justify="space-between">
-      <v-col cols="auto">
-        <p>{{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}</p>
-      </v-col>
-      <v-col
-        cols="auto"
-        class="experience-meta mr-2">
-        <p>{{ experienceEmoji }}</p>
-      </v-col>
-    </v-row>
-
+    <p>{{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}</p>
+    <h4 v-if="!isEmpty(props.experience.org)">
+      {{ props.experience.org }}
+    </h4>
     <h2>{{ props.experience.title }}</h2>
-    <h3>{{ props.experience.org }}</h3>
     <markdown-card :markdown="props.experience.description" />
+
+    <span v-if="props.experience.link">
+      <a
+        :href="props.experience.link"
+        target="_blank">
+        <v-icon
+          icon="mdi-link-variant"
+          size="small" />
+        {{ props.experience.link }}
+      </a>
+    </span>
+
+    <span v-if="props.experience.image">
+      <a
+        :href="props.experience.image"
+        target="_blank">
+        <v-icon
+          icon="mdi-image-frame"
+          size="small" />
+        Preview
+      </a>
+    </span>
   </base-card>
 </template>
 
 <style>
-h1 h2 h3 {
+h1, h2, h3, h4 {
   margin: 0;
-  padding: 0.15rem 0;
-}
-
-.experience-meta {
-  /* large font */
-  font-size: 1.5rem;
+  padding: 0.1rem 0;
 }
 </style>

@@ -11,6 +11,10 @@ const props = defineProps({
     type: String,
     default: undefined
   },
+  placeholder: {
+    type: String,
+    default: 'Thoughts...'
+  },
   viewMode: {
     type: String as PropType<Mode>,
     default: 'write'
@@ -26,16 +30,19 @@ const modes = computed<ActionItem[]>(() => {
   return [
     {
       label: 'write',
+      description: 'Write only',
       color: 'primary',
       icon: 'mdi-pencil'
     },
     {
       label: 'preview',
+      description: 'Preview only',
       color: 'primary',
       icon: 'mdi-eye'
     },
     {
       label: 'split',
+      description: 'Split view',
       color: 'primary',
       icon: 'mdi-view-split-vertical'
     }
@@ -65,7 +72,7 @@ watch(content, () => {
         :value="mode.label"
         color="primary"
         variant="flat">
-        {{ mode.label }}
+        {{ mode.description }}
       </v-tab>
     </v-tabs>
 
@@ -78,7 +85,7 @@ watch(content, () => {
           :color="inputBackgroundColor">
           <base-input-text-area
             v-model="content"
-            place-holder="Thoughts..." />
+            :place-holder="props.placeholder" />
         </v-sheet>
       </v-window-item>
 
@@ -98,7 +105,7 @@ watch(content, () => {
               :color="inputBackgroundColor">
               <base-input-text-area
                 v-model="content"
-                place-holder="Thoughts..." />
+                :place-holder="props.placeholder" />
             </v-sheet>
           </v-col>
           <v-col cols="6">
@@ -115,10 +122,6 @@ watch(content, () => {
 </template>
 
 <style>
-#content-form{
-  height: 100%;
-}
-
 .preview-field{
   height: 50vh;
 }
