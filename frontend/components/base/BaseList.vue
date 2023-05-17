@@ -32,6 +32,7 @@ const props = defineProps({
         v-for="option in props.options"
         :key="option.label"
         class="mx-1 mt-2"
+        :outlined="option.outlined"
         :color="option.color"
         :to="option.to"
         @click="option.action">

@@ -9,7 +9,7 @@ import 'vuetify/styles'
 const customColors = {
   job: '#2196F3',
   education: '#4CAF50',
-  projects: '#FFC107',
+  project: '#FFC107',
   other: '#9E9E9E'
 }
 

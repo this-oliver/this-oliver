@@ -22,7 +22,7 @@ const experienceColor = computed<string>(() => {
       return 'job'
 
     case 'project':
-      return 'projects'
+      return 'project'
 
     default:
       return 'other'
