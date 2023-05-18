@@ -106,6 +106,19 @@ onMounted(async () => {
   loading.value = false
 })
 
+const title = 'Notes - oliverrr'
+const description = 'A collection of notes on various topics.'
+
+useSeoMeta({
+  title,
+  description,
+  author: 'oliverrr',
+  ogUrl: 'https://www.oliverrr.net/notes',
+  ogTitle: title,
+  ogDescription: description,
+  ogSiteName: 'oliverrr\'s notes'
+})
+
 </script>
 
 <template>

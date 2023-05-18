@@ -6,8 +6,8 @@ const route = useRoute()
 const router = useRouter()
 
 const title = ref<string>(route.query.title as string || 'Error')
-const message = ref<string | null>(route.query.message as string | null)
-const redirect = ref<string | null>(route.query.redirect as string || '/')
+const message = ref<string>(route.query.message as string)
+const redirect = ref<string>(route.query.redirect as string || '/')
 const secretAction = ref<NodeJS.Timeout | null>(null)
 
 function startSecretAction () {

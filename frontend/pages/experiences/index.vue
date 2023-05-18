@@ -80,6 +80,16 @@ onMounted(async () => {
   loading.value = false
 })
 
+const pageTitle = 'Experiences - oliverrr'
+const pageDescription = 'A collection of experiences'
+useSeoMeta({
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogSiteName: 'oliverrr\'s personal website'
+})
+
 </script>
 
 <template>

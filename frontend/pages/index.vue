@@ -15,6 +15,16 @@ onMounted(async () => {
   await userStore.getUser()
 })
 
+const pageTitle = 'What\'s cooking? - oliverrr'
+const pageDescription = 'A quick overview of what I\'m up to right now.'
+useSeoMeta({
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogSiteName: 'oliverrr\'s personal website'
+})
+
 </script>
 
 <template>

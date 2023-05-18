@@ -17,6 +17,20 @@ const errorReasons: string[] = [
 
 onMounted(async () => {
   note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string)
+
+  const title = `${note.value?.title} - oliverrr`
+  const description = note.value?.content
+
+  useSeoMeta({
+    title,
+    description,
+    author: 'oliverrr',
+    ogType: 'article',
+    ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
+    ogTitle: note.value?.title,
+    ogDescription: note.value?.content,
+    ogSiteName: 'oliverrr\'s notes'
+  })
 })
 </script>
 
@@ -99,12 +113,6 @@ onMounted(async () => {
 
 ul.error-list {
   padding-left: 2rem;
-}
-
-@media (min-width: 600px) {
-  #note-content {
-    padding: 0 2rem;
-  }
 }
 
 /* display #back-btn if mouse hovers over #note-options or if screen is mobile */
