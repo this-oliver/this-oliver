@@ -63,7 +63,7 @@ const noteOptions = computed<ActionItem[]>(() => {
   <base-card
     class="note-card brutalist-outline pa-2 pa-md-1"
     :outlined="true">
-    <color-card>
+    <color-card :color-source="props.note.title">
       <v-row
         v-if="props.adminMode"
         justify="end"

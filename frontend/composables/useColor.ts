@@ -1,4 +1,5 @@
 import { useTheme as useVuetifyTheme } from 'vuetify/lib/framework.mjs'
+import { useCrypto } from './useCrypto'
 
 const materialDesignColors = [
   'primary',
@@ -18,6 +19,8 @@ const notAllowedColors = [
 ]
 
 export function useColor () {
+  const { getHash } = useCrypto()
+
   /**
    * Returns a random Material Design color
    */
@@ -43,10 +46,22 @@ export function useColor () {
   /**
    * Returns hex representation of a Material Design color
    */
-  function getColor (color: string): string {
+  function getMaterialColor (color: string): string {
     const theme = useVuetifyTheme()
-
     return theme.global.current.value.colors[color]
+  }
+
+  /**
+   * Returns a hex color based on a string
+   */
+  function convertStringToColor (str: string): string {
+    // convert string to hash
+    const hash = getHash(str)
+
+    // convert hash to hex
+    const hex = Math.abs(hash).toString(16).slice(0, 6)
+
+    return `#${hex}`
   }
 
   /**
@@ -59,7 +74,8 @@ export function useColor () {
   return {
     getRandomColor,
     getRandomHexColor,
-    getColor,
-    isHexColor
+    getMaterialColor,
+    isHexColor,
+    convertStringToColor
   }
 }

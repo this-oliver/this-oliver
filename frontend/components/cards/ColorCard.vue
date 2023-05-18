@@ -4,6 +4,10 @@ const props = defineProps({
     type: String,
     default: undefined
   },
+  colorSource: {
+    type: String,
+    default: undefined
+  },
   height: {
     type: String,
     default: '100px'
@@ -22,10 +26,22 @@ const props = defineProps({
   }
 })
 
-const { getColor, getRandomHexColor } = useColor()
+const { getMaterialColor, getRandomHexColor, convertStringToColor, isHexColor } = useColor()
 
 const color = computed<string>(() => {
-  return props.color ? getColor(props.color) : getRandomHexColor()
+  if (props.colorSource) {
+    return convertStringToColor(props.colorSource)
+  }
+
+  if (props.color && isHexColor(props.color)) {
+    return props.color
+  }
+
+  if (props.color) {
+    return getMaterialColor(props.color)
+  }
+
+  return getRandomHexColor()
 })
 
 </script>

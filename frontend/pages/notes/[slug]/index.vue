@@ -22,6 +22,7 @@ onMounted(async () => {
       <v-col md="10">
         <color-card
           id="note-options"
+          :color-source="note?.title"
           class="brutalist-outline">
           <base-btn
             id="back-btn"
