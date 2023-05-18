@@ -120,9 +120,6 @@ onMounted(async () => {
       v-model="showFilter"
       class="pa-2"
       temporary
-      floating
-      absolute
-      :scrim="false"
       color="primary"
       location="right"
       width="60%">
@@ -186,7 +183,9 @@ onMounted(async () => {
           Only show unpublished notes
         </v-list-item>
 
-        <h4>Tags</h4>
+        <h4 v-if="getTags.length > 0">
+          Tags
+        </h4>
         <v-list-item
           v-for="tag in getTags"
           :key="tag.name">

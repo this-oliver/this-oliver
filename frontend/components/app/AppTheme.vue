@@ -16,7 +16,7 @@ const icon = computed<string>(() => {
 </script>
 
 <template>
-  <h2 v-if="props.sidebarMode">
+  <div v-if="props.sidebarMode">
     <v-icon
       style="margin-right: 1rem;"
       :icon="icon" />
@@ -26,7 +26,7 @@ const icon = computed<string>(() => {
       @click="toggleTheme">
       Theme
     </base-btn>
-  </h2>
+  </div>
 
   <base-btn
     v-else

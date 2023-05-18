@@ -31,7 +31,7 @@ function getOptionColor (option: ActionItem): string {
         v-for="option in options"
         :key="option.label"
         cols="8">
-        <h3 :class="`${getOptionColor(option)}`">
+        <div :class="`sidebar-item ${getOptionColor(option)}`">
           <v-icon
             v-if="option.icon"
             style="margin-right: 1rem;"
@@ -43,12 +43,20 @@ function getOptionColor (option: ActionItem): string {
             @click="option.action">
             {{ option.label }}
           </base-btn>
-        </h3>
+        </div>
       </v-col>
 
       <v-col cols="8">
-        <app-theme sidebar-mode />
+        <app-theme
+          class="sidebar-item"
+          sidebar-mode />
       </v-col>
     </v-row>
   </v-navigation-drawer>
 </template>
+
+<style>
+.sidebar-item {
+  font-size: 1.25rem;
+}
+</style>
