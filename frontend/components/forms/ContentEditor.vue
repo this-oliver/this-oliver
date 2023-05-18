@@ -123,7 +123,7 @@ watch(content, () => {
 
 <style>
 .preview-field{
-  height: 50vh;
+  min-height: 50vh;
 }
 
 .input-field textarea{
