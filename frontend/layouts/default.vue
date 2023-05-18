@@ -1,8 +1,8 @@
 <script setup lang="ts">
-
 const theme = useTheme()
-const layoutClass = computed<string>(() => theme.dark.value ? 'dark-theme' : '')
-
+const layoutClass = computed<string>(() =>
+  theme.dark.value ? 'dark-theme' : ''
+)
 </script>
 
 <template>
@@ -28,7 +28,11 @@ const layoutClass = computed<string>(() => theme.dark.value ? 'dark-theme' : '')
 </template>
 
 <style>
-  .dark-theme a.simple-link, .dark-theme  a.markdown-link {
-    color: #F3B1FA;
-  }
+:root {
+  --primary-color: #F3B1FA;
+}
+
+.dark-theme a:not(.v-btn):not(.plain) {
+  color: var(--primary-color);
+}
 </style>
