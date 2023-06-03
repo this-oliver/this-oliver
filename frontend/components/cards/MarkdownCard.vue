@@ -184,4 +184,13 @@ th, td {
   border: 1px solid;
   padding: 0 0.5rem;
 }
+
+ul > li {
+  margin-left: 2rem;
+}
+
+ol > li {
+  margin-left: 2rem;
+}
+
 </style>

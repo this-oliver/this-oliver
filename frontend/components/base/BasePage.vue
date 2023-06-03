@@ -10,6 +10,7 @@ const props = defineProps({
 
 <template>
   <v-row
+    id="base-page"
     class="pa-1"
     justify="center"
     no-gutters>
@@ -21,8 +22,16 @@ const props = defineProps({
 
     <v-divider class="border-opacity-0" />
 
-    <v-col class="mt-1 mt-md-2">
+    <v-col
+      id="base-page-content"
+      class="mt-1 mt-md-2">
       <slot />
     </v-col>
   </v-row>
 </template>
+
+<style scoped>
+#base-page-content {
+  padding-bottom: 3rem;
+}
+</style>
