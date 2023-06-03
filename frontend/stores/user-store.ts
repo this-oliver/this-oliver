@@ -10,12 +10,20 @@ export const useUserStore = defineStore('user', () => {
 
   const user = ref<User | null>(null)
 
+  /**
+   * Returns the user object
+   * @param force - fetch user from server even if it's already in the store
+   */
   async function getUser (force?: boolean): Promise<User> {
     if (user.value && !force) { return user.value }
 
     return await request('/users/oliver')
   }
 
+  /**
+   * Updates and returns the user object
+   * @param patch - the user object to update
+   */
   async function updateUser (patch: Partial<User>): Promise<User> {
     user.value = await request('/admin/users', {
       headers: {

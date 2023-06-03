@@ -12,7 +12,7 @@ const UserSchema = new Mongoose.Schema<IUser>(
 		password: { type: String, required: true },
     salt: { type: String },
     visits: { type: Number, default: 0 },
-		status: { type: String}
+		status: { type: String, default: "" },
 	},
 	{ timestamps: true }
 );

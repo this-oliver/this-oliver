@@ -39,21 +39,22 @@ const options = computed<ActionItem[]>(() => {
       color: 'success',
       icon: 'mdi-content-save',
       disabled: !validForm.value,
-      action: async () => {
-        try {
-          await userStore.updateUser({ status: description.value })
-
-          notify('User', 'User updated successfully', 'success')
-          router.push('/')
-        } catch (error) {
-          const message = (error as Error).message || 'Failed to process user'
-          notify('Notes', message, 'error')
-        }
-      }
+      action: _updateUser
     }
   ]
 })
 
+async function _updateUser () {
+  try {
+    await userStore.updateUser({ status: description.value })
+
+    notify('User', 'User updated successfully', 'success')
+    router.push('/')
+  } catch (error) {
+    const message = (error as Error).message || 'Failed to process user'
+    notify('Notes', message, 'error')
+  }
+}
 </script>
 
 <template>

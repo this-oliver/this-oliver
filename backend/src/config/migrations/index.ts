@@ -1,5 +1,6 @@
 import Mongoose from "mongoose";
 import MIGRATION_05_23 from "./db-migrate-05-2023";
+import MIGRATION_06_23 from "./db-migrate-06-2023";
 
 /**
  * an action that alters the database
@@ -46,7 +47,8 @@ const MigrationModel = Mongoose.model<IMigration>("migration", MigrationSchema);
  * List of migrations to be executed
  */
 const executions: IExecution[] = [
-  MIGRATION_05_23
+  MIGRATION_05_23,
+  MIGRATION_06_23
 ];
 
 /**

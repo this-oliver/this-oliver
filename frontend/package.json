@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --ext .ts,.vue --ignore-path .gitignore . --fix",
-    "bump": "npx fist-bump"
+    "bump": "cd .. && npm run bump"
   },
   "devDependencies": {
     "@invictus.codes/nuxt-vuetify": "^0.2.20",
