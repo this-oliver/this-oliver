@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
-const LOCAL_AUTH_KEY = 'auth'
-const LOCAL_AUTH_ACCESS_TOKEN = `${LOCAL_AUTH_KEY}-access-token`
+export const LOCAL_AUTH_KEY = 'auth'
+export const LOCAL_AUTH_ACCESS_TOKEN = `${LOCAL_AUTH_KEY}-access-token`
 
 export const useAuthStore = defineStore('auth', () => {
   const { get, set } = useStorage()

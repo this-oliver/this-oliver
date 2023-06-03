@@ -3,14 +3,6 @@ import { useRequest } from '~/composables/useRequest'
 import { useAuthStore } from '~/stores/auth-store'
 import type { Note } from '~/types'
 
-interface WipNote extends Partial<Note> {
-  _id?: string
-  slug?: string
-  tags?: string[]
-  views?: number
-  createdAt?: string
-}
-
 export const useNoteStore = defineStore('note', () => {
   const { request } = useRequest()
   const authStore = useAuthStore()
@@ -48,7 +40,7 @@ export const useNoteStore = defineStore('note', () => {
     return tags.value
   }
 
-  async function postNote (note: WipNote): Promise<Note> {
+  async function postNote (note: Partial<Note>): Promise<Note> {
     return await request('/admin/notes', {
       method: 'POST',
       headers: {
@@ -58,7 +50,7 @@ export const useNoteStore = defineStore('note', () => {
     })
   }
 
-  async function patchNote (id: string, note: WipNote): Promise<Note> {
+  async function patchNote (id: string, note: Partial<Note>): Promise<Note> {
     return await request(`/admin/notes/${id}`, {
       method: 'PATCH',
       headers: {
