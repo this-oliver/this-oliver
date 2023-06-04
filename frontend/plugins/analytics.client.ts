@@ -3,8 +3,7 @@ import { useStorage } from '~/composables/useStorage'
 import { LOCAL_AUTH_ACCESS_TOKEN } from '~/stores/auth-store'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  // skip analytics if we are not in production
-  let skipAnalytics = process.env.NODE_ENV !== 'production'
+  let skipAnalytics = false
 
   // token exists = logged in
   const { get } = useStorage()
@@ -17,6 +16,14 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     // eslint-disable-next-line no-console
     console.info('Skipping analytics because auth token exists')
+  }
+
+  // skip analytics if we are not in production
+  if (process.env.NODE_ENV !== 'production') {
+    skipAnalytics = true
+
+    // eslint-disable-next-line no-console
+    console.info('Skipping analytics in non-production env')
   }
 
   nuxtApp.vueApp.use(SimpleAnalytics, {
