@@ -11,7 +11,7 @@ useSeoMeta({
 })
 
 const content = `
-I will present [SSASy](https://www.ssasy.net), a self-sovereign authentication scheme that enable an alternaitve to the current password-based authentication schemes and Federated Identities like Google and Microsoft.
+I will present [SSASy](https://www.ssasy.net), a self-sovereign authentication scheme that enables an alternative to current password-based authentication schemes and Federated Identities like Google and Microsoft.
 
 In my presentation, I will talk about existing problems, the solution that I have developed and the results of my research.
 
@@ -87,16 +87,16 @@ const getPresentationLink = computed<string>(() => {
         md="8">
         <base-card>
           <h2 v-if="presentationIsOver">
-            Presentating is over!
+            Presentation is over!
           </h2>
           <h2 v-else-if="presentationStarted">
             Presentation is live!
           </h2>
           <h2 v-else-if="presentationIsStarting">
-            Presentating soon!
+            Presenting soon!
           </h2>
           <h2 v-else>
-            Presentating in {{ getCountDown }}
+            Presenting in {{ getCountDown }}
           </h2>
 
           <base-btn
