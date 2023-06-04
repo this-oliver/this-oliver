@@ -109,6 +109,8 @@ const getPresentationLink = computed<string>(() => {
         </base-card>
       </v-col>
 
+      <v-divider class="border-opacity-0" />
+
       <v-col md="8">
         <markdown-card
           id="welcome-banner"
