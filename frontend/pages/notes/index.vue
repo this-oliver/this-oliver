@@ -11,11 +11,12 @@ const noteStore = useNoteStore()
 const loading = ref(false)
 
 const showFilter = ref(false)
+const filterPublished = ref(false)
 const filterUnpublished = ref(false)
 const filteredTags = ref<string[]>([])
 
 const showReset = computed<boolean>(() => {
-  return filteredTags.value.length > 0 || filterUnpublished.value === true
+  return filteredTags.value.length > 0 || filterUnpublished.value === true || filterPublished.value === true
 })
 
 const getNotes = computed<Note[]>(() => {
@@ -29,9 +30,16 @@ const getNotes = computed<Note[]>(() => {
     filteredNotes = noteStore.notes
   }
 
-  return filterUnpublished.value
-    ? filteredNotes.filter(note => note.publish === false)
-    : filteredNotes
+  // filter by published status if either filter is set
+  if (filterPublished.value || filterUnpublished.value) {
+    filteredNotes = filteredNotes.filter((note) => {
+      return filterPublished.value
+        ? note.publish === true
+        : note.publish === false
+    })
+  }
+
+  return filteredNotes
 })
 
 const getTags = computed<{ name: string, filtered: boolean}[]>(() => {
@@ -182,8 +190,18 @@ useSeoMeta({
         <v-divider class="border-outline-25 my-2" />
 
         <h4 v-if="authStore.isLoggedIn">
-          Published
+          Status
         </h4>
+        <v-list-item v-if="authStore.isLoggedIn">
+          <template #append>
+            <v-list-item-action start>
+              <v-checkbox-btn
+                v-model="filterPublished"
+                color="success" />
+            </v-list-item-action>
+          </template>
+          Published
+        </v-list-item>
         <v-list-item v-if="authStore.isLoggedIn">
           <template #append>
             <v-list-item-action start>
@@ -192,8 +210,7 @@ useSeoMeta({
                 color="success" />
             </v-list-item-action>
           </template>
-
-          Only show unpublished notes
+          Unpublished
         </v-list-item>
 
         <h4 v-if="getTags.length > 0">
