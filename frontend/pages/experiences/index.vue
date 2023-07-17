@@ -38,13 +38,13 @@ const options = computed<ActionItem[]>(() => {
 
   if (authStore.isLoggedIn) {
     base = [
+      ...base,
       {
         label: 'Create xP',
         color: 'secondary',
         icon: 'mdi-plus',
         to: '/experiences/create'
-      },
-      ...base
+      }
     ]
   }
 

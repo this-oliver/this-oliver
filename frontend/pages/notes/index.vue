@@ -10,6 +10,7 @@ const noteStore = useNoteStore()
 
 const loading = ref(false)
 
+const query = ref<string>('')
 const showFilter = ref(false)
 const filterPublished = ref(false)
 const filterUnpublished = ref(false)
@@ -20,17 +21,23 @@ const showReset = computed<boolean>(() => {
 })
 
 const getNotes = computed<Note[]>(() => {
-  let filteredNotes: Note[]
+  let filteredNotes: Note[] = noteStore.notes
 
+  // filter query
+  if (query.value.length > 0) {
+    filteredNotes = noteStore.notes.filter((note) => {
+      return note.title.toLowerCase().includes(query.value.toLowerCase())
+    })
+  }
+
+  // filter tags
   if (filteredTags.value.length > 0) {
     filteredNotes = noteStore.notes.filter((note) => {
       return note.tags.some(tag => tagInFilter(tag))
     })
-  } else {
-    filteredNotes = noteStore.notes
   }
 
-  // filter by published status if either filter is set
+  // filter published status
   if (filterPublished.value || filterUnpublished.value) {
     filteredNotes = filteredNotes.filter((note) => {
       return filterPublished.value
@@ -69,13 +76,13 @@ const options = computed<ActionItem[]>(() => {
 
   if (authStore.isLoggedIn) {
     base = [
+      ...base,
       {
         label: 'Create Note',
         color: 'secondary',
         icon: 'mdi-plus',
         to: '/notes/create'
-      },
-      ...base
+      }
     ]
   }
 
@@ -133,9 +140,11 @@ useSeoMeta({
   <base-page title="Notes">
     <base-list
       label="notes"
+      allow-search
       :options="options"
       :loading="loading"
-      :components="components" />
+      :components="components"
+      @search="(q) => query = q" />
 
     <v-navigation-drawer
       v-model="showFilter"
