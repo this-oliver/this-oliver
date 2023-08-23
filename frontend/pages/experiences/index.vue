@@ -94,10 +94,14 @@ useSeoMeta({
 
 <template>
   <base-page title="Experiences">
-    <base-list
-      label="experiences"
-      :options="options"
-      :loading="loading"
-      :components="components" />
+    <v-row justify="center">
+      <v-col lg="7">
+        <base-list
+          label="experiences"
+          :options="options"
+          :loading="loading"
+          :components="components" />
+      </v-col>
+    </v-row>
   </base-page>
 </template>

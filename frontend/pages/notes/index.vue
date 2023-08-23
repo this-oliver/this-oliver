@@ -138,13 +138,17 @@ useSeoMeta({
 
 <template>
   <base-page title="Notes">
-    <base-list
-      label="notes"
-      allow-search
-      :options="options"
-      :loading="loading"
-      :components="components"
-      @search="(q) => query = q" />
+    <v-row justify="center">
+      <v-col lg="7">
+        <base-list
+          label="notes"
+          allow-search
+          :options="options"
+          :loading="loading"
+          :components="components"
+          @search="(q) => query = q" />
+      </v-col>
+    </v-row>
 
     <v-navigation-drawer
       v-model="showFilter"

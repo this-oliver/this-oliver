@@ -48,22 +48,22 @@ onMounted(async () => {
       no-gutters>
       <v-col
         v-if="note"
-        md="10">
+        md="10"
+        lg="7">
+        <base-btn
+          id="back-btn"
+          plain
+          @click="router.push('/notes')">
+          <v-icon
+            icon="mdi-arrow-left"
+            size="large" />
+          Back
+        </base-btn>
+
         <rothko-card
           id="note-options"
           :source="note?.title"
-          class="brutalist-outline">
-          <base-btn
-            id="back-btn"
-            plain
-            @click="router.push('/notes')">
-            <v-icon
-              icon="mdi-arrow-left"
-              size="large" />
-
-            Back
-          </base-btn>
-        </rothko-card>
+          class="brutalist-outline" />
 
         <p>{{ noteDate }}</p>
         <h1>{{ note?.title }}</h1>
@@ -75,7 +75,8 @@ onMounted(async () => {
 
       <v-col
         v-else-if="note === undefined"
-        md="10">
+        md="10"
+        lg="7">
         <base-card class="brutalist-outline mt-2 pa-2">
           <div class="text-center">
             <h2>
@@ -103,7 +104,8 @@ onMounted(async () => {
 
       <v-col
         v-else
-        md="10">
+        md="10"
+        lg="7">
         <base-card
           class="brutalist-outline mt-2 pa-2"
           color="error">
@@ -152,18 +154,19 @@ ul.error-list {
 
 /* display #back-btn if mouse hovers over #note-options or if screen is mobile */
 #back-btn {
-  display: none;
+  display: block;
 }
 
 @media (max-width: 600px) {
   #back-btn {
     display: block;
   }
-}
 
-@media (hover: hover) {
-  #note-options:hover #back-btn {
-    display: block;
+  @media (hover: hover) {
+    #note-options:hover #back-btn {
+      display: block;
+    }
   }
 }
+
 </style>
