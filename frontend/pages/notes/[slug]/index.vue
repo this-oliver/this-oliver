@@ -5,9 +5,10 @@ import type { Note } from '~/types'
 
 const router = useRouter()
 const noteStore = useNoteStore()
+const notification = useNotification()
 const { formatDate } = useTime()
 
-const note = ref<Note | null>(null)
+const note = ref<Note | null | undefined>(undefined)
 const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : '')
 
 const errorReasons: string[] = [
@@ -17,21 +18,26 @@ const errorReasons: string[] = [
 ]
 
 onMounted(async () => {
-  note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string)
+  try {
+    note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string)
 
-  const title = `${note.value?.title} - oliverrr`
-  const description = note.value?.content
+    const title = `${note.value?.title} - oliverrr`
+    const description = note.value?.content
 
-  useSeoMeta({
-    title,
-    description,
-    author: 'oliverrr',
-    ogType: 'article',
-    ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
-    ogTitle: note.value?.title,
-    ogDescription: note.value?.content,
-    ogSiteName: 'oliverrr\'s notes'
-  })
+    useSeoMeta({
+      title,
+      description,
+      author: 'oliverrr',
+      ogType: 'article',
+      ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
+      ogTitle: note.value?.title,
+      ogDescription: note.value?.content,
+      ogSiteName: 'oliverrr\'s notes'
+    })
+  } catch (error) {
+    note.value = null
+    notification.notify('Error getting note', (error as Error).message, 'error')
+  }
 })
 </script>
 
@@ -65,6 +71,34 @@ onMounted(async () => {
         <markdown-card
           id="note-content"
           :markdown="note?.content" />
+      </v-col>
+
+      <v-col
+        v-else-if="note === undefined"
+        md="10">
+        <base-card class="brutalist-outline mt-2 pa-2">
+          <div class="text-center">
+            <h2>
+              Fetching note...
+            </h2>
+          </div>
+
+          <div class="text-center">
+            <base-image
+              class="mt-2"
+              src="/images/this-is-fine.jpg"
+              alt="Meme of a dog in a burning room saying 'This is fine'"
+              width="50%" />
+          </div>
+
+          <div id="note-content">
+            <v-skeleton-loader
+              class="mt-2"
+              type="article"
+              max-width="100%"
+              max-height="100%" />
+          </div>
+        </base-card>
       </v-col>
 
       <v-col
