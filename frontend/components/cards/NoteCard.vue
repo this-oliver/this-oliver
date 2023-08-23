@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import { RothkoCard } from 'rothko-js'
 import type { Note, ActionItem } from '~/types'
 import { useNoteStore } from '~/stores/note-store'
 
@@ -63,7 +64,8 @@ const noteOptions = computed<ActionItem[]>(() => {
   <base-card
     class="note-card brutalist-outline pa-2 pa-md-1"
     :outlined="true">
-    <color-card :color-source="props.note.title">
+    <rothko-card
+      :source="props.note.title">
       <v-row
         v-if="props.adminMode"
         justify="end"
@@ -82,7 +84,7 @@ const noteOptions = computed<ActionItem[]>(() => {
           </BaseBtn>
         </v-col>
       </v-row>
-    </color-card>
+    </rothko-card>
     <p>{{ noteDate }}</p>
 
     <RouterLink

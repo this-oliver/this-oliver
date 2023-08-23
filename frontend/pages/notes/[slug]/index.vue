@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RothkoCard } from 'rothko-js'
 import { useNoteStore } from '~/stores/note-store'
 import type { Note } from '~/types'
 
@@ -42,9 +43,9 @@ onMounted(async () => {
       <v-col
         v-if="note"
         md="10">
-        <color-card
+        <rothko-card
           id="note-options"
-          :color-source="note?.title"
+          :source="note?.title"
           class="brutalist-outline">
           <base-btn
             id="back-btn"
@@ -56,7 +57,7 @@ onMounted(async () => {
 
             Back
           </base-btn>
-        </color-card>
+        </rothko-card>
 
         <p>{{ noteDate }}</p>
         <h1>{{ note?.title }}</h1>
