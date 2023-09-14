@@ -19,19 +19,19 @@ const options = computed<ActionItem[]>(() => {
     {
       label: 'Education',
       color: 'education',
-      outlined: showEducation.value,
+      outlined: !showEducation.value,
       action: () => { showEducation.value = !showEducation.value }
     },
     {
       label: 'Work',
       color: 'job',
-      outlined: showWork.value,
+      outlined: !showWork.value,
       action: () => { showWork.value = !showWork.value }
     },
     {
       label: 'Projects',
       color: 'project',
-      outlined: showProjects.value,
+      outlined: !showProjects.value,
       action: () => { showProjects.value = !showProjects.value }
     }
   ]
