@@ -96,20 +96,20 @@ const components = computed(() => {
   })
 })
 
-function tagInFilter (tag: string) {
+function tagInFilter (tag: string): boolean {
   return filteredTags.value.includes(tag)
 }
 
-function removeTagFromFilter (tag: string) {
+function removeTagFromFilter (tag: string): void {
   filteredTags.value = filteredTags.value.filter(t => t !== tag)
 }
 
-function addTagToFilter (tag: string) {
+function addTagToFilter (tag: string): void {
   if (filteredTags.value.includes(tag)) { return }
   filteredTags.value.push(tag)
 }
 
-function resetFilters () {
+function resetFilters (): void {
   filteredTags.value = []
   filterUnpublished.value = false
 }
@@ -247,21 +247,3 @@ useSeoMeta({
     </v-navigation-drawer>
   </base-page>
 </template>
-
-<style scoped>
-#notes-list > * {
-  margin-bottom: 1rem;
-}
-
-@media (min-width: 600px) {
-  #notes-list {
-    overflow-y: auto;
-    max-height: 80vh;
-    padding-bottom: 5vh;
-
-    /* hide the scroll */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-}
-</style>

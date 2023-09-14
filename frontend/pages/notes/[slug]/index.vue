@@ -47,63 +47,7 @@ onMounted(async () => {
       justify="center"
       no-gutters>
       <v-col
-        v-if="note"
-        md="10"
-        lg="7">
-        <base-btn
-          id="back-btn"
-          plain
-          @click="router.push('/notes')">
-          <v-icon
-            icon="mdi-arrow-left"
-            size="large" />
-          Back
-        </base-btn>
-
-        <rothko-card
-          id="note-options"
-          :source="note?.title"
-          class="brutalist-outline" />
-
-        <p>{{ noteDate }}</p>
-        <h1>{{ note?.title }}</h1>
-
-        <markdown-card
-          id="note-content"
-          :markdown="note?.content" />
-      </v-col>
-
-      <v-col
-        v-else-if="note === undefined"
-        md="10"
-        lg="7">
-        <base-card class="brutalist-outline mt-2 pa-2">
-          <div class="text-center">
-            <h2>
-              Fetching note...
-            </h2>
-          </div>
-
-          <div class="text-center">
-            <base-image
-              class="mt-2"
-              src="/images/this-is-fine.jpg"
-              alt="Meme of a dog in a burning room saying 'This is fine'"
-              width="50%" />
-          </div>
-
-          <div id="note-content">
-            <v-skeleton-loader
-              class="mt-2"
-              type="article"
-              max-width="100%"
-              max-height="100%" />
-          </div>
-        </base-card>
-      </v-col>
-
-      <v-col
-        v-else
+        v-if="note === null"
         md="10"
         lg="7">
         <base-card
@@ -134,6 +78,41 @@ onMounted(async () => {
             </ul>
           </div>
         </base-card>
+      </v-col>
+
+      <v-col
+        v-else
+        md="10"
+        lg="7">
+        <base-btn
+          id="back-btn"
+          plain
+          @click="router.push('/notes')">
+          <v-icon
+            icon="mdi-arrow-left"
+            size="large" />
+          Back
+        </base-btn>
+
+        <rothko-card
+          id="note-options"
+          :source="note?.title || undefined"
+          class="brutalist-outline" />
+
+        <div v-if="note">
+          <p>{{ noteDate }}</p>
+          <h1>{{ note?.title }}</h1>
+
+          <markdown-card
+            id="note-content"
+            :markdown="note?.content" />
+        </div>
+
+        <div v-else>
+          <v-skeleton-loader
+            class="mt-2"
+            type="article" />
+        </div>
       </v-col>
     </v-row>
   </base-page>
