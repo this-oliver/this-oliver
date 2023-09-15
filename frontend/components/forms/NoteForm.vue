@@ -17,12 +17,17 @@ const noteStore = useNoteStore();
 const router = useRouter();
 const { notify } = useNotification();
 
+const availableTags = ref<string[]>([]);
+const uploading = ref<boolean>(false);
+
 const title = ref<string>('');
 const content = ref<string>('');
 const tags = ref<string[]>([]);
-const publish = ref<boolean>(true);
+const publish = ref<boolean>(false);
 
-const availableTags = ref<string[]>([]);
+const isNewNote = computed<boolean>(() => {
+	return !props.editMode && !props.note;
+});
 
 const validForm = computed<boolean>(() => {
 	return (
@@ -46,23 +51,20 @@ const options = computed<ActionItem[]>(() => {
 			disabled: !validForm.value,
 			action: async () => {
 				try {
-					const note = props.editMode && props.note
-						? await noteStore.patchNote(props.note._id, {
-							title: title.value,
-							content: content.value,
-							tags: tags.value,
-							publish: publish.value
-						})
+					const form: Partial<Note> = {
+						title: title.value,
+						content: content.value,
+						tags: tags.value,
+						publish: publish.value
+					};
 
-						: await noteStore.postNote({
-							title: title.value,
-							content: content.value,
-							tags: tags.value,
-							publish: publish.value
-						});
+					if (isNewNote.value) {
+						await postNote(form);
+					} else {
+						await patchNote((props.note as Note)._id, form);
+					}
 
 					notify('Notes', 'Note saved successfully', 'success');
-					router.push(`/notes/${note.slug}`);
 				} catch (error) {
 					const message = (error as Error).message || 'Failed to process note';
 					notify('Notes', message, 'error');
@@ -89,6 +91,73 @@ const options = computed<ActionItem[]>(() => {
 	];
 });
 
+async function postNote (note: Partial<Note>): Promise<Note> {
+	uploading.value = true;
+	const newNote = await noteStore.postNote(note);
+	uploading.value = false;
+
+	return newNote;
+}
+
+async function patchNote (id: string, note: Partial<Note>): Promise<Note> {
+	uploading.value = true;
+	const patchedNote = await noteStore.patchNote(id, note);
+	uploading.value = false;
+
+	return patchedNote;
+}
+
+// handle timer for patching note
+let timer: NodeJS.Timeout | null = null;
+
+// delay between patching notes
+const PATCH_DELAY = 5000;
+let allowPatch = true;
+
+// minimum number of content changes before patching
+const MIN_CONTENT_CHANGE = 15;
+let contentChangeCount = 0;
+
+// compare old form with new form
+watch(content, async (newContent, oldContent) => {
+	// track whether the change is caused by `onMounted`
+	const initialChange: boolean = !oldContent || oldContent.length === 0;
+
+	// track the number of times the content has changed
+	if (!initialChange) {
+		contentChangeCount += 1;
+	}
+
+	// check if the change is significant enough to patch
+	const significantChange: boolean = contentChangeCount > MIN_CONTENT_CHANGE;
+
+	if (allowPatch && significantChange && !initialChange && !isNewNote.value) {
+		allowPatch = false;
+
+		try {
+			// patch note
+			await patchNote((props.note as Note)._id, { title: title.value, content: newContent, tags: tags.value, publish: publish.value });
+
+			// reset content change count
+			contentChangeCount = 0;
+
+			// set timer to prevent patching too often
+			timer = setTimeout(() => {
+				allowPatch = true;
+			}, PATCH_DELAY);
+		} catch (error) {
+			allowPatch = true;
+
+			if (timer) {
+				clearTimeout(timer);
+				timer = null;
+			}
+
+			notify('Notes', 'Failed to automatically patch note', 'error');
+		}
+	}
+});
+
 onMounted(async () => {
 	if (props.note) {
 		title.value = props.note.title ?? '';
@@ -107,7 +176,8 @@ onMounted(async () => {
       <v-col cols="12">
         <BaseInputText
           v-model="title"
-          label="Title" />
+          label="Title"
+          :loading="uploading" />
       </v-col>
       <v-col
         cols="12"
@@ -115,6 +185,7 @@ onMounted(async () => {
         <v-combobox
           v-model="tags"
           :items="availableTags"
+          :loading="uploading"
           label="Tags"
           chips
           multiple
@@ -126,12 +197,15 @@ onMounted(async () => {
         <v-switch
           v-model="publish"
           :inset="true"
+          :loading="uploading"
           color="success"
           label="Publish" />
       </v-col>
 
       <v-col cols="12">
-        <content-editor v-model="content" />
+        <content-editor
+          v-model="content"
+          :loading="uploading" />
       </v-col>
     </v-row>
   </base-form>
