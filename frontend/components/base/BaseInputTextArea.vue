@@ -20,6 +20,10 @@ const props = defineProps({
   isValid: {
     type: Boolean || null,
     default: null
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -51,6 +55,7 @@ watch(() => props.value, (newValue) => {
     :placeholder="placeHolder"
     :outlined="outlined"
     :auto-grow="true"
+    :loading="loading"
     :success="isValid === true"
     :error="isValid === false" />
 </template>

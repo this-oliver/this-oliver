@@ -33,6 +33,10 @@ const props = defineProps({
   isValid: {
     type: Boolean || null,
     default: null
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -76,8 +80,9 @@ watch(
     :type="data.showPassword ? 'text' : 'password'"
     :density="density"
     :variant="vibe"
-    :success="isValid === true"
-    :error="isValid === false">
+    :loading="props.loading"
+    :success="props.isValid"
+    :error="props.isValid === false">
     <template #append-inner>
       <base-btn
         small
@@ -97,8 +102,9 @@ watch(
     :type="type"
     :density="density"
     :variant="vibe"
-    :success="isValid === true"
-    :error="isValid === false">
+    :loading="props.loading"
+    :success="props.isValid"
+    :error="!props.isValid === false">
     <template #append-inner>
       <slot name="append-inner" />
     </template>

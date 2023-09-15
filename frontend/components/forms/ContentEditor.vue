@@ -18,6 +18,10 @@ const props = defineProps({
   viewMode: {
     type: String as PropType<Mode>,
     default: 'write'
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -85,6 +89,7 @@ watch(content, () => {
           :color="inputBackgroundColor">
           <base-input-text-area
             v-model="content"
+            :loading="props.loading"
             :place-holder="props.placeholder" />
         </v-sheet>
       </v-window-item>
@@ -105,6 +110,7 @@ watch(content, () => {
               :color="inputBackgroundColor">
               <base-input-text-area
                 v-model="content"
+                :loading="props.loading"
                 :place-holder="props.placeholder" />
             </v-sheet>
           </v-col>

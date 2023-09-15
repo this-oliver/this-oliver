@@ -16,6 +16,10 @@ const props = defineProps({
   multiple: {
     type: Boolean,
     default: false
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -40,5 +44,6 @@ watch(files, (files) => {
     v-model="files"
     :label="props.label"
     :multiple="props.multiple"
+    :loading="props.loading"
     :show-size="true" />
 </template>
