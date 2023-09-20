@@ -11,7 +11,6 @@ const UserSchema = new Mongoose.Schema<IUser>(
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
 		salt: { type: String },
-		visits: { type: Number, default: 0 },
 		status: { type: String, default: "" },
 	},
 	{ timestamps: true }

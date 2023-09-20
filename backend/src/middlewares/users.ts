@@ -1,8 +1,8 @@
-import type { Request, Response } from "express";
 import { ADMIN_SECRET } from "../config/env";
 import * as UserData from "../data/users";
 import * as ErrorHelper from "../utils/error";
 import type { BaseError } from "../types/error";
+import type { Request, Response } from "express";
 
 async function postUser(req: Request, res: Response) {
 	try {
@@ -52,13 +52,4 @@ async function patchUser(req: Request, res: Response) {
 	}
 }
 
-async function incrementVisits(req: Request, res: Response) {
-	try {
-		const user = await UserData.incrementUserVisits();
-		return res.status(200).send(user);
-	} catch (error) {
-		return ErrorHelper.packageResponseError(error, res);
-	}
-}
-
-export { postUser, getUser, getAdmin, patchUser, incrementVisits };
+export { postUser, getUser, getAdmin, patchUser };

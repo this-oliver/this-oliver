@@ -91,13 +91,6 @@ async function updateUserPassword(oldPwd: string, newPwd: string): Promise<UserD
 	return user.save();
 }
 
-async function incrementUserVisits(): Promise<UserDocument> {
-	const user = await getUser();
-
-	user.visits = user.visits + 1;
-	return await user.save();
-}
-
 export {
 	UserModel,
 	UserDocument,
@@ -105,6 +98,5 @@ export {
 	getUser,
 	getUserByEmail,
 	updateUser,
-	updateUserPassword,
-	incrementUserVisits
+	updateUserPassword
 };
