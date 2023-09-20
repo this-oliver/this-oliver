@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user-store';
 import { useAuthStore } from '~/stores/auth-store';
+import type { User } from '~/types';
 
-const DEFAULT_DESCRIPTION = '# 👋\n\nMy name is **Oliver.** I code stuff. I secure stuff. I solve stuff. I’ve spent the last four years studying software engineering and entrepreneurship and building software applications for startups, bars and restaurants. Currently, I\'m studying [Information Security](https://www.ltu.se/edu/program/FMISA/FMISA-Informationssakerhet-master-1.76734?l=en) at LTU. \n\nIn my free time, I like to travel, hang out with friends, listen to music and work on project that I find fun or interesting.';
+const DEFAULT_DESCRIPTION = '# 👋\n\nWelcome to my digital workshop, where I am constantly learning how to make things work. I use this space to document what I learn and the cool stuff I come up with. \n\nIf anything sparks your interest or if you have any questions, don\'t hesitate to reach out via [hello@oliverrr.net](mailto:hello@oliverrr.net). I\'m always open to collaboration or an exchange of ideas.';
 
-const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const description = computed<string>(() => {
-	return userStore.user?.status ?? DEFAULT_DESCRIPTION;
-});
+const user = ref<User>();
 
 onMounted(async () => {
-	await userStore.getUser();
+	const userStore = useUserStore();
+	user.value = await userStore.getUser();
 });
 
 const pageTitle = 'What\'s cooking? - oliverrr';
@@ -39,7 +38,7 @@ useSeoMeta({
         </base-btn>
         <markdown-card
           id="welcome-banner"
-          :markdown="description"
+          :markdown="user?.status || DEFAULT_DESCRIPTION"
           disable-anchors />
       </v-col>
     </v-row>
