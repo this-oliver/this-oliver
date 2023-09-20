@@ -3,6 +3,8 @@ import type { UserDocument } from "./models/user";
 import type { IUser } from "../types/user";
 import type { BaseError } from "../types/error";
 
+const QUERY_PROJECTION = "-email -password -salt";
+
 async function createUser(name: string, email: string, password: string, status?: string) {
 	const userCount = await UserModel.countDocuments({});
 
@@ -34,7 +36,7 @@ async function getUser(showSecrets?: boolean): Promise<UserDocument> {
 		? await UserModel.findOne()
 			.exec()
 		: await UserModel.findOne()
-			.select("-password -salt")
+			.select(QUERY_PROJECTION)
 			.exec();
 
 	if (user === null) {
@@ -49,7 +51,7 @@ async function getUserByEmail(email: string, showSecrets?: boolean): Promise<Use
 		? await UserModel.findOne({ email: email.toLowerCase() })
 			.exec()
 		: await UserModel.findOne({ email: email.toLowerCase() })
-			.select("-password -salt")
+			.select(QUERY_PROJECTION)
 			.exec();
 
 	if (user === null) {
