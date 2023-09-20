@@ -31,9 +31,8 @@ export function useRequest () {
  */
 	async function request (url: string, options?: RequestInit) {
 		const defaultOptions: RequestInit = {
-			method: 'GET', // default method is GET
-			headers: { 'Content-Type': 'application/json' // default content type is JSON
-			}
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json' }
 		};
 
 		const config: RequestInit = {
