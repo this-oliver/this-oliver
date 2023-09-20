@@ -19,9 +19,10 @@ const { notify } = useNotification();
 
 const title = ref<string>('');
 const content = ref<string>('');
-const selectedTags = ref<string[]>([]);
 const tags = ref<string[]>([]);
 const publish = ref<boolean>(true);
+
+const availableTags = ref<string[]>([]);
 
 const validForm = computed<boolean>(() => {
 	return (
@@ -49,14 +50,14 @@ const options = computed<ActionItem[]>(() => {
 						? await noteStore.patchNote(props.note._id, {
 							title: title.value,
 							content: content.value,
-							tags: selectedTags.value,
+							tags: tags.value,
 							publish: publish.value
 						})
 
 						: await noteStore.postNote({
 							title: title.value,
 							content: content.value,
-							tags: selectedTags.value,
+							tags: tags.value,
 							publish: publish.value
 						});
 
@@ -93,9 +94,10 @@ onMounted(async () => {
 		title.value = props.note.title ?? '';
 		content.value = props.note.content ?? '';
 		publish.value = props.note.publish ?? false;
+		tags.value = props.note.tags ?? [];
 	}
 
-	tags.value = await noteStore.indexTags();
+	availableTags.value = await noteStore.indexTags();
 });
 </script>
 
@@ -111,8 +113,8 @@ onMounted(async () => {
         cols="12"
         md="8">
         <v-combobox
-          v-model="selectedTags"
-          :items="tags"
+          v-model="tags"
+          :items="availableTags"
           label="Tags"
           chips
           multiple
