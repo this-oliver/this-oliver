@@ -6,20 +6,16 @@ const { smAndDown } = useDisplay()
 const links = ref([
   {
     title: 'Email',
-    link: 'mailto:hello@oliverrr.net?subject=Reaching out from oliverrr.net'
+    link: 'mailto:hello@oliverrr.net'
   },
   {
     title: 'Github',
     link: 'https://github.com/this-oliver'
-  },
-  {
-    title: 'Twitter',
-    link: 'https://twitter.com/maybeolivier'
-  },
-  {
-    title: 'Ξ ETH',
-    link: 'https://etherscan.io/address/oliverrr.eth'
   }
+  // {
+  //  title: 'ETH',
+  //  link: 'https://etherscan.io/address/oliverrr.eth'
+  // }
 ])
 
 const hasVisited = computed(() => {

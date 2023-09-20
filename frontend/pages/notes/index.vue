@@ -10,28 +10,43 @@ const noteStore = useNoteStore()
 
 const loading = ref(false)
 
+const query = ref<string>('')
 const showFilter = ref(false)
+const filterPublished = ref(false)
 const filterUnpublished = ref(false)
 const filteredTags = ref<string[]>([])
 
 const showReset = computed<boolean>(() => {
-  return filteredTags.value.length > 0 || filterUnpublished.value === true
+  return filteredTags.value.length > 0 || filterUnpublished.value === true || filterPublished.value === true
 })
 
 const getNotes = computed<Note[]>(() => {
-  let filteredNotes: Note[]
+  let filteredNotes: Note[] = noteStore.notes
 
+  // filter query
+  if (query.value.length > 0) {
+    filteredNotes = noteStore.notes.filter((note) => {
+      return note.title.toLowerCase().includes(query.value.toLowerCase())
+    })
+  }
+
+  // filter tags
   if (filteredTags.value.length > 0) {
     filteredNotes = noteStore.notes.filter((note) => {
       return note.tags.some(tag => tagInFilter(tag))
     })
-  } else {
-    filteredNotes = noteStore.notes
   }
 
-  return filterUnpublished.value
-    ? filteredNotes.filter(note => note.publish === false)
-    : filteredNotes
+  // filter published status
+  if (filterPublished.value || filterUnpublished.value) {
+    filteredNotes = filteredNotes.filter((note) => {
+      return filterPublished.value
+        ? note.publish === true
+        : note.publish === false
+    })
+  }
+
+  return filteredNotes
 })
 
 const getTags = computed<{ name: string, filtered: boolean}[]>(() => {
@@ -61,13 +76,13 @@ const options = computed<ActionItem[]>(() => {
 
   if (authStore.isLoggedIn) {
     base = [
+      ...base,
       {
         label: 'Create Note',
         color: 'secondary',
         icon: 'mdi-plus',
         to: '/notes/create'
-      },
-      ...base
+      }
     ]
   }
 
@@ -81,20 +96,20 @@ const components = computed(() => {
   })
 })
 
-function tagInFilter (tag: string) {
+function tagInFilter (tag: string): boolean {
   return filteredTags.value.includes(tag)
 }
 
-function removeTagFromFilter (tag: string) {
+function removeTagFromFilter (tag: string): void {
   filteredTags.value = filteredTags.value.filter(t => t !== tag)
 }
 
-function addTagToFilter (tag: string) {
+function addTagToFilter (tag: string): void {
   if (filteredTags.value.includes(tag)) { return }
   filteredTags.value.push(tag)
 }
 
-function resetFilters () {
+function resetFilters (): void {
   filteredTags.value = []
   filterUnpublished.value = false
 }
@@ -123,11 +138,17 @@ useSeoMeta({
 
 <template>
   <base-page title="Notes">
-    <base-list
-      label="notes"
-      :options="options"
-      :loading="loading"
-      :components="components" />
+    <v-row justify="center">
+      <v-col lg="7">
+        <base-list
+          label="notes"
+          allow-search
+          :options="options"
+          :loading="loading"
+          :components="components"
+          @search="(q) => query = q" />
+      </v-col>
+    </v-row>
 
     <v-navigation-drawer
       v-model="showFilter"
@@ -182,8 +203,18 @@ useSeoMeta({
         <v-divider class="border-outline-25 my-2" />
 
         <h4 v-if="authStore.isLoggedIn">
-          Published
+          Status
         </h4>
+        <v-list-item v-if="authStore.isLoggedIn">
+          <template #append>
+            <v-list-item-action start>
+              <v-checkbox-btn
+                v-model="filterPublished"
+                color="success" />
+            </v-list-item-action>
+          </template>
+          Published
+        </v-list-item>
         <v-list-item v-if="authStore.isLoggedIn">
           <template #append>
             <v-list-item-action start>
@@ -192,8 +223,7 @@ useSeoMeta({
                 color="success" />
             </v-list-item-action>
           </template>
-
-          Only show unpublished notes
+          Unpublished
         </v-list-item>
 
         <h4 v-if="getTags.length > 0">
@@ -217,21 +247,3 @@ useSeoMeta({
     </v-navigation-drawer>
   </base-page>
 </template>
-
-<style scoped>
-#notes-list > * {
-  margin-bottom: 1rem;
-}
-
-@media (min-width: 600px) {
-  #notes-list {
-    overflow-y: auto;
-    max-height: 80vh;
-    padding-bottom: 5vh;
-
-    /* hide the scroll */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-}
-</style>

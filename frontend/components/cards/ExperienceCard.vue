@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import { RothkoCard } from 'rothko-js'
 import type { ActionItem, Experience } from '~/types'
 
 const props = defineProps({
@@ -49,7 +50,10 @@ function isEmpty (text: any): boolean {
     id="experience-card"
     class="brutalist-outline pa-2 pa-md-1"
     :outlined="true">
-    <color-card :color="experienceColor">
+    <rothko-card
+      :source="experience.title"
+      :color="experienceColor"
+      pattern="circle">
       <v-row
         v-if="props.adminMode"
         justify="end"
@@ -68,7 +72,7 @@ function isEmpty (text: any): boolean {
           </BaseBtn>
         </v-col>
       </v-row>
-    </color-card>
+    </rothko-card>
 
     <p>{{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}</p>
     <h4 v-if="!isEmpty(props.experience.org)">

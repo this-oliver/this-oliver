@@ -19,32 +19,32 @@ const options = computed<ActionItem[]>(() => {
     {
       label: 'Education',
       color: 'education',
-      outlined: showEducation.value,
+      outlined: !showEducation.value,
       action: () => { showEducation.value = !showEducation.value }
     },
     {
       label: 'Work',
       color: 'job',
-      outlined: showWork.value,
+      outlined: !showWork.value,
       action: () => { showWork.value = !showWork.value }
     },
     {
       label: 'Projects',
       color: 'project',
-      outlined: showProjects.value,
+      outlined: !showProjects.value,
       action: () => { showProjects.value = !showProjects.value }
     }
   ]
 
   if (authStore.isLoggedIn) {
     base = [
+      ...base,
       {
         label: 'Create xP',
         color: 'secondary',
         icon: 'mdi-plus',
         to: '/experiences/create'
-      },
-      ...base
+      }
     ]
   }
 
@@ -94,10 +94,14 @@ useSeoMeta({
 
 <template>
   <base-page title="Experiences">
-    <base-list
-      label="experiences"
-      :options="options"
-      :loading="loading"
-      :components="components" />
+    <v-row justify="center">
+      <v-col lg="7">
+        <base-list
+          label="experiences"
+          :options="options"
+          :loading="loading"
+          :components="components" />
+      </v-col>
+    </v-row>
   </base-page>
 </template>

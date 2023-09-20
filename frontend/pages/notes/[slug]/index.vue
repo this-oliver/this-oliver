@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { RothkoCard } from 'rothko-js'
 import { useNoteStore } from '~/stores/note-store'
 import type { Note } from '~/types'
 
 const router = useRouter()
 const noteStore = useNoteStore()
+const notification = useNotification()
 const { formatDate } = useTime()
 
-const note = ref<Note | null>(null)
+const note = ref<Note | null | undefined>(undefined)
 const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : '')
 
 const errorReasons: string[] = [
@@ -16,21 +18,26 @@ const errorReasons: string[] = [
 ]
 
 onMounted(async () => {
-  note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string)
+  try {
+    note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string)
 
-  const title = `${note.value?.title} - oliverrr`
-  const description = note.value?.content
+    const title = `${note.value?.title} - oliverrr`
+    const description = note.value?.content
 
-  useSeoMeta({
-    title,
-    description,
-    author: 'oliverrr',
-    ogType: 'article',
-    ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
-    ogTitle: note.value?.title,
-    ogDescription: note.value?.content,
-    ogSiteName: 'oliverrr\'s notes'
-  })
+    useSeoMeta({
+      title,
+      description,
+      author: 'oliverrr',
+      ogType: 'article',
+      ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
+      ogTitle: note.value?.title,
+      ogDescription: note.value?.content,
+      ogSiteName: 'oliverrr\'s notes'
+    })
+  } catch (error) {
+    note.value = null
+    notification.notify('Error getting note', (error as Error).message, 'error')
+  }
 })
 </script>
 
@@ -40,35 +47,9 @@ onMounted(async () => {
       justify="center"
       no-gutters>
       <v-col
-        v-if="note"
-        md="10">
-        <color-card
-          id="note-options"
-          :color-source="note?.title"
-          class="brutalist-outline">
-          <base-btn
-            id="back-btn"
-            plain
-            @click="router.push('/notes')">
-            <v-icon
-              icon="mdi-arrow-left"
-              size="large" />
-
-            Back
-          </base-btn>
-        </color-card>
-
-        <p>{{ noteDate }}</p>
-        <h1>{{ note?.title }}</h1>
-
-        <markdown-card
-          id="note-content"
-          :markdown="note?.content" />
-      </v-col>
-
-      <v-col
-        v-else
-        md="10">
+        v-if="note === null"
+        md="10"
+        lg="7">
         <base-card
           class="brutalist-outline mt-2 pa-2"
           color="error">
@@ -98,6 +79,41 @@ onMounted(async () => {
           </div>
         </base-card>
       </v-col>
+
+      <v-col
+        v-else
+        md="10"
+        lg="7">
+        <base-btn
+          id="back-btn"
+          plain
+          @click="router.push('/notes')">
+          <v-icon
+            icon="mdi-arrow-left"
+            size="large" />
+          Back
+        </base-btn>
+
+        <rothko-card
+          id="note-options"
+          :source="note?.title || undefined"
+          class="brutalist-outline" />
+
+        <div v-if="note">
+          <p>{{ noteDate }}</p>
+          <h1>{{ note?.title }}</h1>
+
+          <markdown-card
+            id="note-content"
+            :markdown="note?.content" />
+        </div>
+
+        <div v-else>
+          <v-skeleton-loader
+            class="mt-2"
+            type="article" />
+        </div>
+      </v-col>
     </v-row>
   </base-page>
 </template>
@@ -117,18 +133,19 @@ ul.error-list {
 
 /* display #back-btn if mouse hovers over #note-options or if screen is mobile */
 #back-btn {
-  display: none;
+  display: block;
 }
 
 @media (max-width: 600px) {
   #back-btn {
     display: block;
   }
-}
 
-@media (hover: hover) {
-  #note-options:hover #back-btn {
-    display: block;
+  @media (hover: hover) {
+    #note-options:hover #back-btn {
+      display: block;
+    }
   }
 }
+
 </style>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+type Vibe = undefined | 'outlined' | 'plain' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
+
 const props = defineProps({
   value: {
     type: String,
@@ -20,9 +22,13 @@ const props = defineProps({
       return ['text', 'password'].includes(value)
     }
   },
-  outlined: {
+  vibe: {
+    type: String as PropType<Vibe>,
+    default: undefined
+  },
+  compact: {
     type: Boolean,
-    default: true
+    default: false
   },
   isValid: {
     type: Boolean || null,
@@ -36,6 +42,10 @@ const data = reactive({
   input: null as unknown as string,
   showDateMenu: false,
   showPassword: false
+})
+
+const density = computed(() => {
+  return props.compact ? 'compact' : 'default'
 })
 
 function setData (value: string) {
@@ -64,7 +74,8 @@ watch(
     :label="label"
     :placeholder="placeHolder"
     :type="data.showPassword ? 'text' : 'password'"
-    :outlined="outlined"
+    :density="density"
+    :variant="vibe"
     :success="isValid === true"
     :error="isValid === false">
     <template #append-inner>
@@ -84,7 +95,12 @@ watch(
     :label="label"
     :placeholder="placeHolder"
     :type="type"
-    :outlined="outlined"
+    :density="density"
+    :variant="vibe"
     :success="isValid === true"
-    :error="isValid === false" />
+    :error="isValid === false">
+    <template #append-inner>
+      <slot name="append-inner" />
+    </template>
+  </v-text-field>
 </template>

@@ -1,6 +1,6 @@
 {
   "name": "oliverrr",
-  "version": "3.6.3",
+  "version": "3.9.7",
   "description": "personal website",
   "author": "oliver <hello@oliverrr.net>",
   "repository": "this-oliver/this-oliver",
@@ -10,7 +10,7 @@
     "hook": "simple-git-hooks"
   },
   "devDependencies": {
-    "fist-bump": "^1.2.4",
+    "fist-bump": "^2.0.0",
     "lint-staged": "^13.2.2",
     "simple-git-hooks": "^2.8.1"
   },
