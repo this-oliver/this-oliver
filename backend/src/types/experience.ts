@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+// lint rule disabled because eslint doesn't recognize the type definition and thinks it's unused
+
 interface IExperience {
   title: string;
   org: string;
@@ -15,4 +18,4 @@ enum ExperienceType {
   PROJECT = "project",
   OTHER = "other",
 }
-export { IExperience, ExperienceType }
+export { IExperience, ExperienceType };

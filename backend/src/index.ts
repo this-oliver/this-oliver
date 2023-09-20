@@ -4,15 +4,15 @@ import app from "./app";
 import database from "./database";
 
 database.connect()
-  .catch((error) => {
+	.catch((error) => {
 		console.error(error);
 		return;
 	})
-  .finally(() => {
+	.finally(() => {
     
-    // run migrations asynchonously
-    migrate();
-  });
+		// run migrations asynchonously
+		migrate();
+	});
 
 app.listen(PORT, function () {
 	console.log(`\nExpress server listening on port ${PORT}, in ${NODE_ENV} mode`);

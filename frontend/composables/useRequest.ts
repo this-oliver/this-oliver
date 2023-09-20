@@ -5,66 +5,65 @@ interface FetchError {
 }
 
 export function useRequest () {
-  const router = useRouter()
-  const { notify } = useNotification()
-  const runtimeConfig = useRuntimeConfig()
-  const BASE_URL = runtimeConfig.public.api + '/api'
+	const router = useRouter();
+	const { notify } = useNotification();
+	const runtimeConfig = useRuntimeConfig();
+	const BASE_URL = runtimeConfig.public.api + '/api';
 
-  function handleError (error: any) {
-    const errObj: FetchError = {
-      status: error.status,
-      statusText: error.statusText,
-      content: undefined
-    }
+	function handleError (error: any) {
+		const errObj: FetchError = {
+			status: error.status,
+			statusText: error.statusText,
+			content: undefined
+		};
 
-    if (error.status >= 400 && error.status < 500) {
-      errObj.content = error.json()
-    } else {
-      errObj.content = error
-    }
+		if (error.status >= 400 && error.status < 500) {
+			errObj.content = error.json();
+		} else {
+			errObj.content = error;
+		}
 
-    return errObj
-  }
+		return errObj;
+	}
 
-  /**
+	/**
  * wrapper for fetch API with base url and default headers
  */
-  async function request (url: string, options?: RequestInit) {
-    const defaultOptions: RequestInit = {
-      method: 'GET', // default method is GET
-      headers: {
-        'Content-Type': 'application/json' // default content type is JSON
-      }
-    }
+	async function request (url: string, options?: RequestInit) {
+		const defaultOptions: RequestInit = {
+			method: 'GET', // default method is GET
+			headers: { 'Content-Type': 'application/json' // default content type is JSON
+			}
+		};
 
-    const config: RequestInit = {
-      ...defaultOptions,
-      ...options,
-      headers: {
-        ...defaultOptions.headers,
-        ...(options?.headers || {}) // merge headers with default and options headers
-      }
-    }
+		const config: RequestInit = {
+			...defaultOptions,
+			...options,
+			headers: {
+				...defaultOptions.headers,
+				...(options?.headers || {}) // merge headers with default and options headers
+			}
+		};
 
-    try {
-      const res = await fetch(`${BASE_URL}${url}`, { ...config })
+		try {
+			const res = await fetch(`${BASE_URL}${url}`, { ...config });
 
-      if (!res.ok) {
-        throw res
-      }
+			if (!res.ok) {
+				throw res;
+			}
 
-      return res.json()
-    } catch (error) {
-      const err = handleError(error)
+			return res.json();
+		} catch (error) {
+			const err = handleError(error);
 
-      if (err.status === 401) {
-        notify('Request Error', 'Failed to authenticate request', 'error')
-        router.push('/auth/login')
-      }
+			if (err.status === 401) {
+				notify('Request Error', 'Failed to authenticate request', 'error');
+				router.push('/auth/login');
+			}
 
-      throw err
-    }
-  }
+			throw err;
+		}
+	}
 
-  return { request }
+	return { request };
 }

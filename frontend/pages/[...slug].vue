@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
 // import Image from '~/assets/images/this-is-fine.gif'
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const title = ref<string>(route.query.title as string || 'Error')
-const message = ref<string>(route.query.message as string)
-const redirect = ref<string>(route.query.redirect as string || '/')
-const secretAction = ref<NodeJS.Timeout | null>(null)
+const title = ref<string>(route.query.title as string || 'Error');
+const message = ref<string>(route.query.message as string);
+const redirect = ref<string>(route.query.redirect as string || '/');
+const secretAction = ref<NodeJS.Timeout | null>(null);
 
 function startSecretAction () {
-  let secretPath = '/auth/login'
+	let secretPath = '/auth/login';
 
-  if (redirect.value) {
-    secretPath = `${secretPath}?redirect=${redirect.value}`
-  }
+	if (redirect.value) {
+		secretPath = `${secretPath}?redirect=${redirect.value}`;
+	}
 
-  secretAction.value = setTimeout(() => {
-    router.push(secretPath)
-  }, 2000)
+	secretAction.value = setTimeout(() => {
+		router.push(secretPath);
+	}, 2000);
 }
 function destorySecretAction () {
-  if (secretAction.value) {
-    clearTimeout(secretAction.value)
-  }
+	if (secretAction.value) {
+		clearTimeout(secretAction.value);
+	}
 }
 </script>
 

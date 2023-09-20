@@ -1,65 +1,65 @@
 <script setup lang="ts">
-import type { ActionItem } from '~/types'
+import type { ActionItem } from '~/types';
 
-const inputBackgroundColor = 'white darken-2'
-const previewBackgroundColor = 'white darken-4'
+const inputBackgroundColor = 'white darken-2';
+const previewBackgroundColor = 'white darken-4';
 
 type Mode = 'write' | 'preview' | 'split'
 
 const props = defineProps({
-  modelValue: {
-    type: String,
-    default: undefined
-  },
-  placeholder: {
-    type: String,
-    default: 'Thoughts...'
-  },
-  viewMode: {
-    type: String as PropType<Mode>,
-    default: 'write'
-  },
-  loading: {
-    type: Boolean,
-    default: false
-  }
-})
+	modelValue: {
+		type: String,
+		default: undefined
+	},
+	placeholder: {
+		type: String,
+		default: 'Thoughts...'
+	},
+	viewMode: {
+		type: String as PropType<Mode>,
+		default: 'write'
+	},
+	loading: {
+		type: Boolean,
+		default: false
+	}
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
-const content = ref<string>(props.modelValue || '')
-const currentMode = ref<Mode>(props.viewMode)
+const content = ref<string>(props.modelValue || '');
+const currentMode = ref<Mode>(props.viewMode);
 
 const modes = computed<ActionItem[]>(() => {
-  return [
-    {
-      label: 'write',
-      description: 'Write only',
-      color: 'primary',
-      icon: 'mdi-pencil'
-    },
-    {
-      label: 'preview',
-      description: 'Preview only',
-      color: 'primary',
-      icon: 'mdi-eye'
-    },
-    {
-      label: 'split',
-      description: 'Split view',
-      color: 'primary',
-      icon: 'mdi-view-split-vertical'
-    }
-  ]
-})
+	return [
+		{
+			label: 'write',
+			description: 'Write only',
+			color: 'primary',
+			icon: 'mdi-pencil'
+		},
+		{
+			label: 'preview',
+			description: 'Preview only',
+			color: 'primary',
+			icon: 'mdi-eye'
+		},
+		{
+			label: 'split',
+			description: 'Split view',
+			color: 'primary',
+			icon: 'mdi-view-split-vertical'
+		}
+	];
+});
 
 watch(() => props.modelValue, (value) => {
-  content.value = value as string
-})
+	content.value = value as string;
+});
 
 watch(content, () => {
-  emit('update:modelValue', content.value)
-})
+	emit('update:modelValue', content.value);
+});
 
 </script>
 

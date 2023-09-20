@@ -1,62 +1,60 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { RothkoCard } from 'rothko-js'
-import type { Note, ActionItem } from '~/types'
-import { useNoteStore } from '~/stores/note-store'
+import type { PropType } from 'vue';
+import { RothkoCard } from 'rothko-js';
+import type { Note, ActionItem } from '~/types';
+import { useNoteStore } from '~/stores/note-store';
 
 const props = defineProps({
-  note: {
-    type: Object as PropType<Note>,
-    required: true
-  },
-  adminMode: {
-    type: Boolean,
-    default: false
-  }
-})
+	note: {
+		type: Object as PropType<Note>,
+		required: true
+	},
+	adminMode: {
+		type: Boolean,
+		default: false
+	}
+});
 
-const { formatDate } = useTime()
-const noteDate = computed<string>(() => formatDate(props.note.createdAt))
+const { formatDate } = useTime();
+const noteDate = computed<string>(() => formatDate(props.note.createdAt));
 
 const noteOptions = computed<ActionItem[]>(() => {
-  return [
-    {
-      label: 'Edit',
-      icon: 'mdi-pencil',
-      to: `/notes/${props.note.slug}/edit`
-    },
-    {
-      label: props.note.publish === true ? 'Unpublish' : 'Publish',
-      color: props.note.publish === true ? 'warning' : 'success',
-      icon: props.note.publish === true ? 'mdi-eye-off' : 'mdi-eye',
-      action: async () => {
-        const noteStore = useNoteStore()
-        const { notify } = useNotification()
+	return [
+		{
+			label: 'Edit',
+			icon: 'mdi-pencil',
+			to: `/notes/${props.note.slug}/edit`
+		},
+		{
+			label: props.note.publish === true ? 'Unpublish' : 'Publish',
+			color: props.note.publish === true ? 'warning' : 'success',
+			icon: props.note.publish === true ? 'mdi-eye-off' : 'mdi-eye',
+			action: async () => {
+				const noteStore = useNoteStore();
+				const { notify } = useNotification();
 
-        try {
-          await noteStore.patchNote(props.note._id, {
-            publish: !props.note.publish
-          })
+				try {
+					await noteStore.patchNote(props.note._id, { publish: !props.note.publish });
 
-          notify(
-            'Note updated successfully!',
-            `Note ${props.note.publish === true ? 'unpublished' : 'published'}`,
-            'success'
-          )
+					notify(
+						'Note updated successfully!',
+						`Note ${props.note.publish === true ? 'unpublished' : 'published'}`,
+						'success'
+					);
 
-          await noteStore.indexNotes()
-        } catch (error) {
-          const errorMessage = (error as Error).message
-          notify(
-            'Error updating note',
-            errorMessage,
-            'error'
-          )
-        }
-      }
-    }
-  ]
-})
+					await noteStore.indexNotes();
+				} catch (error) {
+					const errorMessage = (error as Error).message;
+					notify(
+						'Error updating note',
+						errorMessage,
+						'error'
+					);
+				}
+			}
+		}
+	];
+});
 
 </script>
 

@@ -1,138 +1,138 @@
 <script setup lang="ts">
-import { h } from 'vue'
-import { useNoteStore } from '~/stores/note-store'
-import { useAuthStore } from '~/stores/auth-store'
-import { ActionItem, Note } from '~/types'
-import NoteCard from '~/components/cards/NoteCard.vue'
+import { h } from 'vue';
+import { useNoteStore } from '~/stores/note-store';
+import { useAuthStore } from '~/stores/auth-store';
+import { ActionItem, Note } from '~/types';
+import NoteCard from '~/components/cards/NoteCard.vue';
 
-const authStore = useAuthStore()
-const noteStore = useNoteStore()
+const authStore = useAuthStore();
+const noteStore = useNoteStore();
 
-const loading = ref(false)
+const loading = ref(false);
 
-const query = ref<string>('')
-const showFilter = ref(false)
-const filterPublished = ref(false)
-const filterUnpublished = ref(false)
-const filteredTags = ref<string[]>([])
+const query = ref<string>('');
+const showFilter = ref(false);
+const filterPublished = ref(false);
+const filterUnpublished = ref(false);
+const filteredTags = ref<string[]>([]);
 
 const showReset = computed<boolean>(() => {
-  return filteredTags.value.length > 0 || filterUnpublished.value === true || filterPublished.value === true
-})
+	return filteredTags.value.length > 0 || filterUnpublished.value === true || filterPublished.value === true;
+});
 
 const getNotes = computed<Note[]>(() => {
-  let filteredNotes: Note[] = noteStore.notes
+	let filteredNotes: Note[] = noteStore.notes;
 
-  // filter query
-  if (query.value.length > 0) {
-    filteredNotes = noteStore.notes.filter((note) => {
-      return note.title.toLowerCase().includes(query.value.toLowerCase())
-    })
-  }
+	// filter query
+	if (query.value.length > 0) {
+		filteredNotes = noteStore.notes.filter((note) => {
+			return note.title.toLowerCase().includes(query.value.toLowerCase());
+		});
+	}
 
-  // filter tags
-  if (filteredTags.value.length > 0) {
-    filteredNotes = noteStore.notes.filter((note) => {
-      return note.tags.some(tag => tagInFilter(tag))
-    })
-  }
+	// filter tags
+	if (filteredTags.value.length > 0) {
+		filteredNotes = noteStore.notes.filter((note) => {
+			return note.tags.some(tag => tagInFilter(tag));
+		});
+	}
 
-  // filter published status
-  if (filterPublished.value || filterUnpublished.value) {
-    filteredNotes = filteredNotes.filter((note) => {
-      return filterPublished.value
-        ? note.publish === true
-        : note.publish === false
-    })
-  }
+	// filter published status
+	if (filterPublished.value || filterUnpublished.value) {
+		filteredNotes = filteredNotes.filter((note) => {
+			return filterPublished.value
+				? note.publish === true
+				: note.publish === false;
+		});
+	}
 
-  return filteredNotes
-})
+	return filteredNotes;
+});
 
 const getTags = computed<{ name: string, filtered: boolean}[]>(() => {
-  return noteStore.tags.flat()
-    .map((tag) => {
-      return {
-        name: tag,
-        filtered: tagInFilter(tag)
-      }
-    })
-    .sort((a, b) => {
-      if (a.filtered && !b.filtered) { return -1 }
-      if (!a.filtered && b.filtered) { return 1 }
-      return 0
-    })
-})
+	return noteStore.tags.flat()
+		.map((tag) => {
+			return {
+				name: tag,
+				filtered: tagInFilter(tag)
+			};
+		})
+		.sort((a, b) => {
+			if (a.filtered && !b.filtered) { return -1; }
+			if (!a.filtered && b.filtered) { return 1; }
+			return 0;
+		});
+});
 
 const options = computed<ActionItem[]>(() => {
-  let base: ActionItem[] = [
-    {
-      label: 'Filter',
-      color: 'primary',
-      icon: 'mdi-filter',
-      action: () => { showFilter.value = !showFilter.value }
-    }
-  ]
+	let base: ActionItem[] = [
+		{
+			label: 'Filter',
+			color: 'primary',
+			icon: 'mdi-filter',
+			action: () => { showFilter.value = !showFilter.value; }
+		}
+	];
 
-  if (authStore.isLoggedIn) {
-    base = [
-      ...base,
-      {
-        label: 'Create Note',
-        color: 'secondary',
-        icon: 'mdi-plus',
-        to: '/notes/create'
-      }
-    ]
-  }
+	if (authStore.isLoggedIn) {
+		base = [
+			...base,
+			{
+				label: 'Create Note',
+				color: 'secondary',
+				icon: 'mdi-plus',
+				to: '/notes/create'
+			}
+		];
+	}
 
-  return base
-})
+	return base;
+});
 
 const components = computed(() => {
-  return getNotes.value.map((note) => {
-    // return a NoteCard component with the note prop set to the note
-    return h(NoteCard, { note, adminMode: authStore.isLoggedIn })
-  })
-})
+	return getNotes.value.map((note) => {
+		// return a NoteCard component with the note prop set to the note
+		return h(NoteCard, { note, adminMode: authStore.isLoggedIn });
+	});
+});
 
 function tagInFilter (tag: string): boolean {
-  return filteredTags.value.includes(tag)
+	return filteredTags.value.includes(tag);
 }
 
 function removeTagFromFilter (tag: string): void {
-  filteredTags.value = filteredTags.value.filter(t => t !== tag)
+	filteredTags.value = filteredTags.value.filter(t => t !== tag);
 }
 
 function addTagToFilter (tag: string): void {
-  if (filteredTags.value.includes(tag)) { return }
-  filteredTags.value.push(tag)
+	if (filteredTags.value.includes(tag)) { return; }
+	filteredTags.value.push(tag);
 }
 
 function resetFilters (): void {
-  filteredTags.value = []
-  filterUnpublished.value = false
+	filteredTags.value = [];
+	filterUnpublished.value = false;
 }
 
 onMounted(async () => {
-  loading.value = true
-  await noteStore.indexNotes()
-  await noteStore.indexTags()
-  loading.value = false
-})
+	loading.value = true;
+	await noteStore.indexNotes();
+	await noteStore.indexTags();
+	loading.value = false;
+});
 
-const title = 'Notes - oliverrr'
-const description = 'A collection of notes on various topics.'
+const title = 'Notes - oliverrr';
+const description = 'A collection of notes on various topics.';
 
 useSeoMeta({
-  title,
-  description,
-  author: 'oliverrr',
-  ogUrl: 'https://www.oliverrr.net/notes',
-  ogTitle: title,
-  ogDescription: description,
-  ogSiteName: 'oliverrr\'s notes'
-})
+	title,
+	description,
+	author: 'oliverrr',
+	ogUrl: 'https://www.oliverrr.net/notes',
+	ogTitle: title,
+	ogDescription: description,
+	ogSiteName: 'oliverrr\'s notes'
+});
 
 </script>
 

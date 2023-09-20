@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user-store'
-import type { User } from '~/types'
+import { useUserStore } from '~/stores/user-store';
+import type { User } from '~/types';
 
-definePageMeta({
-  middleware: ['auth']
-})
+definePageMeta({ middleware: ['auth'] });
 
-const userStore = useUserStore()
-const user = ref<User>()
+const userStore = useUserStore();
+const user = ref<User>();
 
 onMounted(async () => {
-  user.value = await userStore.getUser(true) as User
-})
+	user.value = await userStore.getUser(true) as User;
+});
 </script>
 
 <template>

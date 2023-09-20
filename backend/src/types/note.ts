@@ -7,4 +7,4 @@ interface INote {
   tags: string[];
 }
 
-export { INote }
+export { INote };

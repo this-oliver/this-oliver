@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useNoteStore } from '~/stores/note-store'
-import type { Note } from '~/types'
+import { useRoute } from 'vue-router';
+import { useNoteStore } from '~/stores/note-store';
+import type { Note } from '~/types';
 
-definePageMeta({
-  middleware: ['auth']
-})
+definePageMeta({ middleware: ['auth'] });
 
-const route = useRoute()
-const noteStore = useNoteStore()
+const route = useRoute();
+const noteStore = useNoteStore();
 
-const note = ref<Note | null>(null)
+const note = ref<Note | null>(null);
 
 onMounted(async () => {
-  note.value = await noteStore.getNoteBySlug(route.params.slug as string)
-})
+	note.value = await noteStore.getNoteBySlug(route.params.slug as string);
+});
 </script>
 
 <template>

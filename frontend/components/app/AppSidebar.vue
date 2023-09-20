@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { useDisplay } from 'vuetify'
-import { useNavigationStore } from '~/stores/app/navigation-store'
-import { useSidebarStore } from '~/stores/app/sidebar-store'
-import { ActionItem } from '~/types'
+import { useDisplay } from 'vuetify';
+import { useNavigationStore } from '~/stores/app/navigation-store';
+import { useSidebarStore } from '~/stores/app/sidebar-store';
+import { ActionItem } from '~/types';
 
-const { smAndDown } = useDisplay()
+const { smAndDown } = useDisplay();
 
-const drawer = useSidebarStore()
-const navigation = useNavigationStore()
-const options = computed<ActionItem[]>(() => navigation.options)
+const drawer = useSidebarStore();
+const navigation = useNavigationStore();
+const options = computed<ActionItem[]>(() => navigation.options);
 
 function getOptionColor (option: ActionItem): string {
-  if (option.color) {
-    return `text-${option.color}`
-  }
+	if (option.color) {
+		return `text-${option.color}`;
+	}
 
-  return ''
+	return '';
 }
 </script>
 

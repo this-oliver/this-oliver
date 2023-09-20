@@ -1,44 +1,44 @@
 <script setup lang="ts">
-import { RothkoCard } from 'rothko-js'
-import { useNoteStore } from '~/stores/note-store'
-import type { Note } from '~/types'
+import { RothkoCard } from 'rothko-js';
+import { useNoteStore } from '~/stores/note-store';
+import type { Note } from '~/types';
 
-const router = useRouter()
-const noteStore = useNoteStore()
-const notification = useNotification()
-const { formatDate } = useTime()
+const router = useRouter();
+const noteStore = useNoteStore();
+const notification = useNotification();
+const { formatDate } = useTime();
 
-const note = ref<Note | null | undefined>(undefined)
-const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : '')
+const note = ref<Note | null | undefined>(undefined);
+const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : '');
 
 const errorReasons: string[] = [
-  'The note may have been deleted',
-  'The note may have been unpublished',
-  'The note may have been moved'
-]
+	'The note may have been deleted',
+	'The note may have been unpublished',
+	'The note may have been moved'
+];
 
 onMounted(async () => {
-  try {
-    note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string)
+	try {
+		note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string);
 
-    const title = `${note.value?.title} - oliverrr`
-    const description = note.value?.content
+		const title = `${note.value?.title} - oliverrr`;
+		const description = note.value?.content;
 
-    useSeoMeta({
-      title,
-      description,
-      author: 'oliverrr',
-      ogType: 'article',
-      ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
-      ogTitle: note.value?.title,
-      ogDescription: note.value?.content,
-      ogSiteName: 'oliverrr\'s notes'
-    })
-  } catch (error) {
-    note.value = null
-    notification.notify('Error getting note', (error as Error).message, 'error')
-  }
-})
+		useSeoMeta({
+			title,
+			description,
+			author: 'oliverrr',
+			ogType: 'article',
+			ogUrl: `https://www.oliverrr.net/notes/${note.value?.slug}`,
+			ogTitle: note.value?.title,
+			ogDescription: note.value?.content,
+			ogSiteName: 'oliverrr\'s notes'
+		});
+	} catch (error) {
+		note.value = null;
+		notification.notify('Error getting note', (error as Error).message, 'error');
+	}
+});
 </script>
 
 <template>

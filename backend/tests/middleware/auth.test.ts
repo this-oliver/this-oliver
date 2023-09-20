@@ -28,7 +28,7 @@ describe("Auth Middleware", function () {
 			await UserModel.deleteMany({});
 
 			sampleUser = Factory.models.createUsers() as IUser;
-      await UserData.createUser(sampleUser.name, sampleUser.email, sampleUser.password);
+			await UserData.createUser(sampleUser.name, sampleUser.email, sampleUser.password);
 		});
 
 		it("should return a user + token + 200 on a valid login", async function () {

@@ -12,47 +12,47 @@ async function postNote (req: Request, res: Response) {
 		);
 		return res.status(201).send(note);
 	} catch (error) {
-    return ErrorHelper.packageResponseError(error, res);
+		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function indexNotes (req: Request, res: Response) {
-  const authenticated: boolean = (req as any).authenticated || false;
+	const authenticated: boolean = (req as any).authenticated || false;
   
-  try {
-    const notes = authenticated
-    ? await NoteData.indexNotes(true)
-    : await NoteData.indexNotes();
+	try {
+		const notes = authenticated
+			? await NoteData.indexNotes(true)
+			: await NoteData.indexNotes();
 		
-    return res.status(200).send(notes);
+		return res.status(200).send(notes);
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function getNote (req: Request, res: Response) {
 	const articleId = req.params.id;
 	const isSlugId = req.query.slug === "true";
-  const authenticated: boolean = (req as any).authenticated || false;
+	const authenticated: boolean = (req as any).authenticated || false;
 
 	try {
-    let note;
+		let note;
 
-    if(isSlugId) {
-      note = authenticated
-        ? await NoteData.getNoteBySlug(articleId, true)
-        : await NoteData.getNoteBySlug(articleId);
-    } else {
-      note = authenticated
-        ? await NoteData.getNote(articleId, true)
-        : await NoteData.getNote(articleId);
-    }
+		if(isSlugId) {
+			note = authenticated
+				? await NoteData.getNoteBySlug(articleId, true)
+				: await NoteData.getNoteBySlug(articleId);
+		} else {
+			note = authenticated
+				? await NoteData.getNote(articleId, true)
+				: await NoteData.getNote(articleId);
+		}
 
 		return res.status(200).send(note);
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function patchNote (req: Request, res: Response) {
 	try {
@@ -61,7 +61,7 @@ async function patchNote (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function deleteNote (req: Request, res: Response) {
 	try {
@@ -70,7 +70,7 @@ async function deleteNote (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function incrementNoteViews (req: Request, res: Response) {
 	try {
@@ -79,29 +79,29 @@ async function incrementNoteViews (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 // tags
 async function indexNoteTags (req: Request, res: Response) {
 	const authenticated: boolean = (req as any).authenticated || false;
   
-  try {
+	try {
 		const tags = authenticated
-      ? await NoteData.indexTags(true)
-      : await NoteData.indexTags(false);
+			? await NoteData.indexTags(true)
+			: await NoteData.indexTags(false);
 
 		return res.status(200).send(tags);
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 export {
-  postNote,
-  indexNotes,
-  getNote,
-  patchNote,
-  deleteNote,
-  incrementNoteViews,
-  indexNoteTags
+	postNote,
+	indexNotes,
+	getNote,
+	patchNote,
+	deleteNote,
+	incrementNoteViews,
+	indexNoteTags
 };

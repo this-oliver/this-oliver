@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { useDisplay } from 'vuetify'
+import { useDisplay } from 'vuetify';
 
-const { smAndDown } = useDisplay()
+const { smAndDown } = useDisplay();
 
 const links = ref([
-  {
-    title: 'Email',
-    link: 'mailto:hello@oliverrr.net'
-  },
-  {
-    title: 'Github',
-    link: 'https://github.com/this-oliver'
-  }
-  // {
-  //  title: 'ETH',
-  //  link: 'https://etherscan.io/address/oliverrr.eth'
-  // }
-])
+	{
+		title: 'Email',
+		link: 'mailto:hello@oliverrr.net'
+	},
+	{
+		title: 'Github',
+		link: 'https://github.com/this-oliver'
+	}
+	// {
+	//  title: 'ETH',
+	//  link: 'https://etherscan.io/address/oliverrr.eth'
+	// }
+]);
 
 const hasVisited = computed(() => {
-  return true
-})
+	return true;
+});
 </script>
 
 <template>

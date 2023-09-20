@@ -1,31 +1,31 @@
 export function useStorage () {
-  function get (key: string) {
-    if (process.client === false) { return }
+	function get (key: string) {
+		if (process.client === false) { return; }
 
-    const value = localStorage.getItem(key)
+		const value = localStorage.getItem(key);
 
-    if (value) {
-      return JSON.parse(value)
-    }
+		if (value) {
+			return JSON.parse(value);
+		}
 
-    return null
-  }
+		return null;
+	}
 
-  function set (key: string, value: any) {
-    if (process.client === false) { return }
+	function set (key: string, value: any) {
+		if (process.client === false) { return; }
 
-    localStorage.setItem(key, JSON.stringify(value))
-  }
+		localStorage.setItem(key, JSON.stringify(value));
+	}
 
-  function remove (key: string) {
-    if (process.client === false) { return }
+	function remove (key: string) {
+		if (process.client === false) { return; }
 
-    localStorage.removeItem(key)
-  }
+		localStorage.removeItem(key);
+	}
 
-  return {
-    get,
-    set,
-    remove
-  }
+	return {
+		get,
+		set,
+		remove
+	};
 }

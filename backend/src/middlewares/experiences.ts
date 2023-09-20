@@ -11,14 +11,14 @@ async function postExperience (req: Request, res: Response) {
 			req.body.endYear,
 			req.body.description,
 			req.body.type,
-      req.body.link,
-      req.body.image
+			req.body.link,
+			req.body.image
 		);
 		return res.status(201).send(experience);
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function indexExperiences (req: Request, res: Response) {
 	try {
@@ -27,7 +27,7 @@ async function indexExperiences (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function getExperience (req: Request, res: Response) {
 	try {
@@ -36,7 +36,7 @@ async function getExperience (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function patchExperience (req: Request, res: Response) {
 	try {
@@ -45,7 +45,7 @@ async function patchExperience (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 async function deleteExperience (req: Request, res: Response) {
 	try {
@@ -54,12 +54,12 @@ async function deleteExperience (req: Request, res: Response) {
 	} catch (error) {
 		return ErrorHelper.packageResponseError(error, res);
 	}
-};
+}
 
 export {
-  postExperience,
-  indexExperiences,
-  getExperience,
-  patchExperience,
-  deleteExperience
+	postExperience,
+	indexExperiences,
+	getExperience,
+	patchExperience,
+	deleteExperience
 };

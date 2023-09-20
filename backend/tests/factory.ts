@@ -19,7 +19,7 @@ const models = {
 		} else {
 			const users: Partial<IUser>[] = [];
 			
-      for (let i = 0; i < num; i++) {
+			for (let i = 0; i < num; i++) {
 				users.push({
 					name: `user${i}`,
 					email: `user${i}@mail.com`,
@@ -31,32 +31,32 @@ const models = {
 	},
 
 	createNote: ({
-    num = 1,
+		num = 1,
 		publish = true,
 		title = "test title",
 		content = "content for stuff to test",
-    tags = [] as string[],
-  } = {}): Partial<INote> | Partial<INote>[] => {
+		tags = [] as string[],
+	} = {}): Partial<INote> | Partial<INote>[] => {
 		if(num <= 1) {
-      return {
-        title,
-        content,
-        tags,
-        publish,
-      };
-    }
-    else {
-      const notes: Partial<INote>[] = [];
-      for (let i = 0; i < num; i++) {
-        notes.push({
-          title: `${title} ${i}`,
-          content: `${content} ${i}`,
-          tags,
-          publish,
-        });
-      }
-      return notes;
-    }
+			return {
+				title,
+				content,
+				tags,
+				publish,
+			};
+		}
+		else {
+			const notes: Partial<INote>[] = [];
+			for (let i = 0; i < num; i++) {
+				notes.push({
+					title: `${title} ${i}`,
+					content: `${content} ${i}`,
+					tags,
+					publish,
+				});
+			}
+			return notes;
+		}
 	},
 };
 

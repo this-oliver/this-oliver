@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const theme = useTheme()
+const theme = useTheme();
 const layoutClass = computed<string>(() =>
-  theme.dark.value ? 'dark-theme' : ''
-)
+	theme.dark.value ? 'dark-theme' : ''
+);
 </script>
 
 <template>

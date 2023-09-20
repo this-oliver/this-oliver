@@ -1,59 +1,59 @@
 <script setup lang="ts">
-import type { User, ActionItem } from '~/types'
-import { useUserStore } from '~/stores/user-store'
+import type { User, ActionItem } from '~/types';
+import { useUserStore } from '~/stores/user-store';
 
 const props = defineProps({
-  user: {
-    type: Object as PropType<User>,
-    required: true
-  },
-  editMode: {
-    type: Boolean,
-    default: false
-  }
-})
+	user: {
+		type: Object as PropType<User>,
+		required: true
+	},
+	editMode: {
+		type: Boolean,
+		default: false
+	}
+});
 
-const router = useRouter()
-const userStore = useUserStore()
-const { notify } = useNotification()
+const router = useRouter();
+const userStore = useUserStore();
+const { notify } = useNotification();
 
-const description = ref<string>(props.user.status)
+const description = ref<string>(props.user.status);
 
 const validForm = computed<boolean>(() => {
-  return (
-    !!description.value &&
+	return (
+		!!description.value &&
     description.value.trim().length > 0
-  )
-})
+	);
+});
 
 const options = computed<ActionItem[]>(() => {
-  return [
-    {
-      label: 'Cancel',
-      color: 'secondary',
-      icon: 'mdi-cancel',
-      action: () => { router.back() }
-    },
-    {
-      label: 'Update',
-      color: 'success',
-      icon: 'mdi-content-save',
-      disabled: !validForm.value,
-      action: _updateUser
-    }
-  ]
-})
+	return [
+		{
+			label: 'Cancel',
+			color: 'secondary',
+			icon: 'mdi-cancel',
+			action: () => { router.back(); }
+		},
+		{
+			label: 'Update',
+			color: 'success',
+			icon: 'mdi-content-save',
+			disabled: !validForm.value,
+			action: _updateUser
+		}
+	];
+});
 
 async function _updateUser () {
-  try {
-    await userStore.updateUser({ status: description.value })
+	try {
+		await userStore.updateUser({ status: description.value });
 
-    notify('User', 'User updated successfully', 'success')
-    router.push('/')
-  } catch (error) {
-    const message = (error as Error).message || 'Failed to process user'
-    notify('Notes', message, 'error')
-  }
+		notify('User', 'User updated successfully', 'success');
+		router.push('/');
+	} catch (error) {
+		const message = (error as Error).message || 'Failed to process user';
+		notify('Notes', message, 'error');
+	}
 }
 </script>
 

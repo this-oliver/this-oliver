@@ -1,5 +1,5 @@
-import { DB_URI } from "./config/env";
 import mongoose from "mongoose";
+import { DB_URI } from "./config/env";
 import { BaseError } from "./types/error";
 
 let connection: mongoose.Connection | undefined = undefined;
@@ -9,9 +9,9 @@ let connection: mongoose.Connection | undefined = undefined;
  */
 async function connect(): Promise<typeof mongoose> {
 	const database = await mongoose.connect(DB_URI);
-  connection = database.connection;
+	connection = database.connection;
 
-  return database;
+	return database;
 }
 
 /**
@@ -19,16 +19,16 @@ async function connect(): Promise<typeof mongoose> {
  */
 async function disconnect() {
 	await mongoose.disconnect();
-  connection = undefined;
+	connection = undefined;
 }
 
 /**
  * Drop database
  */
 async function drop () {
-  if(!connection) {
-    throw { status: 500, message: "no connection to database" } as BaseError;
-  }
+	if(!connection) {
+		throw { status: 500, message: "no connection to database" } as BaseError;
+	}
 
 	return connection.dropDatabase();
 }

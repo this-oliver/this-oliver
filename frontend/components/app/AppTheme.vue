@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-const { dark, toggleTheme } = useTheme()
+const { dark, toggleTheme } = useTheme();
 
 const props = defineProps({
-  sidebarMode: {
-    type: Boolean,
-    default: false
-  }
-})
+	sidebarMode: {
+		type: Boolean,
+		default: false
+	}
+});
 
 const icon = computed<string>(() => {
-  return dark.value ? 'mdi-white-balance-sunny' : 'mdi-weather-night'
-})
+	return dark.value ? 'mdi-white-balance-sunny' : 'mdi-weather-night';
+});
 </script>
 
 <template>

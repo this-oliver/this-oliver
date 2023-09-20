@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user-store'
-import { useAuthStore } from '~/stores/auth-store'
+import { useUserStore } from '~/stores/user-store';
+import { useAuthStore } from '~/stores/auth-store';
 
-const DEFAULT_DESCRIPTION = '# 👋\n\nMy name is **Oliver.** I code stuff. I secure stuff. I solve stuff. I’ve spent the last four years studying software engineering and entrepreneurship and building software applications for startups, bars and restaurants. Currently, I\'m studying [Information Security](https://www.ltu.se/edu/program/FMISA/FMISA-Informationssakerhet-master-1.76734?l=en) at LTU. \n\nIn my free time, I like to travel, hang out with friends, listen to music and work on project that I find fun or interesting.'
+const DEFAULT_DESCRIPTION = '# 👋\n\nMy name is **Oliver.** I code stuff. I secure stuff. I solve stuff. I’ve spent the last four years studying software engineering and entrepreneurship and building software applications for startups, bars and restaurants. Currently, I\'m studying [Information Security](https://www.ltu.se/edu/program/FMISA/FMISA-Informationssakerhet-master-1.76734?l=en) at LTU. \n\nIn my free time, I like to travel, hang out with friends, listen to music and work on project that I find fun or interesting.';
 
-const userStore = useUserStore()
-const authStore = useAuthStore()
+const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const description = computed<string>(() => {
-  return userStore.user?.status ?? DEFAULT_DESCRIPTION
-})
+	return userStore.user?.status ?? DEFAULT_DESCRIPTION;
+});
 
 onMounted(async () => {
-  await userStore.getUser()
-})
+	await userStore.getUser();
+});
 
-const pageTitle = 'What\'s cooking? - oliverrr'
-const pageDescription = 'A quick overview of what I\'m up to right now.'
+const pageTitle = 'What\'s cooking? - oliverrr';
+const pageDescription = 'A quick overview of what I\'m up to right now.';
 useSeoMeta({
-  title: pageTitle,
-  description: pageDescription,
-  ogTitle: pageTitle,
-  ogDescription: pageDescription,
-  ogSiteName: 'oliverrr\'s personal website'
-})
+	title: pageTitle,
+	description: pageDescription,
+	ogTitle: pageTitle,
+	ogDescription: pageDescription,
+	ogSiteName: 'oliverrr\'s personal website'
+});
 
 </script>
 

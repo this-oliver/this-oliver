@@ -10,8 +10,8 @@ const UserSchema = new Mongoose.Schema<IUser>(
 		name: { type: String, required: true },
 		email: { type: String, required: true, unique: true },
 		password: { type: String, required: true },
-    salt: { type: String },
-    visits: { type: Number, default: 0 },
+		salt: { type: String },
+		visits: { type: Number, default: 0 },
 		status: { type: String, default: "" },
 	},
 	{ timestamps: true }
@@ -23,7 +23,7 @@ const UserSchema = new Mongoose.Schema<IUser>(
  */
 UserSchema.pre("save", async function (next) {
 	// only hash the password if it has been modified (or is new)
-  const passwordChanged = this.isModified("password");
+	const passwordChanged = this.isModified("password");
 
 	if (passwordChanged) {
 		// generate a salt
@@ -32,7 +32,7 @@ UserSchema.pre("save", async function (next) {
 		// overwrite the cleartext password with the hash
 		this.password = await Bcrypt.hash(this.password, this.salt);
 
-    this.save();
+		this.save();
 	}
 
 	next();
@@ -42,9 +42,11 @@ UserSchema.pre("save", async function (next) {
  * Add a custom method to the user model to verify the password
  */
 UserSchema.methods.verifyPassword = async function (candidate: string) {
-  return await Bcrypt.compare(candidate, this.password);
+	return await Bcrypt.compare(candidate, this.password);
 };
 
+
+// eslint-disable-next-line no-unused-vars
 type UserDocument = IUser & Document & { verifyPassword: (candidate: string) => Promise<boolean>, createdAt: string };
 
 const UserModel = Mongoose.model<IUser>("user", UserSchema);

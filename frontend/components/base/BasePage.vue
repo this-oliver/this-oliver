@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
 const props = defineProps({
-  title: {
-    type: String,
-    defualt: undefined
-  }
-})
+	title: {
+		type: String,
+		defualt: undefined
+	}
+});
 </script>
 
 <template>

@@ -9,7 +9,7 @@ const NoteSchema = new Mongoose.Schema<INote>(
 		publish: { type: Boolean, default: false },
 		slug: { type: String, unique: true },
 		views: { type: Number, default: 0 },
-    tags: [{ type: String }],
+		tags: [{ type: String }],
     
 	},
 	{ timestamps: true }
@@ -17,32 +17,32 @@ const NoteSchema = new Mongoose.Schema<INote>(
 
 NoteSchema.pre('save', async function(next) {
 	// Only generate a new slug if the article's title has changed.
-  const titleChanged = this.isModified("title");
-  if(titleChanged) {
-    const context = this;
+	const titleChanged = this.isModified("title");
+	if(titleChanged) {
 
-    async function _generateSlug(text: string): Promise<string> {
-      const slug: string = SlugHelper.createSlug(text);
+		const _generateSlug = async (text: string): Promise<string> => {
+			const slug: string = SlugHelper.createSlug(text);
 
-      // search for slug in database
-      const exists = await (context.constructor as any).findOne({ slug });
+			// search for slug in database
+			const exists = await (this.constructor as unknown as Mongoose.Collection).findOne({ slug });
 
-      if(exists) {
-        const randomNumber = Math.random().toString(36).substring(2, 8);
-        return _generateSlug(`${text}-${randomNumber}`);
-      }
+			if(exists) {
+				const randomNumber = Math.random().toString(36).substring(2, 8);
+				return _generateSlug(`${text}-${randomNumber}`);
+			}
 
-      return slug;
-    }
+			return slug;
+		};
 
-    this.slug = await _generateSlug(this.title);
-  }
+		this.slug = await _generateSlug(this.title);
+	}
   
-  next();
+	next();
 });
 
-type NoteDocument = INote & Mongoose.Document;
 
 const NoteModel = Mongoose.model("note", NoteSchema);
+
+type NoteDocument = INote & Mongoose.Document;
 
 export { NoteModel, NoteDocument };
