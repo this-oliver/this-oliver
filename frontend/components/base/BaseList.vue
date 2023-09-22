@@ -19,6 +19,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false
 	},
+	search: {
+		type: String,
+		default: ''
+	},
 	loading: {
 		type: Boolean,
 		default: false
@@ -32,6 +36,14 @@ const showSearchField = ref<boolean>(false);
 
 watch(search, (value) => {
 	emit('search', value);
+});
+
+onMounted(() => {
+	search.value = props.search;
+
+	if (search.value) {
+		showSearchField.value = true;
+	}
 });
 
 </script>
@@ -57,6 +69,7 @@ watch(search, (value) => {
         :key="option.label"
         class="mx-1 mt-2 mt-md-0"
         :outlined="option.outlined"
+        :text="option.text"
         :color="option.color"
         :to="option.to"
         @click="option.action">

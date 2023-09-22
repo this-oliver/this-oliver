@@ -3,44 +3,48 @@ import { h } from 'vue';
 import { useNoteStore } from '~/stores/note-store';
 import { useAuthStore } from '~/stores/auth-store';
 import { ActionItem, Note } from '~/types';
+import { useRouterQuery } from '~/composables/useRouterQuery';
 import NoteCard from '~/components/cards/NoteCard.vue';
 
 const authStore = useAuthStore();
 const noteStore = useNoteStore();
+const query = useRouterQuery();
 
 const loading = ref(false);
 
-const query = ref<string>('');
 const showFilter = ref(false);
-const filterPublished = ref(false);
-const filterUnpublished = ref(false);
-const filteredTags = ref<string[]>([]);
+const filter = reactive({
+	query: '',
+	published: false,
+	unpublished: false,
+	tags: [] as string[]
+});
 
 const showReset = computed<boolean>(() => {
-	return filteredTags.value.length > 0 || filterUnpublished.value === true || filterPublished.value === true;
+	return filter.tags.length > 0 || filter.unpublished === true || filter.published === true;
 });
 
 const getNotes = computed<Note[]>(() => {
 	let filteredNotes: Note[] = noteStore.notes;
 
 	// filter query
-	if (query.value.length > 0) {
+	if (filter.query.length > 0) {
 		filteredNotes = noteStore.notes.filter((note) => {
-			return note.title.toLowerCase().includes(query.value.toLowerCase());
+			return note.title.toLowerCase().includes(filter.query.toLowerCase());
 		});
 	}
 
 	// filter tags
-	if (filteredTags.value.length > 0) {
+	if (filter.tags.length > 0) {
 		filteredNotes = noteStore.notes.filter((note) => {
 			return note.tags.some(tag => tagInFilter(tag));
 		});
 	}
 
 	// filter published status
-	if (filterPublished.value || filterUnpublished.value) {
+	if (filter.published || filter.unpublished) {
 		filteredNotes = filteredNotes.filter((note) => {
-			return filterPublished.value
+			return filter.published
 				? note.publish === true
 				: note.publish === false;
 		});
@@ -79,7 +83,7 @@ const options = computed<ActionItem[]>(() => {
 			...base,
 			{
 				label: 'Create Note',
-				color: 'secondary',
+				color: 'primary',
 				icon: 'mdi-plus',
 				to: '/notes/create'
 			}
@@ -97,30 +101,98 @@ const components = computed(() => {
 });
 
 function tagInFilter (tag: string): boolean {
-	return filteredTags.value.includes(tag);
+	return filter.tags.includes(tag);
 }
 
 function removeTagFromFilter (tag: string): void {
-	filteredTags.value = filteredTags.value.filter(t => t !== tag);
+	filter.tags = filter.tags.filter(t => t !== tag);
 }
 
 function addTagToFilter (tag: string): void {
-	if (filteredTags.value.includes(tag)) { return; }
-	filteredTags.value.push(tag);
+	if (!filter.tags.includes(tag)) {
+		filter.tags.push(tag);
+	}
 }
 
 function resetFilters (): void {
-	filteredTags.value = [];
-	filterUnpublished.value = false;
+	filter.query = '';
+	filter.tags = [];
+	filter.published = false;
+	filter.unpublished = false;
 }
 
+// deep watch filters and update route query
+watch(
+	() => filter.query,
+	async (newQuery) => {
+		if (newQuery.length > 0) {
+			await query.add('q', newQuery);
+		} else {
+			await query.remove('q');
+		}
+	}
+);
+
+watch(
+	() => filter.tags,
+	async (newTags) => {
+		if (newTags.length > 0) {
+			await query.add('tags', newTags.join(','));
+		} else {
+			await query.remove('tags');
+		}
+	},
+	{ deep: true }
+);
+
+watch(
+	() => filter.published,
+	async (newPublished) => {
+		if (newPublished) {
+			await query.add('published', String(newPublished));
+		} else {
+			await query.remove('published');
+		}
+	}
+);
+
+watch(
+	() => filter.unpublished,
+	async (newUnpublished) => {
+		if (newUnpublished) {
+			await query.add('unpublished', String(newUnpublished));
+		} else {
+			await query.remove('unpublished');
+		}
+	}
+);
+
 onMounted(async () => {
+	// set filters from query params
+	if (query.has('q')) {
+		filter.query = query.get('q') as string;
+	}
+
+	if (query.has('published')) {
+		filter.published = query.get('published') === 'true';
+	}
+
+	if (query.has('unpublished')) {
+		filter.unpublished = query.get('unpublished') === 'true';
+	}
+
+	if (query.has('tags')) {
+		filter.tags = query.get('tags').split(',');
+	}
+
+	// fetch notes and tags
 	loading.value = true;
 	await noteStore.indexNotes();
 	await noteStore.indexTags();
 	loading.value = false;
 });
 
+// set seo meta
 const title = 'Notes - oliverrr';
 const description = 'A collection of notes on various topics.';
 
@@ -141,42 +213,43 @@ useSeoMeta({
     <v-row justify="center">
       <v-col lg="7">
         <base-list
+          v-if="!loading"
           label="notes"
           allow-search
           :options="options"
           :loading="loading"
           :components="components"
-          @search="(q) => query = q" />
+          :search="filter.query"
+          @search="(q) => filter.query = q" />
       </v-col>
     </v-row>
 
     <v-navigation-drawer
       v-model="showFilter"
       class="pa-2"
-      temporary
+      width="60%"
       color="primary"
       location="right"
-      width="60%">
+      :scrim="true"
+      :permanent="showFilter">
       <template #prepend>
         <v-row
           justify="space-between"
           align="center">
-          <v-col cols="auto">
-            <v-toolbar-title>Filter Notes</v-toolbar-title>
-          </v-col>
-
           <v-col
             class="text-center"
-            cols="auto">
+            cols="auto"
+            md="12">
             <base-btn
-              text
+              block
+              color="error"
               @click="showFilter = false">
-              <v-icon
-                size="large"
-                icon="mdi-close" />
+              Close
             </base-btn>
           </v-col>
         </v-row>
+
+        <v-divider class="border-outline-25 my-2" />
       </template>
 
       <v-list>
@@ -209,7 +282,7 @@ useSeoMeta({
           <template #append>
             <v-list-item-action start>
               <v-checkbox-btn
-                v-model="filterPublished"
+                v-model="filter.published"
                 color="success" />
             </v-list-item-action>
           </template>
@@ -219,7 +292,7 @@ useSeoMeta({
           <template #append>
             <v-list-item-action start>
               <v-checkbox-btn
-                v-model="filterUnpublished"
+                v-model="filter.unpublished"
                 color="success" />
             </v-list-item-action>
           </template>

@@ -5,6 +5,7 @@ export interface ActionItem {
   icon?: string;
   disabled?: boolean;
   outlined?: boolean;
+  text?: boolean;
   hint?: string;
   to?: string;
   action?: () => void;
