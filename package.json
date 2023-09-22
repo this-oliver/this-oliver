@@ -5,6 +5,7 @@
   "author": "oliver <hello@oliverrr.net>",
   "repository": "this-oliver/this-oliver",
   "license": "MIT",
+  "packageManager": "pnpm@8.7.6",
   "scripts": {
     "bump": "npx fist-bump",
     "hook": "simple-git-hooks"

@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "repository": "this-oliver/this-oliver",
+  "packageManager": "pnpm@8.7.6",
   "scripts": {
     "start": "NODE_ENV=production node ./dist/index.js",
     "build": "tsc",
