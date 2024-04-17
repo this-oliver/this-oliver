@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oliverrr
+  labels:
+    app: oliverrr
+    component: ingress
+  annotations:
+    # Reference the Origin CA Issuer you created in `ingress-tls.yaml`, which must be in the same namespace.
+    cert-manager.io/issuer: cloudflare-issuer
+    cert-manager.io/issuer-kind: OriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: www.oliverr.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: oliverrr-frontend
+                port:
+                  number: 80
+    - host: api.oliverr.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: oliverrr-backend
+                port:
+                  number: 4000
+  tls:
+    - hosts:
+        - www.oliverr.net
+        - api.oliverr.net
+      secretName: oliverrr-tls

@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "testing") {
 }
 
 const NODE_ENV = process.env.NODE_ENV;
-const PORT = process.env.PORT || "3001";
+const PORT = process.env.PORT || "4000";
 const DB_URI: string = process.env.DB_URI as string;
 const JWT_SECRET: string = process.env.JWT_SECRET as string;
 const ADMIN_SECRET: string | undefined = process.env.ADMIN_SECRET;

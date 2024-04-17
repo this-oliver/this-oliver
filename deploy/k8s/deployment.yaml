@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oliverrr-frontend
+  labels:
+    app: oliverrr
+    component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oliverrr
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: oliverrr
+        component: frontend
+    spec:
+      imagePullSecrets:
+        - name: dockerhub
+      containers:
+        - name: frontend
+          image: thisoliver/oliverrr:frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: frontend-port
+          env:
+            - name: NUXT_PUBLIC_API
+              value: "https://api.oliverr.net"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oliverrr-backend
+  labels:
+    app: oliverrr
+    component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oliverrr
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: oliverrr
+        component: backend
+    spec:
+      imagePullSecrets:
+        - name: dockerhub
+      containers:
+        - name: client
+          image: thisoliver/oliverrr:backend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4000
+              name: backend-port
+          env:
+            - name: ADMIN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: ADMIN_SECRET
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: JWT_SECRET
+            - name: DB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: DB_URI
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
