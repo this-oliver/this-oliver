@@ -19,7 +19,7 @@
     "marked": "^5.1.2",
     "pinia": "^2.1.1",
     "rothko-js": "^0.5.8",
-    "sanitize-html": "^2.10.0",
+    "sanitize-html": "^2.12.1",
     "simple-analytics-vue": "^3.0.2",
     "vue-sonner": "^0.3.2"
   },
