@@ -50,7 +50,7 @@ jobs:
       - name: Deploy Backend
         uses: docker/build-push-action@v5
         with:
-          context: backend
+          context: packages/backend
           tags: ${{ env.image }}:backend
           platforms: ${{ env.platforms }}
           push: true
@@ -58,7 +58,7 @@ jobs:
       - name: Deploy Frontend
         uses: docker/build-push-action@v5
         with:
-          context: frontend
+          context: packages/frontend
           tags: ${{ env.image }}:frontend
           platforms: ${{ env.platforms }}
           push: true

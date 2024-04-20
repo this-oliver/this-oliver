@@ -18,7 +18,7 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "./frontend/**/*.{ts,vue}": "cd frontend && npm run lint:fix",
-    "./backend/**/*.ts": "cd backend && npm run lint:fix"
+    "./frontend/**/*.{ts,vue}": "cd packages/frontend && npm run lint:fix",
+    "./backend/**/*.ts": "cd packages/backend && npm run lint:fix"
   }
 }
