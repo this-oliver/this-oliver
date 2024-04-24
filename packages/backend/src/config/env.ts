@@ -13,6 +13,7 @@ const PORT = process.env.PORT || "4000";
 const DB_URI: string = process.env.DB_URI as string;
 const JWT_SECRET: string = process.env.JWT_SECRET as string;
 const ADMIN_SECRET: string | undefined = process.env.ADMIN_SECRET;
+const CORS_ORIGIN: string | undefined = process.env.CORS_ORIGIN;
 
 if(!DB_URI) {
 	console.error("No database URI. Set DB_URI environment variable.");
@@ -24,4 +25,4 @@ if(!JWT_SECRET) {
 	process.exit(1);
 }
 
-export { NODE_ENV, PORT, DB_URI, JWT_SECRET, ADMIN_SECRET };
+export { NODE_ENV, PORT, DB_URI, JWT_SECRET, ADMIN_SECRET, CORS_ORIGIN };

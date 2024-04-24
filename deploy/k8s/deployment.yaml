@@ -28,7 +28,10 @@ spec:
               name: frontend-port
           env:
             - name: NUXT_PUBLIC_API
-              value: "https://api.oliverr.net"
+              valueFrom:
+                configMapKeyRef:
+                  name: oliverrr
+                  key: frontend-api-url
           resources:
             limits:
               memory: "128Mi"
@@ -63,6 +66,11 @@ spec:
             - containerPort: 4000
               name: backend-port
           env:
+            - name: CORS_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: oliverrr
+                  key: backend-cors-origin
             - name: ADMIN_SECRET
               valueFrom:
                 secretKeyRef:
