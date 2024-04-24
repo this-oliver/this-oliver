@@ -1,3 +1,4 @@
+# see https://www.oliverrr.net/notes/enabling-tls-on-your-k8-cluster
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,7 +7,6 @@ metadata:
     app: oliverrr
     component: ingress
   annotations:
-    # Reference the Origin CA Issuer you created in `ingress-tls.yaml`, which must be in the same namespace.
     cert-manager.io/issuer: cloudflare-issuer
     cert-manager.io/issuer-kind: OriginIssuer
     cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: www.oliverr.net
+    - host: www.oliverrr.net
       http:
         paths:
           - path: /
@@ -24,7 +24,7 @@ spec:
                 name: oliverrr-frontend
                 port:
                   number: 80
-    - host: api.oliverr.net
+    - host: api.oliverrr.net
       http:
         paths:
           - path: /
@@ -36,6 +36,6 @@ spec:
                   number: 4000
   tls:
     - hosts:
-        - www.oliverr.net
-        - api.oliverr.net
+        - www.oliverrr.net
+        - api.oliverrr.net
       secretName: oliverrr-tls
