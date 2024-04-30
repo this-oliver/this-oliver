@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oliverrr-frontend
+  labels:
+    app: oliverrr
+    component: frontend
+spec:
+  type: NodePort
+  selector:
+    app: oliverrr
+    component: frontend
+  ports:
+    - port: 80
+      targetPort: frontend-port
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oliverrr-backend
+  labels:
+    app: oliverrr
+    component: backend
+spec:
+  type: NodePort
+  selector:
+    app: oliverrr
+    component: backend
+  ports:
+    - port: 4000
+      targetPort: backend-port
+      protocol: TCP

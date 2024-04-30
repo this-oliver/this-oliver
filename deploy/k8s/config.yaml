@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oliverrr
+data:
+  frontend-api-url: "https://api.oliverrt.net"
+  backend-cors-origin: "https://www.oliverrr.net"
