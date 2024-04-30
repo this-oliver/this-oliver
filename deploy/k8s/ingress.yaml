@@ -1,0 +1,41 @@
+# see https://www.oliverrr.net/notes/enabling-tls-on-your-k8-cluster
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oliverrr
+  labels:
+    app: oliverrr
+    component: ingress
+  annotations:
+    cert-manager.io/issuer: cloudflare-issuer
+    cert-manager.io/issuer-kind: OriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: www.oliverrr.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: oliverrr-frontend
+                port:
+                  number: 80
+    - host: api.oliverrr.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: oliverrr-backend
+                port:
+                  number: 4000
+  tls:
+    - hosts:
+        - www.oliverrr.net
+        - api.oliverrr.net
+      secretName: oliverrr-tls
