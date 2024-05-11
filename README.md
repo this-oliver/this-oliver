@@ -4,20 +4,17 @@
 
 <br>
 
-![JavaScript](https://img.shields.io/badge/-JavaScript-black?style=flat-square&logo=javascript)
-![Nodejs](https://img.shields.io/badge/-Nodejs-black?style=flat-square&logo=Node.js)
-![Vuejs](https://img.shields.io/badge/-Vuejs-black?style=flat-square&logo=vuedotjs)
-![Python](https://img.shields.io/badge/-Python-black?style=flat-square&logo=Python)
-![MongoDB](https://img.shields.io/badge/-MongoDB-black?style=flat-square&logo=mongodb)
-![Git](https://img.shields.io/badge/-Git-black?style=flat-square&logo=git)
-![Raspberry Pi](https://img.shields.io/badge/-Raspberry%20Pi-black?style=flat-square&logo=Raspberry-Pi)
-
 ## **About me**
 
-1. I've got a background in software engineering 💻
-2. I'm currently studying information security 🔐
-3. I like jazz, art and competitive sports
-4. I failed my first startup :(
+1. I've got an academic background in software engineering 💻 and information security 🔐
+2. I like jazz, art and competitive sports
+3. I failed my first startup
+
+## **What I'm trying to do at the moment**
+
+- learning kubernetes
+- improving my linux skills
+- building a homelab
 
 <br>
 <p align="center">
