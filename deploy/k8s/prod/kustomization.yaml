@@ -4,7 +4,6 @@ metadata:
   name: oliverrr
 
 resources:
-  #- secret.yaml
-  - deployment.yaml
-  - service.yaml
+  - config.yaml
   - ingress.yaml
+  - secret.yaml
