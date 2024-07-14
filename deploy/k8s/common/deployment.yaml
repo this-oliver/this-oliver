@@ -30,8 +30,8 @@ spec:
             - name: NUXT_PUBLIC_API
               valueFrom:
                 configMapKeyRef:
-                  name: oliverrr
-                  key: frontend-api-url
+                  name: oliverrr-frontend
+                  key: NUXT_PUBLIC_API
           resources:
             limits:
               memory: "128Mi"
@@ -69,8 +69,8 @@ spec:
             - name: CORS_ORIGIN
               valueFrom:
                 configMapKeyRef:
-                  name: oliverrr
-                  key: backend-cors-origin
+                  name: oliverrr-backend
+                  key: CORS_ORIGIN
             - name: ADMIN_SECRET
               valueFrom:
                 secretKeyRef:

@@ -1,7 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: oliverrr
+  name: oliverrr-frontend
 data:
-  frontend-api-url: "https://api.oliverrt.net"
-  backend-cors-origin: "https://www.oliverrr.net"
+  NUXT_PUBLIC_API: "https://api.oliverrr.net"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oliverrr-backend
+data:
+  CORS_ORIGIN: "https://www.oliverrr.net"
