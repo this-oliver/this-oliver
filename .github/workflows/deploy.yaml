@@ -21,7 +21,7 @@ env:
   platforms: linux/amd64,linux/arm64,linux/arm/v7
 
 jobs:
-  check-quality:
+  check-readability:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,6 +38,27 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+  check-unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Setup MongoDB
+        uses: supercharge/mongodb-github-action@1.12.0
+        with:
+          mongodb-version: 6.0.3
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: packages/backend
 
       - name: Test
         run: npm test
@@ -73,7 +94,7 @@ jobs:
   build:
     # takes too long for PRs
     if: ${{ github.event_name == 'push' }}
-    needs: [check-quality, check-security]
+    needs: [check-readability, check-unit-tests, check-security]
     runs-on: ubuntu-latest
 
     steps:
