@@ -1,4 +1,4 @@
-name: Deploy Container Images
+name: CI/CD
 
 on:
   push:
@@ -21,19 +21,17 @@ env:
   platforms: linux/amd64,linux/arm64,linux/arm/v7
 
 jobs:
-  check:
+  check-quality:
     runs-on: ubuntu-latest
 
     steps:
-      # get code
       - name: Checkout
         uses: actions/checkout@v4
 
-      # setup node
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: 23
 
       - name: Install dependencies
         run: npm install
@@ -45,9 +43,37 @@ jobs:
         run: npm test
         working-directory: packages/backend
 
+  check-security:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        path: [packages/backend, packages/frontend, deploy/k8s, .github/workflows]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-results.sarif
+          scanners: 'vuln,secret,misconfig'
+          severity: 'HIGH,CRITICAL'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+
   build:
     # takes too long for PRs
     if: ${{ github.event_name == 'push' }}
+    needs: [check-quality, check-security]
     runs-on: ubuntu-latest
 
     steps:
