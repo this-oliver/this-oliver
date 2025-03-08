@@ -6,8 +6,8 @@ import MIGRATION_06_23 from "./db-migrate-06-2023";
  * an action that alters the database
  */
 interface IAction {
-  description: string;
-  action: () => Promise<void>;
+  description: string
+  action: () => Promise<void>
 }
 
 /**
@@ -15,8 +15,8 @@ interface IAction {
  * during a migration
  */
 interface IExecution {
-  name: string;
-  actions: IAction[];
+  name: string
+  actions: IAction[]
 }
 
 /**
@@ -24,18 +24,18 @@ interface IExecution {
  * executed during a migration process and its status
  */
 interface IMigration {
-  name: string;
-  description: string;
-  status: 'pending' | 'completed';
+  name: string
+  description: string
+  status: "pending" | "completed"
 }
 
 /**
  * migration schema
  */
 const MigrationSchema = new Mongoose.Schema<IMigration>({
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	status: { type: String, default: 'pending' }
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  status: { type: String, default: "pending" }
 }, { timestamps: true });
 
 /**
@@ -47,72 +47,69 @@ const MigrationModel = Mongoose.model<IMigration>("migration", MigrationSchema);
  * List of migrations to be executed
  */
 const executions: IExecution[] = [
-	MIGRATION_05_23,
-	MIGRATION_06_23
+  MIGRATION_05_23,
+  MIGRATION_06_23
 ];
 
 /**
  * Executes all migrations that have not been executed yet
  */
 async function migrate() {
-	let migrationCount = 0;
+  let migrationCount = 0;
 
-	// loop through all executions
-	for (const execution of executions) {
+  // loop through all executions
+  for (const execution of executions) {
+    // Use .map to create an array of Promises
+    const actionPromises = execution.actions.map(async (action) => {
+      try {
+        const migration = await MigrationModel.findOne({ name: execution.name, description: action.description });
 
-		// Use .map to create an array of Promises
-		const actionPromises = execution.actions.map(async action => {
-			try {
-				const migration = await MigrationModel.findOne({ name: execution.name, description: action.description });
+        // create migration if it does not exist yet and execute it if it does exist
+        // but is pending (not executed yet)
+        if (!migration) {
+          const newMigration = await MigrationModel.create({
+            name: execution.name,
+            description: action.description
+          });
 
-				// if the migration has not been executed yet, create a new migration
-				if (!migration) {
-					const newMigration = await MigrationModel.create({
-						name: execution.name,
-						description: action.description
-					});
+          await action.action();
+          await MigrationModel.updateOne({ _id: newMigration._id }, { status: "completed" });
 
-					await action.action();
-					await MigrationModel.updateOne({ _id: newMigration._id }, { status: 'completed' });
+          migrationCount++;
+          _log(`Migration ${execution.name} - ${action.description} executed successfully`);
+        } else if (migration.status === "pending") {
+          await action.action();
+          await MigrationModel.updateOne({ _id: migration._id }, { status: "completed" });
 
-					migrationCount++;
-					_log(`Migration ${execution.name} - ${action.description} executed successfully`);
-				}
+          migrationCount++;
+          _log(`Migration ${execution.name} - ${action.description} executed successfully (was pending)`);
+        }
+      } catch (error) {
+        const errorMessage = (error as Error).message || error as string;
 
-				// if the migration has not been executed yet, execute it
-				else if (migration.status === 'pending') {
-					await action.action();
-					await MigrationModel.updateOne({ _id: migration._id }, { status: 'completed' });
+        _log(`Error executing migration ${execution.name} - ${action.description} \n^ Migration Error: ${errorMessage}\n`);
+      }
+    });
 
-					migrationCount++;
-					_log(`Migration ${execution.name} - ${action.description} executed successfully (was pending)`);
-				}
+    // Use Promise.all to wait for all Promises to resolve
+    await Promise.all(actionPromises);
+  }
 
-			} catch (error) {
-				const errorMessage = (error as Error).message || error as string;
-
-				_log(`Error executing migration ${execution.name} - ${action.description} \n^ Migration Error: ${errorMessage}\n`);
-			}
-		});
-
-		// Use Promise.all to wait for all Promises to resolve
-		await Promise.all(actionPromises);
-	}
-
-	// only log if migrations have been executed
-	if (migrationCount > 0) {
-		_log(`[${migrationCount}] migrations executed`);
-	}
+  // only log if migrations have been executed
+  if (migrationCount > 0) {
+    _log(`[${migrationCount}] migrations executed`);
+  }
 }
 
 function _log(text: string) {
-	console.info(`=> ${text}`);
+  // eslint-disable-next-line no-console
+  console.info(`=> ${text}`);
 }
 
 export {
-	IExecution,
-	IMigration,
-	MigrationModel,
+  IExecution,
+  IMigration,
+  MigrationModel
 };
 
 export default migrate;

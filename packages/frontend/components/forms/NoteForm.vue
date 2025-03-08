@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { Note, ActionItem } from '~/types';
-import { useNoteStore } from '~/stores/note-store';
+import type { ActionItem, Note } from "~/types";
+import { useNoteStore } from "~/stores/note-store";
 
 const props = defineProps({
-	note: {
-		type: Object as PropType<Note>,
-		default: undefined
-	},
-	editMode: {
-		type: Boolean,
-		default: false
-	}
+  note: {
+    type: Object as PropType<Note>,
+    default: undefined
+  },
+  editMode: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const noteStore = useNoteStore();
@@ -20,91 +20,93 @@ const { notify } = useNotification();
 const availableTags = ref<string[]>([]);
 const uploading = ref<boolean>(false);
 
-const title = ref<string>('');
-const content = ref<string>('');
+const title = ref<string>("");
+const content = ref<string>("");
 const tags = ref<string[]>([]);
 const publish = ref<boolean>(false);
 
 const isNewNote = computed<boolean>(() => {
-	return !props.editMode && !props.note;
+  return !props.editMode && !props.note;
 });
 
 const validForm = computed<boolean>(() => {
-	return (
-		!!title.value &&
-    !!content.value
-	);
+  return (
+    !!title.value
+    && !!content.value
+  );
 });
 
 const options = computed<ActionItem[]>(() => {
-	return [
-		{
-			label: 'Cancel',
-			color: 'secondary',
-			icon: 'mdi-cancel',
-			action: () => { router.back(); }
-		},
-		{
-			label: props.editMode ? 'Save' : 'Create',
-			color: 'success',
-			icon: 'mdi-content-save',
-			disabled: !validForm.value,
-			action: async () => {
-				try {
-					const form: Partial<Note> = {
-						title: title.value,
-						content: content.value,
-						tags: tags.value,
-						publish: publish.value
-					};
+  return [
+    {
+      label: "Cancel",
+      color: "secondary",
+      icon: "mdi-cancel",
+      action: () => {
+        router.back();
+      }
+    },
+    {
+      label: props.editMode ? "Save" : "Create",
+      color: "success",
+      icon: "mdi-content-save",
+      disabled: !validForm.value,
+      action: async () => {
+        try {
+          const form: Partial<Note> = {
+            title: title.value,
+            content: content.value,
+            tags: tags.value,
+            publish: publish.value
+          };
 
-					if (isNewNote.value) {
-						await postNote(form);
-					} else {
-						await patchNote((props.note as Note)._id, form);
-					}
+          if (isNewNote.value) {
+            await postNote(form);
+          } else {
+            await patchNote((props.note as Note)._id, form);
+          }
 
-					notify('Notes', 'Note saved successfully', 'success');
-				} catch (error) {
-					const message = (error as Error).message || 'Failed to process note';
-					notify('Notes', message, 'error');
-				}
-			}
-		},
-		{
-			label: 'Delete',
-			color: 'error',
-			icon: 'mdi-delete',
-			action: async () => {
-				if (props.editMode && props.note) {
-					try {
-						await noteStore.deleteNote(props.note._id);
-						notify('Notes', 'Note deleted successfully', 'success');
-						router.push('/notes');
-					} catch (error) {
-						const message = (error as Error).message || 'Failed to delete note';
-						notify('Notes', message, 'error');
-					}
-				}
-			}
-		}
-	];
+          notify("Notes", "Note saved successfully", "success");
+        } catch (error) {
+          const message = (error as Error).message || "Failed to process note";
+          notify("Notes", message, "error");
+        }
+      }
+    },
+    {
+      label: "Delete",
+      color: "error",
+      icon: "mdi-delete",
+      action: async () => {
+        if (props.editMode && props.note) {
+          try {
+            await noteStore.deleteNote(props.note._id);
+            notify("Notes", "Note deleted successfully", "success");
+            router.push("/notes");
+          } catch (error) {
+            const message = (error as Error).message || "Failed to delete note";
+            notify("Notes", message, "error");
+          }
+        }
+      }
+    }
+  ];
 });
 
-async function postNote (note: Partial<Note>): Promise<Note> {
-	uploading.value = true;
-	const newNote = await noteStore.postNote(note);
-	uploading.value = false;
+async function postNote(note: Partial<Note>): Promise<Note> {
+  uploading.value = true;
+  const newNote = await noteStore.postNote(note);
+  uploading.value = false;
 
-	return newNote;
+  return newNote;
 }
 
-async function patchNote (id: string, note: Partial<Note>): Promise<Note> {
-	uploading.value = true;
-	const patchedNote = await noteStore.patchNote(id, note);
-	uploading.value = false;
+async function patchNote(id: string, note: Partial<Note>): Promise<Note> {
+  uploading.value = true;
+  const patchedNote = await noteStore.patchNote(id, note);
+  uploading.value = false;
 
-	return patchedNote;
+  return patchedNote;
 }
 
 // handle timer for patching note
@@ -120,53 +122,53 @@ let contentChangeCount = 0;
 
 // compare old form with new form
 watch(content, async (newContent, oldContent) => {
-	// track whether the change is caused by `onMounted`
-	const initialChange: boolean = !oldContent || oldContent.length === 0;
+  // track whether the change is caused by `onMounted`
+  const initialChange: boolean = !oldContent || oldContent.length === 0;
 
-	// track the number of times the content has changed
-	if (!initialChange) {
-		contentChangeCount += 1;
-	}
+  // track the number of times the content has changed
+  if (!initialChange) {
+    contentChangeCount += 1;
+  }
 
-	// check if the change is significant enough to patch
-	const significantChange: boolean = contentChangeCount > MIN_CONTENT_CHANGE;
+  // check if the change is significant enough to patch
+  const significantChange: boolean = contentChangeCount > MIN_CONTENT_CHANGE;
 
-	if (allowPatch && significantChange && !initialChange && !isNewNote.value) {
-		allowPatch = false;
+  if (allowPatch && significantChange && !initialChange && !isNewNote.value) {
+    allowPatch = false;
 
-		try {
-			// patch note
-			await patchNote((props.note as Note)._id, { title: title.value, content: newContent, tags: tags.value, publish: publish.value });
+    try {
+      // patch note
+      await patchNote((props.note as Note)._id, { title: title.value, content: newContent, tags: tags.value, publish: publish.value });
 
-			// reset content change count
-			contentChangeCount = 0;
+      // reset content change count
+      contentChangeCount = 0;
 
-			// set timer to prevent patching too often
-			timer = setTimeout(() => {
-				allowPatch = true;
-			}, PATCH_DELAY);
-		} catch (error) {
-			allowPatch = true;
+      // set timer to prevent patching too often
+      timer = setTimeout(() => {
+        allowPatch = true;
+      }, PATCH_DELAY);
+    } catch {
+      allowPatch = true;
 
-			if (timer) {
-				clearTimeout(timer);
-				timer = null;
-			}
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
 
-			notify('Notes', 'Failed to automatically patch note', 'error');
-		}
-	}
+      notify("Notes", "Failed to automatically patch note", "error");
+    }
+  }
 });
 
 onMounted(async () => {
-	if (props.note) {
-		title.value = props.note.title ?? '';
-		content.value = props.note.content ?? '';
-		publish.value = props.note.publish ?? false;
-		tags.value = props.note.tags ?? [];
-	}
+  if (props.note) {
+    title.value = props.note.title ?? "";
+    content.value = props.note.content ?? "";
+    publish.value = props.note.publish ?? false;
+    tags.value = props.note.tags ?? [];
+  }
 
-	availableTags.value = await noteStore.indexTags();
+  availableTags.value = await noteStore.indexTags();
 });
 </script>
 

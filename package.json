@@ -3,14 +3,19 @@
   "version": "3.13.3",
   "description": "personal website",
   "author": "oliver <hello@oliverrr.net>",
-  "repository": "this-oliver/this-oliver",
   "license": "MIT",
+  "repository": "this-oliver/this-oliver",
   "scripts": {
-    "bump": "npx fist-bump",
-    "hook": "simple-git-hooks"
+    "test": "cd packages/backend && npm run test",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "postinstall": "simple-git-hooks && npm run setup-frontend && npm run setup-backend",
+    "setup-frontend": "cd packages/frontend && npm install",
+    "setup-backend": "cd packages/backend && npm install"
   },
   "devDependencies": {
-    "fist-bump": "^2.0.0",
+    "@antfu/eslint-config": "^4.8.1",
+    "eslint": "^9.22.0",
     "lint-staged": "^13.2.2",
     "simple-git-hooks": "^2.8.1"
   },
@@ -18,7 +23,6 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "./frontend/**/*.{ts,vue}": "cd packages/frontend && npm run lint:fix",
-    "./backend/**/*.ts": "cd packages/backend && npm run lint:fix"
+    "*.{js,ts,vue,yaml,yml}": "npm run lint:fix"
   }
 }

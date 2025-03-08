@@ -1,131 +1,133 @@
 <script setup lang="ts">
+import highlight from "highlight.js";
+import highlightBash from "highlight.js/lib/languages/bash";
+import highlightJavascript from "highlight.js/lib/languages/javascript";
+import highlightPython from "highlight.js/lib/languages/python";
+import highlightTypescript from "highlight.js/lib/languages/typescript";
+import { marked } from "marked";
+import sanitizeHtml from "sanitize-html";
 // import 'highlight.js/styles/github.css' // light theme
-import 'highlight.js/styles/github-dark.css'; // dark theme
-import highlight from 'highlight.js';
-import highlightBash from 'highlight.js/lib/languages/bash';
-import highlightJavascript from 'highlight.js/lib/languages/javascript';
-import highlightTypescript from 'highlight.js/lib/languages/typescript';
-import highlightPython from 'highlight.js/lib/languages/python';
-import sanitizeHtml from 'sanitize-html';
-import { marked } from 'marked';
+import "highlight.js/styles/github-dark.css"; // dark theme
 
 const props = defineProps({
-	markdown: {
-		type: String,
-		required: true
-	},
-	disableAnchors: {
-		type: Boolean,
-		default: false
-	}
+  markdown: {
+    type: String,
+    required: true
+  },
+  disableAnchors: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const renderedHtml = computed<string>(() => {
-	return _markdownToHtml(props.markdown);
+  return _markdownToHtml(props.markdown);
 });
 
 /**
  * Returns html string from markdown
  */
-function _markdownToHtml (markdown: string, sanitize?: boolean) {
-	if (!markdown) { return ''; }
+function _markdownToHtml(markdown: string, sanitize?: boolean) {
+  if (!markdown) {
+    return "";
+  }
 
-	const renderer = new marked.Renderer();
+  const renderer = new marked.Renderer();
 
-	/**
+  /**
    * Adds highlight.js labels to pre & code tags
    */
-	renderer.code = (code, language) => {
-		if (language) {
-			language = highlight.getLanguage(language)?.name?.toLowerCase() || 'plaintext';
-		}
+  renderer.code = (code, language) => {
+    if (language) {
+      language = highlight.getLanguage(language)?.name?.toLowerCase() || "plaintext";
+    }
 
-		return `<pre class="snippet"><code class="hljs language-${language}">${code}</code></pre>`;
-	};
+    return `<pre class="snippet"><code class="hljs language-${language}">${code}</code></pre>`;
+  };
 
-	/**
+  /**
    * Adds ids to headings
    */
-	renderer.heading = (text, level) => {
-		const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-		const anchor = `<span class="parsed-header-anchor"><a href="#${escapedText}" class="simple-link">#</a></span>`;
+  renderer.heading = (text, level) => {
+    const escapedText = text.toLowerCase().replace(/\W+/g, "-");
+    const anchor = `<span class="parsed-header-anchor"><a href="#${escapedText}" class="simple-link">#</a></span>`;
 
-		return props.disableAnchors
-			? `<h${level} id="${escapedText}" class="parsed-header">${text}</h${level}>`
-			: `<h${level} id="${escapedText}" class="parsed-header">${anchor} ${text}</h${level}>`;
-	};
+    return props.disableAnchors
+      ? `<h${level} id="${escapedText}" class="parsed-header">${text}</h${level}>`
+      : `<h${level} id="${escapedText}" class="parsed-header">${anchor} ${text}</h${level}>`;
+  };
 
-	/**
+  /**
    * Opens external links in new tab
    */
-	renderer.link = (href, _title, linkText) => {
-		return `<a class="markdown-link" href="${href}" target="_blank">${linkText}</a>`;
-	};
+  renderer.link = (href, _title, linkText) => {
+    return `<a class="markdown-link" href="${href}" target="_blank">${linkText}</a>`;
+  };
 
-	marked.use({ renderer });
+  marked.use({ renderer });
 
-	// convert markdown to html
-	let compiledHtml: string = marked.parse(markdown);
+  // convert markdown to html
+  let compiledHtml: string = marked.parse(markdown);
 
-	if (sanitize) {
-		compiledHtml = _sanitizeHtml(compiledHtml);
-	}
+  if (sanitize) {
+    compiledHtml = _sanitizeHtml(compiledHtml);
+  }
 
-	return compiledHtml;
+  return compiledHtml;
 }
 
 /**
  * Returns a sanitized html string
  */
-function _sanitizeHtml (dirtyHtml: string): string {
-	return sanitizeHtml(dirtyHtml, {
-		// eslint-disable-next-line import/no-named-as-default-member
-		allowedTags: [...sanitizeHtml.defaults.allowedTags, 'img'],
-		allowedAttributes: {
-			a: ['href', 'name', 'target', '@click'],
-			img: ['src', 'srcset', 'alt', 'title', 'width', 'height', 'loading'],
-			pre: ['style', 'class'],
-			code: ['style', 'class'],
-			th: ['style'],
-			td: ['style'],
-			table: ['style'],
-			hr: ['id', 'style'],
-			h1: ['id', 'style'],
-			h2: ['id', 'style'],
-			h3: ['id', 'style'],
-			h4: ['id', 'style'],
-			h5: ['id', 'style'],
-			h6: ['id', 'style'],
-			p: ['style']
-		}
-	});
+function _sanitizeHtml(dirtyHtml: string): string {
+  return sanitizeHtml(dirtyHtml, {
+
+    allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
+    allowedAttributes: {
+      a: ["href", "name", "target", "@click"],
+      img: ["src", "srcset", "alt", "title", "width", "height", "loading"],
+      pre: ["style", "class"],
+      code: ["style", "class"],
+      th: ["style"],
+      td: ["style"],
+      table: ["style"],
+      hr: ["id", "style"],
+      h1: ["id", "style"],
+      h2: ["id", "style"],
+      h3: ["id", "style"],
+      h4: ["id", "style"],
+      h5: ["id", "style"],
+      h6: ["id", "style"],
+      p: ["style"]
+    }
+  });
 }
 
 /**
  * Initialize highlighter
  */
-function _initHighlighter () {
-	highlight.registerLanguage('bash', highlightBash);
-	highlight.registerLanguage('javascript', highlightJavascript);
-	highlight.registerLanguage('typescript', highlightTypescript);
-	highlight.registerLanguage('python', highlightPython);
+function _initHighlighter() {
+  highlight.registerLanguage("bash", highlightBash);
+  highlight.registerLanguage("javascript", highlightJavascript);
+  highlight.registerLanguage("typescript", highlightTypescript);
+  highlight.registerLanguage("python", highlightPython);
 }
 
 watch(() => props.markdown, () => {
-	highlight.highlightAll();
+  highlight.highlightAll();
 });
 
 watch(() => renderedHtml, () => {
-	highlight.highlightAll();
+  highlight.highlightAll();
 });
 
 onMounted(() => {
-	_initHighlighter();
+  _initHighlighter();
 
-	// wait 3 seconds for the markdown to render
-	setTimeout(() => {
-		highlight.highlightAll();
-	}, 500);
+  // wait 3 seconds for the markdown to render
+  setTimeout(() => {
+    highlight.highlightAll();
+  }, 500);
 });
 </script>
 
@@ -192,5 +194,4 @@ ul > li {
 ol > li {
   margin-left: 2rem;
 }
-
 </style>

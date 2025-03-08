@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ActionItem } from '~/types';
+import type { ActionItem } from "~/types";
 
 const props = defineProps({
-	options: {
-		type: Array as PropType<ActionItem[]>,
-		default: () => []
-	}
+  options: {
+    type: Array as PropType<ActionItem[]>,
+    default: () => []
+  }
 });
 </script>
 

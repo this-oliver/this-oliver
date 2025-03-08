@@ -1,11 +1,18 @@
-name: Deploy Container Images
+name: CI/CD
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'package.json'
+      - package.json
+      - 'backend/**'
+      - 'frontend/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - package.json
       - 'backend/**'
       - 'frontend/**'
 
@@ -14,7 +21,84 @@ env:
   platforms: linux/amd64,linux/arm64,linux/arm/v7
 
 jobs:
+  check-readability:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+  check-unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Setup MongoDB
+        uses: supercharge/mongodb-github-action@1.12.0
+        with:
+          mongodb-version: 6.0.3
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: packages/backend
+
+      - name: Test
+        run: npm test
+        working-directory: packages/backend
+        env:
+          ADMIN_SECRET: TEST_SECRET
+          JWT_SECRET: TEST_SECRET
+          DB_URI: 'mongodb://localhost:27017/oliverrr-test'
+
+  check-security:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        path: [packages/backend, packages/frontend, deploy/k8s, .github/workflows]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-results.sarif
+          scanners: 'vuln,secret,misconfig'
+          severity: 'HIGH,CRITICAL'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+
   build:
+    # takes too long for PRs
+    if: ${{ github.event_name == 'push' }}
+    needs: [check-readability, check-unit-tests, check-security]
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +114,7 @@ jobs:
       - name: Get the version
         id: package_version
         run: echo "::set-output name=version::$(jq -r .version package.json)"
-      
+
       # setup quemu to build for multiple architectures
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -45,7 +129,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
+
       # tag and push the image
       - name: Deploy Backend
         uses: docker/build-push-action@v5

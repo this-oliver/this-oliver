@@ -1,38 +1,38 @@
-import { defineStore } from 'pinia';
-import type { ActionItem } from '~/types';
-import { useAuthStore } from '~/stores/auth-store';
+import type { ActionItem } from "~/types";
+import { defineStore } from "pinia";
+import { useAuthStore } from "~/stores/auth-store";
 
-export const useNavigationStore = defineStore('navigation', () => {
-	const authStore = useAuthStore();
+export const useNavigationStore = defineStore("navigation", () => {
+  const authStore = useAuthStore();
 
-	const options = computed<ActionItem[]>(() => {
-		let base: ActionItem[] = [
-			{
-				label: 'notes',
-				icon: 'mdi-newspaper-variant-outline',
-				to: '/notes'
-			},
-			{
-				label: 'experiences',
-				icon: 'mdi-briefcase-outline',
-				to: '/experiences'
-			}
-		];
+  const options = computed<ActionItem[]>(() => {
+    let base: ActionItem[] = [
+      {
+        label: "notes",
+        icon: "mdi-newspaper-variant-outline",
+        to: "/notes"
+      },
+      {
+        label: "experiences",
+        icon: "mdi-briefcase-outline",
+        to: "/experiences"
+      }
+    ];
 
-		if (authStore.isLoggedIn) {
-			base = [
-				...base,
-				{
-					label: 'logout',
-					icon: 'mdi-logout',
-					color: 'error',
-					action: () => authStore.logout()
-				}
-			];
-		}
+    if (authStore.isLoggedIn) {
+      base = [
+        ...base,
+        {
+          label: "logout",
+          icon: "mdi-logout",
+          color: "error",
+          action: () => authStore.logout()
+        }
+      ];
+    }
 
-		return base;
-	});
+    return base;
+  });
 
-	return { options };
+  return { options };
 });
