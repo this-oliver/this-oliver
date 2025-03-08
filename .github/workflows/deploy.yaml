@@ -63,6 +63,10 @@ jobs:
       - name: Test
         run: npm test
         working-directory: packages/backend
+        env:
+          ADMIN_SECRET: TEST_SECRET
+          JWT_SECRET: TEST_SECRET
+          DB_URI: 'mongodb://localhost:27017/oliverrr-test'
 
   check-security:
     runs-on: ubuntu-latest
