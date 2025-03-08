@@ -16,8 +16,7 @@ export default defineNuxtConfig({
 
 	modules: [
 		'@pinia/nuxt',
-		'@invictus.codes/nuxt-vuetify',
-		'@nuxtjs/eslint-module'
+		'@invictus.codes/nuxt-vuetify'
 	],
 
 	/**

@@ -5,7 +5,14 @@ on:
     branches:
       - main
     paths:
-      - 'package.json'
+      - package.json
+      - 'backend/**'
+      - 'frontend/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - package.json
       - 'backend/**'
       - 'frontend/**'
 
@@ -14,7 +21,33 @@ env:
   platforms: linux/amd64,linux/arm64,linux/arm/v7
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # get code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # setup node
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+        working-directory: packages/backend
+
   build:
+    # takes too long for PRs
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +63,7 @@ jobs:
       - name: Get the version
         id: package_version
         run: echo "::set-output name=version::$(jq -r .version package.json)"
-      
+
       # setup quemu to build for multiple architectures
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -45,7 +78,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
+
       # tag and push the image
       - name: Deploy Backend
         uses: docker/build-push-action@v5
