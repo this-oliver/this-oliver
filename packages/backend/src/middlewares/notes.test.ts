@@ -1,16 +1,16 @@
-import type { NoteDocument } from "../../src/data/models/note";
-import type { INote } from "../../src/types/note";
-import type { IUser } from "../../src/types/user";
+import type { NoteDocument } from "../data/models/note";
+import type { INote } from "../types/note";
+import type { IUser } from "../types/user";
 import Chai from "chai";
 import Supertest from "supertest";
-import App from "../../src/app";
-import { NoteModel } from "../../src/data/models/note";
-import * as NoteData from "../../src/data/notes";
-import * as UserData from "../../src/data/users";
-import { UserModel } from "../../src/data/users";
-import Database from "../../src/database";
-import * as TokenHelper from "../../src/utils/token";
-import * as Factory from "../factory";
+import App from "../app";
+import { NoteModel } from "../data/models/note";
+import * as NoteData from "../data/notes";
+import * as UserData from "../data/users";
+import { UserModel } from "../data/users";
+import Database from "../database";
+import * as Factory from "../tests/factory";
+import * as TokenHelper from "../utils/token";
 
 const Expect = Chai.expect;
 const Request = Supertest(App);
@@ -32,7 +32,7 @@ describe("note MiddleWare", () => {
     await Database.disconnect();
   });
 
-  describe("pOST - note", () => {
+  describe("post - note", () => {
     const ENDPOINT = "/api/admin/notes";
 
     beforeEach(async () => {
@@ -94,7 +94,7 @@ describe("note MiddleWare", () => {
     });
   });
 
-  describe("gET - note", () => {
+  describe("get - note", () => {
     const MAX_PUBLIC_NOTES = 5;
     const MAX_PRIVATE_NOTES = 5;
     let privateSampleNotes: NoteDocument[];
@@ -177,7 +177,7 @@ describe("note MiddleWare", () => {
     });
   });
 
-  describe("gET - note via slug", () => {
+  describe("get - note via slug", () => {
     const MAX_PUBLIC_NOTES = 5;
     const MAX_PRIVATE_NOTES = 5;
     let privateSampleNotes: NoteDocument[];
@@ -260,7 +260,7 @@ describe("note MiddleWare", () => {
     });
   });
 
-  describe("gET - notes", () => {
+  describe("get - notes", () => {
     const MAX_PUBLIC_NOTES = 5;
     const MAX_PRIVATE_NOTES = 5;
 
@@ -301,7 +301,7 @@ describe("note MiddleWare", () => {
     });
   });
 
-  describe("gET - tags", () => {
+  describe("get - tags", () => {
     const MAX_NOTES = 5;
     const SAMPLE_TAGS = ["tag1", "tag2", "tag3"];
 
@@ -334,7 +334,7 @@ describe("note MiddleWare", () => {
     });
   });
 
-  describe("pATCH - note", () => {
+  describe("patch - note", () => {
     let sampleNote: NoteDocument;
 
     before(async () => {
@@ -394,7 +394,7 @@ describe("note MiddleWare", () => {
     });
   });
 
-  describe("dELETE - note", () => {
+  describe("delete - note", () => {
     let sampleNote: NoteDocument;
     before(async () => {
       await NoteModel.deleteMany({});

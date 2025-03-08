@@ -1,11 +1,11 @@
-import type { IUser } from "../../src/types/user";
+import type { IUser } from "../types/user";
 import Chai from "chai";
 import Supertest from "supertest";
-import App from "../../src/app";
-import { UserModel } from "../../src/data/models/user";
-import * as UserData from "../../src/data/users";
-import Database from "../../src/database";
-import * as Factory from "../factory";
+import App from "../app";
+import { UserModel } from "../data/models/user";
+import * as UserData from "../data/users";
+import Database from "../database";
+import * as Factory from "../tests/factory";
 
 const Expect = Chai.expect;
 const Request = Supertest(App);
@@ -21,7 +21,7 @@ describe("auth Middleware", () => {
     await Database.disconnect();
   });
 
-  describe("pOST - /api/auth/login", () => {
+  describe("post - /api/auth/login", () => {
     let sampleUser: IUser;
 
     before(async () => {

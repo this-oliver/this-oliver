@@ -1,13 +1,13 @@
-import type { IUser } from "../../src/types/user";
+import type { IUser } from "../types/user";
 import Chai from "chai";
 import Supertest from "supertest";
-import App from "../../src/app";
-import { ADMIN_SECRET } from "../../src/config/env";
-import { UserModel } from "../../src/data/models/user";
-import * as UserData from "../../src/data/users";
-import Database from "../../src/database";
-import * as TokenHelper from "../../src/utils/token";
-import * as Factory from "../factory";
+import App from "../app";
+import { ADMIN_SECRET } from "../config/env";
+import { UserModel } from "../data/models/user";
+import * as UserData from "../data/users";
+import Database from "../database";
+import * as Factory from "../tests/factory";
+import * as TokenHelper from "../utils/token";
 
 const Expect = Chai.expect;
 const Request = Supertest(App);
@@ -22,7 +22,7 @@ describe("user MiddleWare", () => {
     await Database.disconnect();
   });
 
-  describe("pOST - user", () => {
+  describe("post - user", () => {
     beforeEach(async () => {
       await UserModel.deleteMany({});
     });
@@ -53,24 +53,36 @@ describe("user MiddleWare", () => {
     });
   });
 
-  describe("gET - users", () => {
-    beforeEach(async () => {
+  describe("get - users", () => {
+    let user: IUser | undefined;
+
+    before(async () => {
+      await UserModel.deleteMany({});
+
+      const factoryUser = Factory.models.createUsers();
+      user = await UserModel.create(factoryUser);
+    });
+
+    after(async () => {
       await UserModel.deleteMany({});
     });
 
     it("get user should return 200 and user", async () => {
-      const factoryUser = Factory.models.createUsers();
-      const user = await UserModel.create(factoryUser);
-
       const response = await Request.get("/api/users/oliver").expect(200);
 
       const body = response.body;
-      Expect(body.name).to.equal(user.name);
-      Expect(body.email).to.equal(user.email);
+      Expect(body.name).to.equal(user?.name);
+    });
+
+    it("get user with 200 should not return user email", async () => {
+      const response = await Request.get("/api/users/oliver").expect(200);
+
+      const body = response.body;
+      Expect(body.email).to.be.undefined;
     });
   });
 
-  describe("pATCH - user", () => {
+  describe("patch - user", () => {
     let sampleUser: IUser;
     before(async () => {
       await UserModel.deleteMany({});

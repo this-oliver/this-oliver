@@ -1,5 +1,5 @@
-import type { INote } from "../src/types/note";
-import type { IUser } from "../src/types/user";
+import type { INote } from "../types/note";
+import type { IUser } from "../types/user";
 import mongoose from "mongoose";
 
 const mongo = {

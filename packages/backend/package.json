@@ -4,8 +4,9 @@
     "start": "NODE_ENV=production node ./dist/index.js",
     "dev": "NODE_ENV=development nodemon ./src/index.ts",
     "test": "NODE_ENV=testing mocha",
-    "test:silent": "mocha --reporter landing",
-    "build": "tsc",
+    "test:watch": "NODE_ENV=testing mocha --watch",
+    "test:silent": "NODE_ENV=testing mocha --reporter landing",
+    "build": "tsc --declaration",
     "bump": "cd .. && npm run bump"
   },
   "dependencies": {

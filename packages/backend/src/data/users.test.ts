@@ -1,10 +1,10 @@
-import type { IUser } from "../../src/types/user";
+import type { IUser } from "../types/user";
 import Chai from "chai";
 import ChaiAsPromise from "chai-as-promised";
-import { UserModel } from "../../src/data/models/user";
-import * as UserData from "../../src/data/users";
-import Database from "../../src/database";
-import * as Factory from "../factory";
+import Database from "../database";
+import * as Factory from "../tests/factory";
+import { UserModel } from "./models/user";
+import * as UserData from "./users";
 
 Chai.use(ChaiAsPromise);
 const Expect = Chai.expect;
@@ -67,7 +67,7 @@ describe("user Data", () => {
     });
 
     it("should get user successfully", async () => {
-      const user = await UserData.getUser();
+      const user = await UserData.getUser(true);
       Expect(user.name).to.equal(sampleUser.name);
       Expect(user.email).to.equal(sampleUser.email);
     });
@@ -114,16 +114,16 @@ describe("user Data", () => {
     it("should get user successfully", async () => {
       const user = await UserData.getUserByEmail(sampleUser.email);
       Expect(user.name).to.equal(sampleUser.name);
-      Expect(user.email).to.equal(sampleUser.email);
     });
 
-    it("should redact password and salt", async () => {
+    it("should redact email, password and salt by default", async () => {
       const user = await UserData.getUserByEmail(sampleUser.email);
+      Expect(user.email).to.be.undefined;
       Expect(user.password).to.be.undefined;
       Expect(user.salt).to.be.undefined;
     });
 
-    it("should show password and salt if requested", async () => {
+    it("should show email, password and salt if requested", async () => {
       const user = await UserData.getUserByEmail(sampleUser.email, true);
       Expect(user.password).to.not.be.undefined;
       Expect(user.salt).to.not.be.undefined;
