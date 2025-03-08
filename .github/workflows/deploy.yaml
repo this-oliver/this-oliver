@@ -95,25 +95,116 @@ jobs:
         with:
           sarif_file: trivy-results.sarif
 
-  build:
-    # takes too long for PRs
+  tag:
     if: ${{ github.event_name == 'push' }}
     needs: [check-readability, check-unit-tests, check-security]
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # needed to commit changes and push tags
+
+    outputs:
+      OLD_VERSION: ${{ steps.current_version.outputs.CURRENT_VERSION }}
+      NEW_VERSION: ${{ steps.new_version.outputs.NEW_VERSION }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+
+      - name: Get semver type for commit
+        id: check_commit
+        env:
+          KEYWORDS_MAJOR: 'major:|breaking:|release:'
+          KEYWORDS_MINOR: 'minor:|feature:'
+          KEYWORDS_PATCH: 'patch:|fix:'
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          COMMIT_MESSAGE=$(git log --format=%B -n 1 $GITHUB_SHA)
+
+          if [[ $COMMIT_MESSAGE =~ $KEYWORDS_MAJOR ]]; then
+            echo "SEMVER_TYPE=major" >> $GITHUB_OUTPUT
+          elif [[ $COMMIT_MESSAGE =~ $KEYWORDS_MINOR ]]; then
+            echo "SEMVER_TYPE=minor" >> $GITHUB_OUTPUT
+          elif [[ $COMMIT_MESSAGE =~ $KEYWORDS_PATCH ]]; then
+            echo "SEMVER_TYPE=patch" >> $GITHUB_OUTPUT
+          else
+            echo "No keywords found in commit message: $COMMIT_MESSAGE"
+            echo "Exiting..."
+            exit 1
+          fi
+
+      - name: Get current tag version
+        id: current_version
+        run: |
+          version=$(git describe --tags --abbrev=0)
+          echo "CURRENT_VERSION=$version" >> $GITHUB_OUTPUT
+          echo "SEMVER_MAJOR=$(echo $version | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
+          echo "SEMVER_MINOR=$(echo $version | cut -d '.' -f 2)" >> $GITHUB_OUTPUT
+          echo "SEMVER_PATCH=$(echo $version | cut -d '.' -f 3)" >> $GITHUB_OUTPUT
+
+      - name: Get new version
+        id: new_version
+        env:
+          SEMVER_TYPE: ${{ steps.check_commit.outputs.SEMVER_TYPE }}
+          CURRENT_VERSION: ${{ steps.current_version.outputs.CURRENT_VERSION }}
+          CURRENT_MAJOR: ${{ steps.current_version.outputs.SEMVER_MAJOR }}
+          CURRENT_MINOR: ${{ steps.current_version.outputs.SEMVER_MINOR }}
+          CURRENT_PATCH: ${{ steps.current_version.outputs.SEMVER_PATCH }}
+        run: |
+          major=$CURRENT_MAJOR
+          minor=$CURRENT_MINOR
+          patch=$CURRENT_PATCH
+
+          if [[ $SEMVER_TYPE == "major" ]]; then
+            major=$((major + 1))
+            minor=0
+            patch=0
+          elif [[ $SEMVER_TYPE == "minor" ]]; then
+            minor=$((minor + 1))
+            patch=0
+          elif [[ $SEMVER_TYPE == "patch" ]]; then
+            patch=$((patch + 1))
+          fi
+
+          new_version=$major.$minor.$patch
+          if [[ $new_version == $CURRENT_VERSION ]]; then
+            echo "❌ New version is the same as the current version: $new_version"
+          fi
+
+          echo "NEW_VERSION=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Setup Git
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Create tag
+        if: ${{ steps.current_version.outputs.CURRENT_VERSION != steps.new_version.outputs.NEW_VERSION }}
+        env:
+          NEW_VERSION: ${{ steps.new_version.outputs.NEW_VERSION }}
+        run: |
+          git tag -a $NEW_VERSION -m "Version $NEW_VERSION"
+          git push origin $NEW_VERSION
+
+  build:
+    # takes too long for PRs
+    if: ${{ github.event_name == 'push' && needs.tag.outputs.NEW_VERSION != needs.tag.outputs.OLD_VERSION }}
+    needs: [tag]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package: [backend, frontend]
 
     steps:
       # get code
       - name: Checkout
         uses: actions/checkout@v4
-
-      # install jq to get the version from package.json
-      - name: Install jq
-        run: sudo apt-get install jq
-
-      # get the version from package.json
-      - name: Get the version
-        id: package_version
-        run: echo "::set-output name=version::$(jq -r .version package.json)"
 
       # setup quemu to build for multiple architectures
       - name: Set up QEMU
@@ -131,18 +222,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # tag and push the image
-      - name: Deploy Backend
+      - name: Deploy ${{ matrix.package }}
         uses: docker/build-push-action@v5
         with:
-          context: packages/backend
-          tags: ${{ env.image }}:backend
-          platforms: ${{ env.platforms }}
-          push: true
-
-      - name: Deploy Frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: packages/frontend
-          tags: ${{ env.image }}:frontend
+          context: packages/${{ matrix.package }}
+          tags: '${{ env.image }}:${{ matrix.package }}, ${{ env.image }}:${{ matrix.package }}-${{ needs.tag.outputs.NEW_VERSION }}'
           platforms: ${{ env.platforms }}
           push: true
