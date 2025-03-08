@@ -1,29 +1,28 @@
 <script setup lang="ts">
-import { useUserStore } from '~/stores/user-store';
-import { useAuthStore } from '~/stores/auth-store';
-import type { User } from '~/types';
+import type { User } from "~/types";
+import { useAuthStore } from "~/stores/auth-store";
+import { useUserStore } from "~/stores/user-store";
 
-const DEFAULT_DESCRIPTION = '# 👋\n\nWelcome to my digital workshop, where I am constantly learning how to make things work. I use this space to document what I learn and the cool stuff I come up with. \n\nIf anything sparks your interest or if you have any questions, don\'t hesitate to reach out via [hello@oliverrr.net](mailto:hello@oliverrr.net). I\'m always open to collaboration or an exchange of ideas.';
+const DEFAULT_DESCRIPTION = "# 👋\n\nWelcome to my digital workshop, where I am constantly learning how to make things work. I use this space to document what I learn and the cool stuff I come up with. \n\nIf anything sparks your interest or if you have any questions, don't hesitate to reach out via [hello@oliverrr.net](mailto:hello@oliverrr.net). I'm always open to collaboration or an exchange of ideas.";
 
 const authStore = useAuthStore();
 
 const user = ref<User>();
 
 onMounted(async () => {
-	const userStore = useUserStore();
-	user.value = await userStore.getUser();
+  const userStore = useUserStore();
+  user.value = await userStore.getUser();
 });
 
-const pageTitle = 'What\'s cooking? - oliverrr';
-const pageDescription = 'A quick overview of what I\'m up to right now.';
+const pageTitle = "What's cooking? - oliverrr";
+const pageDescription = "A quick overview of what I'm up to right now.";
 useSeoMeta({
-	title: pageTitle,
-	description: pageDescription,
-	ogTitle: pageTitle,
-	ogDescription: pageDescription,
-	ogSiteName: 'oliverrr\'s personal website'
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogSiteName: "oliverrr's personal website"
 });
-
 </script>
 
 <template>

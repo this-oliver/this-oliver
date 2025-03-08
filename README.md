@@ -18,6 +18,6 @@
 
 <br>
 <p align="center">
-<a target="_blank" href="https://www.oliverrr.net/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge"></img></a>	
+<a target="_blank" href="https://www.oliverrr.net/"><img src="https://img.shields.io/badge/-Website-black?style=for-the-badge"></img></a>
 <a target="_blank" href="mailto:hello@oliverrr.net?subject=Reaching out from @this-oliver on GitHub"><img src="https://img.shields.io/badge/-Gmail-black?style=for-the-badge&logo=Gmail"></img></a>
 </p>

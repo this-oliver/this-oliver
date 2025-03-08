@@ -1,78 +1,78 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import type { ActionItem } from '~/types';
+import type { PropType } from "vue";
+import type { ActionItem } from "~/types";
 
 const props = defineProps({
-	title: {
-		type: String,
-		default: undefined
-	},
-	subtitle: {
-		type: String,
-		default: undefined
-	},
-	color: {
-		type: String,
-		default: undefined
-	},
-	flat: {
-		type: Boolean,
-		default: undefined
-	},
-	plain: {
-		type: Boolean,
-		default: undefined
-	},
-	tonal: {
-		type: Boolean,
-		default: undefined
-	},
-	outlined: {
-		type: Boolean,
-		default: undefined
-	},
-	rounded: {
-		type: String,
-		default: undefined
-	},
-	loading: {
-		type: Boolean,
-		default: false
-	},
-	actions: {
-		type: Array as PropType<ActionItem[]>,
-		default: () => []
-	},
-	actionCentered: {
-		type: Boolean,
-		default: false
-	}
+  title: {
+    type: String,
+    default: undefined
+  },
+  subtitle: {
+    type: String,
+    default: undefined
+  },
+  color: {
+    type: String,
+    default: undefined
+  },
+  flat: {
+    type: Boolean,
+    default: undefined
+  },
+  plain: {
+    type: Boolean,
+    default: undefined
+  },
+  tonal: {
+    type: Boolean,
+    default: undefined
+  },
+  outlined: {
+    type: Boolean,
+    default: undefined
+  },
+  rounded: {
+    type: String,
+    default: undefined
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  actions: {
+    type: Array as PropType<ActionItem[]>,
+    default: () => []
+  },
+  actionCentered: {
+    type: Boolean,
+    default: false
+  }
 });
 
-type CardStyle = 'flat' | 'outlined' | 'text' | 'elevated' | 'tonal' | 'plain';
+type CardStyle = "flat" | "outlined" | "text" | "elevated" | "tonal" | "plain";
 const getCardStyle = computed<NonNullable<CardStyle> | undefined>(() => {
-	if (props.outlined === true) {
-		return 'outlined';
-	} else if (props.plain === true) {
-		return 'plain';
-	} else if (props.tonal === true) {
-		return 'tonal';
-	} else {
-		return 'flat';
-	}
+  if (props.outlined === true) {
+    return "outlined";
+  } else if (props.plain === true) {
+    return "plain";
+  } else if (props.tonal === true) {
+    return "tonal";
+  } else {
+    return "flat";
+  }
 });
 
 const getActions = computed<ActionItem[]>(() => {
-	return props.actions.map((item) => {
-		return {
-			...item,
-			action: () => {
-				if (item.action) {
-					item.action();
-				}
-			}
-		};
-	});
+  return props.actions.map((item) => {
+    return {
+      ...item,
+      action: () => {
+        if (item.action) {
+          item.action();
+        }
+      }
+    };
+  });
 });
 </script>
 

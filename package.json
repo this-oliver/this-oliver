@@ -6,6 +6,7 @@
   "license": "MIT",
   "repository": "this-oliver/this-oliver",
   "scripts": {
+    "test": "cd packages/backend && npm run test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "postinstall": "simple-git-hooks && npm run setup-frontend && npm run setup-backend",

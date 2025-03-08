@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useDisplay } from 'vuetify';
-import { useNavigationStore } from '~/stores/app/navigation-store';
-import { useSidebarStore } from '~/stores/app/sidebar-store';
+import { useDisplay } from "vuetify";
+import { useNavigationStore } from "~/stores/app/navigation-store";
+import { useSidebarStore } from "~/stores/app/sidebar-store";
 
 const drawer = useSidebarStore();
 const navigation = useNavigationStore();
 const { smAndDown } = useDisplay();
 
 const routes = computed(() => !smAndDown.value ? navigation.options : []);
-
 </script>
 
 <template>

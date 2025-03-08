@@ -1,11 +1,10 @@
+import process from "node:process";
 import dotenv from "dotenv";
 
 if (process.env.NODE_ENV === "testing") {
-	// get .env.test file
-	dotenv.config({ path: ".env.test" });
+  dotenv.config({ path: ".env.test" });
 } else {
-	// get .env file
-	dotenv.config();
+  dotenv.config();
 }
 
 const NODE_ENV = process.env.NODE_ENV;
@@ -15,14 +14,14 @@ const JWT_SECRET: string = process.env.JWT_SECRET as string;
 const ADMIN_SECRET: string | undefined = process.env.ADMIN_SECRET;
 const CORS_ORIGIN: string | undefined = process.env.CORS_ORIGIN;
 
-if(!DB_URI) {
-	console.error("No database URI. Set DB_URI environment variable.");
-	process.exit(1);
+if (!DB_URI) {
+  console.error("No database URI. Set DB_URI environment variable.");
+  process.exit(1);
 }
 
-if(!JWT_SECRET) {
-	console.error("No JWT secret. Set JWT_SECRET environment variable.");
-	process.exit(1);
+if (!JWT_SECRET) {
+  console.error("No JWT secret. Set JWT_SECRET environment variable.");
+  process.exit(1);
 }
 
-export { NODE_ENV, PORT, DB_URI, JWT_SECRET, ADMIN_SECRET, CORS_ORIGIN };
+export { ADMIN_SECRET, CORS_ORIGIN, DB_URI, JWT_SECRET, NODE_ENV, PORT };

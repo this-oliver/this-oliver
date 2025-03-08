@@ -3,11 +3,11 @@ kind: ConfigMap
 metadata:
   name: oliverrr-frontend
 data:
-  NUXT_PUBLIC_API: "https://api.oliverrr.net"
+  NUXT_PUBLIC_API: 'https://api.oliverrr.net'
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: oliverrr-backend
 data:
-  CORS_ORIGIN: "https://www.oliverrr.net"
+  CORS_ORIGIN: 'https://www.oliverrr.net'

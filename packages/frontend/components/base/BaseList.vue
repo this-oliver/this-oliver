@@ -1,51 +1,50 @@
 <script setup lang="ts">
-import BaseImage from '~/components/base/BaseImage.vue';
-import { ActionItem } from '~/types';
+import type { ActionItem } from "~/types";
+import BaseImage from "~/components/base/BaseImage.vue";
 
 const props = defineProps({
-	label: {
-		type: String,
-		required: true
-	},
-	components: {
-		type: Array as PropType<Component[]>,
-		required: true
-	},
-	options: {
-		type: Array as PropType<ActionItem[]>,
-		default: () => []
-	},
-	allowSearch: {
-		type: Boolean,
-		default: false
-	},
-	search: {
-		type: String,
-		default: ''
-	},
-	loading: {
-		type: Boolean,
-		default: false
-	}
+  label: {
+    type: String,
+    required: true
+  },
+  components: {
+    type: Array as PropType<Component[]>,
+    required: true
+  },
+  options: {
+    type: Array as PropType<ActionItem[]>,
+    default: () => []
+  },
+  allowSearch: {
+    type: Boolean,
+    default: false
+  },
+  search: {
+    type: String,
+    default: ""
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  }
 });
 
-const emit = defineEmits(['search']);
+const emit = defineEmits(["search"]);
 
-const search = ref<string>('');
+const search = ref<string>("");
 const showSearchField = ref<boolean>(false);
 
 watch(search, (value) => {
-	emit('search', value);
+  emit("search", value);
 });
 
 onMounted(() => {
-	search.value = props.search;
+  search.value = props.search;
 
-	if (search.value) {
-		showSearchField.value = true;
-	}
+  if (search.value) {
+    showSearchField.value = true;
+  }
 });
-
 </script>
 
 <template>
@@ -126,7 +125,7 @@ onMounted(() => {
         No <span class="label text-primary">{{ props.label }}</span> found
       </h2>
 
-      <base-image
+      <BaseImage
         src="/images/this-is-fine.jpg"
         alt="Meme of a dog in a burning room saying 'This is fine'"
         width="100%"

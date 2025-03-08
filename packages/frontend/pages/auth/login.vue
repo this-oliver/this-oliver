@@ -1,29 +1,28 @@
 <script setup lang="ts">
-import { useAuthStore } from '~/stores/auth-store';
+import { useAuthStore } from "~/stores/auth-store";
 
 const { notify } = useNotification();
 const router = useRouter();
 const authStore = useAuthStore();
 
-const email = ref('');
-const password = ref('');
+const email = ref("");
+const password = ref("");
 const redirect = ref<string | undefined>(router.currentRoute.value.query.redirect as string);
 
-async function login () {
-	try {
-		const loggedIn = await authStore.login(email.value, password.value);
+async function login() {
+  try {
+    const loggedIn = await authStore.login(email.value, password.value);
 
-		if (loggedIn) {
-			notify('Authentictaion', 'Login successful', 'success');
-			router.push(redirect.value ?? '/');
-		} else {
-			notify('Authentictaion', 'Login failed', 'error');
-		}
-	} catch (error) {
-		notify('Authentictaion', (error as Error).message || 'Login failed', 'error');
-	}
+    if (loggedIn) {
+      notify("Authentictaion", "Login successful", "success");
+      router.push(redirect.value ?? "/");
+    } else {
+      notify("Authentictaion", "Login failed", "error");
+    }
+  } catch (error) {
+    notify("Authentictaion", (error as Error).message || "Login failed", "error");
+  }
 }
-
 </script>
 
 <template>

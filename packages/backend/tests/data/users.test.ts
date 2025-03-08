@@ -1,180 +1,180 @@
-import Database from "../../src/database";
+import type { IUser } from "../../src/types/user";
 import Chai from "chai";
 import ChaiAsPromise from "chai-as-promised";
-import * as UserData from "../../src/data/users";
 import { UserModel } from "../../src/data/models/user";
+import * as UserData from "../../src/data/users";
+import Database from "../../src/database";
 import * as Factory from "../factory";
-import type { IUser } from "../../src/types/user";
 
 Chai.use(ChaiAsPromise);
 const Expect = Chai.expect;
 
-describe("User Data", function () {
-	before(async function () {
-		await Database.connect();
-	});
+describe("user Data", () => {
+  before(async () => {
+    await Database.connect();
+  });
 
-	after(async function () {
-		await Database.drop();
-		await Database.disconnect();
-	});
+  after(async () => {
+    await Database.drop();
+    await Database.disconnect();
+  });
 
-	describe("createUser()", function () {
-		beforeEach(async function () {
-			await UserModel.deleteMany({});
-		});
+  describe("createUser()", () => {
+    beforeEach(async () => {
+      await UserModel.deleteMany({});
+    });
 
-		it("should post user successfully", async function () {
-			const user = Factory.models.createUsers() as IUser;
-			const postedUser = await UserData.createUser(user.name, user.email, user.password);
-			Expect(postedUser.name).to.equal(user.name);
-			Expect(postedUser.email).to.equal(user.email);
-		});
+    it("should post user successfully", async () => {
+      const user = Factory.models.createUsers() as IUser;
+      const postedUser = await UserData.createUser(user.name, user.email, user.password);
+      Expect(postedUser.name).to.equal(user.name);
+      Expect(postedUser.email).to.equal(user.email);
+    });
 
-		it("should not save password as plain text", async function () {
-			const user = Factory.models.createUsers() as IUser;
-			const postedUser = await UserData.createUser(user.name, user.email, user.password);
-			Expect(postedUser.password).to.not.equal(user.password);
-		});
+    it("should not save password as plain text", async () => {
+      const user = Factory.models.createUsers() as IUser;
+      const postedUser = await UserData.createUser(user.name, user.email, user.password);
+      Expect(postedUser.password).to.not.equal(user.password);
+    });
 
-		it("should throw error if user already exists", async function () {
-			const user = Factory.models.createUsers() as IUser;
-			await UserData.createUser(user.name, user.email, user.password);
+    it("should throw error if user already exists", async () => {
+      const user = Factory.models.createUsers() as IUser;
+      await UserData.createUser(user.name, user.email, user.password);
 
-			let errorThrown = false;
-			try {
-				await UserData.createUser(user.name, user.email, user.password);
-			} catch (error) {
-				errorThrown = true;        
-			}
+      let errorThrown = false;
+      try {
+        await UserData.createUser(user.name, user.email, user.password);
+      } catch {
+        errorThrown = true;
+      }
 
-			Expect(errorThrown).to.be.true;
-		});
-	});
+      Expect(errorThrown).to.be.true;
+    });
+  });
 
-	describe("getUser()", function () {
-		let sampleUser: IUser;
+  describe("getUser()", () => {
+    let sampleUser: IUser;
 
-		before(async function () {
-			await UserModel.deleteMany({});
+    before(async () => {
+      await UserModel.deleteMany({});
 
-			sampleUser = Factory.models.createUsers() as IUser;
-			await UserData.createUser(
-				sampleUser.name,
-				sampleUser.email,
-				sampleUser.password
-			);
-		});
+      sampleUser = Factory.models.createUsers() as IUser;
+      await UserData.createUser(
+        sampleUser.name,
+        sampleUser.email,
+        sampleUser.password
+      );
+    });
 
-		it("should get user successfully", async function () {
-			const user = await UserData.getUser();
-			Expect(user.name).to.equal(sampleUser.name);
-			Expect(user.email).to.equal(sampleUser.email);
-		});
+    it("should get user successfully", async () => {
+      const user = await UserData.getUser();
+      Expect(user.name).to.equal(sampleUser.name);
+      Expect(user.email).to.equal(sampleUser.email);
+    });
 
-		it("should redact password and salt", async function () {
-			const user = await UserData.getUser();
-			Expect(user.password).to.be.undefined;
-			Expect(user.salt).to.be.undefined;
-		});
+    it("should redact password and salt", async () => {
+      const user = await UserData.getUser();
+      Expect(user.password).to.be.undefined;
+      Expect(user.salt).to.be.undefined;
+    });
 
-		it("should show password and salt if requested", async function () {
-			const user = await UserData.getUser(true);
-			Expect(user.password).to.not.be.undefined;
-			Expect(user.salt).to.not.be.undefined;
-		});
+    it("should show password and salt if requested", async () => {
+      const user = await UserData.getUser(true);
+      Expect(user.password).to.not.be.undefined;
+      Expect(user.salt).to.not.be.undefined;
+    });
 
-		it("should throw error if user does not exist", async function () {
-			await UserModel.deleteMany({});
+    it("should throw error if user does not exist", async () => {
+      await UserModel.deleteMany({});
 
-			let errorThrown = false;
-			try {
-				await UserData.getUser();
-			} catch (error) {
-				errorThrown = true;
-			}
+      let errorThrown = false;
+      try {
+        await UserData.getUser();
+      } catch {
+        errorThrown = true;
+      }
 
-			Expect(errorThrown).to.be.true;
-		});
-	});
+      Expect(errorThrown).to.be.true;
+    });
+  });
 
-	describe("getUserByEmail()", function () {
-		let sampleUser: IUser;
+  describe("getUserByEmail()", () => {
+    let sampleUser: IUser;
 
-		before(async function () {
-			await UserModel.deleteMany({});
-			sampleUser = Factory.models.createUsers() as IUser;
-			await UserData.createUser(
-				sampleUser.name,
-				sampleUser.email,
-				sampleUser.password
-			);
-		});
+    before(async () => {
+      await UserModel.deleteMany({});
+      sampleUser = Factory.models.createUsers() as IUser;
+      await UserData.createUser(
+        sampleUser.name,
+        sampleUser.email,
+        sampleUser.password
+      );
+    });
 
-		it("should get user successfully", async function () {
-			const user = await UserData.getUserByEmail(sampleUser.email);
-			Expect(user.name).to.equal(sampleUser.name);
-			Expect(user.email).to.equal(sampleUser.email);
-		});
+    it("should get user successfully", async () => {
+      const user = await UserData.getUserByEmail(sampleUser.email);
+      Expect(user.name).to.equal(sampleUser.name);
+      Expect(user.email).to.equal(sampleUser.email);
+    });
 
-		it("should redact password and salt", async function () {
-			const user = await UserData.getUserByEmail(sampleUser.email);
-			Expect(user.password).to.be.undefined;
-			Expect(user.salt).to.be.undefined;
-		});
+    it("should redact password and salt", async () => {
+      const user = await UserData.getUserByEmail(sampleUser.email);
+      Expect(user.password).to.be.undefined;
+      Expect(user.salt).to.be.undefined;
+    });
 
-		it("should show password and salt if requested", async function () {
-			const user = await UserData.getUserByEmail(sampleUser.email, true);
-			Expect(user.password).to.not.be.undefined;
-			Expect(user.salt).to.not.be.undefined;
-		});
+    it("should show password and salt if requested", async () => {
+      const user = await UserData.getUserByEmail(sampleUser.email, true);
+      Expect(user.password).to.not.be.undefined;
+      Expect(user.salt).to.not.be.undefined;
+    });
 
-		it("should throw error if user does not exist", async function () {
-			let errorThrown = false;
-      
-			try {
-				await UserData.getUserByEmail("invalid email");
-			} catch (error) {
-				errorThrown = true;
-			}
+    it("should throw error if user does not exist", async () => {
+      let errorThrown = false;
 
-			Expect(errorThrown).to.be.true;
-		});
-	});
+      try {
+        await UserData.getUserByEmail("invalid email");
+      } catch {
+        errorThrown = true;
+      }
 
-	describe("updateUser()", function () {
-		let sampleUser: IUser;
+      Expect(errorThrown).to.be.true;
+    });
+  });
 
-		before(async function () {
-			await UserModel.deleteMany({});
-			sampleUser = Factory.models.createUsers() as IUser;
+  describe("updateUser()", () => {
+    let sampleUser: IUser;
 
-			await UserData.createUser(
-				sampleUser.name,
-				sampleUser.email,
-				sampleUser.password
-			);
-		});
+    before(async () => {
+      await UserModel.deleteMany({});
+      sampleUser = Factory.models.createUsers() as IUser;
 
-		it("should update user successfully", async function () {
-			const patch = {
-				name: 'new name',
-				email: 'new email',
-			};
+      await UserData.createUser(
+        sampleUser.name,
+        sampleUser.email,
+        sampleUser.password
+      );
+    });
 
-			const updatedUser = await UserData.updateUser(patch);
-			Expect(updatedUser.name).to.equal(patch.name);
-			Expect(updatedUser.email).to.equal(patch.email);
-		});
+    it("should update user successfully", async () => {
+      const patch = {
+        name: "new name",
+        email: "new email"
+      };
 
-		it("should not update password", async function () {
-			const user = await UserData.getUser();
+      const updatedUser = await UserData.updateUser(patch);
+      Expect(updatedUser.name).to.equal(patch.name);
+      Expect(updatedUser.email).to.equal(patch.email);
+    });
 
-			const patch = { password: 'new password', };
+    it("should not update password", async () => {
+      const user = await UserData.getUser();
 
-			const updatedUser = await UserData.updateUser(patch);
+      const patch = { password: "new password" };
 
-			Expect(updatedUser.password).to.equal(user.password);
-		});
-	});
+      const updatedUser = await UserData.updateUser(patch);
+
+      Expect(updatedUser.password).to.equal(user.password);
+    });
+  });
 });

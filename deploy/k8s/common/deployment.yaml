@@ -34,8 +34,8 @@ spec:
                   key: NUXT_PUBLIC_API
           resources:
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: 128Mi
+              cpu: 500m
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -88,5 +88,5 @@ spec:
                   key: DB_URI
           resources:
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: 128Mi
+              cpu: 500m

@@ -1,19 +1,19 @@
 export interface ActionItem {
-  label: string;
-  description?: string;
-  color?: string;
-  icon?: string;
-  disabled?: boolean;
-  outlined?: boolean;
-  text?: boolean;
-  hint?: string;
-  to?: string;
-  action?: () => void;
-  component?: any;
+  label: string
+  description?: string
+  color?: string
+  icon?: string
+  disabled?: boolean
+  outlined?: boolean
+  text?: boolean
+  hint?: string
+  to?: string
+  action?: () => void
+  component?: any
 }
 
 export interface Note {
-  _id: string;
+  _id: string
   title: string
   content: string
   publish: boolean
@@ -23,10 +23,10 @@ export interface Note {
   createdAt: string
 }
 
-export type ExperienceType = 'job' | 'education' | 'project' | 'other';
+export type ExperienceType = "job" | "education" | "project" | "other";
 
 export interface Experience {
-  _id: string;
+  _id: string
   title: string
   org: string
   startYear: number
@@ -44,6 +44,6 @@ export interface User {
   status: string
   articles: Note[]
   experiences: Experience[]
-  visits?: number,
+  visits?: number
   createdAt: string
 }

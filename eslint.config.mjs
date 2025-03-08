@@ -6,11 +6,30 @@ export default antfu(
     vue: true
   },
   {
-    // Remember to specify the file glob here, otherwise it might cause the vue plugin to handle non-vue files
     files: ["**/*.vue"],
     rules: {
       "vue/first-attribute-linebreak": ["error", { singleline: "beside", multiline: "below" }],
-      "vue/max-attributes-per-line": ["error", { singleline: { max: 3 }, multiline: { max: 1 } }]
+      "vue/max-attributes-per-line": ["error", { singleline: { max: 3 }, multiline: { max: 1 } }],
+      "vue/html-closing-bracket-newline": ["error", { singleline: "never", multiline: "never", selfClosingTag: { singleline: "never", multiline: "never" } }]
+    }
+  },
+  {
+    files: ["packages/frontend/**/*.ts"],
+    rules: {
+      "node/prefer-global/process": "off"
+    }
+  },
+  {
+    files: ["packages/backend/**/*.ts"],
+    rules: {
+      "no-throw-literal": "off"
+    }
+  },
+  {
+    files: ["packages/backend/**/*.test.ts"],
+    rules: {
+      "no-unused-expressions": "off",
+      "ts/no-unused-expressions": "off"
     }
   },
   {

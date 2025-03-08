@@ -4,23 +4,23 @@
  * to what is currently being worked on etc.
  */
 
-const pageTitle = 'Now - oliverrr';
-const pageDescription = 'Checkout what I\'m currently working on.';
+const pageTitle = "Now - oliverrr";
+const pageDescription = "Checkout what I'm currently working on.";
 useSeoMeta({
-	title: pageTitle,
-	description: pageDescription,
-	ogTitle: pageTitle,
-	ogDescription: pageDescription,
-	ogSiteName: 'oliverrr\'s personal website'
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogSiteName: "oliverrr's personal website"
 });
 
-const redirectPath : string | undefined = '/thesis';
+const redirectPath: string | undefined = "/thesis";
 
 onMounted(() => {
-	if (redirectPath) {
-		const router = useRouter();
-		router.push(redirectPath);
-	}
+  if (redirectPath) {
+    const router = useRouter();
+    router.push(redirectPath);
+  }
 });
 </script>
 

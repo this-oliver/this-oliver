@@ -1,47 +1,47 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import { RothkoCard } from 'rothko-js';
-import type { ActionItem, Experience } from '~/types';
+import type { PropType } from "vue";
+import type { ActionItem, Experience } from "~/types";
+import { RothkoCard } from "rothko-js";
 
 const props = defineProps({
-	experience: {
-		type: Object as PropType<Experience>,
-		required: true
-	},
-	adminMode: {
-		type: Boolean,
-		default: false
-	}
+  experience: {
+    type: Object as PropType<Experience>,
+    required: true
+  },
+  adminMode: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const experienceColor = computed<string>(() => {
-	switch (props.experience.type) {
-	case 'education':
-		return 'education';
+  switch (props.experience.type) {
+    case "education":
+      return "education";
 
-	case 'job':
-		return 'job';
+    case "job":
+      return "job";
 
-	case 'project':
-		return 'project';
+    case "project":
+      return "project";
 
-	default:
-		return 'other';
-	}
+    default:
+      return "other";
+  }
 });
 
 const experienceOptions = computed<ActionItem[]>(() => {
-	return [
-		{ label: 'Edit', icon: 'mdi-pencil', to: `/experiences/${props.experience._id}/edit` }
-	];
+  return [
+    { label: "Edit", icon: "mdi-pencil", to: `/experiences/${props.experience._id}/edit` }
+  ];
 });
 
-function isEmpty (text: any): boolean {
-	if (typeof text === 'string') {
-		return text.trim() === '';
-	}
+function isEmpty(text: any): boolean {
+  if (typeof text === "string") {
+    return text.trim() === "";
+  }
 
-	return text === null || text === undefined;
+  return text === null || text === undefined;
 }
 </script>
 
@@ -50,7 +50,7 @@ function isEmpty (text: any): boolean {
     id="experience-card"
     class="brutalist-outline pa-2 pa-md-1"
     :outlined="true">
-    <rothko-card
+    <RothkoCard
       :source="experience.title"
       :color="experienceColor"
       pattern="circle">
@@ -72,7 +72,7 @@ function isEmpty (text: any): boolean {
           </BaseBtn>
         </v-col>
       </v-row>
-    </rothko-card>
+    </RothkoCard>
 
     <p>{{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}</p>
     <h4 v-if="!isEmpty(props.experience.org)">
