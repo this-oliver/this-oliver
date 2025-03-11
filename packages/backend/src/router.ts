@@ -67,6 +67,11 @@ const routes: Route[] = [
     handler: AuthController.login
   },
   {
+    path: "/api/auth/login/passkeys",
+    method: "post",
+    handler: AuthController.loginWithPasskey
+  },
+  {
     path: "/api/admin/users",
     method: "post",
     handler: UserController.postUser

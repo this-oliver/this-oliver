@@ -1,9 +1,9 @@
 import type { BaseError } from "../types/error";
-import type { IUser } from "../types/user";
+import type { IUser, IUserPasskeyChallenge } from "../types/user";
 import type { UserDocument } from "./models/user";
 import { UserModel } from "./models/user";
 
-const QUERY_PROJECTION = "-email -password -salt";
+const QUERY_PROJECTION = "-email -password -salt -passkeyChallenges -passkeys";
 
 async function createUser(name: string, email: string, password: string, status?: string) {
   const userCount = await UserModel.countDocuments({});
@@ -94,10 +94,71 @@ async function updateUserPassword(oldPwd: string, newPwd: string): Promise<UserD
   return user.save();
 }
 
+async function addUserPasskeyChallenge(challenge: IUserPasskeyChallenge): Promise<UserDocument> {
+  const user = await getUser(true);
+
+  user.passkeyChallenges.push(challenge);
+
+  return user.save();
+}
+
+async function addUserPasskey(
+  name: string,
+  publicKey: Uint8Array,
+  attestationObject: Uint8Array,
+  attestationFormat: string,
+  transports: string[]
+): Promise<UserDocument> {
+  const user = await getUser(true);
+
+  user.passkeys.push({
+    name,
+    publicKey,
+    transports,
+    attestationObject,
+    attestationFormat,
+    counter: 0
+  });
+
+  return user.save();
+}
+
+async function incrementPasskeyCounter(name: string): Promise<UserDocument> {
+  const user = await getUser(true);
+
+  let incremended = false;
+
+  for (const passkey of user.passkeys) {
+    if (passkey.name === name) {
+      passkey.counter++;
+      incremended = true;
+      break;
+    }
+  }
+
+  if (!incremended) {
+    throw { status: 404, message: `passkey '${name}' does not exist` } as BaseError;
+  }
+
+  return user.save();
+}
+
+async function removeUserPasskey(name: string): Promise<UserDocument> {
+  const user = await getUser(true);
+
+  user.passkeys = user.passkeys.filter(passkey => passkey.name !== name);
+
+  return user.save();
+}
+
 export {
+  addUserPasskey,
+  addUserPasskeyChallenge,
   createUser,
   getUser,
   getUserByEmail,
+  incrementPasskeyCounter,
+  removeUserPasskey,
   updateUser,
   updateUserPassword,
   UserDocument,

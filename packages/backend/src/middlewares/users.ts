@@ -1,10 +1,11 @@
+import type { RegistrationResponseJSON } from "@simplewebauthn/server";
 import type { Request, Response } from "express";
 import type { BaseError } from "../types/error";
 import type { BaseAuthBody } from "./auth";
-import crypto from "node:crypto";
 import { ADMIN_SECRET } from "../config/env";
 import * as UserData from "../data/users";
 import * as ErrorHelper from "../utils/error";
+import * as PasskeyHelper from "../utils/passkey";
 
 interface PasskeyRegistrationAuthBody extends BaseAuthBody {
   type: "passkey"
@@ -13,10 +14,7 @@ interface PasskeyRegistrationAuthBody extends BaseAuthBody {
 
 interface PasskeyRegistrationCompleteAuthBody extends PasskeyRegistrationAuthBody {
   stage: "complete"
-  id: string
-  publicKey: string
-  publicKeyAlgorithm: number
-  transports: string[]
+  attestation: RegistrationResponseJSON
 }
 
 interface ResetPasswordBody {
@@ -71,44 +69,52 @@ async function patchUser(req: Request, res: Response) {
   }
 }
 
+/**
+ * Creates a new passkey for the user in two stages:
+ * 1. init - generates a challenge for the user to sign
+ * 2. complete - verifies the signed challenge and saves the passkey to the user
+ *
+ * for more info, read see https://web.dev/articles/passkey-registration
+ */
 async function patchUserPasskey(req: Request, res: Response) {
   const body: PasskeyRegistrationAuthBody = req.body;
-
-  if (!body.email) {
-    return res.status(400).send("invalid request - missing email");
-  }
+  const user = await UserData.getUser(true);
 
   if (body.stage === "init") {
-    const challenge: string = crypto.randomBytes(16).toString("hex");
-    const userId: string = crypto.randomBytes(16).toString("hex");
-    const userName: string = body.email;
-    const userDisplayName: string = body.email;
+    const passkeySetup = await PasskeyHelper.getPasskeyRegistration(user.email, user.passkeys || []);
 
-    return res.status(200).send({
-      challenge,
-      userId,
-      userName,
-      userDisplayName
-    });
-  } else {
-    const publicKey = (body as PasskeyRegistrationCompleteAuthBody).publicKey;
-    const publicKeyAlgorithm = (body as PasskeyRegistrationCompleteAuthBody).publicKeyAlgorithm;
-    const transports = (body as PasskeyRegistrationCompleteAuthBody).transports;
+    // save the challenge to the user
+    await UserData.addUserPasskeyChallenge({ value: passkeySetup.challenge });
+    return res.status(200).send(passkeySetup);
+  } else if (body.stage === "complete") {
+    // get latest user challenge
+    const challenge = user.passkeyChallenges[user.passkeyChallenges.length - 1];
+    const result = await PasskeyHelper.verifyPasskeyRegistration((body as PasskeyRegistrationCompleteAuthBody).attestation, challenge.value);
 
-    // eslint-disable-next-line no-console
-    console.log({
-      publicKey,
-      publicKeyAlgorithm,
-      transports
-    });
-
-    if (!publicKey || !publicKeyAlgorithm || !transports) {
-      return res.status(400).send("invalid request - missing publicKey, publicKeyAlgorithm, or transports");
-    } else {
-      return res.status(200).send("registration complete");
+    if (!result.verified) {
+      return res.status(400).send({ message: "Passkey registration invalid" });
     }
+
+    if (!result.registrationInfo) {
+      return res.status(400).send({ message: "Missing passkey regsitration info" });
+    }
+
+    await UserData.addUserPasskey(
+      result.registrationInfo?.credential.id,
+      result.registrationInfo?.credential.publicKey,
+      result.registrationInfo?.attestationObject,
+      result.registrationInfo?.fmt,
+      result.registrationInfo?.credential.transports as string[] || []
+    );
+
+    return res.status(200).send({ message: "Passkey registration successful" });
+  } else {
+    return res.status(400).send("Invalid passkey stage");
   }
 }
+
+// TODO - implement passkey name change
+// TODO - implement passkey deletion
 
 async function patchUserPassword(req: Request, res: Response) {
   const body: ResetPasswordBody = req.body;
