@@ -67,7 +67,7 @@ const routes: Route[] = [
     handler: AuthController.login
   },
   {
-    path: "/api/auth/login/passkeys",
+    path: "/api/auth/login/passkey",
     method: "post",
     handler: AuthController.loginWithPasskey
   },
@@ -77,15 +77,21 @@ const routes: Route[] = [
     handler: UserController.postUser
   },
   {
-    path: "/api/admin/users",
-    method: "patch",
-    handler: UserController.patchUser,
+    path: "/api/auth/register/passkey",
+    method: "post",
+    handler: AuthController.registerUserPasskey,
     protected: true
   },
   {
-    path: "/api/admin/users/passkey",
+    path: "/api/auth/passwords",
     method: "patch",
-    handler: UserController.patchUserPasskey,
+    handler: AuthController.patchUserPassword,
+    protected: true
+  },
+  {
+    path: "/api/admin/users",
+    method: "patch",
+    handler: UserController.patchUser,
     protected: true
   },
   {
