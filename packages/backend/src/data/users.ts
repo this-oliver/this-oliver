@@ -1,3 +1,4 @@
+import type { AuthenticatorTransportFuture } from "@simplewebauthn/server";
 import type { BaseError } from "../types/error";
 import type { IUser, IUserPasskeyChallenge } from "../types/user";
 import type { UserDocument } from "./models/user";
@@ -91,7 +92,32 @@ async function updateUserPassword(oldPwd: string, newPwd: string): Promise<UserD
 
   user.password = newPwd;
 
-  return user.save();
+  return await user.save();
+}
+
+async function addUserPasskey(
+  name: string,
+  publicKey: string,
+  attestationObject: string,
+  attestationFormat: string,
+  transports: AuthenticatorTransportFuture[]
+): Promise<UserDocument> {
+  const user = await getUser(true);
+
+  if (user.passkeys.some(passkey => passkey.name === name)) {
+    throw { status: 400, message: `passkey '${name}' already exists` } as BaseError;
+  }
+
+  user.passkeys.push({
+    name,
+    publicKey,
+    attestationObject,
+    transports,
+    attestationFormat,
+    counter: 0
+  });
+
+  return await user.save();
 }
 
 async function addUserPasskeyChallenge(challenge: IUserPasskeyChallenge): Promise<UserDocument> {
@@ -99,56 +125,58 @@ async function addUserPasskeyChallenge(challenge: IUserPasskeyChallenge): Promis
 
   user.passkeyChallenges.push(challenge);
 
-  return user.save();
+  return await user.save();
 }
 
-async function addUserPasskey(
-  name: string,
-  publicKey: Uint8Array,
-  attestationObject: Uint8Array,
-  attestationFormat: string,
-  transports: string[]
-): Promise<UserDocument> {
+async function updateUserPasskey(name: string, patch: { increment?: boolean, name?: string }): Promise<UserDocument> {
   const user = await getUser(true);
 
-  user.passkeys.push({
-    name,
-    publicKey,
-    transports,
-    attestationObject,
-    attestationFormat,
-    counter: 0
-  });
+  if (user.passkeys.find(passkey => passkey.name === name) === undefined) {
+    throw { status: 404, message: `passkey '${name}' does not exist` } as BaseError;
+  }
 
-  return user.save();
-}
+  if (patch.name && user.passkeys.find(passkey => passkey.name === patch.name)) {
+    throw { status: 400, message: `passkey with '${patch.name}' name already exists` } as BaseError;
+  }
 
-async function incrementPasskeyCounter(name: string): Promise<UserDocument> {
-  const user = await getUser(true);
-
-  let incremended = false;
-
-  for (const passkey of user.passkeys) {
-    if (passkey.name === name) {
-      passkey.counter++;
-      incremended = true;
+  for (let i = 0; i < user.passkeys.length; i++) {
+    if (user.passkeys[i].name === name) {
+      user.passkeys[i].name = patch.name || user.passkeys[i].name;
+      user.passkeys[i].counter = patch.increment ? user.passkeys[i].counter + 1 : user.passkeys[i].counter;
       break;
     }
   }
 
-  if (!incremended) {
-    throw { status: 404, message: `passkey '${name}' does not exist` } as BaseError;
+  return await user.save();
+}
+
+async function updateUserPasskeyChallenge(challenge: string, patch: { status?: "pending" | "completed" }): Promise<UserDocument> {
+  const user = await getUser(true);
+
+  if (user.passkeyChallenges.find(item => item.value === challenge) === undefined) {
+    throw { status: 404, message: `passkey challenge '${challenge}' does not exist` } as BaseError;
   }
 
-  return user.save();
+  for (let i = 0; i < user.passkeyChallenges.length; i++) {
+    if (user.passkeyChallenges[i].value === challenge) {
+      user.passkeyChallenges[i].status = patch.status || user.passkeyChallenges[i].status;
+      break;
+    }
+  }
+
+  return await user.save();
 }
 
 async function removeUserPasskey(name: string): Promise<UserDocument> {
   const user = await getUser(true);
 
+  if (user.passkeys.find(passkey => passkey.name === name) === undefined) {
+    throw { status: 404, message: `passkey '${name}' does not exist` } as BaseError;
+  }
+
   user.passkeys = user.passkeys.filter(passkey => passkey.name !== name);
 
-  return user.save();
+  return await user.save();
 }
 
 export {
@@ -157,9 +185,10 @@ export {
   createUser,
   getUser,
   getUserByEmail,
-  incrementPasskeyCounter,
   removeUserPasskey,
   updateUser,
+  updateUserPasskey,
+  updateUserPasskeyChallenge,
   updateUserPassword,
   UserDocument,
   UserModel

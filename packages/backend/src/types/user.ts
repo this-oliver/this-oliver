@@ -1,14 +1,18 @@
+import type { AuthenticatorTransportFuture } from "@simplewebauthn/server";
+
 interface IUserPasskey {
   name: string
-  publicKey: Uint8Array
-  attestationObject: Uint8Array
+  publicKey: string
+  attestationObject: string
   attestationFormat: string
-  transports: string[]
+  transports: AuthenticatorTransportFuture[]
   counter: number
 }
 
 interface IUserPasskeyChallenge {
   value: string
+  type: "register" | "login"
+  status: "pending" | "completed"
 }
 
 interface IUser {

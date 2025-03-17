@@ -8,14 +8,20 @@ const SALT_WORK_FACTOR = 10;
 const UserPasskeySchema = new Mongoose.Schema<IUserPasskey>(
   {
     name: { type: String, required: true },
-    publicKey: { type: String, required: true }
+    publicKey: { type: String, required: true },
+    attestationObject: { type: String, required: true },
+    attestationFormat: { type: String, required: true },
+    transports: { type: [String], required: true },
+    counter: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
 
 const UserPasskeyChallengeSchema = new Mongoose.Schema<IUserPasskeyChallenge>(
   {
-    value: { type: String, required: true }
+    value: { type: String, required: true },
+    type: { type: String, required: true },
+    status: { type: String, required: true, default: "pending" }
   },
   { timestamps: true }
 );

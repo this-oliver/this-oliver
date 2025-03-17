@@ -1,5 +1,6 @@
+import type { AuthenticatorTransportFuture } from "@simplewebauthn/server";
 import type { INote } from "../types/note";
-import type { IUser } from "../types/user";
+import type { IUser, IUserPasskey, IUserPasskeyChallenge } from "../types/user";
 import mongoose from "mongoose";
 
 const mongo = {
@@ -56,6 +57,49 @@ const models = {
       }
       return notes;
     }
+  },
+
+  createPasskey: ({
+    num = 1,
+    name = "test key",
+    publicKey = new Uint8Array(32),
+    attestationObject = new Uint8Array(64),
+    attestationFormat = "packed",
+    transports = ["hybrid", "nfc", "usb", "ble", "internal"] as AuthenticatorTransportFuture[]
+  } = {}): Partial<IUserPasskey> | Partial<IUserPasskey>[] => {
+    const passkeys: Partial<IUserPasskey>[] = [];
+
+    for (let i = 0; i < num; i++) {
+      passkeys.push({
+        name: `${name} ${i}`,
+        publicKey: Array.from(publicKey).toString(),
+        attestationObject: Array.from(attestationObject).toString(),
+        attestationFormat,
+        transports,
+        counter: 0
+      });
+    }
+
+    return num === 1 ? passkeys[0] : passkeys;
+  },
+
+  createPasskeyChallenge: ({
+    num = 1,
+    value = "test",
+    type = "register" as "register" | "login",
+    status = "pending" as "pending" | "completed"
+  } = {}): Partial<IUserPasskeyChallenge> | Partial<IUserPasskeyChallenge>[] => {
+    const passkeyChallenges: Partial<IUserPasskeyChallenge>[] = [];
+
+    for (let i = 0; i < num; i++) {
+      passkeyChallenges.push({
+        value: `${value} ${i}`,
+        type,
+        status
+      });
+    }
+
+    return num === 1 ? passkeyChallenges[0] : passkeyChallenges;
   }
 };
 
