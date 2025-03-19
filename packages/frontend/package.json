@@ -25,7 +25,7 @@
     "@types/marked": "^4.3.0",
     "@types/node": "^18",
     "@types/sanitize-html": "^2.9.0",
-    "nuxt": "^3.7.3",
+    "nuxt": "^3.16.0",
     "typescript": "^5.0.4"
   }
 }
