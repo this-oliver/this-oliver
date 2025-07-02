@@ -1,24 +1,20 @@
-import app from "./app";
-import { DB_URI, NODE_ENV, PORT } from "./config/env";
-import migrate from "./config/migrations";
-import database from "./database";
+// import type { Core } from '@strapi/strapi';
 
-database.connect()
-  .catch((error) => {
-    console.error(error);
-  })
-  .finally(() => {
-    // run migrations asynchonously
-    migrate();
-  });
+export default {
+  /**
+   * An asynchronous register function that runs before
+   * your application is initialized.
+   *
+   * This gives you an opportunity to extend code.
+   */
+  register(/* { strapi }: { strapi: Core.Strapi } */) {},
 
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`\nExpress server listening on port ${PORT}, in ${NODE_ENV} mode`);
-  // eslint-disable-next-line no-console
-  console.log(`Server: http://localhost:${PORT}/api/`);
-  // eslint-disable-next-line no-console
-  console.log(`Database: ${DB_URI}\n`);
-});
-
-export default app;
+  /**
+   * An asynchronous bootstrap function that runs before
+   * your application gets started.
+   *
+   * This gives you an opportunity to set up your data model,
+   * run jobs, or perform some special logic.
+   */
+  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {}
+};

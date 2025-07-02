@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_shared_socials",
+  "info": {
+    "displayName": "socials",
+    "icon": "link"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
