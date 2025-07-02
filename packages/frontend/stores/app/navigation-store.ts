@@ -23,6 +23,12 @@ export const useNavigationStore = defineStore("navigation", () => {
       base = [
         ...base,
         {
+          label: "profile",
+          icon: "mdi-logout",
+          color: "warning",
+          to: "/profile/edit"
+        },
+        {
           label: "logout",
           icon: "mdi-logout",
           color: "error",

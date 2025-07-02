@@ -41,6 +41,9 @@ function handleError(error: GenericError): BaseError {
 
 function packageResponseError(error: GenericError, res: Response): Response {
   const { message, status } = handleError(error);
+
+  console.error(message);
+
   return res.status(status).send(message);
 }
 

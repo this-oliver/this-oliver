@@ -14,9 +14,23 @@ import {
   verifyRegistrationResponse
 
 } from "@simplewebauthn/server";
+import { NODE_ENV } from "../config/env";
 
-const RP_NAME = "oliverrr";
-const RP_ID = "localhost";
+/**
+ * Human-readable title for your website
+ */
+const RP_NAME = "oliverrr.net";
+/**
+ * A unique identifier for your website. 'localhost' is okay for
+ * local dev.
+ */
+const RP_ID = NODE_ENV === "development" ? "localhost" : "www.oliverrr.net";
+/**
+ * The URL at which registrations and authentications should occur.
+ * 'http://localhost' and 'http://localhost:PORT' are also valid.
+ * Do NOT include any trailing /
+ */
+const RP_ORIGIN = NODE_ENV === "development" ? `http://${RP_ID}:3000` : `https://${RP_ID}`;
 
 function _fromStringToBase64(str: string): string {
   return Buffer.from(str).toString("base64");
@@ -28,8 +42,8 @@ function _fromBase64ToString(base64: string): string {
 
 async function getPasskeyRegistrationRequest(username: string, userPasskeys: IUserPasskey[]): Promise<PublicKeyCredentialRequestOptionsJSON> {
   return await generateRegistrationOptions({
-    rpName: RP_NAME,
     rpID: RP_ID,
+    rpName: RP_NAME,
     userName: username,
     attestationType: "none",
 
@@ -52,7 +66,7 @@ async function verifyPasskeyRegistration(attestation: RegistrationResponseJSON, 
   const result = await verifyRegistrationResponse({
     response: attestation,
     expectedChallenge,
-    expectedOrigin: RP_NAME,
+    expectedOrigin: RP_ORIGIN,
     expectedRPID: RP_ID
   });
 
@@ -108,7 +122,7 @@ async function verifyPasskeyAuthentication(attestation: AuthenticationResponseJS
     verification = await verifyAuthenticationResponse({
       response: attestation,
       expectedChallenge,
-      expectedOrigin: RP_NAME,
+      expectedOrigin: RP_ORIGIN,
       expectedRPID: RP_ID,
       credential: {
         id: passkey.name,
