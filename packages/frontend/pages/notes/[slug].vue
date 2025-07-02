@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { Note } from "~/types";
 import { RothkoCard } from "rothko-js";
+import { useNotificationStore } from "~/stores/app";
 import { useNoteStore } from "~/stores/note-store";
 
 const router = useRouter();
 const noteStore = useNoteStore();
-const notification = useNotification();
+const notificationStore = useNotificationStore();
 const { formatDate } = useTime();
 
 const note = ref<Note | null | undefined>(undefined);
@@ -19,7 +20,7 @@ const errorReasons: string[] = [
 
 onMounted(async () => {
   try {
-    note.value = await noteStore.getNoteBySlug(router.currentRoute.value.params.slug as string);
+    note.value = await noteStore.getNote(router.currentRoute.value.params.slug as string);
 
     const title = `${note.value?.title} - oliverrr`;
     const description = note.value?.content;
@@ -36,7 +37,7 @@ onMounted(async () => {
     });
   } catch (error) {
     note.value = null;
-    notification.notify("Error getting note", (error as Error).message, "error");
+    notificationStore.addError(new Error(`Error getting note: ${(error as Error).message}`));
   }
 });
 </script>
@@ -94,10 +95,13 @@ onMounted(async () => {
           Back
         </base-btn>
 
-        <RothkoCard
-          id="note-options"
-          :source="note?.title || undefined"
-          class="brutalist-outline" />
+        <!-- the rothko card breaks server side -->
+        <client-only>
+          <RothkoCard
+            id="note-options"
+            :source="note?.title || undefined"
+            class="brutalist-outline" />
+        </client-only>
 
         <div v-if="note">
           <p>{{ noteDate }}</p>

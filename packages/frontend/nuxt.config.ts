@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-10",
-  ssr: false,
 
   components: [
     { path: "~/components/app" },
@@ -26,8 +25,7 @@ export default defineNuxtConfig({
    * in the server side.
    */
   runtimeConfig: {
-    secret: "",
-
-    public: { api: "" }
+    cmsApiUrl: "",
+    cmsApiToken: ""
   }
 });
