@@ -24,7 +24,7 @@
       "type": "date",
       "required": true
     },
-    "body": {
+    "content": {
       "type": "richtext",
       "required": true
     },
