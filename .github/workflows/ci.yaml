@@ -1,0 +1,90 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint Code
+        run: npm run lint
+
+      - name: Lint Commits
+        run: commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+
+      - name: Lint PR Title
+        run: echo "${{ github.event.pull_request.title }}" | commitlint --verbose
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Setup MongoDB
+        uses: supercharge/mongodb-github-action@1.12.0
+        with:
+          mongodb-version: 6.0.3
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: packages/backend
+
+      - name: Test
+        run: npm test
+        working-directory: packages/backend
+        env:
+          ADMIN_SECRET: TEST_SECRET
+          JWT_SECRET: TEST_SECRET
+          DB_URI: 'mongodb://localhost:27017/oliverrr-test'
+
+  security:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        path: [packages/backend, packages/frontend, deploy/k8s, .github/workflows]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check dependencies, misconfigurations, and secrets
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: ${{ matrix.path }}
+          ignore-unfixed: true
+          scanners: 'vuln,secret,misconfig'
+          severity: 'HIGH,CRITICAL'
+          exit-code: 1
+
+      - name: Check code quality
+        uses: bearer/bearer-action@828eeb928ce2f4a7ca5ed57fb8b59508cb8c79bc # v2
+        with:
+          path: ${{ matrix.path }}
+          diff: true
+          severity: 'critical,high'
+          exit-code: '1'
