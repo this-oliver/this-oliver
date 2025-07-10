@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: www.oliverrr.net
+    - host: dev.oliverrr.net
       http:
         paths:
           - path: /
@@ -24,7 +24,7 @@ spec:
                 name: oliverrr
                 port:
                   name: frontend
-    - host: cms.oliverrr.net
+    - host: cms-dev.oliverrr.net
       http:
         paths:
           - path: /
@@ -36,6 +36,6 @@ spec:
                   name: backend
   tls:
     - hosts:
-        - www.oliverrr.net
-        - cms.oliverrr.net
+        - dev.oliverrr.net
+        - cms-dev.oliverrr.net
       secretName: oliverrr-tls
