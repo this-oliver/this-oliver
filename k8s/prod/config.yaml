@@ -10,4 +10,5 @@ kind: ConfigMap
 metadata:
   name: oliverrr-backend
 data:
-  CORS_ORIGIN: 'https://www.oliverrr.net'
+  HOST: 0.0.0.0
+  PORT: '1337'

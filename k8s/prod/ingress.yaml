@@ -24,7 +24,7 @@ spec:
                 name: oliverrr-frontend
                 port:
                   number: 80
-    - host: api.oliverrr.net
+    - host: cms.oliverrr.net
       http:
         paths:
           - path: /
@@ -33,9 +33,9 @@ spec:
               service:
                 name: oliverrr-backend
                 port:
-                  number: 4000
+                  number: 1337
   tls:
     - hosts:
         - www.oliverrr.net
-        - api.oliverrr.net
+        - cms.oliverrr.net
       secretName: oliverrr-tls

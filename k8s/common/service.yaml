@@ -28,6 +28,6 @@ spec:
     app: oliverrr
     component: backend
   ports:
-    - port: 4000
+    - port: 1337
       targetPort: backend-port
       protocol: TCP

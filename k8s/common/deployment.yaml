@@ -24,17 +24,19 @@ spec:
         - name: dockerhub
       containers:
         - name: frontend
-          image: thisoliver/oliverrr:frontend
+          image: ghcr.io/this-oliver/this-oliver-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
               name: frontend-port
           env:
-            - name: NUXT_PUBLIC_API
+            - name: NUXT_CMS_API_URL
+              value: 'http://oliverrr-backend:1337'
+            - name: NUXT_CMS_API_TOKEN
               valueFrom:
-                configMapKeyRef:
-                  name: oliverrr-frontend
-                  key: NUXT_PUBLIC_API
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: FRONTEND_NUXT_CMS_API_TOKEN
           resources:
             limits:
               memory: 128Mi
@@ -72,32 +74,42 @@ spec:
         - name: dockerhub
       containers:
         - name: client
-          image: thisoliver/oliverrr:backend
+          image: ghcr.io/this-oliver/this-oliver-frontend:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 4000
+            - containerPort: 1337
               name: backend-port
           env:
-            - name: CORS_ORIGIN
-              valueFrom:
-                configMapKeyRef:
-                  name: oliverrr-backend
-                  key: CORS_ORIGIN
-            - name: ADMIN_SECRET
+            - name: ADMIN_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: oliverrr-secret
-                  key: ADMIN_SECRET
+                  key: BACKEND_ADMIN_JWT_SECRET
+            - name: API_TOKEN_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: BACKEND_API_TOKEN_SALT
+            - name: APP_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: BACKEND_APP_KEYS
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: BACKEND_ENCRYPTION_KEY
+            - name: TRANSFER_TOKEN_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr-secret
+                  key: BACKEND_TRANSFER_TOKEN_SALT
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: oliverrr-secret
-                  key: JWT_SECRET
-            - name: DB_URI
-              valueFrom:
-                secretKeyRef:
-                  name: oliverrr-secret
-                  key: DB_URI
+                  key: BACKEND_JWT_SECRET
           resources:
             limits:
               memory: 128Mi
