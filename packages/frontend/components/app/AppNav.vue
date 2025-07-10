@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useDisplay } from "vuetify";
-import { useNavigationStore } from "~/stores/app/navigation-store";
-import { useSidebarStore } from "~/stores/app/sidebar-store";
+import { useGeneralStore } from "~/stores/app";
 
-const drawer = useSidebarStore();
-const navigation = useNavigationStore();
+const generalStore = useGeneralStore();
 const { smAndDown } = useDisplay();
 
-const routes = computed(() => !smAndDown.value ? navigation.options : []);
+const routes = computed(() => !smAndDown.value ? generalStore.getNavItems : []);
 </script>
 
 <template>
@@ -17,7 +15,7 @@ const routes = computed(() => !smAndDown.value ? navigation.options : []);
     elevation="0">
     <v-app-bar-nav-icon
       v-if="smAndDown"
-      @click="drawer.toggle" />
+      @click="generalStore.toggleSidebar()" />
 
     <router-link
       class="plain"

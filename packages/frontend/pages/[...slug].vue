@@ -1,31 +1,11 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-// import Image from '~/assets/images/this-is-fine.gif'
 
 const route = useRoute();
-const router = useRouter();
 
 const title = ref<string>(route.query.title as string || "Error");
 const message = ref<string>(route.query.message as string);
 const redirect = ref<string>(route.query.redirect as string || "/");
-const secretAction = ref<NodeJS.Timeout | null>(null);
-
-function startSecretAction() {
-  let secretPath = "/auth/login";
-
-  if (redirect.value) {
-    secretPath = `${secretPath}?redirect=${redirect.value}`;
-  }
-
-  secretAction.value = setTimeout(() => {
-    router.push(secretPath);
-  }, 2000);
-}
-function destorySecretAction() {
-  if (secretAction.value) {
-    clearTimeout(secretAction.value);
-  }
-}
 </script>
 
 <template>
@@ -63,10 +43,7 @@ function destorySecretAction() {
           block
           outlined
           color="primary"
-          :to="redirect"
-          @mousedown="startSecretAction"
-          @mouseup="destorySecretAction"
-          @mouseleave="destorySecretAction">
+          :to="redirect">
           Go Back
         </base-btn>
       </v-col>

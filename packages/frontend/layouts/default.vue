@@ -9,7 +9,6 @@ const layoutClass = computed<string>(() =>
   <v-app :class="layoutClass">
     <app-nav />
     <app-sidebar />
-    <app-notification />
 
     <v-main>
       <v-container>
