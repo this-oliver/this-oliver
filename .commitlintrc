@@ -19,7 +19,8 @@
       [
         "frontend",
         "backend",
-        "cicd"
+        "cicd",
+        "security"
       ]
     ]
   }
