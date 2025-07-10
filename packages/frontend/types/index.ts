@@ -15,12 +15,12 @@ export interface ActionItem {
 export interface Note {
   _id: string
   title: string
+  slug: string
   content: string
   publish: boolean
-  views: number
   tags: string[]
-  slug: string
   createdAt: string
+  updatedAt: string
 }
 
 export type ExperienceType = "job" | "education" | "project" | "other";
@@ -35,7 +35,17 @@ export interface Experience {
   type: ExperienceType
   link?: string
   image?: string
-  createdAt: string
+  images?: {
+    name: string
+    alt: string
+    caption: string
+    url: string
+  }[]
+}
+
+export interface Website {
+  about: string
+  socias: { label: string, url: string }[]
 }
 
 export interface User {

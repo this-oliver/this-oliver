@@ -1,69 +1,37 @@
 import type { Note } from "~/types";
 import { defineStore } from "pinia";
-import { useRequest } from "~/composables/useRequest";
-import { useAuthStore } from "~/stores/auth-store";
 
 export const useNoteStore = defineStore("note", () => {
-  const { request } = useRequest();
-  const authStore = useAuthStore();
+  const filter = reactive({
+    query: "",
+    tags: [] as string[]
+  });
 
   const notes = ref<Note[]>([]);
   const tags = ref<string[]>([]);
+  const pagination = ref({
+    currentPage: 0,
+    totalPages: 0
+  });
 
-  async function getNote(id: string): Promise<Note> {
-    return authStore.isLoggedIn
-      ? await request(`/admin/notes/${id}`, { headers: { Authorization: `Bearer ${authStore.token}` } })
-      : await request(`/notes/${id}`);
-  }
-
-  async function getNoteBySlug(slug: string): Promise<Note> {
-    return authStore.isLoggedIn
-      ? await request(`/admin/notes/${slug}?slug=true`, { headers: { Authorization: `Bearer ${authStore.token}` } })
-      : await request(`/notes/${slug}?slug=true`);
+  async function getNote(slug: string): Promise<Note> {
+    return await $fetch(`/api/notes/${slug}`);
   }
 
   async function indexNotes(): Promise<Note[]> {
-    notes.value = authStore.isLoggedIn
-      ? await request("/admin/notes", { headers: { Authorization: `Bearer ${authStore.token}` } })
-      : await request("/notes");
-
-    notes.value = _sortNotes(notes.value);
+    const rawNotes = await $fetch("/api/notes");
+    notes.value = sortNotesByDate(rawNotes.notes);
+    pagination.value.currentPage = rawNotes.currentPage;
+    pagination.value.totalPages = rawNotes.totalPages;
 
     return notes.value;
   }
 
   async function indexTags(): Promise<string[]> {
-    tags.value = authStore.isLoggedIn
-      ? await request("/admin/notes/tags", { headers: { Authorization: `Bearer ${authStore.token}` } })
-      : await request("/notes/tags");
-
-    return tags.value;
+    throw new Error("Not implemented yet");
   }
 
-  async function postNote(note: Partial<Note>): Promise<Note> {
-    return await request("/admin/notes", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      body: JSON.stringify(note)
-    });
-  }
-
-  async function patchNote(id: string, note: Partial<Note>): Promise<Note> {
-    return await request(`/admin/notes/${id}`, {
-      method: "PATCH",
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      body: JSON.stringify(note)
-    });
-  }
-
-  async function deleteNote(id: string): Promise<Note> {
-    return await request(`/admin/notes/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${authStore.token}` }
-    });
-  }
-
-  function _sortNotes(notes: Note[]) {
+  function sortNotesByDate(notes: Note[]) {
     return notes.sort((a, b) => {
       const dateA = new Date(a.createdAt);
       const dateB = new Date(b.createdAt);
@@ -72,15 +40,31 @@ export const useNoteStore = defineStore("note", () => {
     });
   }
 
+  function resetFilter(): void {
+    filter.query = "";
+    filter.tags = [];
+  }
+
+  function removeTagFromFilter(tag: string): void {
+    filter.tags = filter.tags.filter(t => t !== tag);
+  }
+
+  function addTagToFilter(tag: string): void {
+    if (!filter.tags.includes(tag)) {
+      filter.tags.push(tag);
+    }
+  }
+
   return {
     notes,
     tags,
+    pagination,
+    filter,
     getNote,
-    getNoteBySlug,
     indexNotes,
     indexTags,
-    postNote,
-    patchNote,
-    deleteNote
+    resetFilter,
+    removeTagFromFilter,
+    addTagToFilter
   };
 });

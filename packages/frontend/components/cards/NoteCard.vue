@@ -1,59 +1,26 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { ActionItem, Note } from "~/types";
-import { RothkoCard } from "rothko-js";
-import { useNoteStore } from "~/stores/note-store";
+import type { Note } from "~/types";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   note: {
     type: Object as PropType<Note>,
     required: true
-  },
-  adminMode: {
-    type: Boolean,
-    default: false
   }
 });
 
 const { formatDate } = useTime();
 const noteDate = computed<string>(() => formatDate(props.note.createdAt));
 
-const noteOptions = computed<ActionItem[]>(() => {
-  return [
-    {
-      label: "Edit",
-      icon: "mdi-pencil",
-      to: `/notes/${props.note.slug}/edit`
-    },
-    {
-      label: props.note.publish === true ? "Unpublish" : "Publish",
-      color: props.note.publish === true ? "warning" : "success",
-      icon: props.note.publish === true ? "mdi-eye-off" : "mdi-eye",
-      action: async () => {
-        const noteStore = useNoteStore();
-        const { notify } = useNotification();
+const isBrowser = ref(false);
+const RothkoCard = ref<any>(null);
 
-        try {
-          await noteStore.patchNote(props.note._id, { publish: !props.note.publish });
-
-          notify(
-            "Note updated successfully!",
-            `Note ${props.note.publish === true ? "unpublished" : "published"}`,
-            "success"
-          );
-
-          await noteStore.indexNotes();
-        } catch (error) {
-          const errorMessage = (error as Error).message;
-          notify(
-            "Error updating note",
-            errorMessage,
-            "error"
-          );
-        }
-      }
-    }
-  ];
+onMounted(async () => {
+  isBrowser.value = typeof window !== "undefined";
+  if (isBrowser.value) {
+    RothkoCard.value = (await import("rothko-js")).RothkoCard;
+  }
 });
 </script>
 
@@ -61,26 +28,11 @@ const noteOptions = computed<ActionItem[]>(() => {
   <base-card
     class="note-card brutalist-outline pa-2 pa-md-1"
     :outlined="true">
-    <RothkoCard :source="props.note.title">
-      <v-row
-        v-if="props.adminMode"
-        justify="end"
-        no-gutters>
-        <v-col
-          v-for="option in noteOptions"
-          :key="option.label"
-          class="mx-1"
-          cols="auto">
-          <BaseBtn
-            small
-            :color="option.color"
-            :to="option.to"
-            @click="option.action">
-            {{ option.label }}
-          </BaseBtn>
-        </v-col>
-      </v-row>
-    </RothkoCard>
+    <!-- Only show RothkoCard in browser -->
+    <template v-if="isBrowser && RothkoCard">
+      <component :is="RothkoCard" :source="props.note.title" />
+    </template>
+
     <p>{{ noteDate }}</p>
 
     <RouterLink

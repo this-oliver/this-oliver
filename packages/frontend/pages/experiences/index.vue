@@ -3,72 +3,68 @@ import type { ActionItem, Experience } from "~/types";
 import { h } from "vue";
 import ExperienceCard from "~/components/cards/ExperienceCard.vue";
 import { useRouterQuery } from "~/composables/useRouterQuery";
-import { useAuthStore } from "~/stores/auth-store";
 import { useExperienceStore } from "~/stores/experience-store";
 
-const query = useRouterQuery();
-const authStore = useAuthStore();
-const experienceStore = useExperienceStore();
+const pageTitle = "Experiences - oliverrr";
+const pageDescription = "A collection of experiences";
 
-const experiences = ref<Experience[]>([]);
-const loading = ref<boolean>(false);
-
-const filter = reactive({
-  projects: false,
-  education: false,
-  work: false
+useSeoMeta({
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogSiteName: "oliverrr's personal website"
 });
 
+const query = useRouterQuery();
+const experienceStore = useExperienceStore();
+
+const { data, status } = useAsyncData("experiences", async () => {
+  return await experienceStore.indexExperiences();
+});
+
+const isLoading = computed<boolean>(() => status.value === "pending");
+
 const options = computed<ActionItem[]>(() => {
-  let base: ActionItem[] = [
+  return [
     {
       label: "Education",
-      color: filter.education ? "education" : "secondary",
+      color: experienceStore.filter.education ? "education" : "secondary",
       action: () => {
-        filter.education = !filter.education;
+        experienceStore.filter.education = !experienceStore.filter.education;
       }
     },
     {
       label: "Work",
-      color: filter.work ? "job" : "secondary",
+      color: experienceStore.filter.work ? "job" : "secondary",
       action: () => {
-        filter.work = !filter.work;
+        experienceStore.filter.work = !experienceStore.filter.work;
       }
     },
     {
       label: "Projects",
-      color: filter.projects ? "project" : "secondary",
+      color: experienceStore.filter.projects ? "project" : "secondary",
       action: () => {
-        filter.projects = !filter.projects;
+        experienceStore.filter.projects = !experienceStore.filter.projects;
       }
     }
   ];
-
-  if (authStore.isLoggedIn) {
-    base = [
-      ...base,
-      {
-        label: "Create xP",
-        color: "primary",
-        icon: "mdi-plus",
-        to: "/experiences/create"
-      }
-    ];
-  }
-
-  return base;
 });
 
 const getExperiences = computed<Experience[]>(() => {
-  return experiences.value.filter((experience) => {
-    if (!filter.education && !filter.projects && !filter.work) {
+  if (!data.value) {
+    return [];
+  }
+
+  return data.value.filter((experience) => {
+    if (!experienceStore.filter.education && !experienceStore.filter.projects && !experienceStore.filter.work) {
       return true;
     } else if (experience.type === "education") {
-      return filter.education;
+      return experienceStore.filter.education;
     } else if (experience.type === "job") {
-      return filter.work;
+      return experienceStore.filter.work;
     } else if (experience.type === "project") {
-      return filter.projects;
+      return experienceStore.filter.projects;
     } else {
       return true;
     }
@@ -78,7 +74,7 @@ const getExperiences = computed<Experience[]>(() => {
 const components = computed(() => {
   return getExperiences.value.map((experience) => {
     // return a NoteCard component with the note prop set to the note
-    return h(ExperienceCard, { experience, adminMode: authStore.isLoggedIn });
+    return h(ExperienceCard, { experience });
   });
 });
 
@@ -88,15 +84,15 @@ const components = computed(() => {
 const activeExperienceTypes = computed<string[]>(() => {
   const types: string[] = [];
 
-  if (filter.education) {
+  if (experienceStore.filter.education) {
     types.push("education");
   }
 
-  if (filter.work) {
+  if (experienceStore.filter.work) {
     types.push("work");
   }
 
-  if (filter.projects) {
+  if (experienceStore.filter.projects) {
     types.push("projects");
   }
 
@@ -116,30 +112,16 @@ watch(
 );
 
 onMounted(async () => {
-  loading.value = true;
-  experiences.value = await experienceStore.indexExperiences();
-  loading.value = false;
-
   // set filters from url query
   if (query.has("filter")) {
     const queryFilter: string = query.get("filter");
 
     if (queryFilter && queryFilter.length >= 0) {
-      filter.education = queryFilter.includes("education");
-      filter.work = queryFilter.includes("work");
-      filter.projects = queryFilter.includes("projects");
+      experienceStore.filter.education = queryFilter.includes("education");
+      experienceStore.filter.work = queryFilter.includes("work");
+      experienceStore.filter.projects = queryFilter.includes("projects");
     }
   }
-});
-
-const pageTitle = "Experiences - oliverrr";
-const pageDescription = "A collection of experiences";
-useSeoMeta({
-  title: pageTitle,
-  description: pageDescription,
-  ogTitle: pageTitle,
-  ogDescription: pageDescription,
-  ogSiteName: "oliverrr's personal website"
 });
 </script>
 
@@ -150,7 +132,7 @@ useSeoMeta({
         <base-list
           label="experiences"
           :options="options"
-          :loading="loading"
+          :loading="isLoading"
           :components="components" />
       </v-col>
     </v-row>

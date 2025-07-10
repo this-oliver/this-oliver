@@ -1,46 +1,31 @@
 import type { Experience } from "~/types";
 import { defineStore } from "pinia";
-import { useAuthStore } from "./auth-store";
 
 export const useExperienceStore = defineStore("experience", () => {
-  const { request } = useRequest();
-  const authStore = useAuthStore();
+  const experiences = ref<Experience[]>([]);
 
-  async function getExperience(id: string): Promise<Experience> {
-    const experience = await request(`/experiences/${id}`);
-    return experience as Experience;
-  }
+  const pagination = ref({
+    currentPage: 0,
+    totalPages: 0
+  });
+
+  const filter = reactive({
+    projects: false,
+    education: false,
+    work: false
+  });
+
+  const getExperiences = computed<Experience[]>(() => experiences.value);
 
   async function indexExperiences(): Promise<Experience[]> {
-    const experiences = await request("/experiences");
-
-    return _sortLatestExperiences(experiences);
+    const res = await $fetch("/api/experiences");
+    experiences.value = sortLatestExperiencesByDate(res.experiences);
+    pagination.value.currentPage = res.currentPage;
+    pagination.value.totalPages = res.totalPages;
+    return experiences.value;
   }
 
-  async function postExperience(experience: Partial<Experience>): Promise<Experience> {
-    return await request("/admin/experiences", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      body: JSON.stringify(experience)
-    }) as Experience;
-  }
-
-  async function patchExperience(id: string, experience: Partial<Experience>): Promise<Experience> {
-    return await request(`/admin/experiences/${id}`, {
-      method: "PATCH",
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      body: JSON.stringify(experience)
-    }) as Experience;
-  }
-
-  async function deleteExperience(id: string): Promise<void> {
-    await request(`/admin/experiences/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${authStore.token}` }
-    });
-  }
-
-  function _sortLatestExperiences(experiences: Experience[]) {
+  function sortLatestExperiencesByDate(experiences: Experience[]) {
     let xp = [...experiences];
 
     xp = xp.sort((a, b) => {
@@ -86,10 +71,8 @@ export const useExperienceStore = defineStore("experience", () => {
   }
 
   return {
-    getExperience,
-    indexExperiences,
-    postExperience,
-    patchExperience,
-    deleteExperience
+    filter,
+    getExperiences,
+    indexExperiences
   };
 });

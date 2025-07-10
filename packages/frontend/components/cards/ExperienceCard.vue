@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { ActionItem, Experience } from "~/types";
-import { RothkoCard } from "rothko-js";
+import type { Experience } from "~/types";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   experience: {
     type: Object as PropType<Experience>,
     required: true
-  },
-  adminMode: {
-    type: Boolean,
-    default: false
   }
 });
 
@@ -30,12 +26,6 @@ const experienceColor = computed<string>(() => {
   }
 });
 
-const experienceOptions = computed<ActionItem[]>(() => {
-  return [
-    { label: "Edit", icon: "mdi-pencil", to: `/experiences/${props.experience._id}/edit` }
-  ];
-});
-
 function isEmpty(text: any): boolean {
   if (typeof text === "string") {
     return text.trim() === "";
@@ -43,6 +33,16 @@ function isEmpty(text: any): boolean {
 
   return text === null || text === undefined;
 }
+
+const isBrowser = ref(false);
+const RothkoCard = ref<any>(null);
+
+onMounted(async () => {
+  isBrowser.value = typeof window !== "undefined";
+  if (isBrowser.value) {
+    RothkoCard.value = (await import("rothko-js")).RothkoCard;
+  }
+});
 </script>
 
 <template>
@@ -50,29 +50,14 @@ function isEmpty(text: any): boolean {
     id="experience-card"
     class="brutalist-outline pa-2 pa-md-1"
     :outlined="true">
-    <RothkoCard
-      :source="experience.title"
-      :color="experienceColor"
-      pattern="circle">
-      <v-row
-        v-if="props.adminMode"
-        justify="end"
-        no-gutters>
-        <v-col
-          v-for="option in experienceOptions"
-          :key="option.label"
-          class="mx-1"
-          cols="auto">
-          <BaseBtn
-            small
-            :color="option.color"
-            :to="option.to"
-            @click="option.action">
-            {{ option.label }}
-          </BaseBtn>
-        </v-col>
-      </v-row>
-    </RothkoCard>
+    <!-- Only show RothkoCard in browser -->
+    <template v-if="isBrowser && RothkoCard">
+      <component
+        :is="RothkoCard"
+        :source="props.experience.title"
+        :color="experienceColor"
+        pattern="circle" />
+    </template>
 
     <p>{{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}</p>
     <h4 v-if="!isEmpty(props.experience.org)">

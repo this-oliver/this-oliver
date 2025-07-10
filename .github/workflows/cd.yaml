@@ -34,7 +34,7 @@ jobs:
       frontend: ${{ steps.check-frontend.outputs.changed }}
       backend: ${{ steps.check-backend.outputs.changed }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Check for changes in frontend
         id: check-frontend
@@ -59,7 +59,7 @@ jobs:
           - app: backend
             condition: ${{ needs.pre-build.outputs.backend == '1' }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Login to registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0

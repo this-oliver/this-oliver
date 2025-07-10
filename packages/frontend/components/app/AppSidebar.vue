@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { ActionItem } from "~/types";
 import { useDisplay } from "vuetify";
-import { useNavigationStore } from "~/stores/app/navigation-store";
-import { useSidebarStore } from "~/stores/app/sidebar-store";
+import { useGeneralStore } from "~/stores/app";
 
 const { smAndDown } = useDisplay();
 
-const drawer = useSidebarStore();
-const navigation = useNavigationStore();
-const options = computed<ActionItem[]>(() => navigation.options);
+const generalStore = useGeneralStore();
+const options = computed<ActionItem[]>(() => generalStore.getNavItems);
 
 function getOptionColor(option: ActionItem): string {
   if (option.color) {
@@ -21,7 +19,7 @@ function getOptionColor(option: ActionItem): string {
 
 <template>
   <v-navigation-drawer
-    v-model="drawer.visible"
+    v-model="generalStore.isSidebarVisible"
     :location="smAndDown ? 'top' : 'left'"
     width="100%">
     <v-row

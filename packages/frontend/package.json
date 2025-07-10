@@ -15,10 +15,9 @@
     "marked": "^5.1.2",
     "nuxt": "3.17.6",
     "pinia": "^2.1.1",
-    "rothko-js": "^0.5.8",
+    "rothko-js": "0.7.3",
     "sanitize-html": "^2.12.1",
-    "simple-analytics-vue": "^3.0.2",
-    "vue-sonner": "^0.3.2"
+    "simple-analytics-vue": "^3.0.2"
   },
   "devDependencies": {
     "@invictus.codes/nuxt-vuetify": "^0.2.24",

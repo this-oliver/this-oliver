@@ -1,0 +1,36 @@
+services:
+  frontend:
+    container_name: oliverrr-frontend
+    build: ./packages/frontend
+    env_file:
+      - ./packages/frontend/.env
+    environment:
+      - NUXT_CMS_API_URL=http://backend:1337
+    ports:
+      - '3000:3000'
+
+  backend:
+    container_name: oliverrr-backend
+    build: ./packages/backend
+    env_file:
+      - ./packages/backend/.env
+    ports:
+      - '1337:1337'
+    volumes:
+      - ./packages/backend/.database:/app/.database
+      - ./packages/backend/public/uploads:/app/public/uploads
+
+  nginx:
+    container_name: oliverrr-nginx
+    image: nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      # - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./logs:/var/log/nginx
+      # - ./ssl/your_cert.pem:/etc/ssl/certs/cert.pem:ro
+      # - ./ssl/your_key.pem:/etc/ssl/private/key.pem:ro
+    depends_on:
+      - frontend
+      - backend
