@@ -17,6 +17,9 @@ spec:
         app: oliverrr
         component: frontend
     spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
       imagePullSecrets:
         - name: dockerhub
       containers:
@@ -36,6 +39,12 @@ spec:
             limits:
               memory: 128Mi
               cpu: 500m
+            requests:
+              memory: 64Mi
+              cpu: 250m
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,6 +65,9 @@ spec:
         app: oliverrr
         component: backend
     spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
       imagePullSecrets:
         - name: dockerhub
       containers:
@@ -90,3 +102,9 @@ spec:
             limits:
               memory: 128Mi
               cpu: 500m
+            requests:
+              memory: 64Mi
+              cpu: 250m
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false

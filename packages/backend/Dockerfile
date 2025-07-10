@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 # Install dependencies for bcrypt, Python, and C++ (use python3 if you are targeting Python 3)
-RUN apk add --update \
+RUN apk add --update --no-cache \
     python3 \
     make \
     g++
@@ -19,6 +19,9 @@ COPY src ./src
 COPY tsconfig.json ./
 
 RUN npm run build
+
+RUN chown -R 1001:1001 /backend
+USER 1001:1001
 
 EXPOSE 4000
 
