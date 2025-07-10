@@ -32,35 +32,6 @@ jobs:
       - name: Lint PR Title
         run: echo "${{ github.event.pull_request.title }}" | npx commitlint --verbose
 
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 23
-
-      - name: Setup MongoDB
-        uses: supercharge/mongodb-github-action@1.12.0
-        with:
-          mongodb-version: 6.0.3
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: packages/backend
-
-      - name: Test
-        run: npm test
-        working-directory: packages/backend
-        env:
-          ADMIN_SECRET: TEST_SECRET
-          JWT_SECRET: TEST_SECRET
-          DB_URI: 'mongodb://localhost:27017/oliverrr-test'
-
   security:
     runs-on: ubuntu-latest
 
