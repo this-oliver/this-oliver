@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Note } from "~/types";
-import { RothkoCard } from "rothko-js";
+import { computed, onMounted, ref } from "vue";
 import { useNotificationStore } from "~/stores/app";
 import { useNoteStore } from "~/stores/note-store";
 
@@ -18,7 +18,14 @@ const errorReasons: string[] = [
   "The note may have been moved"
 ];
 
+const isBrowser = ref(false);
+const RothkoCard = ref<any>(null);
+
 onMounted(async () => {
+  isBrowser.value = typeof window !== "undefined";
+  if (isBrowser.value) {
+    RothkoCard.value = (await import("rothko-js")).RothkoCard;
+  }
   try {
     note.value = await noteStore.getNote(router.currentRoute.value.params.slug as string);
 
@@ -95,13 +102,14 @@ onMounted(async () => {
           Back
         </base-btn>
 
-        <!-- the rothko card breaks server side -->
-        <client-only>
-          <RothkoCard
+        <!-- Only show RothkoCard in browser -->
+        <template v-if="isBrowser && RothkoCard">
+          <component
+            :is="RothkoCard"
             id="note-options"
             :source="note?.title || undefined"
             class="brutalist-outline" />
-        </client-only>
+        </template>
 
         <div v-if="note">
           <p>{{ noteDate }}</p>
