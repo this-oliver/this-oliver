@@ -9,44 +9,28 @@ const redirect = ref<string>(route.query.redirect as string || "/");
 </script>
 
 <template>
-  <base-page
-    class="text-center"
-    :title="title">
-    <v-row
-      justify="center"
-      no-gutters>
-      <v-col
-        cols="11"
-        md="6">
-        <base-card color="transparent">
-          <base-image
-            src="https://media4.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif"
-            lazy
-            alt="A dog in a burning room saying 'this is fine'"
-            width="100%"
-            height="auto" />
+  <base-page :title="title">
+    <div class="flex flex-col gap-4 items-center justify-center">
+      <div class="bg-red-400 flex flex-col items-center justify-center p-4">
+        <img
+          src="https://media4.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif"
+          alt="A sad dog with a sad face"
+          width="100%"
+          height="auto">
 
-          <h2 class="mt-2">
-            <span v-if="message">{{ message }}</span>
-            <span v-else>Can't find a page that matches the <code class="underline">{{ route.path }}</code> path</span>
-          </h2>
-        </base-card>
-      </v-col>
+        <div class="mt-2">
+          <p v-if="message">
+            {{ message }}
+          </p>
+          <p v-else>
+            Can't find a page that matches the <code class="underline">{{ route.path }}</code> path
+          </p>
+        </div>
+      </div>
 
-      <v-divider class="border-opacity-0" />
-
-      <v-col
-        cols="8"
-        md="4">
-        <base-btn
-          class="brutalist-outline"
-          block
-          outlined
-          color="primary"
-          :to="redirect">
-          Go Back
-        </base-btn>
-      </v-col>
-    </v-row>
+      <base-btn :to="redirect">
+        Go Back
+      </base-btn>
+    </div>
   </base-page>
 </template>

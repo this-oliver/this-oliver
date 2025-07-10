@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
+    "@nuxt/icon": "^1.15.0",
     "@pinia/nuxt": "^0.4.9",
     "@tailwindcss/vite": "^4.1.11",
     "highlight.js": "^11.8.0",
@@ -22,6 +23,7 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
+    "@iconify-json/mdi": "^1.2.3",
     "@types/marked": "^4.3.0",
     "@types/node": "^18",
     "@types/sanitize-html": "^2.9.0",

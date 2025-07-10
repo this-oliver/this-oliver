@@ -1,22 +1,10 @@
 @import "tailwindcss";
 
-.underline {
-  border-bottom: 1px solid;
-}
-
-.plain {
-  text-decoration: none;
-  color: inherit;
+@theme {
+  --color-primary: #16942b;
+  --color-olive-green: #133317;
 }
 
 .brutalist-outline {
-  border-top: 0.5px solid !important;
-  border-left: 0.5px solid !important;
-  border-right: 2.5px solid !important;
-  border-bottom: 2.5px solid !important;
-}
-
-::selection {
-  background: red;
-  color: #fff;
+  @apply rounded border-t-1 border-l-1 border-slate-100 border-r-3 border-b-3 border-r-slate-200 border-b-slate-200;
 }
