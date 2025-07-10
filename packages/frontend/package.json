@@ -2,18 +2,18 @@
   "name": "frontend",
   "scripts": {
     "start": "node .output/server/index.mjs",
-    "dev": "nuxt dev --dotenv .env.local",
+    "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "bump": "cd .. && npm run bump"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@pinia/nuxt": "^0.4.9",
     "highlight.js": "^11.8.0",
     "marked": "^5.1.2",
+    "nuxt": "3.17.6",
     "pinia": "^2.1.1",
     "rothko-js": "^0.5.8",
     "sanitize-html": "^2.12.1",
@@ -25,7 +25,6 @@
     "@types/marked": "^4.3.0",
     "@types/node": "^18",
     "@types/sanitize-html": "^2.9.0",
-    "nuxt": "^3.7.3",
     "typescript": "^5.0.4"
   }
 }
