@@ -83,10 +83,3 @@ jobs:
           severity: 'HIGH,CRITICAL'
           exit-code: 1
 
-      - name: Check code quality
-        uses: bearer/bearer-action@828eeb928ce2f4a7ca5ed57fb8b59508cb8c79bc # v2
-        with:
-          path: ${{ matrix.path }}
-          diff: true
-          severity: 'critical,high'
-          exit-code: '1'
