@@ -1,5 +1,5 @@
 #!/bin/bash
-npx run commitlint --config .commitlintrc --from=HEAD~1 --to=HEAD
+npx commitlint --config .commitlintrc --from=HEAD~1 --to=HEAD
 
 # Note: remove the commented out code below to block pushes directly to the main branch
  protected_branches="main|master"
