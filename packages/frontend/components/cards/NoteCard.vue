@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
 import type { Note } from "~/types";
-import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   note: {
@@ -29,7 +28,7 @@ onMounted(async () => {
     <nuxt-link :to="`/notes/${props.note.slug}`">
       <!-- Only show RothkoCard in browser -->
       <template v-if="isBrowser && RothkoCard">
-        <component :is="RothkoCard" class="h-24" :source="props.note.title" />
+        <component :is="RothkoCard" :source="props.note.title" class="flex h-[6rem]" />
       </template>
 
       <p>{{ noteDate }}</p>

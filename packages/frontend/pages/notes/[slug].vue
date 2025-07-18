@@ -87,8 +87,8 @@ onMounted(async () => {
         <component
           :is="RothkoCard"
           id="note-options"
-          :source="note.title || undefined"
-          class="h-2/12" />
+          :source="note.title"
+          class="flex h-[6rem]" />
       </template>
 
       <div class="font-bold">

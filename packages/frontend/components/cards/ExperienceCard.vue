@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
 import type { Experience } from "~/types";
-import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   experience: {
@@ -13,16 +12,16 @@ const props = defineProps({
 const experienceColor = computed<string>(() => {
   switch (props.experience.type) {
     case "education":
-      return "education";
+      return "red";
 
     case "job":
-      return "job";
+      return "yellow";
 
     case "project":
-      return "project";
+      return "green";
 
     default:
-      return "other";
+      return "blue";
   }
 });
 
@@ -54,7 +53,7 @@ onMounted(async () => {
         :source="props.experience.title"
         :color="experienceColor"
         pattern="circle"
-        class="h-24" />
+        class="flex h-[6rem]" />
     </template>
 
     <p>
