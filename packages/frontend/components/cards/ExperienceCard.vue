@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
 import type { Experience } from "~/types";
-import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   experience: {
@@ -13,16 +12,16 @@ const props = defineProps({
 const experienceColor = computed<string>(() => {
   switch (props.experience.type) {
     case "education":
-      return "education";
+      return "red";
 
     case "job":
-      return "job";
+      return "yellow";
 
     case "project":
-      return "project";
+      return "green";
 
     default:
-      return "other";
+      return "blue";
   }
 });
 
@@ -46,33 +45,36 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-card
-    id="experience-card"
-    class="brutalist-outline pa-2 pa-md-1"
-    :outlined="true">
+  <base-card>
     <!-- Only show RothkoCard in browser -->
     <template v-if="isBrowser && RothkoCard">
       <component
         :is="RothkoCard"
         :source="props.experience.title"
         :color="experienceColor"
-        pattern="circle" />
+        pattern="circle"
+        class="flex h-[6rem]" />
     </template>
 
-    <p>{{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}</p>
+    <p>
+      {{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}
+    </p>
+
     <h4 v-if="!isEmpty(props.experience.org)">
       {{ props.experience.org }}
     </h4>
-    <h2>{{ props.experience.title }}</h2>
+
+    <h3 class="font-bold text-xl">
+      {{ props.experience.title }}
+    </h3>
+
     <markdown-card :markdown="props.experience.description" />
 
     <span v-if="props.experience.link">
       <a
         :href="props.experience.link"
         target="_blank">
-        <v-icon
-          icon="mdi-link-variant"
-          size="small" />
+        <icon name="mdi-link-variant" />
         {{ props.experience.link }}
       </a>
     </span>
@@ -81,18 +83,9 @@ onMounted(async () => {
       <a
         :href="props.experience.image"
         target="_blank">
-        <v-icon
-          icon="mdi-image-frame"
-          size="small" />
+        <icon name="mdi-image-frame" />
         Preview
       </a>
     </span>
   </base-card>
 </template>
-
-<style>
-h1, h2, h3, h4 {
-  margin: 0;
-  padding: 0.1rem 0;
-}
-</style>

@@ -18,14 +18,13 @@ const { data } = await useAsyncData("welcome-banner", () => {
 
 <template>
   <base-page>
-    <v-row justify="center">
-      <v-col md="8">
-        <markdown-card
-          id="welcome-banner"
-          :markdown="data?.about ?? DEFAULT_DESCRIPTION"
-          disable-anchors />
-      </v-col>
-    </v-row>
+    <div class="flex items-center justify-center">
+      <markdown-card
+        id="welcome-banner"
+        :markdown="data?.about ?? DEFAULT_DESCRIPTION"
+        disable-anchors
+        class="md:w-8/12" />
+    </div>
   </base-page>
 </template>
 

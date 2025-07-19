@@ -65,21 +65,19 @@ const getStyle = computed<string>(() => {
 </script>
 
 <template>
-  <v-img
-    v-if="lazy"
-    :src="src"
-    lazy-src="/images/this-is-fine.jpg"
-    :alt="alt"
-    :height="height"
-    :width="width"
-    :max-height="maxHeight"
-    :max-width="maxWidth"
-    :aspect-ratio="aspectRatio"
-    :style="getStyle" />
   <img
-    v-else
+    v-if="!lazy"
     :src="src"
+    :alt="alt"
     :width="width"
     :height="height"
     :style="getStyle">
+  <img
+    v-else
+    :src="src"
+    :alt="alt"
+    :width="width"
+    :height="height"
+    :style="getStyle"
+    loading="lazy">
 </template>

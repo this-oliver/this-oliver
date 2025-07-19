@@ -127,14 +127,12 @@ onMounted(async () => {
 
 <template>
   <base-page title="Experiences">
-    <v-row justify="center">
-      <v-col lg="7">
-        <base-list
-          label="experiences"
-          :options="options"
-          :loading="isLoading"
-          :components="components" />
-      </v-col>
-    </v-row>
+    <div class="w-full flex flex-col">
+      <base-list
+        label="experiences"
+        :options="options"
+        :loading="isLoading"
+        :components="components" />
+    </div>
   </base-page>
 </template>

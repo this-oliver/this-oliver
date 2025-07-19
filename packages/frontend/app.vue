@@ -11,7 +11,14 @@ useSeoMeta({
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div class="flex flex-col items-center p-4 bg-slate-100 dark:bg-olive-green dark:text-slate-200">
+    <app-nav class="w-full md:w-10/12" />
+    <app-sidebar />
+
+    <main class="mt-4 flex flex-col min-h-screen w-full md:w-10/12">
+      <NuxtPage />
+    </main>
+
+    <app-footer class="w-full md:w-10/12" />
+  </div>
 </template>

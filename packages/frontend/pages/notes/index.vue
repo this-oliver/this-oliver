@@ -57,7 +57,11 @@ const getNotes = computed<Note[]>(() => {
   return filteredNotes;
 });
 
-const getTags = computed<{ name: string, filtered: boolean }[]>(() => {
+interface Tag {
+  name: string
+  filtered: boolean
+};
+const getTags = computed<Tag[]>(() => {
   return noteStore.tags.flat()
     .map((tag) => {
       return {
@@ -77,16 +81,20 @@ const getTags = computed<{ name: string, filtered: boolean }[]>(() => {
 });
 
 const options = computed<ActionItem[]>(() => {
-  return [
-    {
-      label: "Filter",
-      color: "primary",
-      icon: "mdi-filter",
-      action: () => {
-        showFilter.value = !showFilter.value;
+  const hasSomethingToFilter = getTags.value.length > 0;
+
+  return hasSomethingToFilter
+    ? [
+      {
+        label: "Filter",
+        color: "primary",
+        icon: "mdi-filter",
+        action: () => {
+          showFilter.value = !showFilter.value;
+        }
       }
-    }
-  ];
+    ]
+    : [];
 });
 
 const components = computed(() => {
@@ -98,6 +106,18 @@ const components = computed(() => {
 
 function tagInFilter(tag: string): boolean {
   return noteStore.filter.tags.includes(tag);
+}
+
+function handleSelectedTagEvent(tag: Tag, event: MouseEvent): void {
+  if (!event?.target)
+    return;
+
+  const input = event.target as HTMLInputElement;
+  if (input.checked) {
+    noteStore.addTagToFilter(tag.name);
+  } else {
+    noteStore.removeTagFromFilter(tag.name);
+  }
 }
 
 // deep watch filters and update route query
@@ -137,90 +157,55 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-page title="Notes">
-    <v-row justify="center">
-      <v-col lg="7">
-        <base-list
-          v-if="!isLoading"
-          label="notes"
-          allow-search
-          :options="options"
-          :is-loading="isLoading"
-          :components="components"
-          :search="noteStore.filter.query"
-          @search="(q) => noteStore.filter.query = q" />
-      </v-col>
-    </v-row>
+  <base-page title="Notes" class="flex flex-col gap-4 md:w-6/12 md:mx-auto">
+    <div class="w-full flex flex-col">
+      <base-list
+        v-if="!isLoading"
+        label="notes"
+        allow-search
+        :options="options"
+        :is-loading="isLoading"
+        :components="components"
+        :search="noteStore.filter.query"
+        @search="(q: string) => noteStore.filter.query = q" />
+    </div>
 
-    <v-navigation-drawer
-      v-model="showFilter"
-      class="pa-2"
-      width="60%"
-      color="primary"
-      location="right"
-      :scrim="true"
-      :permanent="showFilter">
-      <template #prepend>
-        <v-row
-          justify="space-between"
-          align="center">
-          <v-col
-            class="text-center"
-            cols="auto"
-            md="12">
-            <base-btn
-              block
-              color="error"
-              @click="showFilter = false">
-              Close
-            </base-btn>
-          </v-col>
-        </v-row>
+    <base-sidebar
+      id="notes-sidebar"
+      :show="showFilter"
+      label="Filter Notes"
+      class="bg-stone-600 p-2 right-0 w-80"
+      @close="showFilter = false">
+      <div class="flex flex-col gap-4">
+        <div v-if="getTags.length > 0" id="tags" class="flex flex-col gap-2">
+          <h3>
+            Tags
+          </h3>
 
-        <v-divider class="border-outline-25 my-2" />
-      </template>
+          <div v-for="tag in getTags" :key="tag.name" class="flex items-center gap-2">
+            <input
+              v-model="tag.filtered"
+              type="checkbox"
+              class="form-checkbox h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+              @change="handleSelectedTagEvent(tag, event)">
+            <v-checkbox-btn
+              v-model="tag.filtered"
+              color="success"
+              @update:model-value="(value: boolean) => value ? noteStore.addTagToFilter(tag.name) : noteStore.removeTagFromFilter(tag.name)" />
 
-      <v-list>
-        <h4>
-          Reset
-        </h4>
-        <v-list-item
-          color="error"
-          :disabled="!showReset"
+            <span>
+              {{ tag.name }}
+            </span>
+          </div>
+        </div>
+
+        <base-btn
+          v-if="showReset"
+          class="bg-red-400 mt-auto"
           @click="noteStore.resetFilter()">
-          <template #append>
-            <v-list-item-action start>
-              <base-btn
-                text
-                :color="showReset ? 'error' : ''">
-                <v-icon :icon="showReset ? 'mdi-close-box-multiple-outline' : 'mdi-shimmer'" />
-              </base-btn>
-            </v-list-item-action>
-          </template>
-
           Reset Filters
-        </v-list-item>
-
-        <v-divider class="border-outline-25 my-2" />
-
-        <h4 v-if="getTags.length > 0">
-          Tags
-        </h4>
-        <v-list-item
-          v-for="tag in getTags"
-          :key="tag.name">
-          <template #append>
-            <v-list-item-action start>
-              <v-checkbox-btn
-                v-model="tag.filtered"
-                color="success"
-                @update:model-value="(value: boolean) => value ? noteStore.addTagToFilter(tag.name) : noteStore.removeTagFromFilter(tag.name)" />
-            </v-list-item-action>
-          </template>
-
-          {{ tag.name }}
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+        </base-btn>
+      </div>
+    </base-sidebar>
   </base-page>
 </template>

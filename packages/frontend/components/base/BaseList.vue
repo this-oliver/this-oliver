@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ActionItem } from "~/types";
-import BaseImage from "~/components/base/BaseImage.vue";
 
 const props = defineProps({
   label: {
@@ -48,102 +47,61 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-row>
-    <v-col
-      v-if="props.options"
-      md="auto">
+  <div class="flex flex-col items-center w-full">
+    <div id="search" class="w-full flex gap-2 items-center justify-start mb-4">
+      <div v-if="allowSearch && showSearchField" class="flex items-center gap-2 p-2 brutalist-outline">
+        <input
+          v-model="search"
+          placeholder="Search...">
+        <button class="cursor-pointer" @click="search = ''; showSearchField = false;">
+          <icon name="mdi-close" class="text-lg" />
+        </button>
+      </div>
+
       <base-btn
-        v-if="allowSearch && !showSearchField"
-        class="mx-1 mt-2 mt-md-0"
-        outlined
+        v-else-if="allowSearch"
+        class="flex items-center gap-2"
         @click="showSearchField = true">
-        <v-icon
-          icon="mdi-magnify"
-          size="small"
-          class="mr-1" />
+        <icon name="mdi-magnify" class="h-4 w-4 mr-1" />
         Search
       </base-btn>
+
       <base-btn
         v-for="option in props.options"
         :key="option.label"
-        class="mx-1 mt-2 mt-md-0"
-        :outlined="option.outlined"
-        :text="option.text"
-        :color="option.color"
         :to="option.to"
+        class="flex items-center gap-2"
         @click="option.action">
-        <v-icon
-          v-if="option.icon"
-          :icon="option.icon"
-          size="small"
-          class="mr-1" />
-
+        <icon v-if="option.icon" :name="option.icon" class="h-4 w-4 mr-1" />
         {{ option.label }}
       </base-btn>
-    </v-col>
+    </div>
 
-    <v-col
-      v-if="props.options && showSearchField"
-      class="mt-2"
-      cols="12">
-      <base-input-text
-        v-model="search"
-        class="mx-1"
-        placeholder="Search...">
-        <template #append-inner>
-          <base-btn
-            small
-            plain
-            @click="search = ''; showSearchField = false;">
-            <v-icon
-              icon="mdi-close"
-              size="small" />
-          </base-btn>
-        </template>
-      </base-input-text>
-    </v-col>
-  </v-row>
+    <div id="items" class="w-full flex flex-col items-center">
+      <div v-if="props.loading" class="w-full">
+        <h2 class="mt-2 text-lg font-semibold">
+          Fetching <span class="label text-blue-600 underline">{{ props.label }}</span>...
+        </h2>
+        <div class="mt-2 w-full h-32 bg-gray-200 animate-pulse rounded" />
+      </div>
 
-  <v-row justify="center">
-    <v-col
-      v-if="props.loading"
-      cols="12">
-      <h2 class="mt-2">
-        Fetching <span class="label text-primary">{{ props.label }}</span>...
-      </h2>
+      <div v-else-if="props.components.length === 0" class="w-full">
+        <h2 class="mt-2 text-lg font-semibold">
+          No <span class="label text-blue-600 underline">{{ props.label }}</span> found
+        </h2>
+        <img
+          src="/images/this-is-fine.jpg"
+          alt="Meme of a dog in a burning room saying 'This is fine'"
+          width="100%"
+          class="mt-2">
+      </div>
 
-      <v-skeleton-loader
-        class="mt-2"
-        type="card"
-        width="100%" />
-    </v-col>
-
-    <v-col
-      v-else-if="props.components.length === 0"
-      cols="12">
-      <h2 class="mt-2">
-        No <span class="label text-primary">{{ props.label }}</span> found
-      </h2>
-
-      <BaseImage
-        src="/images/this-is-fine.jpg"
-        alt="Meme of a dog in a burning room saying 'This is fine'"
-        width="100%"
-        class="mt-2" />
-    </v-col>
-
-    <v-col
-      v-for="(component, index) in props.components"
-      :key="index"
-      cols="12">
-      <component :is="component" />
-    </v-col>
-  </v-row>
+      <div
+        v-for="(component, index) in props.components"
+        :key="index"
+        class="w-full mb-2">
+        <component :is="component" />
+      </div>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-.label {
-  font-weight: bold;
-  text-decoration: underline;
-}
-</style>

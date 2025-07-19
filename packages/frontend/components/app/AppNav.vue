@@ -1,51 +1,33 @@
 <script setup lang="ts">
-import { useDisplay } from "vuetify";
 import { useGeneralStore } from "~/stores/app";
 
+const route = useRoute();
 const generalStore = useGeneralStore();
-const { smAndDown } = useDisplay();
 
-const routes = computed(() => !smAndDown.value ? generalStore.getNavItems : []);
+function isCurrentRoute(to: string): boolean {
+  return route.fullPath.includes(to);
+}
 </script>
 
 <template>
-  <v-app-bar
-    id="app-nav"
-    app
-    elevation="0">
-    <v-app-bar-nav-icon
-      v-if="smAndDown"
-      @click="generalStore.toggleSidebar()" />
+  <div class="flex gap-4 justify-between">
+    <icon name="mdi:menu" class="md:hidden" @click="generalStore.toggleSidebar()" />
+    <nuxt-link to="/" class="text-3xl font-bold">
+      Oliverrr
+    </nuxt-link>
 
-    <router-link
-      class="plain"
-      to="/">
-      <h1>Oliverrr</h1>
-    </router-link>
-
-    <v-spacer v-if="!smAndDown" />
-
-    <base-btn
-      v-for="option in routes"
-      :key="option.label"
-      class="mx-2 plain"
-      text
-      :color="option.color"
-      :to="option.to"
-      @click="option.action">
-      {{ option.label }}
-    </base-btn>
-
-    <app-theme
-      v-if="!smAndDown"
-      class="mx-1" />
-  </v-app-bar>
+    <div class="hidden md:flex gap-4 text-lg">
+      <div
+        v-for="option in generalStore.getNavItems"
+        :key="option.label"
+        :class="`${isCurrentRoute(option.to) ? 'underline' : ''} text-xl cursor-pointer hover:underline`">
+        <nuxt-link v-if="option.to" :to="option.to">
+          {{ option.label }}
+        </nuxt-link>
+        <span v-else @click="option.action">
+          {{ option.label }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-@media (min-width: 600px) {
-  #app-nav {
-    padding: 0 10rem;
-  }
-}
-</style>
