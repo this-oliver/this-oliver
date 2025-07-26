@@ -11,25 +11,16 @@ const props = defineProps({
 
 const { formatDate } = useTime();
 const noteDate = computed<string>(() => formatDate(props.note.createdAt));
-
-const isBrowser = ref(false);
-const RothkoCard = ref<any>(null);
-
-onMounted(async () => {
-  isBrowser.value = typeof window !== "undefined";
-  if (isBrowser.value) {
-    RothkoCard.value = (await import("rothko-js")).RothkoCard;
-  }
-});
 </script>
 
 <template>
   <base-card>
     <nuxt-link :to="`/notes/${props.note.slug}`">
-      <!-- Only show RothkoCard in browser -->
-      <template v-if="isBrowser && RothkoCard">
-        <component :is="RothkoCard" :source="props.note.title" class="flex h-[6rem]" />
-      </template>
+      <client-only>
+        <RothkoCard
+          :source="props.note.title"
+          class="flex h-[6rem]" />
+      </client-only>
 
       <p>{{ noteDate }}</p>
 

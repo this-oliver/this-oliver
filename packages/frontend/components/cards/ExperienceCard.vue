@@ -9,19 +9,19 @@ const props = defineProps({
   }
 });
 
-const experienceColor = computed<string>(() => {
+const experienceColor = computed<string | undefined>(() => {
   switch (props.experience.type) {
     case "education":
-      return "red";
-
-    case "job":
-      return "yellow";
-
-    case "project":
       return "green";
 
-    default:
+    case "job":
       return "blue";
+
+    case "project":
+      return "yellow";
+
+    default:
+      return undefined;
   }
 });
 
@@ -32,29 +32,17 @@ function isEmpty(text: any): boolean {
 
   return text === null || text === undefined;
 }
-
-const isBrowser = ref(false);
-const RothkoCard = ref<any>(null);
-
-onMounted(async () => {
-  isBrowser.value = typeof window !== "undefined";
-  if (isBrowser.value) {
-    RothkoCard.value = (await import("rothko-js")).RothkoCard;
-  }
-});
 </script>
 
 <template>
   <base-card>
-    <!-- Only show RothkoCard in browser -->
-    <template v-if="isBrowser && RothkoCard">
-      <component
-        :is="RothkoCard"
+    <client-only>
+      <RothkoCard
         :source="props.experience.title"
         :color="experienceColor"
         pattern="circle"
         class="flex h-[6rem]" />
-    </template>
+    </client-only>
 
     <p>
       {{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}
