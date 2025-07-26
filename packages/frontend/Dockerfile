@@ -9,7 +9,6 @@ RUN npm install
 COPY assets/ ./assets/
 COPY components/ ./components/
 COPY composables/ ./composables/
-COPY layouts/ ./layouts/
 COPY pages/ ./pages/
 COPY plugins/ ./plugins/
 COPY public/ ./public/
