@@ -132,7 +132,7 @@ onMounted(async () => {
       </div>
 
       <div v-if="status === 'error'" class="flex justify-center items-center h-64">
-        An error occurred while fetching experiences. Please try again later.
+        <error-card message="An error occurred while fetching experiences. Please try again later." />
       </div>
 
       <div v-else-if="status === 'pending'" class="flex justify-center items-center h-64">
@@ -140,7 +140,7 @@ onMounted(async () => {
       </div>
 
       <div v-else-if="getExperiences.length === 0" class="flex justify-center items-center h-64">
-        No experiences found. Please check back later.
+        <error-card message="No experiences found. Please check back later." />
       </div>
 
       <div v-else-if="getExperiences.length > 0" id="list" class="flex flex-col gap-4">
