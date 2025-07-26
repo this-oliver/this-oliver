@@ -14,6 +14,26 @@ export const useNoteStore = defineStore("note", () => {
     totalPages: 0
   });
 
+  const getNotes = computed<Note[]>(() => notes.value);
+
+  const getFilteredNotes = computed<Note[]>(() => {
+    let filteredNotes = notes.value;
+
+    if (filter.query) {
+      filteredNotes = filteredNotes.filter(note =>
+        note.title.toLowerCase().includes(filter.query.toLowerCase())
+        || note.content.toLowerCase().includes(filter.query.toLowerCase())
+      );
+    }
+
+    if (filter.tags.length > 0) {
+      filteredNotes = filteredNotes.filter(note =>
+        filter.tags.every(tag => note.tags.includes(tag))
+      );
+    }
+    return filteredNotes;
+  });
+
   async function getNote(slug: string): Promise<Note> {
     return await $fetch(`/api/notes/${slug}`);
   }
@@ -60,6 +80,8 @@ export const useNoteStore = defineStore("note", () => {
     tags,
     pagination,
     filter,
+    getNotes,
+    getFilteredNotes,
     getNote,
     indexNotes,
     indexTags,
