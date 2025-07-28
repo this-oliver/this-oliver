@@ -5,6 +5,8 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-10",
   devtools: { enabled: true },
 
+  srcDir: "src",
+
   components: [
     { path: "~/components/app" },
     { path: "~/components/base" },

@@ -1,14 +1,4 @@
 services:
-  frontend:
-    container_name: oliverrr-frontend
-    build: ./packages/frontend
-    env_file:
-      - ./packages/frontend/.env
-    environment:
-      - NUXT_CMS_API_URL=http://backend:1337
-    ports:
-      - '3000:3000'
-
   backend:
     image: ghcr.io/this-oliver/headless-cms:latest
     env_file:
@@ -27,10 +17,5 @@ services:
       - '80:80'
     volumes:
       - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
-      # - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      # - ./logs:/var/log/nginx
-      # - ./ssl/your_cert.pem:/etc/ssl/certs/cert.pem:ro
-      # - ./ssl/your_key.pem:/etc/ssl/private/key.pem:ro
     depends_on:
-      - frontend
       - backend

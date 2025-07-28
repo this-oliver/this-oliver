@@ -1,6 +1,6 @@
 export function useStorage() {
   function get(key: string) {
-    if (process.client === false) {
+    if (import.meta.client === false) {
       return;
     }
 
@@ -14,7 +14,7 @@ export function useStorage() {
   }
 
   function set(key: string, value: any) {
-    if (process.client === false) {
+    if (import.meta.client === false) {
       return;
     }
 
@@ -22,7 +22,7 @@ export function useStorage() {
   }
 
   function remove(key: string) {
-    if (process.client === false) {
+    if (import.meta.client === false) {
       return;
     }
 
