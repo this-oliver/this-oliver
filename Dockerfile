@@ -6,17 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY assets/ ./assets/
-COPY components/ ./components/
-COPY composables/ ./composables/
-COPY layouts/ ./layouts/
-COPY pages/ ./pages/
-COPY plugins/ ./plugins/
-COPY public/ ./public/
-COPY server/ ./server/
-COPY stores/ ./stores/
-COPY types/ ./types/
-COPY app.vue ./
+COPY src/ ./src/
 COPY nuxt.config.ts ./
 COPY tsconfig.json ./
 

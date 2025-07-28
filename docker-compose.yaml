@@ -1,36 +1,33 @@
 services:
   frontend:
-    container_name: oliverrr-frontend
-    build: ./packages/frontend
+    build: .
     env_file:
-      - ./packages/frontend/.env
+      - ./.env
     environment:
       - NUXT_CMS_API_URL=http://backend:1337
-    ports:
-      - '3000:3000'
+    expose:
+      - '3000'
 
   backend:
     image: ghcr.io/this-oliver/headless-cms:latest
     env_file:
-      - content/.env
-    ports:
-      - '1337:1337'
+      - ./content/.env
     volumes:
-      - content/.database:/app/.database
-      - content/public/uploads:/app/public/uploads
-      - content/src:/app/src
+      - ./content/.database:/app/.database
+      - ./content/public/uploads:/app/public/uploads
+      - ./content/src:/app/src
+    expose:
+      - '1337'
 
   nginx:
-    container_name: oliverrr-nginx
     image: nginx:latest
     ports:
       - '80:80'
     volumes:
-      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
-      # - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      # - ./logs:/var/log/nginx
-      # - ./ssl/your_cert.pem:/etc/ssl/certs/cert.pem:ro
-      # - ./ssl/your_key.pem:/etc/ssl/private/key.pem:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./logs:/var/log/nginx
+      - ./ssl/your_cert.pem:/etc/ssl/certs/cert.pem:ro
+      - ./ssl/your_key.pem:/etc/ssl/private/key.pem:ro
     depends_on:
       - frontend
       - backend

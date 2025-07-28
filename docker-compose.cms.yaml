@@ -2,13 +2,13 @@ services:
   backend:
     image: ghcr.io/this-oliver/headless-cms:latest
     env_file:
-      - content/.env
-    ports:
-      - '1337:1337'
+      - ./content/.env
     volumes:
-      - content/.database:/app/.database
-      - content/public/uploads:/app/public/uploads
-      - content/src:/app/src
+      - ./content/.database:/app/.database
+      - ./content/public/uploads:/app/public/uploads
+      - ./content/src:/app/src
+    expose:
+      - '1337'
 
   nginx:
     container_name: oliverrr-nginx
