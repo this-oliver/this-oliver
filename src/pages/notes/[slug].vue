@@ -35,16 +35,6 @@ const { data, status } = useAsyncData("note", async () => {
 
 const note = computed<Note | null>(() => data.value || null);
 const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : "");
-
-const isBrowser = ref(false);
-const RothkoCard = ref<any>(null);
-
-onMounted(async () => {
-  isBrowser.value = typeof window !== "undefined";
-  if (isBrowser.value) {
-    RothkoCard.value = (await import("rothko-js")).RothkoCard;
-  }
-});
 </script>
 
 <template>
@@ -82,14 +72,11 @@ onMounted(async () => {
         Back
       </base-btn>
 
-      <!-- Only show RothkoCard in browser -->
-      <template v-if="isBrowser && RothkoCard">
-        <component
-          :is="RothkoCard"
-          id="note-options"
+      <client-only>
+        <RothkoCard
           :source="note.title"
           class="flex h-[6rem]" />
-      </template>
+      </client-only>
 
       <div class="font-bold">
         <span class="text-lg">{{ noteDate }}</span>
