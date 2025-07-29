@@ -43,18 +43,17 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
       <span class="loader" />
     </div>
 
-    <base-card v-if="!note" class="bg-red-400 flex flex-col items-center">
-      <h2 class="text-xl font-bold">
-        This is awkward...
-      </h2>
+    <error-card v-else-if="!note">
+      <div class="text-start">
+        <h2 class="text-xl font-bold">
+          This is awkward...
+        </h2>
 
-      <img src="/images/this-is-fine.jpg" alt="Meme of a dog in a burning room saying 'This is fine'" width="50%">
-
-      <div id="note-content">
         <p>
-          We couldn't find the note <span class="note-title">"{{ router.currentRoute.value.params.slug }}"</span> and there are a few possible reasons for this:
+          We couldn't find the note <span class="underline">"{{ router.currentRoute.value.params.slug }}"</span> and there are a few possible reasons for this:
         </p>
-        <ul class="error-list">
+
+        <ul class="list-disc">
           <li
             v-for="reason in errorReasons"
             :key="reason">
@@ -62,7 +61,7 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
           </li>
         </ul>
       </div>
-    </base-card>
+    </error-card>
 
     <div v-else class="w-full flex flex-col gap-2">
       <base-btn
