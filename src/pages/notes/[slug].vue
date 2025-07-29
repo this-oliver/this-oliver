@@ -38,7 +38,7 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
 </script>
 
 <template>
-  <base-page>
+  <base-page class="md:w-6/12 md:mx-auto">
     <div v-if="status === 'pending'">
       <span class="loader" />
     </div>
@@ -65,7 +65,7 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
 
     <div v-else class="w-full flex flex-col gap-2">
       <base-btn
-        class="w-2/12"
+        class="w-2/12 flex items-center gap-2"
         @click="router.push('/notes')">
         <icon name="mdi-arrow-left" class="text-2xl" />
         Back
