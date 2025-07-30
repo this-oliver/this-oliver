@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #16942b;
-  --color-olive-green: #133317;
+  --color-pinkish: #f3b1fa;
+  --color-greenish: #133317;
+  --color-grayish: #f5f5f5;
 }
 
 .brutalist-outline {
