@@ -11,7 +11,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="flex flex-col items-center p-4 bg-slate-100 dark:bg-olive-green dark:text-slate-200">
+  <div class="flex flex-col items-center p-4 bg-grayish dark:bg-greenish dark:text-slate-200">
     <app-nav class="w-full md:w-10/12" />
     <app-sidebar />
 
