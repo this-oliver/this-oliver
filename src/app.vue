@@ -15,7 +15,7 @@ useSeoMeta({
     <app-nav class="w-full md:w-10/12" />
     <app-sidebar />
 
-    <main class="mt-4 flex flex-col min-h-screen w-full md:w-10/12">
+    <main class="mt-4 flex flex-col min-h-screen md:w-10/12">
       <NuxtPage />
     </main>
 

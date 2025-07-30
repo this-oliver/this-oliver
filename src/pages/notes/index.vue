@@ -83,7 +83,7 @@ onMounted(async () => {
 
 <template>
   <base-page title="Notes">
-    <div class="md:w-6/12 md:mx-auto flex flex-col gap-2">
+    <div class="w-10/12 md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="h-10 mb-2 flex gap-2">
         <div v-if="showSearchField" class="p-1 flex gap-2 items-center brutalist-outline">
           <input v-model="noteStore.filter.query" placeholder="Search..." class="w-full h-full">

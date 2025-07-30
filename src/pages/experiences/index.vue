@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Experience } from "~/types";
-import ExperienceCard from "~/components/cards/ExperienceCard.vue";
 import { useRouterQuery } from "~/composables/useRouterQuery";
 import { useExperienceStore } from "~/stores/experience-store";
 
@@ -120,7 +119,7 @@ onMounted(async () => {
 
 <template>
   <base-page title="Experiences">
-    <div class="md:w-6/12 md:mx-auto flex flex-col gap-2">
+    <div class="w-10/12 md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="flex gap-2">
         <base-btn
           v-for="filter in getFilters"
