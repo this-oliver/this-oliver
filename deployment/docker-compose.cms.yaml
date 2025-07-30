@@ -2,11 +2,11 @@ services:
   backend:
     image: ghcr.io/this-oliver/headless-cms:latest
     env_file:
-      - ./content/.env
+      - ../content/.env
     volumes:
-      - ./content/.database:/app/.database
-      - ./content/public/uploads:/app/public/uploads
-      - ./content/src:/app/src
+      - ../content/.database:/app/.database
+      - ../content/public/uploads:/app/public/uploads
+      - ../content/src:/app/src
     expose:
       - '1337'
 
