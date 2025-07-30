@@ -15,18 +15,27 @@ const noteDate = computed<string>(() => formatDate(props.note.createdAt));
 
 <template>
   <base-card>
-    <nuxt-link :to="`/notes/${props.note.slug}`">
+    <nuxt-link :to="`/notes/${props.note.slug}`" class="flex flex-col gap-2">
       <client-only>
         <RothkoCard
           :source="props.note.title"
           class="flex h-[6rem]" />
       </client-only>
 
-      <p>{{ noteDate }}</p>
+      <div class="flex gap-1 items-center">
+        <span class="mr-auto">{{ noteDate }}</span>
 
-      <h3 class="font-bold text-xl">
+        <span
+          v-for="tag in props.note.tags"
+          :key="tag"
+          class="px-2 py-1 rounded-full text-xs flex items-center bg-gray-200 text-gray-800">
+          {{ tag }}
+        </span>
+      </div>
+
+      <div class="font-bold text-xl">
         {{ props.note.title }}
-      </h3>
+      </div>
     </nuxt-link>
   </base-card>
 </template>

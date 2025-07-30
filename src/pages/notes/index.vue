@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NoteCard from "~/components/cards/NoteCard.vue";
 import { useRouterQuery } from "~/composables/useRouterQuery";
 import { useNoteStore } from "~/stores/note-store";
 
@@ -20,11 +19,31 @@ useSeoMeta({
 const noteStore = useNoteStore();
 const query = useRouterQuery();
 
-const { status } = await useAsyncData("notes", () => {
-  return noteStore.indexNotes();
+const { status, error } = useAsyncData("notes", async () => {
+  const [notes, tags] = await Promise.all([
+    noteStore.indexNotes(),
+    noteStore.indexTags()
+  ]);
+
+  return { notes, tags };
 });
 
 const showSearchField = ref<boolean>(false);
+const showFilterSidebar = ref<boolean>(false);
+
+const getTagOptions = computed<{ label: string, active: boolean, action: () => void }[]>(() => {
+  return noteStore.tags.map(tag => ({
+    label: tag,
+    active: noteStore.filter.tags.includes(tag),
+    action: () => {
+      if (noteStore.filter.tags.includes(tag)) {
+        noteStore.removeTagFromFilter(tag);
+      } else {
+        noteStore.addTagToFilter(tag);
+      }
+    }
+  }));
+});
 
 // deep watch filters and update route query
 watch(
@@ -38,9 +57,26 @@ watch(
   }
 );
 
+watch(
+  () => noteStore.filter.tags,
+  async (newTags) => {
+    if (newTags.length > 0) {
+      await query.add("tags", newTags.join(","));
+    } else {
+      await query.remove("tags");
+    }
+  },
+  { deep: true }
+);
+
 onMounted(async () => {
   if (query.has("q")) {
     noteStore.filter.query = query.get("q") as string;
+  }
+
+  if (query.has("tags")) {
+    const tags = query.get("tags") as string;
+    noteStore.filter.tags = tags.split(",").filter(tag => tag.length > 0);
   }
 });
 </script>
@@ -48,7 +84,7 @@ onMounted(async () => {
 <template>
   <base-page title="Notes">
     <div class="md:w-6/12 md:mx-auto flex flex-col gap-2">
-      <div id="filter" class="h-10 mb-2 flex md:grid md:grid-cols-2 gap-2">
+      <div id="filter" class="h-10 mb-2 flex gap-2">
         <div v-if="showSearchField" class="p-1 flex gap-2 items-center brutalist-outline">
           <input v-model="noteStore.filter.query" placeholder="Search..." class="w-full h-full">
           <button class="p-2 flex items-center cursor-pointer" @click="noteStore.filter.query = ''; showSearchField = false;">
@@ -58,10 +94,17 @@ onMounted(async () => {
 
         <base-btn
           v-else
-          class="w-5/12 flex items-center gap-2"
+          class="flex items-center gap-2"
           @click="showSearchField = true">
           <icon name="mdi-magnify" class="h-4 w-4 mr-1" />
           Search
+        </base-btn>
+
+        <base-btn
+          class="flex items-center gap-2"
+          @click="showFilterSidebar = true">
+          <icon name="mdi-filter" class="h-4 w-4 mr-1" />
+          Filter
         </base-btn>
       </div>
 
@@ -69,8 +112,8 @@ onMounted(async () => {
         Fetching notes...
       </div>
 
-      <div v-else-if="status === 'error'">
-        Failed to fetch notes.
+      <div v-else-if="error">
+        Failed to fetch notes: {{ error.message }}
       </div>
 
       <div v-else-if="noteStore.getFilteredNotes.length === 0">
@@ -84,5 +127,32 @@ onMounted(async () => {
           :note="note" />
       </div>
     </div>
+
+    <base-sidebar
+      id="tags-sidebar"
+      label="Filter"
+      position="right"
+      class="bg-slate-200 text-slate-800 w-10/12 md:w-3/12 right-0 top-0 flex flex-col gap-4 p-2 "
+      :show="showFilterSidebar"
+      @close="showFilterSidebar = false">
+      <div class="flex flex-col gap-2">
+        <span class="text-xl mb-2">Tags</span>
+        <div v-for="tag in getTagOptions" :key="tag.label" class="flex justify-between pr-2">
+          <span>{{ tag.label }}</span>
+
+          <input
+            type="checkbox"
+            :checked="tag.active"
+            class="cursor-pointer"
+            @click="tag.action()">
+        </div>
+      </div>
+      <base-btn
+        v-if="noteStore.filter.tags.length > 0"
+        class="mt-auto flex flex-col gap-2 bg-amber-200 text-slate-800"
+        @click="noteStore.resetFilter()">
+        Reset Filters
+      </base-btn>
+    </base-sidebar>
   </base-page>
 </template>

@@ -48,7 +48,8 @@ export const useNoteStore = defineStore("note", () => {
   }
 
   async function indexTags(): Promise<string[]> {
-    throw new Error("Not implemented yet");
+    tags.value = await $fetch("/api/tags");
+    return tags.value;
   }
 
   function sortNotesByDate(notes: Note[]) {
@@ -58,11 +59,6 @@ export const useNoteStore = defineStore("note", () => {
 
       return dateA > dateB ? -1 : 1;
     });
-  }
-
-  function resetFilter(): void {
-    filter.query = "";
-    filter.tags = [];
   }
 
   function removeTagFromFilter(tag: string): void {
@@ -75,6 +71,15 @@ export const useNoteStore = defineStore("note", () => {
     }
   }
 
+  function resetTags(): void {
+    filter.tags = [];
+  }
+
+  function resetFilter(): void {
+    filter.query = "";
+    filter.tags = [];
+  }
+
   return {
     notes,
     tags,
@@ -85,8 +90,9 @@ export const useNoteStore = defineStore("note", () => {
     getNote,
     indexNotes,
     indexTags,
-    resetFilter,
     removeTagFromFilter,
-    addTagToFilter
+    addTagToFilter,
+    resetFilter,
+    resetTags
   };
 });
