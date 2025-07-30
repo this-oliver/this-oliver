@@ -17,9 +17,11 @@ const noteDate = computed<string>(() => formatDate(props.note.createdAt));
   <base-card>
     <nuxt-link :to="`/notes/${props.note.slug}`" class="flex flex-col gap-2">
       <client-only>
-        <RothkoCard
-          :source="props.note.title"
-          class="flex h-[6rem]" />
+        <div class="overflow-hidden">
+          <RothkoCard
+            :source="props.note.title"
+            class="flex h-[6rem]" />
+        </div>
       </client-only>
 
       <div class="flex gap-1 items-center">

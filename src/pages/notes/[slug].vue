@@ -65,23 +65,25 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
 
     <div v-else class="w-full flex flex-col gap-2">
       <base-btn
-        class="w-2/12 flex items-center gap-2"
+        class="w-fit md:w-2/12 flex items-center gap-2"
         @click="router.push('/notes')">
         <icon name="mdi-arrow-left" class="text-2xl" />
         Back
       </base-btn>
 
       <client-only>
-        <RothkoCard
-          :source="note.title"
-          class="flex h-[6rem]" />
+        <div class="w-full overflow-hidden">
+          <RothkoCard
+            :source="note.title"
+            class="flex h-[6rem]" />
+        </div>
       </client-only>
 
       <div class="font-bold">
         <span class="text-lg">{{ noteDate }}</span>
-        <h1 class="text-3xl">
+        <div class="text-3xl">
           {{ note.title }}
-        </h1>
+        </div>
       </div>
 
       <markdown-card :markdown="note.content" />

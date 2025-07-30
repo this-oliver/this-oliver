@@ -83,7 +83,7 @@ onMounted(async () => {
 
 <template>
   <base-page title="Notes">
-    <div class="md:w-6/12 md:mx-auto flex flex-col gap-2">
+    <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="h-10 mb-2 flex gap-2">
         <div v-if="showSearchField" class="p-1 flex gap-2 items-center brutalist-outline">
           <input v-model="noteStore.filter.query" placeholder="Search..." class="w-full h-full">
@@ -132,10 +132,10 @@ onMounted(async () => {
       id="tags-sidebar"
       label="Filter"
       position="right"
-      class="bg-slate-200 text-slate-800 w-10/12 md:w-3/12 right-0 top-0 flex flex-col gap-4 p-2 "
+      class="bg-slate-200 text-slate-800 w-11/12 md:w-3/12 left-0 md:left-auto md:right-0 top-0 flex flex-col gap-4 p-2 z-20"
       :show="showFilterSidebar"
       @close="showFilterSidebar = false">
-      <div class="flex flex-col gap-2">
+      <div class="p-2 flex flex-col gap-2">
         <span class="text-xl mb-2">Tags</span>
         <div v-for="tag in getTagOptions" :key="tag.label" class="flex justify-between pr-2">
           <span>{{ tag.label }}</span>

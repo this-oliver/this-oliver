@@ -8,17 +8,15 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 items-center justify-center p-4">
-    <div id="title">
-      <slot name="title">
-        <h1 v-if="props.title" class="text-2xl font-bold">
+  <div class="flex flex-col gap-4 md:items-center md:justify-center pb-2 px-2">
+    <slot name="title">
+      <div v-if="props.title" class="w-full md:w-auto">
+        <h1 class="text-2xl font-bold">
           {{ props.title }}
         </h1>
-      </slot>
-    </div>
+      </div>
+    </slot>
 
-    <div id="content" class="w-full flex flex-col items-center">
-      <slot />
-    </div>
+    <slot id="content" class="w-full flex flex-col items-center" />
   </div>
 </template>

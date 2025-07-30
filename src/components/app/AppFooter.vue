@@ -20,17 +20,17 @@ const hasVisited = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row md:text-center text-pinkish">
+  <div class="px-2 pb-2 flex flex-col gap-2 md:flex-row text-center text-pinkish">
     <a
       v-for="item in links"
       :key="item.link"
-      class="mx-2 underline"
+      class="underline md:mx-2"
       :href="item.link"
       target="_blank">
       {{ item.title }}
     </a>
 
-    <div class="md:ml-auto">
+    <div class="my-4 md:my-0 md:ml-auto">
       oliver
       &copy; {{ new Date().getFullYear() }}
       &nbsp;
