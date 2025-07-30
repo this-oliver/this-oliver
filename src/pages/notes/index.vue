@@ -72,6 +72,7 @@ watch(
 onMounted(async () => {
   if (query.has("q")) {
     noteStore.filter.query = query.get("q") as string;
+    showSearchField.value = true;
   }
 
   if (query.has("tags")) {
@@ -86,7 +87,10 @@ onMounted(async () => {
     <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="h-10 mb-2 flex gap-2">
         <div v-if="showSearchField" class="p-1 flex gap-2 items-center brutalist-outline">
-          <input v-model="noteStore.filter.query" placeholder="Search..." class="w-full h-full">
+          <input
+            v-model="noteStore.filter.query"
+            placeholder="Search..."
+            :class="`w-full h-full ${noteStore.filter.query.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
           <button class="p-2 flex items-center cursor-pointer" @click="noteStore.filter.query = ''; showSearchField = false;">
             <icon name="mdi-close" class="text-lg" />
           </button>
@@ -101,11 +105,23 @@ onMounted(async () => {
         </base-btn>
 
         <base-btn
-          class="flex items-center gap-2"
+          :class="`flex items-center gap-2 ${noteStore.filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''}`"
           @click="showFilterSidebar = true">
           <icon name="mdi-filter" class="h-4 w-4 mr-1" />
           Filter
         </base-btn>
+      </div>
+
+      <!-- whole new row - show any selected tags -->
+      <div v-if="noteStore.filter.tags.length > 0" class="flex flex-wrap gap-2">
+        <span
+          v-for="tag in noteStore.filter.tags"
+          :key="tag"
+          class="bg-pinkish text-slate-800 px-2 py-1 rounded-full text-sm cursor-pointer flex gap-1 items-center"
+          @click="noteStore.removeTagFromFilter(tag)">
+          <span>{{ tag }}</span>
+          <icon name="mdi-close" class="text-xs" />
+        </span>
       </div>
 
       <div v-if="status === 'pending'">
