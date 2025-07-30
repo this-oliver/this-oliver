@@ -29,10 +29,6 @@
       "type": "richtext",
       "required": true
     },
-    "publish": {
-      "type": "boolean",
-      "default": false
-    },
     "tags": {
       "type": "relation",
       "relation": "oneToMany",
