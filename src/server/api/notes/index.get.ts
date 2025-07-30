@@ -13,7 +13,7 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
 
   try {
     const res = await $fetch(
-      `${config.cmsApiUrl}/api/notes?pagination[page]=${page}&pagination[pageSize]=${limit}`,
+      `${config.cmsApiUrl}/api/notes?pagination[page]=${page}&pagination[pageSize]=${limit}&populate=tags`,
       {
         headers: {
           Authorization: `Bearer ${config.cmsApiToken}`
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
   } catch (error) {
     throw createError({
       statusCode: 404,
-      statusMessage: `Failed to fetch proprerty data: ${(error as Error).message}`
+      statusMessage: `Failed to fetch notes: ${(error as Error).message}`
     });
   }
 
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
     slug: note.slug,
     date: note.date,
     content: note.content,
-    tags: note.tags || [],
+    tags: note.tags ? note.tags.map((tag: any) => tag.label) : [],
     publish: note.publish,
     createdAt: note.date,
     updatedAt: note.updatedAt || note.date
