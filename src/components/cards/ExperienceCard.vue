@@ -37,11 +37,13 @@ function isEmpty(text: any): boolean {
 <template>
   <base-card>
     <client-only>
-      <RothkoCard
-        :source="props.experience.title"
-        :color="experienceColor"
-        pattern="circle"
-        class="flex h-[6rem]" />
+      <div class="overflow-hidden">
+        <RothkoCard
+          :source="props.experience.title"
+          :color="experienceColor"
+          pattern="circle"
+          class="flex h-[6rem]" />
+      </div>
     </client-only>
 
     <p>
