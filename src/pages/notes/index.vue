@@ -132,10 +132,10 @@ onMounted(async () => {
       id="tags-sidebar"
       label="Filter"
       position="right"
-      class="bg-slate-200 text-slate-800 w-10/12 md:w-3/12 right-0 top-0 flex flex-col gap-4 p-2 "
+      class="bg-slate-200 text-slate-800 w-11/12 md:w-3/12 left-0 md:left-auto md:right-0 top-0 flex flex-col gap-4 p-2 z-20"
       :show="showFilterSidebar"
       @close="showFilterSidebar = false">
-      <div class="flex flex-col gap-2">
+      <div class="p-2 flex flex-col gap-2">
         <span class="text-xl mb-2">Tags</span>
         <div v-for="tag in getTagOptions" :key="tag.label" class="flex justify-between pr-2">
           <span>{{ tag.label }}</span>
