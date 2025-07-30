@@ -63,7 +63,7 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
       </div>
     </error-card>
 
-    <div v-else class="w-10/12 md:w-full flex flex-col gap-2">
+    <div v-else class="w-full flex flex-col gap-2">
       <base-btn
         class="w-fit md:w-2/12 flex items-center gap-2"
         @click="router.push('/notes')">

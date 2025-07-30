@@ -118,8 +118,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-page title="Experiences">
-    <div class="w-10/12 md:w-6/12 md:mx-auto flex flex-col gap-2">
+  <base-page title="Experiences" class="w-full">
+    <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="flex gap-2">
         <base-btn
           v-for="filter in getFilters"
@@ -130,16 +130,21 @@ onMounted(async () => {
         </base-btn>
       </div>
 
-      <div v-if="status === 'error'" class="flex justify-center items-center h-64">
+      <div v-if="status === 'error'">
         <error-card message="An error occurred while fetching experiences. Please try again later." />
       </div>
 
-      <div v-else-if="status === 'pending'" class="flex justify-center items-center h-64">
+      <div v-else-if="status === 'pending'">
         Fetching experiences...
       </div>
 
-      <div v-else-if="getExperiences.length === 0" class="flex justify-center items-center h-64">
-        <error-card message="No experiences found. Please check back later." />
+      <div v-else-if="getExperiences.length === 0">
+        <span v-if="activeExperienceTypes.length > 0">
+          No experiences found for the selected filters.
+        </span>
+        <span v-else>
+          No experiences found.
+        </span>
       </div>
 
       <div v-else-if="getExperiences.length > 0" id="list" class="flex flex-col gap-4">

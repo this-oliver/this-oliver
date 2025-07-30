@@ -26,7 +26,7 @@ const options = computed<ActionItem[]>(() => generalStore.getNavItems);
       :items="options"
       @close="generalStore.toggleSidebar" />
 
-    <main class="mt-4 flex flex-col min-h-screen md:w-10/12">
+    <main class="mt-4 flex flex-col min-h-screen w-full md:w-10/12">
       <NuxtPage />
     </main>
 
