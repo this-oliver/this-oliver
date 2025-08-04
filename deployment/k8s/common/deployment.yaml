@@ -22,7 +22,7 @@ spec:
         - name: oliverrr-regcred
       containers:
         - name: backend
-          image: ghcr.io/this-oliver/this-oliver-backend:latest
+          image: ghcr.io/this-oliver/headless-cms:latest
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
@@ -75,7 +75,7 @@ spec:
             - name: backend-storage
               mountPath: /app/public/uploads
         - name: frontend
-          image: ghcr.io/this-oliver/this-oliver-frontend:latest
+          image: ghcr.io/this-oliver/this-oliver:latest
           imagePullPolicy: Always
           securityContext:
             readOnlyRootFilesystem: true
