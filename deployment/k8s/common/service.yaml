@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
+  namespace: oliverrr
   labels:
     app: backend
 spec:
@@ -19,6 +20,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  namespace: oliverrr
   labels:
     app: frontend
 spec:
