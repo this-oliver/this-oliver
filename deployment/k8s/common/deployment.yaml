@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oliverrr
+  name: backend
   labels:
-    app: oliverrr
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oliverrr
+      app: backend
   template:
     metadata:
       labels:
-        app: oliverrr
+        app: backend
     spec:
       securityContext:
         runAsUser: 1001
@@ -74,6 +74,31 @@ spec:
               mountPath: /app/.database
             - name: backend-storage
               mountPath: /app/public/uploads
+      volumes:
+        - name: backend-storage
+          persistentVolumeClaim:
+            claimName: backend-storage
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+        - name: oliverrr-regcred
+      containers:
         - name: frontend
           image: ghcr.io/this-oliver/this-oliver:latest
           imagePullPolicy: Always
@@ -98,7 +123,3 @@ spec:
             requests:
               memory: 128Mi
               cpu: '0.1'
-      volumes:
-        - name: backend-storage
-          persistentVolumeClaim:
-            claimName: oliverrr-pvc
