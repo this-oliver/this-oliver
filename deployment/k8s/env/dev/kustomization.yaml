@@ -7,7 +7,7 @@ commonLabels:
   env: dev
 
 bases:
-  - ../common/
+  - ../../common/
 
 resources:
   - configmap.yaml
