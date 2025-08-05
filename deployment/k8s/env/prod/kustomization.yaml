@@ -3,6 +3,8 @@ kind: Kustomization
 metadata:
   name: oliverrr
 
+namePrefix: prod-
+
 commonLabels:
   env: prod
 
