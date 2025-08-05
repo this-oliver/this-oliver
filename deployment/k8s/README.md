@@ -1,63 +1,89 @@
-# Kubernetes Deployment
+# Deployment to Kubernetes (k8s)
 
-The deployment files have been grouped into three folders:
-
-- `common/` - contains the common resources that are shared across all environments.
-- `dev/` - contains the resources specific to the development environment.
-- `prod/` - contains the resources specific to the production environment.
-
-The main difference between the development and production environments is the values of the configmap. Also, the production environment has an ingress resource that defines the routing rules for the application and sets up SSL certificates for the application's domain.
-
-## Usage
-
-This section describes how to deploy the application to a Kubernetes cluster.
+> [!NOTE]
+> The deployment relies on the k8s resource files found in the [`/common`](common/), [`/dev`](dev/) and [`prod`](prod/) directories.
 
 Pre-requisites:
 
 - Setup a Kubernetes cluster
 - Setup a certificate manager (see this [guide](https://www.oliverrr.net/notes/enabling-tls-on-your-k8-cluster))
+- Install `kubectl` and configure it to connect to your cluster
 
-### Getting Started
+Deploying the application to a Kubernetes cluster is done in two steps:
+
+1. Apply resources
+2. Patch certain resources with updated values (e.g., secrets, images, etc.)
+3. Restart the deployments to pick up the new values
+
+## Apply Resources
+
+To apply the resources, run the following command:
 
 ```bash
-# first, apply env-specific resources
-kubectl apply -f dev/
-
-# or
-kubectl apply -f prod/
-
-# then, apply common resources
-kubectl apply -f common/
+# Apply the resources for the desired environment
+kubectl apply -k <env>/
 ```
 
-### Setting up secrets
+The `<env>` must be one of the following:
 
-> Do not store real secrets in the `common/secret.yaml` file. The values present in the file are just placeholders for documentation purposes.
+- `dev` - apply resources in the [`dev/`](./dev) directory
+- `prod` - apply resources in the [`prod/`](./prod) directory
 
-The `common/secret.yaml` file contains the secrets that are used by the application. However, since the values are just placeholders, you need to update them with the actual values in the cluster.
+## Update Resources
 
-There are many ways (`kubectl edit`, `kubectl patch`) to update the secret values in the cluster but the recommended way is to use `kubectl create` + `kubectl apply` assuming you have a `.env` file with the actual secret values:
+Some resources need to be updated with values that should not be hard-coded (i.e. secrets) or may change over time (e.g., image tags). To update these resources, you can use `kubectl patch` or `kubectl edit`.
+
+### Secret - Registry
+
+To update registry credential secrets, you can use the following command:
 
 ```bash
-# Create and apply the secret directly
-kubectl create secret generic oliverrr --from-env-file=.env --dry-run=client -o yaml | kubectl apply -f -
-
-# Restart the relevant deployments to pick up the new secret values
-kubectl rollout restart deployment/oliverrr-server
+# Update a registry credential secret
+kubectl create secret docker-registry <resource-name> \
+  --docker-server=<your-registry-server> \
+  --docker-username=<your-registry-username> \
+  --docker-password=<your-registry-password>
 ```
 
-If you don't have a `.env` file, you can create the secret manually:
+Replace the placeholders:
+
+- `<resource-name>` - name of the resource (i.e. oliverrr-regcred)
+- `<your-registry-server>` - registry url without http protocol (i.e. ghcr.io)
+- `<your-registry-username>` - username
+- `<your-registry-password>` - token or password (recommend tokens over passwords)
+
+### Secret - Generic
+
+To update generic secrets, use the following command:
 
 ```bash
-# create the secret from literal values
-kubectl create secret generic oliverrr --from-literal=DB_URI=your-database-password --from-literal=JWT_SECRET=your-jwt-secret --from-literal=ADMIN_SECRET=your-admin-secret --from-literal=BUCKET_S3_KEY=your-bucket-key --from-literal=BUCKET_S3_SECRET=your-bucket-secret --from-literal=BUCKET_NAME=your-bucket-name --from-literal=BUCKET_S3_REGION=your-bucket-region --from-literal=BUCKET_S3_URI=your-bucket-uri --dry-run=client -o yaml > secret.yaml
+kubectl create secret generic <resource-name> --from-literal=<key>='<secret>'
+```
 
-# apply the secret resource
-kubectl apply -f secret.yaml
+Replace the placeholders:
 
-# restart the relevant deployments to pick up the new secret values
-kubectl rollout restart deployment/oliverrr-server
+- `<resource-name>` - name of the resource (i.e. oliverrr-regcred)
+- `<key>` - key of the secret
+- `<secret>` - secret value
 
-# delete the secret.yaml file
-rm secret.yaml
+#### Image Tags
+
+To update image tags in deployments, run the following command:
+
+```bash
+kubectl set image deployment/<resource-name> <container-name>=<image>:<tag>
+```
+
+Replace the placeholders:
+
+- `<resource-name>` - deployment's name (e.g., oliverrr-frontend)
+- `<container-name>` - container name in the deployment spec
+- `<image>:<tag>` - new image and tag (e.g., ghcr.io/this-oliver/this-oliver:v1.0.0)
+
+## Restart deployment
+
+Once the resources have been updated, run the following command to update the application:
+
+```bash
+kubectl rollout restart oliverrr
 ```
