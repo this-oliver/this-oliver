@@ -10,5 +10,4 @@ bases:
   - ../../common/
 
 resources:
-  - configmap.yaml
   - ingress.yaml
