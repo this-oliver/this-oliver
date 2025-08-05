@@ -19,7 +19,7 @@ spec:
         runAsGroup: 1001
         fsGroup: 1001
       imagePullSecrets:
-        - name: oliverrr-regcred
+        - name: regcred
       containers:
         - name: backend
           image: ghcr.io/this-oliver/headless-cms:latest
@@ -32,32 +32,32 @@ spec:
             - name: ADMIN_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_ADMIN_JWT_SECRET
             - name: API_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_API_TOKEN_SALT
             - name: APP_KEYS
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_APP_KEYS
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_ENCRYPTION_KEY
             - name: TRANSFER_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_TRANSFER_TOKEN_SALT
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_JWT_SECRET
           ports:
             - containerPort: 1337
@@ -97,7 +97,7 @@ spec:
         app: frontend
     spec:
       imagePullSecrets:
-        - name: oliverrr-regcred
+        - name: regcred
       containers:
         - name: frontend
           image: ghcr.io/this-oliver/this-oliver:latest
@@ -111,7 +111,7 @@ spec:
             - name: NUXT_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: frontend
                   key: FRONTEND_NUXT_API_TOKEN
           ports:
             - containerPort: 3000
