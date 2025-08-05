@@ -6,7 +6,9 @@ metadata:
 commonLabels:
   env: dev
 
+bases:
+  - ../common/
+
 resources:
   - configmap.yaml
   - ingress.yaml
-  - ../common/
