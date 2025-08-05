@@ -13,8 +13,12 @@ kind: Kustomization
 metadata:
   name: oliverrr
 
+bases:
+  - backend
+  - frontend
+
 resources:
-  - secrets.yaml # <- defines the environment variables that will be used in the deployment.yaml file
-  - deployment.yaml # <- defines the containers that will be deployed to the k8 cluster (pods)
-  - pvc.yaml # <- defines the persistent volume claim that will be used to store the data for the backend
-  - service.yaml # <- defines the ports that will be exposed to externally from the respective pod
+  - deployment.yaml # defines the deployment for the backend and frontend services
+  - pvc.yaml # defines the persistent volume claim that will be used to store the data for the backend
+  - secrets.yaml # defines the environment variables that will be used in the deployment.yaml file
+  - service.yaml # defines the ports that will be exposed to externally from the respective pod
