@@ -89,3 +89,54 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
           labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           platforms: linux/amd64,linux/arm64
+
+  deploy:
+    if: ${{ needs.release.outputs.released == 'true' || github.event_name == 'workflow_dispatch' }}
+    needs: [release, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply k8s resources
+        run: |
+          # clone repo
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            'rm -rf /tmp/oliverrr-deploy && git clone --depth 1 https://github.com/${{ github.repository }} /tmp/oliverrr-deploy'
+
+          # apply k8s resources
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            'cd /tmp/oliverrr-deploy/deployment/k8s && kubectl apply -k env/prod/ --namespace=oliverrr && kubectl apply -k common/ --namespace=oliverrr'
+
+          # remove cloned repo
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'rm -rf /tmp/oliverrr-deploy'
+      - name: Update registry secret
+        run: |
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl create secret docker-registry regcred \
+              --docker-server=ghcr.io \
+              --docker-username=${{ secrets.REGISTRY_USER }} \
+              --docker-password=${{ secrets.REGISTRY_TOKEN }} \
+              --namespace=oliverrr --dry-run=client -o yaml | kubectl apply -f -"
+      - name: Update backend secrets
+        run: |
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl create secret generic backend \
+              --from-literal=BACKEND_ADMIN_JWT_SECRET='${{ secrets.BACKEND_ADMIN_JWT_SECRET }}' \
+              --from-literal=BACKEND_API_TOKEN_SALT='${{ secrets.BACKEND_API_TOKEN_SALT }}' \
+              --from-literal=BACKEND_APP_KEYS='${{ secrets.BACKEND_APP_KEYS }}' \
+              --from-literal=BACKEND_JWT_SECRET='${{ secrets.BACKEND_JWT_SECRET }}' \
+              --from-literal=BACKEND_ENCRYPTION_KEY='${{ secrets.BACKEND_ENCRYPTION_KEY }}' \
+              --from-literal=BACKEND_TRANSFER_TOKEN_SALT='${{ secrets.BACKEND_TRANSFER_TOKEN_SALT }}' \
+              --namespace=oliverrr --dry-run=client -o yaml | kubectl apply -f -"
+      - name: Update frontend secrets
+        run: |
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl create secret generic frontend \
+              --from-literal=FRONTEND_NUXT_API_TOKEN='${{ secrets.FRONTEND_NUXT_API_TOKEN }}' \
+              --namespace=oliverrr --dry-run=client -o yaml | kubectl apply -f -"
+      - name: Update image tags
+        run: |
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl set image deployment/frontend frontend=ghcr.io/this-oliver/this-oliver:${{ needs.release.outputs.tag || github.sha }} --namespace=oliverrr"
+      - name: Restart deployments
+        run: |
+          ssh -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl rollout restart deployment/frontend --namespace=oliverrr && kubectl rollout restart deployment/backend --namespace=oliverrr"
