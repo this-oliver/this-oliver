@@ -3,6 +3,9 @@ kind: Kustomization
 metadata:
   name: oliverrr
 
+commonLabels:
+  env: dev
+
 resources:
   - configmap.yaml
   - ingress.yaml
