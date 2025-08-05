@@ -1,7 +1,10 @@
 # Deployment to Kubernetes (k8s)
 
-> [!NOTE]
-> The deployment relies on the k8s resource files found in the [`/common`](common/), [`/dev`](dev/) and [`prod`](prod/) directories.
+Deploying the application to a Kubernetes cluster is done in two steps:
+
+1. Apply resources
+2. Patch certain resources with updated values (e.g., secrets, images, etc.)
+3. Restart the deployments to pick up the new values
 
 Pre-requisites:
 
@@ -9,27 +12,20 @@ Pre-requisites:
 - Setup a certificate manager (see this [guide](https://www.oliverrr.net/notes/enabling-tls-on-your-k8-cluster))
 - Install `kubectl` and configure it to connect to your cluster
 
-Deploying the application to a Kubernetes cluster is done in two steps:
-
-1. Apply resources
-2. Patch certain resources with updated values (e.g., secrets, images, etc.)
-3. Restart the deployments to pick up the new values
-
-## Apply Resources
+## Step 1: Apply Resources
 
 To apply the resources, run the following command:
 
 ```bash
 # Apply the resources for the desired environment
-kubectl apply -k <env>/
+kubectl apply -k env/dev/
+# or for production
+kubectl apply -k env/prod/
+# Apply shared/common resources
+kubectl apply -k common/
 ```
 
-The `<env>` must be one of the following:
-
-- `dev` - apply resources in the [`dev/`](./dev) directory
-- `prod` - apply resources in the [`prod/`](./prod) directory
-
-## Update Resources
+## Step 2: Update Resources
 
 Some resources need to be updated with values that should not be hard-coded (i.e. secrets) or may change over time (e.g., image tags). To update these resources, you can use `kubectl patch` or `kubectl edit`.
 
@@ -38,52 +34,55 @@ Some resources need to be updated with values that should not be hard-coded (i.e
 To update registry credential secrets, you can use the following command:
 
 ```bash
-# Update a registry credential secret
-kubectl create secret docker-registry <resource-name> \
-  --docker-server=<your-registry-server> \
-  --docker-username=<your-registry-username> \
-  --docker-password=<your-registry-password>
+kubectl create secret docker-registry regcred \
+  --docker-server=ghcr.io \
+  --docker-username=<your-username> \
+  --docker-password=<your-token>
 ```
 
-Replace the placeholders:
-
-- `<resource-name>` - name of the resource (i.e. oliverrr-regcred)
-- `<your-registry-server>` - registry url without http protocol (i.e. ghcr.io)
-- `<your-registry-username>` - username
-- `<your-registry-password>` - token or password (recommend tokens over passwords)
+Replace `<your-username>` and `<your-token>` with your actual registry credentials.
 
 ### Secret - Generic
 
-To update generic secrets, use the following command:
+To update generic secrets (see `common/secrets.yaml` for reference), use the following commands:
+
+**Backend secrets:**
 
 ```bash
-kubectl create secret generic <resource-name> --from-literal=<key>='<secret>'
+kubectl create secret generic backend \
+  --from-literal=BACKEND_ADMIN_JWT_SECRET='your-admin-jwt-secret' \
+  --from-literal=BACKEND_API_TOKEN_SALT='your-api-token' \
+  --from-literal=BACKEND_APP_KEYS='your-app-keys' \
+  --from-literal=BACKEND_JWT_SECRET='your-jwt-secret' \
+  --from-literal=BACKEND_ENCRYPTION_KEY='your-encryption-key' \
+  --from-literal=BACKEND_TRANSFER_TOKEN_SALT='your-transfer-token'
 ```
 
-Replace the placeholders:
+**Frontend secrets:**
 
-- `<resource-name>` - name of the resource (i.e. oliverrr-regcred)
-- `<key>` - key of the secret
-- `<secret>` - secret value
+```bash
+kubectl create secret generic frontend --from-literal=FRONTEND_NUXT_API_TOKEN='your-api-token'
+```
 
-#### Image Tags
+Replace the values with your actual secrets. The keys should match those defined in `common/secrets.yaml` for backend and frontend components.
+
+### Image Tags
 
 To update image tags in deployments, run the following command:
 
 ```bash
-kubectl set image deployment/<resource-name> <container-name>=<image>:<tag>
+kubectl set image deployment/frontend frontend=ghcr.io/this-oliver/this-oliver:v1.0.0
 ```
 
-Replace the placeholders:
+- `frontend` is the deployment name (see `common/deployment.yaml`)
+- `frontend` is the container name in the deployment spec
+- `ghcr.io/this-oliver/this-oliver:v1.0.0` is the new image and tag
 
-- `<resource-name>` - deployment's name (e.g., oliverrr-frontend)
-- `<container-name>` - container name in the deployment spec
-- `<image>:<tag>` - new image and tag (e.g., ghcr.io/this-oliver/this-oliver:v1.0.0)
-
-## Restart deployment
+## Step 3: Restart deployment
 
 Once the resources have been updated, run the following command to update the application:
 
 ```bash
-kubectl rollout restart oliverrr
+kubectl rollout restart deployment/frontend
+kubectl rollout restart deployment/backend
 ```
