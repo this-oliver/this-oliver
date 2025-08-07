@@ -3,13 +3,14 @@ kind: Kustomization
 metadata:
   name: oliverrr
 
-namePrefix: dev-
+resources:
+  - ../../common/
+  - ingress.yaml
+
+namePrefix: dev-oliverrr-
 
 commonLabels:
   env: dev
 
-bases:
-  - ../../common/
-
-resources:
-  - ingress.yaml
+patchesStrategicMerge:
+  - overlay-deployment.yaml

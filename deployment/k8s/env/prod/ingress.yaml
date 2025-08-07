@@ -19,13 +19,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: prod-oliverrr-frontend
                 port:
                   name: frontend
   tls:
     - hosts:
         - www.oliverrr.net
-      secretName: oliverrr-tls
+      secretName: prod-oliverrr-tls
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -49,10 +49,10 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: backend
+                name: prod-oliverrr-backend
                 port:
                   name: backend
   tls:
     - hosts:
         - cms.oliverrr.net
-      secretName: oliverrr-tls
+      secretName: prod-oliverrr-cms-tls
