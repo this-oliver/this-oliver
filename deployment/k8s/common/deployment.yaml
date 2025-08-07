@@ -64,10 +64,10 @@ spec:
               name: backend-port
           resources:
             requests:
-              memory: 512Mi
+              memory: 1Gi
               cpu: '0.25'
             limits:
-              memory: 1Gi
+              memory: 2Gi
               cpu: '1'
           volumeMounts:
             - name: backend-storage
