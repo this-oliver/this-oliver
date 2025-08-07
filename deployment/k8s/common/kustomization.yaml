@@ -3,10 +3,6 @@ kind: Kustomization
 metadata:
   name: oliverrr
 
-bases:
-  - backend
-  - frontend
-
 resources:
   - deployment.yaml # defines the deployment for the backend and frontend services
   - pvc.yaml # defines the persistent volume claim that will be used to store the data for the backend
