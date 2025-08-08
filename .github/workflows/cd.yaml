@@ -15,9 +15,6 @@ on:
       - README.md
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -53,7 +50,7 @@ jobs:
       - name: Login to registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ vars.REGISTRY_SERVER }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
@@ -71,8 +68,8 @@ jobs:
           context: ./src/${{ matrix.app }}
           file: ./src/${{ matrix.app }}/Dockerfile
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
+            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
+            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
           labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           platforms: linux/amd64,linux/arm64
 
@@ -84,9 +81,9 @@ jobs:
           context: ./src/${{ matrix.app }}
           file: ./src/${{ matrix.app }}/Dockerfile
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ needs.release.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
+            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ needs.release.outputs.tag }}
+            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
+            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
           labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           platforms: linux/amd64,linux/arm64
 
@@ -126,7 +123,7 @@ jobs:
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
             "kubectl create secret docker-registry ${{ env.environment }}-oliverrr-regcred \
               --docker-server=ghcr.io \
-              --docker-username=${{ secrets.REGISTRY_USER }} \
+              --docker-username=${{ vars.REGISTRY_USER }} \
               --docker-password=${{ secrets.REGISTRY_TOKEN }} \
               --dry-run=client -o yaml | kubectl apply -f -"
       - name: Update backend secrets
