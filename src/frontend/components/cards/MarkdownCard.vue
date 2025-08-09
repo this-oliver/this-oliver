@@ -7,7 +7,7 @@ import highlightTypescript from "highlight.js/lib/languages/typescript";
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
 // import 'highlight.js/styles/github.css' // light theme
-import "highlight.js/styles/github-dark.css"; // dark theme
+import "highlight.js/styles/github-dark.css";
 
 const props = defineProps({
   markdown: {
@@ -18,6 +18,13 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
+});
+
+// dark theme
+
+marked.setOptions({
+  headerIds: false, // deprecated
+  mangle: false // deprecated
 });
 
 const renderedHtml = computed<string>(() => {
