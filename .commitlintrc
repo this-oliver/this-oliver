@@ -14,12 +14,13 @@
       ]
     ],
     "scope-enum": [
-      2,
+      1,
       "always",
       [
         "frontend",
         "backend",
         "cicd",
+        "k8s",
         "security"
       ]
     ]
