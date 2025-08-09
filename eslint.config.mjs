@@ -15,22 +15,15 @@ export default antfu(
     }
   },
   {
-    files: ["packages/frontend/**/*.ts"],
+    files: ["src/frontend/**/*.ts"],
     rules: {
       "node/prefer-global/process": "off"
     }
   },
   {
-    files: ["packages/backend/**/*.ts"],
+    files: ["src/backend/**/*.ts"],
     rules: {
       "no-throw-literal": "off"
-    }
-  },
-  {
-    files: ["packages/backend/**/*.test.ts"],
-    rules: {
-      "no-unused-expressions": "off",
-      "ts/no-unused-expressions": "off"
     }
   },
   {
