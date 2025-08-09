@@ -151,14 +151,19 @@ jobs:
               --from-literal=FRONTEND_NUXT_API_TOKEN='${{ secrets.FRONTEND_NUXT_API_TOKEN }}' \
               --dry-run=client -o yaml | kubectl apply -f -"
       - name: Update image tags
+        if: ${{ needs.release.outputs.released == 'true' }}
         run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/this-oliver:${{ needs.release.outputs.tag || 'latest' }}"
+          if [[ "${{ needs.release.outputs.released }}" == "true" ]]; then
+            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+              "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/website-frontend:${{ needs.release.outputs.tag }} & kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend backend=ghcr.io/this-oliver/website-backend:${{ needs.release.outputs.tag }}"
+          else
+            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/website-frontend:${{ github.sha || 'latest' }} & kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend backend=ghcr.io/this-oliver/website-backend:${{ github.sha || 'latest' }}"
+          fi
       - name: Restart deployments
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
             "kubectl rollout restart deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend && kubectl rollout restart deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend"
-
       - name: cleanup
         if: ${{ always() }}
         run: |
