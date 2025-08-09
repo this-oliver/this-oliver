@@ -1,81 +1,109 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oliverrr
+  name: backend
   labels:
-    app: oliverrr
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oliverrr
+      app: backend
   template:
     metadata:
       labels:
-        app: oliverrr
+        app: backend
     spec:
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
       imagePullSecrets:
-        - name: oliverrr-regcred
+        - name: regcred
       containers:
         - name: backend
-          image: ghcr.io/this-oliver/this-oliver-backend:latest
+          image: ghcr.io/this-oliver/website-backend:latest
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsUser: 1001
+            readOnlyRootFilesystem: false
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_ADMIN_JWT_SECRET
             - name: API_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_API_TOKEN_SALT
             - name: APP_KEYS
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_APP_KEYS
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_ENCRYPTION_KEY
             - name: TRANSFER_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_TRANSFER_TOKEN_SALT
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: backend
                   key: BACKEND_JWT_SECRET
           ports:
             - containerPort: 1337
               name: backend-port
           resources:
             requests:
-              memory: 512Mi
+              memory: 1Gi
               cpu: '0.25'
             limits:
-              memory: 1Gi
+              memory: 2Gi
               cpu: '1'
           volumeMounts:
             - name: backend-storage
               mountPath: /app/.database
             - name: backend-storage
               mountPath: /app/public/uploads
+      volumes:
+        - name: backend-storage
+          persistentVolumeClaim:
+            claimName: backend-storage
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      imagePullSecrets:
+        - name: regcred
+      containers:
         - name: frontend
-          image: ghcr.io/this-oliver/this-oliver-frontend:latest
+          image: ghcr.io/this-oliver/website-frontend:latest
           imagePullPolicy: Always
           securityContext:
             readOnlyRootFilesystem: true
@@ -86,7 +114,7 @@ spec:
             - name: NUXT_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: frontend
                   key: FRONTEND_NUXT_API_TOKEN
           ports:
             - containerPort: 3000
@@ -98,7 +126,3 @@ spec:
             requests:
               memory: 128Mi
               cpu: '0.1'
-      volumes:
-        - name: backend-storage
-          persistentVolumeClaim:
-            claimName: oliverrr-pvc

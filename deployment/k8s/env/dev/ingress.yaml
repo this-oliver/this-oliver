@@ -1,16 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: oliverrr
+  name: website
   labels:
-    app: oliverrr
-    component: ingress
+    app: frontend
   annotations:
     cert-manager.io/issuer: cloudflare-issuer
     cert-manager.io/issuer-kind: OriginIssuer
     cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    nginx.ingress.kubernetes.io/proxy-body-size: 5m # increases the maximum body size to 5MB from 1 MiB (for file uploads)
-
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
 spec:
   ingressClassName: nginx
   rules:
@@ -21,9 +19,29 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: oliverrr
+                name: dev-oliverrr-frontend
                 port:
                   name: frontend
+  tls:
+    - hosts:
+        - dev.oliverrr.net
+      secretName: dev-oliverrr-tls
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cms
+  labels:
+    app: backend
+  annotations:
+    cert-manager.io/issuer: cloudflare-issuer
+    cert-manager.io/issuer-kind: OriginIssuer
+    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+spec:
+  ingressClassName: nginx
+  rules:
     - host: cms-dev.oliverrr.net
       http:
         paths:
@@ -31,11 +49,10 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: oliverrr
+                name: dev-oliverrr-backend
                 port:
                   name: backend
   tls:
     - hosts:
-        - dev.oliverrr.net
         - cms-dev.oliverrr.net
-      secretName: oliverrr-tls
+      secretName: dev-oliverrr-cms-tls

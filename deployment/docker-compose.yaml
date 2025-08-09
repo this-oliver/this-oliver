@@ -1,21 +1,21 @@
 services:
   frontend:
-    build: ./src/frontend
+    build: ../src/frontend
     env_file:
-      - ./src/frontend/.env
+      - ../src/frontend/.env
     environment:
       - NUXT_CMS_API_URL=http://backend:1337
     expose:
       - '3000'
 
   backend:
-    build: ./src/backend
+    build: ../src/backend
     env_file:
-      - ./src/backend/.env
+      - ../src/backend/.env
     volumes:
-      - ./src/backend/.database:/app/.database
-      - ./src/backend/public/uploads:/app/public/uploads
-      - ./src/backend/src:/app/src
+      - ../src/backend/.database:/app/.database
+      - ../src/backend/public/uploads:/app/public/uploads
+      - ../src/backend/src:/app/src
     expose:
       - '1337'
 

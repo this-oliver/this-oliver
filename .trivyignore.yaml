@@ -1,0 +1,13 @@
+misconfigurations:
+  - id: AVD-KSV-0014
+    paths:
+      - deployment/k8s/common/deployment.yaml
+      - deployment/k8s/env/dev/overlay-deployment.yaml
+      - deployment/k8s/env/prod/overlay-deployment.yaml
+    statement: The backend deployment needs to write to sqlite database.
+
+secrets:
+  - id: dockerconfig-secret
+    paths:
+      - deployment/k8s/common/secrets.yaml
+    statement: These secrets are placeholders. They are also unusable.
