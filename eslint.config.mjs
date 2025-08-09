@@ -21,16 +21,9 @@ export default antfu(
     }
   },
   {
-    files: ["packages/backend/**/*.ts"],
+    files: ["src/backend/**/*.ts"],
     rules: {
       "no-throw-literal": "off"
-    }
-  },
-  {
-    files: ["packages/backend/**/*.test.ts"],
-    rules: {
-      "no-unused-expressions": "off",
-      "ts/no-unused-expressions": "off"
     }
   },
   {

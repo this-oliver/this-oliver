@@ -1,4 +1,4 @@
-# Content
+# Backend
 
 This directory contains the configurations for the content management system (CMS) for this project which are based on the [`this-oliver/headless-cms`](https://github.com/this-oliver/headless-cms) repository.
 

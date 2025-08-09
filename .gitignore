@@ -12,7 +12,3 @@ certificates
 
 # node modules
 node_modules
-
-# cms
-content/.database
-content/public/uploads
