@@ -12,9 +12,9 @@ const router = useRouter();
 const noteStore = useNoteStore();
 const { formatDate } = useTime();
 
-const { data, status } = useAsyncData("note", async () => {
+const { data, status } = await useAsyncData("note", async () => {
   const slug = router.currentRoute.value.params.slug as string;
-  const note: Note = await noteStore.getNote(slug);
+  const note = await noteStore.getNote(slug);
 
   const title = `${note.title} - oliverrr`;
   const description = note.content.substring(0, 150) + (note.content.length > 150 ? "..." : "");
