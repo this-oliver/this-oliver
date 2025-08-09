@@ -5,42 +5,17 @@
   "license": "MIT",
   "repository": "this-oliver/this-oliver",
   "scripts": {
-    "start": "node .output/server/index.mjs",
-    "dev": "nuxt dev",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "prepare": "husky",
+    "postinstall": "husky",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
-  },
-  "dependencies": {
-    "@mdi/font": "^7.2.96",
-    "@nuxt/icon": "^1.15.0",
-    "@pinia/nuxt": "^0.4.9",
-    "@tailwindcss/vite": "^4.1.11",
-    "highlight.js": "^11.8.0",
-    "marked": "^5.1.2",
-    "nuxt": "3.17.6",
-    "pinia": "^2.1.1",
-    "rothko-js": "0.7.4",
-    "sanitize-html": "^2.12.1",
-    "simple-analytics-vue": "^3.0.2",
-    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.8.1",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@iconify-json/mdi": "^1.2.3",
-    "@types/marked": "^4.3.0",
-    "@types/node": "^18",
-    "@types/sanitize-html": "^2.9.0",
     "eslint": "^9.22.0",
     "husky": "^9.1.7",
-    "lint-staged": "^13.2.2",
-    "typescript": "^5.0.4"
+    "lint-staged": "^13.2.2"
   },
   "lint-staged": {
     "*": "npm run lint:fix"

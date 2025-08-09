@@ -15,7 +15,7 @@ export default antfu(
     }
   },
   {
-    files: ["packages/frontend/**/*.ts"],
+    files: ["src/frontend/**/*.ts"],
     rules: {
       "node/prefer-global/process": "off"
     }

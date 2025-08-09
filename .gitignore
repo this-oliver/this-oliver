@@ -13,9 +13,6 @@ certificates
 # node modules
 node_modules
 
-# nuxt
-.nuxt
-
 # cms
 content/.database
 content/public/uploads

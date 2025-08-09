@@ -1,8 +1,8 @@
 services:
   frontend:
-    build: .
+    build: ./src/frontend
     env_file:
-      - .env
+      - ./src/frontend/.env
     environment:
       - NUXT_CMS_API_URL=http://backend:1337
     expose:
