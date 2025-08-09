@@ -15,19 +15,19 @@ spec:
         app: backend
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
       imagePullSecrets:
         - name: regcred
       containers:
         - name: backend
-          image: ghcr.io/this-oliver/headless-cms:latest
+          image: ghcr.io/this-oliver/website-backend:latest
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
-            runAsUser: 1000
+            runAsUser: 1001
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
@@ -104,7 +104,7 @@ spec:
         - name: regcred
       containers:
         - name: frontend
-          image: ghcr.io/this-oliver/this-oliver:latest
+          image: ghcr.io/this-oliver/website-frontend:latest
           imagePullPolicy: Always
           securityContext:
             readOnlyRootFilesystem: true
