@@ -8,10 +8,17 @@ spec:
       app: backend
   template:
     spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
       imagePullSecrets:
         - name: dev-oliverrr-regcred
       containers:
         - name: backend
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
@@ -55,10 +62,17 @@ spec:
       app: frontend
   template:
     spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
       imagePullSecrets:
         - name: dev-oliverrr-regcred
       containers:
         - name: frontend
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           env:
             - name: NUXT_CMS_API_URL
               value: 'http://dev-oliverrr-backend:1337'

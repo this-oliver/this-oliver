@@ -27,7 +27,6 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
-            runAsUser: 1001
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
