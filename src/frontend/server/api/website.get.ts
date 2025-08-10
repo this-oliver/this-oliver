@@ -17,7 +17,6 @@ export default defineEventHandler(async (event): Promise<Website> => {
       socias: website.socias || []
     };
   } catch (error) {
-    console.error({ error });
     throw createError({
       statusCode: 404,
       statusMessage: `Failed to fetch proprerty data: ${(error as Error).message}`

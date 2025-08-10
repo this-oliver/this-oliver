@@ -12,7 +12,6 @@ export default defineEventHandler(async (event): Promise<string[]> => {
 
     return tags.map(tag => tag.label);
   } catch (error) {
-    console.error({ error });
     throw createError({
       statusCode: 404,
       statusMessage: `Failed to fetch tags: ${(error as Error).message}`
