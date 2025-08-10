@@ -151,7 +151,6 @@ jobs:
               --from-literal=FRONTEND_NUXT_API_TOKEN='${{ secrets.FRONTEND_NUXT_API_TOKEN }}' \
               --dry-run=client -o yaml | kubectl apply -f -"
       - name: Update image tags
-        if: ${{ needs.release.outputs.released == 'true' }}
         run: |
           if [[ "${{ needs.release.outputs.released }}" == "true" ]]; then
             ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
