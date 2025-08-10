@@ -1,4 +1,14 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .brutalist-outline {
+    @apply rounded border-t border-l border-slate-100 border-r-2 border-b-2 border-r-slate-200 border-b-slate-200;
+  }
+}
+
+/*@import "tailwindcss";
 
 @theme {
   --color-pinkish: #f3b1fa;
@@ -8,4 +18,4 @@
 
 .brutalist-outline {
   @apply rounded border-t-1 border-l-1 border-slate-100 border-r-3 border-b-3 border-r-slate-200 border-b-slate-200;
-}
+}*/

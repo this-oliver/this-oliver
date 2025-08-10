@@ -1,5 +1,3 @@
-import tailwindcss from "@tailwindcss/vite";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-10",
@@ -23,6 +21,13 @@ export default defineNuxtConfig({
 
   modules: ["@pinia/nuxt", "@nuxt/icon"],
 
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {}
+    }
+  },
+
   /**
    * NOTE: `runtimeConfig.public.restApi` is available in the client
    * and server side while `runtimeConfig.secret` is only available
@@ -31,7 +36,5 @@ export default defineNuxtConfig({
   runtimeConfig: {
     cmsApiUrl: "",
     cmsApiToken: ""
-  },
-
-  vite: { plugins: [tailwindcss()] }
+  }
 });
