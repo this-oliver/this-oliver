@@ -9,7 +9,6 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/icon": "^1.15.0",
     "@pinia/nuxt": "^0.4.9",
     "highlight.js": "^11.8.0",
     "marked": "^5.1.2",
@@ -20,7 +19,6 @@
     "simple-analytics-vue": "^3.0.2"
   },
   "devDependencies": {
-    "@iconify-json/mdi": "^1.2.3",
     "@types/marked": "^4.3.0",
     "@types/node": "^18",
     "@types/sanitize-html": "^2.9.0",

@@ -92,7 +92,7 @@ onMounted(async () => {
             placeholder="Search..."
             :class="`w-full h-full ${noteStore.filter.query.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
           <button class="p-2 flex items-center cursor-pointer" @click="noteStore.filter.query = ''; showSearchField = false;">
-            <icon name="mdi-close" class="text-lg" />
+            clear
           </button>
         </div>
 
@@ -100,14 +100,12 @@ onMounted(async () => {
           v-else
           class="flex items-center gap-2"
           @click="showSearchField = true">
-          <icon name="mdi-magnify" class="h-4 w-4 mr-1" />
           Search
         </base-btn>
 
         <base-btn
           :class="`flex items-center gap-2 ${noteStore.filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''}`"
           @click="showFilterSidebar = true">
-          <icon name="mdi-filter" class="h-4 w-4 mr-1" />
           Filter
         </base-btn>
       </div>
@@ -120,7 +118,6 @@ onMounted(async () => {
           class="bg-pinkish text-slate-800 px-2 py-1 rounded-full text-sm cursor-pointer flex gap-1 items-center"
           @click="noteStore.removeTagFromFilter(tag)">
           <span>{{ tag }}</span>
-          <icon name="mdi-close" class="text-xs" />
         </span>
       </div>
 

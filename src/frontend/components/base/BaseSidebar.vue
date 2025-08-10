@@ -62,7 +62,6 @@ function getOptionColor(option: ActionItem): string {
             :to="item.to"
             class="flex items-center gap-2"
             @click="emit('close')">
-            <icon v-if="item.icon" :name="item.icon" />
             <span>{{ item.label }}</span>
           </nuxt-link>
 
@@ -70,7 +69,6 @@ function getOptionColor(option: ActionItem): string {
             v-else
             class="flex items-center gap-2"
             @click="item && item.action ? () => { item.action!(); emit('close') } : emit('close')">
-            <icon v-if="item.icon" :name="item.icon" />
             <span>{{ item.label }}</span>
           </base-btn>
         </div>

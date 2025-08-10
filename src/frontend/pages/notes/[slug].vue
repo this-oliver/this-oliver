@@ -67,7 +67,6 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
       <base-btn
         class="w-fit md:w-2/12 flex items-center gap-2"
         @click="router.push('/notes')">
-        <icon name="mdi-arrow-left" class="text-2xl" />
         Back
       </base-btn>
 

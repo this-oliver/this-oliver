@@ -13,13 +13,7 @@ export default defineNuxtConfig({
     "~/assets/styles/main.css"
   ],
 
-  icon: {
-    mode: "css",
-    cssLayer: "base",
-    serverBundle: { collections: ["mdi"] }
-  },
-
-  modules: ["@pinia/nuxt", "@nuxt/icon"],
+  modules: ["@pinia/nuxt"],
 
   postcss: {
     plugins: {

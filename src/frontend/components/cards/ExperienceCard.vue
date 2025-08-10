@@ -64,7 +64,6 @@ function isEmpty(text: any): boolean {
       <a
         :href="props.experience.link"
         target="_blank">
-        <icon name="mdi-link-variant" />
         {{ props.experience.link }}
       </a>
     </span>
@@ -73,7 +72,6 @@ function isEmpty(text: any): boolean {
       <a
         :href="props.experience.image"
         target="_blank">
-        <icon name="mdi-image-frame" />
         Preview
       </a>
     </span>

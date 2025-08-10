@@ -10,12 +10,10 @@ export const useGeneralStore = defineStore("general", () => {
     return [
       {
         label: "notes",
-        icon: "mdi-newspaper-variant-outline",
         to: "/notes"
       },
       {
         label: "experiences",
-        icon: "mdi-briefcase-outline",
         to: "/experiences"
       }
     ];

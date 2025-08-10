@@ -27,7 +27,6 @@ const props = defineProps({
 
     <slot name="actions">
       <base-btn :to="props.redirect" class="bg-red-400">
-        <icon name="mdi-arrow-left" class="h-4 w-4 mr-1" />
         Return Home
       </base-btn>
     </slot>

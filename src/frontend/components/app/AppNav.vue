@@ -11,11 +11,22 @@ function isCurrentRoute(to: string): boolean {
 
 <template>
   <div class="relative flex items-center md:justify-between gap-4">
-    <!-- Menu icon: absolutely positioned on small screens, normal on md+ -->
-    <icon
-      name="mdi:menu"
+    <div
       class="text-3xl md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10"
-      @click="generalStore.toggleSidebar()" />
+      @click="generalStore.toggleSidebar()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 cursor-pointer"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </div>
 
     <!-- Centered Nuxt link on small screens, normal on md+ -->
     <nuxt-link
