@@ -11,8 +11,8 @@ useSeoMeta({
   ogSiteName: "oliverrr's personal website"
 });
 
-const { data } = await useAsyncData("welcome-banner", () => {
-  return $fetch("/api/website");
+const { data } = await useAsyncData("welcome-banner", async () => {
+  return await $fetch("/api/website");
 });
 </script>
 

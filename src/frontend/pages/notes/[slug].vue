@@ -12,7 +12,7 @@ const router = useRouter();
 const noteStore = useNoteStore();
 const { formatDate } = useTime();
 
-const { data, status } = useAsyncData("note", async () => {
+const { data, status } = await useAsyncData("note", async () => {
   const slug = router.currentRoute.value.params.slug as string;
   const note: Note = await noteStore.getNote(slug);
 

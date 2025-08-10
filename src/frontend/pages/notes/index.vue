@@ -19,7 +19,7 @@ useSeoMeta({
 const noteStore = useNoteStore();
 const query = useRouterQuery();
 
-const { status, error } = useAsyncData("notes", async () => {
+const { status, error } = await useAsyncData("notes", async () => {
   const [notes, tags] = await Promise.all([
     noteStore.indexNotes(),
     noteStore.indexTags()
