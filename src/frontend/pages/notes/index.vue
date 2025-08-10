@@ -129,7 +129,7 @@ onMounted(async () => {
       </div>
 
       <div v-else-if="error">
-        Failed to fetch notes: {{ error.message }}
+        <error-card message="An error occurred while fetching experiences. Please try again later." />
       </div>
 
       <div v-else-if="noteStore.getFilteredNotes.length === 0">
