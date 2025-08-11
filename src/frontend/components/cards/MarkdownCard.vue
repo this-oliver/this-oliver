@@ -20,6 +20,11 @@ const props = defineProps({
   }
 });
 
+marked.setOptions({
+  headerIds: false, // deprecated
+  mangle: false // deprecated
+});
+
 const renderedHtml = computed<string>(() => {
   return _markdownToHtml(props.markdown);
 });
