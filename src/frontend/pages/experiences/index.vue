@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Experience } from "~/types";
 import { useRouterQuery } from "~/composables/useRouterQuery";
-import { useExperienceStore } from "~/stores/experience-store";
 
 const pageTitle = "Experiences - oliverrr";
 const pageDescription = "A collection of experiences";
@@ -15,17 +14,21 @@ useSeoMeta({
 });
 
 const query = useRouterQuery();
-const experienceStore = useExperienceStore();
 
 const xpCurrentPage = ref(1);
 const xpTotalPages = ref(1);
 
+const filter = reactive({
+  projects: false,
+  education: false,
+  work: false
+});
+
 const { data, status } = await useAsyncData("experiences", async () => {
   const { experiences, currentPage, totalPages } = await $fetch("/api/experiences");
-  experienceStore.setExperiences(experiences);
   xpCurrentPage.value = currentPage;
   xpTotalPages.value = totalPages;
-  return experienceStore.getExperiences;
+  return experiences;
 });
 
 const getExperiences = computed<Experience[]>(() => {
@@ -33,70 +36,114 @@ const getExperiences = computed<Experience[]>(() => {
     return [];
   }
 
-  return data.value.filter((experience) => {
-    if (!experienceStore.filter.education && !experienceStore.filter.projects && !experienceStore.filter.work) {
+  const filteredExperiences = data.value.filter((experience) => {
+    if (!filter.education && !filter.projects && !filter.work) {
       return true;
     } else if (experience.type === "education") {
-      return experienceStore.filter.education;
+      return filter.education;
     } else if (experience.type === "job") {
-      return experienceStore.filter.work;
+      return filter.work;
     } else if (experience.type === "project") {
-      return experienceStore.filter.projects;
+      return filter.projects;
     } else {
       return true;
     }
   });
+
+  return sortLatestExperiencesByDate(filteredExperiences);
 });
 
 const getFilters = computed<{ label: string, color?: string, active: boolean, toggle: () => void }[]>(() => {
   return [
     {
       label: "Education",
-      active: experienceStore.filter.education,
+      active: filter.education,
       color: "bg-green-500",
       toggle: () => {
-        experienceStore.filter.education = !experienceStore.filter.education;
+        filter.education = !filter.education;
       }
     },
     {
       label: "Work",
       color: "bg-blue-500",
-      active: experienceStore.filter.work,
+      active: filter.work,
       toggle: () => {
-        experienceStore.filter.work = !experienceStore.filter.work;
+        filter.work = !filter.work;
       }
     },
     {
       label: "Projects",
       color: "bg-yellow-500",
-      active: experienceStore.filter.projects,
+      active: filter.projects,
       toggle: () => {
-        experienceStore.filter.projects = !experienceStore.filter.projects;
+        filter.projects = !filter.projects;
       }
     }
   ];
 });
 
-/**
- * returns all filters that are active
- */
 const activeExperienceTypes = computed<string[]>(() => {
   const types: string[] = [];
 
-  if (experienceStore.filter.education) {
+  if (filter.education) {
     types.push("education");
   }
 
-  if (experienceStore.filter.work) {
+  if (filter.work) {
     types.push("work");
   }
 
-  if (experienceStore.filter.projects) {
+  if (filter.projects) {
     types.push("projects");
   }
 
   return types;
 });
+
+function sortLatestExperiencesByDate(experiences: Experience[]) {
+  let xp = [...experiences];
+
+  xp = xp.sort((a, b) => {
+    // sort experiences by start date:
+    // experiences with the latest start year should be at the beginning of the array
+
+    if (a.startYear > b.startYear) {
+      return -1;
+    } else if (a.startYear < b.startYear) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+  xp = xp.sort((a, b) => {
+    // sort experiences by end date:
+    // experiences with the latest end year should be at the beginning of the array
+
+    if (a.endYear > b.endYear) {
+      return -1;
+    } else if (a.endYear < b.endYear) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+  xp = xp.sort((a, b) => {
+    // sort experiences by context:
+    // experiences with an empty end year (null or 'present') should be at the beginning of the array
+
+    if (a.endYear === null || a.endYear === undefined || a.endYear === 0) {
+      return -1;
+    } else if (b.endYear === null || b.endYear === undefined || b.endYear === 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+  return xp;
+}
 
 // watch filters and update the url query
 watch(
@@ -116,9 +163,9 @@ onMounted(async () => {
     const queryFilter: string = query.get("filter");
 
     if (queryFilter && queryFilter.length >= 0) {
-      experienceStore.filter.education = queryFilter.includes("education");
-      experienceStore.filter.work = queryFilter.includes("work");
-      experienceStore.filter.projects = queryFilter.includes("projects");
+      filter.education = queryFilter.includes("education");
+      filter.work = queryFilter.includes("work");
+      filter.projects = queryFilter.includes("projects");
     }
   }
 });
