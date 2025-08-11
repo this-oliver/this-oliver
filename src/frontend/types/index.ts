@@ -45,7 +45,7 @@ export interface Experience {
 
 export interface Website {
   about: string
-  socias: { label: string, url: string }[]
+  socials: { label: string, url: string }[]
 }
 
 export interface User {

@@ -14,7 +14,7 @@ export default defineEventHandler(async (event): Promise<Website> => {
 
     return {
       about: website.about,
-      socias: website.socias || []
+      socials: website.socials || []
     };
   } catch (error) {
     throw createError({
