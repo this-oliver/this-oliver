@@ -3,8 +3,8 @@ updates:
   - package-ecosystem: npm
     directories:
       - /
-      - /packages/backend
-      - /packages/frontend
+      - /src/backend
+      - /src/frontend
     schedule:
       interval: daily
     commit-message:
@@ -14,8 +14,8 @@ updates:
 
   - package-ecosystem: docker
     directories:
-      - /packages/backend
-      - /packages/frontend
+      - /src/backend
+      - /src/frontend
     schedule:
       interval: daily
     commit-message:
