@@ -1,12 +1,13 @@
 import type { Website } from "~/types";
 
 export default defineEventHandler(async (event): Promise<Website> => {
-  const config = useRuntimeConfig(event);
+  const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
 
   try {
-    const res = await $fetch(`${config.cmsApiUrl}/api/website`, {
+    const endpoint = `${cmsApiUrl}/api/website`;
+    const res = await $fetch(endpoint, {
       headers: {
-        Authorization: `Bearer ${config.cmsApiToken}`
+        Authorization: `Bearer ${cmsApiToken}`
       }
     });
 

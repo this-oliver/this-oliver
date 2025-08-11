@@ -1,10 +1,11 @@
 export default defineEventHandler(async (event): Promise<string[]> => {
-  const config = useRuntimeConfig(event);
+  const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
 
   try {
-    const res = await $fetch(`${config.cmsApiUrl}/api/tags`, {
+    const endpoint = `${cmsApiUrl}/api/tags`;
+    const res = await $fetch(endpoint, {
       headers: {
-        Authorization: `Bearer ${config.cmsApiToken}`
+        Authorization: `Bearer ${cmsApiToken}`
       }
     });
 

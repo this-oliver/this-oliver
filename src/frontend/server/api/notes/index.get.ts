@@ -1,7 +1,7 @@
 import type { Note } from "~/types";
 
 export default defineEventHandler(async (event): Promise<{ notes: Note[], currentPage: number, totalPages: number }> => {
-  const config = useRuntimeConfig(event);
+  const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
 
   const query = getQuery(event);
   const page: number = Number(query.page) || 0;
@@ -12,14 +12,12 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
   let totalPages: number = 0;
 
   try {
-    const res = await $fetch(
-      `${config.cmsApiUrl}/api/notes?pagination[page]=${page}&pagination[pageSize]=${limit}&populate=tags`,
-      {
-        headers: {
-          Authorization: `Bearer ${config.cmsApiToken}`
-        }
+    const endpoint = `${cmsApiUrl}/api/notes?pagination[page]=${page}&pagination[pageSize]=${limit}&populate=tags`;
+    const res = await $fetch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${cmsApiToken}`
       }
-    );
+    });
 
     if (res && Array.isArray((res as any).data)) {
       list.push(...(res as any).data);
