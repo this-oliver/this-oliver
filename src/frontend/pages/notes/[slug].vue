@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Note } from "~/types";
-import { useNoteStore } from "~/stores/note-store";
 
 const errorReasons: string[] = [
   "The note may have been deleted",
@@ -9,12 +8,11 @@ const errorReasons: string[] = [
 ];
 
 const router = useRouter();
-const noteStore = useNoteStore();
 const { formatDate } = useTime();
 
 const { data, status } = await useAsyncData("note", async () => {
   const slug = router.currentRoute.value.params.slug as string;
-  const note: Note = await noteStore.getNote(slug);
+  const note: Note = await $fetch(`/api/notes/${slug}`);
 
   const title = `${note.title} - oliverrr`;
   const description = note.content.substring(0, 150) + (note.content.length > 150 ? "..." : "");

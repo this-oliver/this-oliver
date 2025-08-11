@@ -9,10 +9,6 @@ export const useNoteStore = defineStore("note", () => {
 
   const notes = ref<Note[]>([]);
   const tags = ref<string[]>([]);
-  const pagination = ref({
-    currentPage: 0,
-    totalPages: 0
-  });
 
   const getNotes = computed<Note[]>(() => notes.value);
 
@@ -34,23 +30,27 @@ export const useNoteStore = defineStore("note", () => {
     return filteredNotes;
   });
 
-  async function getNote(slug: string): Promise<Note> {
-    return await $fetch(`/api/notes/${slug}`);
-  }
+  const getTags = computed<string[]>(() => tags.value);
 
-  async function indexNotes(): Promise<Note[]> {
-    const rawNotes = await $fetch("/api/notes");
-    notes.value = sortNotesByDate(rawNotes.notes);
-    pagination.value.currentPage = rawNotes.currentPage;
-    pagination.value.totalPages = rawNotes.totalPages;
+  function setNotes(newNotes: Note[]): void {
+    const list = [...notes.value, ...newNotes];
 
-    return notes.value;
-  }
+    // filter out duplicates
+    const uniqueList = list.filter((item, index) => {
+      return list.findIndex(i => i._id === item._id) === index;
+    });
 
-  async function indexTags(): Promise<string[]> {
-    tags.value = await $fetch("/api/tags");
-    return tags.value;
-  }
+    notes.value = sortNotesByDate(uniqueList);
+  };
+
+  function setTags(newTags: string[]): void {
+    const list = [...tags.value, ...newTags];
+
+    // filter out duplicates
+    tags.value = list.filter((item, index) => {
+      return list.indexOf(item) === index;
+    });
+  };
 
   function sortNotesByDate(notes: Note[]) {
     return notes.sort((a, b) => {
@@ -81,15 +81,12 @@ export const useNoteStore = defineStore("note", () => {
   }
 
   return {
-    notes,
-    tags,
-    pagination,
     filter,
     getNotes,
     getFilteredNotes,
-    getNote,
-    indexNotes,
-    indexTags,
+    getTags,
+    setNotes,
+    setTags,
     removeTagFromFilter,
     addTagToFilter,
     resetFilter,

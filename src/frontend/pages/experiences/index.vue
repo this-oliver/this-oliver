@@ -17,8 +17,15 @@ useSeoMeta({
 const query = useRouterQuery();
 const experienceStore = useExperienceStore();
 
+const xpCurrentPage = ref(1);
+const xpTotalPages = ref(1);
+
 const { data, status } = await useAsyncData("experiences", async () => {
-  return await experienceStore.indexExperiences();
+  const { experiences, currentPage, totalPages } = await $fetch("/api/experiences");
+  experienceStore.setExperiences(experiences);
+  xpCurrentPage.value = currentPage;
+  xpTotalPages.value = totalPages;
+  return experienceStore.getExperiences;
 });
 
 const getExperiences = computed<Experience[]>(() => {

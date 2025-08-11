@@ -19,20 +19,30 @@ useSeoMeta({
 const noteStore = useNoteStore();
 const query = useRouterQuery();
 
-const { status, error } = await useAsyncData("notes", async () => {
-  const [notes, tags] = await Promise.all([
-    noteStore.indexNotes(),
-    noteStore.indexTags()
-  ]);
+const notesCurrentPage = ref(1);
+const notesTotalPages = ref(1);
 
-  return { notes, tags };
+const { status, error } = await useAsyncData("notes", async () => {
+  const { notes, currentPage, totalPages } = await $fetch("/api/notes");
+  const tags = await $fetch("/api/tags");
+
+  noteStore.setNotes(notes);
+  noteStore.setTags(tags);
+
+  notesCurrentPage.value = currentPage;
+  notesTotalPages.value = totalPages;
+
+  return {
+    notes: noteStore.getNotes,
+    tags: noteStore.getTags
+  };
 });
 
 const showSearchField = ref<boolean>(false);
 const showFilterSidebar = ref<boolean>(false);
 
 const getTagOptions = computed<{ label: string, active: boolean, action: () => void }[]>(() => {
-  return noteStore.tags.map(tag => ({
+  return noteStore.getTags.map((tag: string) => ({
     label: tag,
     active: noteStore.filter.tags.includes(tag),
     action: () => {

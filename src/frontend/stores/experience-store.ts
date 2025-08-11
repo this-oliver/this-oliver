@@ -4,11 +4,6 @@ import { defineStore } from "pinia";
 export const useExperienceStore = defineStore("experience", () => {
   const experiences = ref<Experience[]>([]);
 
-  const pagination = ref({
-    currentPage: 0,
-    totalPages: 0
-  });
-
   const filter = reactive({
     projects: false,
     education: false,
@@ -17,13 +12,16 @@ export const useExperienceStore = defineStore("experience", () => {
 
   const getExperiences = computed<Experience[]>(() => experiences.value);
 
-  async function indexExperiences(): Promise<Experience[]> {
-    const res = await $fetch("/api/experiences");
-    experiences.value = sortLatestExperiencesByDate(res.experiences);
-    pagination.value.currentPage = res.currentPage;
-    pagination.value.totalPages = res.totalPages;
-    return experiences.value;
-  }
+  function setExperiences(xp: Experience[]) {
+    const list = [...experiences.value, ...xp];
+
+    // filter out duplicates
+    const uniqueList = list.filter((item, index) => {
+      return list.findIndex(i => i._id === item._id) === index;
+    });
+
+    experiences.value = sortLatestExperiencesByDate(uniqueList);
+  };
 
   function sortLatestExperiencesByDate(experiences: Experience[]) {
     let xp = [...experiences];
@@ -73,6 +71,6 @@ export const useExperienceStore = defineStore("experience", () => {
   return {
     filter,
     getExperiences,
-    indexExperiences
+    setExperiences
   };
 });
