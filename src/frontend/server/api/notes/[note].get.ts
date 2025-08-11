@@ -1,13 +1,14 @@
 import type { Note } from "~/types";
 
 export default defineEventHandler(async (event): Promise<Note> => {
-  const config = useRuntimeConfig(event);
+  const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
   const noteId = getRouterParam(event, "note");
 
   try {
-    const res = await $fetch(`${config.cmsApiUrl}/api/notes?filters[slug][$eq]=${noteId}`, {
+    const endpoint = `${cmsApiUrl}/api/notes?filters[slug][$eq]=${noteId}`;
+    const res = await $fetch(endpoint, {
       headers: {
-        Authorization: `Bearer ${config.cmsApiToken}`
+        Authorization: `Bearer ${cmsApiToken}`
       }
     });
 
