@@ -174,10 +174,10 @@ onMounted(async () => {
       <!-- whole new row - show any selected tags -->
       <div v-if="filter.tags.length > 0" class="flex flex-wrap gap-2">
         <span
-          v-for="tag in noteStore.filter.tags"
+          v-for="tag in filter.tags"
           :key="tag"
           class="bg-pinkish text-slate-800 px-2 py-1 rounded-full text-sm cursor-pointer flex gap-1 items-center"
-          @click="noteStore.removeTagFromFilter(tag)">
+          @click="removeTagFromFilter(tag)">
           <span>{{ tag }}</span>
           <icon name="mdi-close" class="text-xs" />
         </span>
