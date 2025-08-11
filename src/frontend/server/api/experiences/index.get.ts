@@ -1,7 +1,7 @@
 import type { Experience } from "~/types";
 
 export default defineEventHandler(async (event): Promise<{ experiences: Experience[], currentPage: number, totalPages: number }> => {
-  const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
+  const { cmsApiToken, cmsApiUrl, cmsMediaUrl } = useRuntimeConfig(event);
 
   const query = getQuery(event);
   const page: number = Number(query.page) || 0;
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event): Promise<{ experiences: Experien
       name: image.name,
       alt: image.alt,
       caption: image.caption,
-      url: `${config.cmsMediaUrl}${image.url}`
+      url: cmsMediaUrl ? `${cmsMediaUrl}${image.url}` : image.url
     }))
   }));
 
