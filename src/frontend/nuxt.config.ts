@@ -23,11 +23,6 @@ export default defineNuxtConfig({
 
   modules: ["@pinia/nuxt", "@nuxt/icon"],
 
-  /**
-   * NOTE: `runtimeConfig.public.restApi` is available in the client
-   * and server side while `runtimeConfig.secret` is only available
-   * in the server side.
-   */
   runtimeConfig: {
     cmsApiUrl: "",
     cmsApiToken: "",
