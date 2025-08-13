@@ -4,8 +4,8 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
   const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
 
   const query = getQuery(event);
-  const page: number = Number(query.page) || 0;
-  const limit: number = Number(query.limit) || 12;
+  const page: number = Number(query.page) || 1;
+  const limit: number = Number(query.limit) || 10;
 
   const list: unknown[] = [];
   let currentPage: number = 0;
