@@ -12,7 +12,7 @@ export default defineEventHandler(async (event): Promise<{ experiences: Experien
   let totalPages: number = 0;
 
   try {
-    const endpoint = `${cmsApiUrl}/api/experiences?pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
+    const endpoint = `${cmsApiUrl}/api/experiences?sort=startDate:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
     const res = await $fetch(endpoint, {
       headers: {
         Authorization: `Bearer ${cmsApiToken}`

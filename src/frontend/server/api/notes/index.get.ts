@@ -12,7 +12,7 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
   let totalPages: number = 0;
 
   try {
-    const endpoint = `${cmsApiUrl}/api/notes?pagination[page]=${page}&pagination[pageSize]=${limit}&populate=tags`;
+    const endpoint = `${cmsApiUrl}/api/notes?sort=date:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=tags`;
     const res = await $fetch(endpoint, {
       headers: {
         Authorization: `Bearer ${cmsApiToken}`
