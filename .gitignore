@@ -3,6 +3,9 @@
 .DS_Store
 oliverrr.code-workspace
 
+# databases
+.mongodb
+
 # certificates
 certificates
 
