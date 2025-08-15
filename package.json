@@ -19,5 +19,6 @@
   },
   "lint-staged": {
     "*": "npm run lint:fix"
-  }
+  },
+  "version": "4.0.0"
 }
