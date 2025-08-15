@@ -33,8 +33,8 @@ function checkCommand(command) {
   }
 }
 
-function uploadToStrapi(endpoint, data) {
-  const url = `${STRAPI_URL}/api/${endpoint}`;
+function uploadToStrapi(endpoint, data, published = true) {
+  const url = `${STRAPI_URL}/api/${endpoint}?status=${published ? "published" : "draft"}`;
   const options = {
     method: "POST",
     headers: {
@@ -83,14 +83,11 @@ function processCollection(collection) {
     });
 
     data.forEach((note) => {
-      const { title, content, slug, createdAt } = note;
+      const { title, content, slug, createdAt, publish } = note;
       const date = createdAt.$date.split("T")[0];
-      uploadToStrapi("notes", {
-        title,
-        content,
-        slug,
-        date
-      });
+
+      const body = { title, content, slug, date };
+      uploadToStrapi("notes", body, publish);
       console.log(`Uploaded note: ${title}`);
     });
   }
