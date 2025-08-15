@@ -18,21 +18,19 @@ useSeoMeta({
 
 const query = useRouterQuery();
 
-const notesCurrentPage = ref(1);
-const notesTotalPages = ref(1);
-
 const { data, status, error } = await useAsyncData("notes", async () => {
   const [notesData, tags] = await Promise.all([
     $fetch("/api/notes"),
     $fetch("/api/tags")
   ]);
 
-  notesCurrentPage.value = notesData.currentPage || notesCurrentPage.value;
-  notesTotalPages.value = notesData.totalPages || notesTotalPages.value;
-
   return {
     notes: notesData.notes,
-    tags
+    tags,
+    pagination: {
+      currentPage: notesData.currentPage || 0,
+      totalPages: notesData.totalPages || 0
+    }
   };
 });
 
@@ -41,11 +39,20 @@ const filter = reactive({
   tags: [] as string[]
 });
 
+const pagination = reactive({
+  currentPage: data.value?.pagination.currentPage || 0,
+  totalPages: data.value?.pagination.totalPages || 0
+});
+
+const notes = ref<Note[]>(data.value?.notes || []);
 const showSearchField = ref<boolean>(false);
 const showFilterSidebar = ref<boolean>(false);
 
+const loading = ref(false);
+const scrollYPosition = ref(0);
+
 const getFilteredNotes = computed<Note[]>(() => {
-  let filteredNotes = data.value?.notes || [];
+  let filteredNotes = notes.value || [];
 
   if (filter.query) {
     filteredNotes = filteredNotes.filter((note) => {
@@ -104,23 +111,28 @@ function resetFilter(): void {
   filter.tags = [];
 }
 
+async function fetchMoreNotes(): Promise<void> {
+  if (pagination.currentPage > pagination.totalPages) {
+    return;
+  }
+
+  pagination.currentPage = pagination.currentPage + 1;
+  const newNotes = await $fetch(`/api/notes?page=${pagination.currentPage}`);
+  notes.value.push(...newNotes.notes);
+}
+
 // deep watch filters and update route query
 watch(
-  () => filter.query,
-  async (newQuery) => {
-    if (newQuery.length > 0) {
-      await query.add("q", newQuery);
+  () => filter,
+  async (newFilter) => {
+    if (newFilter.query.length > 0) {
+      await query.add("q", newFilter.query);
     } else {
       await query.remove("q");
     }
-  }
-);
 
-watch(
-  () => filter.tags,
-  async (newTags) => {
-    if (newTags.length > 0) {
-      await query.add("tags", newTags.join(","));
+    if (newFilter.tags.length > 0) {
+      await query.add("tags", newFilter.tags.join(","));
     } else {
       await query.remove("tags");
     }
@@ -138,6 +150,21 @@ onMounted(async () => {
     const tags = query.get("tags") as string;
     filter.tags = tags.split(",").filter(tag => tag.length > 0);
   }
+
+  // add event listener for scroll to fetch more notes
+  window.addEventListener("scroll", () => {
+    scrollYPosition.value = window.scrollY;
+    const scrollPosition = window.innerHeight + scrollYPosition.value;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if (scrollPosition >= documentHeight - 100 && status.value !== "pending" && !loading.value) {
+      loading.value = true;
+      fetchMoreNotes()
+        .finally(() => {
+          loading.value = false;
+        });
+    }
+  });
 });
 </script>
 

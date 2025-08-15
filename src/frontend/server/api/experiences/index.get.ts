@@ -5,14 +5,14 @@ export default defineEventHandler(async (event): Promise<{ experiences: Experien
 
   const query = getQuery(event);
   const page: number = Number(query.page) || 0;
-  const limit: number = Number(query.limit) || 12;
+  const limit: number = Number(query.limit) || 10;
 
   const list: unknown[] = [];
   let currentPage: number = 0;
   let totalPages: number = 0;
 
   try {
-    const endpoint = `${cmsApiUrl}/api/experiences?pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
+    const endpoint = `${cmsApiUrl}/api/experiences?sort=startDate:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
     const res = await $fetch(endpoint, {
       headers: {
         Authorization: `Bearer ${cmsApiToken}`

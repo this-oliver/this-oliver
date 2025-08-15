@@ -15,8 +15,26 @@ useSeoMeta({
 
 const query = useRouterQuery();
 
-const xpCurrentPage = ref(1);
-const xpTotalPages = ref(1);
+const { data, status } = await useAsyncData("experiences", async () => {
+  const { experiences, currentPage, totalPages } = await $fetch("/api/experiences");
+
+  return {
+    experiences,
+    pagination: {
+      currentPage,
+      totalPages
+    }
+  };
+});
+
+const experiences = ref<Experience[]>(data.value?.experiences || []);
+const loading = ref(false);
+const scrollYPosition = ref(0);
+
+const pagination = reactive({
+  currentPage: data.value?.pagination.currentPage || 1,
+  totalPages: data.value?.pagination.totalPages || 1
+});
 
 const filter = reactive({
   projects: false,
@@ -24,19 +42,12 @@ const filter = reactive({
   work: false
 });
 
-const { data, status } = await useAsyncData("experiences", async () => {
-  const { experiences, currentPage, totalPages } = await $fetch("/api/experiences");
-  xpCurrentPage.value = currentPage;
-  xpTotalPages.value = totalPages;
-  return experiences;
-});
-
 const getExperiences = computed<Experience[]>(() => {
   if (!data.value) {
     return [];
   }
 
-  const filteredExperiences = data.value.filter((experience) => {
+  const filteredExperiences = experiences.value.filter((experience) => {
     if (!filter.education && !filter.projects && !filter.work) {
       return true;
     } else if (experience.type === "education") {
@@ -53,7 +64,7 @@ const getExperiences = computed<Experience[]>(() => {
   return sortLatestExperiencesByDate(filteredExperiences);
 });
 
-const getFilters = computed<{ label: string, color?: string, active: boolean, toggle: () => void }[]>(() => {
+const getFilterOptions = computed<{ label: string, color?: string, active: boolean, toggle: () => void }[]>(() => {
   return [
     {
       label: "Education",
@@ -145,6 +156,16 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
   return xp;
 }
 
+async function fetchMoreExperiences(): Promise<void> {
+  if (pagination.currentPage > pagination.totalPages) {
+    return;
+  }
+
+  pagination.currentPage = pagination.currentPage + 1;
+  const newExperiences = await $fetch(`/api/experiences?page=${pagination.currentPage}`);
+  experiences.value.push(...newExperiences.experiences);
+}
+
 // watch filters and update the url query
 watch(
   () => activeExperienceTypes.value,
@@ -168,6 +189,21 @@ onMounted(async () => {
       filter.projects = queryFilter.includes("projects");
     }
   }
+
+  // add event listener for scroll to fetch more notes
+  window.addEventListener("scroll", () => {
+    scrollYPosition.value = window.scrollY;
+    const scrollPosition = window.innerHeight + scrollYPosition.value;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if (scrollPosition >= documentHeight - 100 && status.value !== "pending" && !loading.value) {
+      loading.value = true;
+      fetchMoreExperiences()
+        .finally(() => {
+          loading.value = false;
+        });
+    }
+  });
 });
 </script>
 
@@ -176,11 +212,11 @@ onMounted(async () => {
     <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="flex gap-2">
         <base-btn
-          v-for="filter in getFilters"
-          :key="filter.label"
-          :class="`${filter.active ? filter.color : ''}`"
-          @click="filter.toggle()">
-          {{ filter.label }}
+          v-for="option in getFilterOptions"
+          :key="option.label"
+          :class="`${option.active ? option.color : ''}`"
+          @click="option.toggle()">
+          {{ option.label }}
         </base-btn>
       </div>
 
