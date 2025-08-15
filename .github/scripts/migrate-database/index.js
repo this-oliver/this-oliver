@@ -20,10 +20,6 @@ if (!fs.existsSync(TEMPORARY_DIR)) {
 
 const MONGODB_COLLECTIONS = ["notes", "experiences"];
 
-function createSlug(string) {
-  return string.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
 function checkCommand(command) {
   try {
     execSync(`which ${command}`);
@@ -33,7 +29,7 @@ function checkCommand(command) {
   }
 }
 
-function uploadToStrapi(endpoint, data, published = true) {
+async function uploadToStrapi(endpoint, data, published = true) {
   const url = `${STRAPI_URL}/api/${endpoint}?status=${published ? "published" : "draft"}`;
   const options = {
     method: "POST",
@@ -43,62 +39,65 @@ function uploadToStrapi(endpoint, data, published = true) {
     }
   };
 
-  const req = http.request(url, options, (res) => {
-    res.on("data", (chunk) => {
-      console.log(`Response: ${chunk}`);
+  return new Promise((resolve, reject) => {
+    const req = http.request(url, options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        if (res.statusCode === 200 || res.statusCode === 201) {
+          resolve(JSON.parse(data));
+        } else {
+          reject(new Error(`Failed to upload from Strapi: ${res.statusCode} ${url} - ${data}`));
+        }
+      });
     });
+    req.write(JSON.stringify({ data }));
+    req.on("error", (error) => {
+      reject(new Error(`Error fetching from Strapi: ${error.message}`));
+    });
+    req.end();
   });
-
-  req.on("error", (error) => {
-    console.error(`Error uploading to Strapi: ${error.message}`);
-  });
-
-  req.write(JSON.stringify({ data }));
-  req.end();
 }
 
-function processCollection(collection) {
-  console.log(`Fetching collection: ${collection}`);
+async function processCollection(collection) {
   const outputFile = path.join(TEMPORARY_DIR, `${collection}.json`);
 
-  try {
-    execSync(`mongoexport --uri="${MONGO_URL}/${MONGO_DB}" --username="${MONGO_USERNAME}" --password="${MONGO_TOKEN}" --out="${outputFile}" --collection="${collection}" --jsonArray`);
-  } catch (error) {
-    console.error(`Error exporting collection ${collection}: ${error.message}`);
-    return;
-  }
-
   if (!fs.existsSync(outputFile)) {
-    console.error(`File ${outputFile} does not exist. Skipping collection ${collection}.`);
-    return;
+    console.warn(`Attempting to export collection ${collection}.`);
+
+    try {
+      execSync(`mongoexport --uri="${MONGO_URL}/${MONGO_DB}" --username="${MONGO_USERNAME}" --password="${MONGO_TOKEN}" --out="${outputFile}" --collection="${collection}" --jsonArray`);
+    } catch (error) {
+      throw new Error(`Error exporting collection ${collection}: ${error.message}`);
+    }
   }
 
   const data = JSON.parse(fs.readFileSync(outputFile, "utf-8"));
 
   if (collection === "notes") {
     const tags = [...new Set(data.flatMap(note => note.tags))];
-    tags.forEach((tag) => {
-      uploadToStrapi("tags", { label: tag });
+    tags.forEach(async (tag) => {
+      await uploadToStrapi("tags", { label: tag });
       console.log(`Uploaded tag: ${tag}`);
     });
 
-    data.forEach((note) => {
+    data.forEach(async (note) => {
       const { title, content, slug, createdAt, publish } = note;
       const date = createdAt.$date.split("T")[0];
 
       const body = { title, content, slug, date };
-      uploadToStrapi("notes", body, publish);
+      await uploadToStrapi("notes", body, publish);
       console.log(`Uploaded note: ${title}`);
     });
   }
 
   if (collection === "experiences") {
-    data.forEach((experience) => {
+    data.forEach(async (experience) => {
       const { title, org, startYear, endYear, description, type, link } = experience;
-      const slug = createSlug(title);
-      uploadToStrapi("experiences", {
+      await uploadToStrapi("experiences", {
         title,
-        slug,
         org: type === "project" ? "personal" : org,
         startDate: `${startYear}-01-01`,
         endDate: endYear ? `${endYear}-01-01` : null,
@@ -115,7 +114,13 @@ function processCollection(collection) {
 ["mongosh", "curl", "jq"].forEach(checkCommand);
 
 // Process collections
-MONGODB_COLLECTIONS.forEach(processCollection);
+MONGODB_COLLECTIONS.forEach(async (collection) => {
+  try {
+    await processCollection(collection);
+  } catch (error) {
+    console.error(`Error processing collection ${collection}: ${error.message}`);
+  }
+});
 
 // Cleanup temporary directory
 if (fs.existsSync(TEMPORARY_DIR)) {
