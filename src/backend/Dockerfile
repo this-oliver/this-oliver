@@ -34,4 +34,4 @@ RUN chown -R 1001:1001 /app
 USER 1001
 
 # Start the application
-ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
+CMD ["npm", "start"]
