@@ -8,7 +8,7 @@ certificates
 
 # ignore all .env files
 .env*
-!.env.sample
+!.env.example
 
 # node modules
 node_modules
