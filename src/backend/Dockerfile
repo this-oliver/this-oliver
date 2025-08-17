@@ -25,6 +25,9 @@ COPY public/robots.txt ./public/robots.txt
 COPY src/ ./src/
 COPY tsconfig.json ./
 
+# Build the application
+RUN npm run build
+
 # Expose the port the app runs on
 EXPOSE $PORT
 

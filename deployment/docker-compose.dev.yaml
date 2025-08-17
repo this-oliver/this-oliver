@@ -1,6 +1,7 @@
 services:
   frontend:
     build: ../src/frontend
+    user: '1001:1001'
     env_file:
       - ../src/frontend/.env
     environment:
@@ -10,6 +11,7 @@ services:
 
   backend:
     build: ../src/backend
+    user: '1001:1001'
     env_file:
       - ../src/backend/.env
     volumes:
