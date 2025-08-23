@@ -191,8 +191,8 @@ onMounted(async () => {
         </base-btn>
 
         <base-btn
-          :class="`flex items-center gap-2 ${filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''}`"
-          @click="showFilterSidebar = true">
+          :class="`flex items-center gap-2 ${filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''} ${showFilterSidebar ? 'font-bold' : ''}`"
+          @click="showFilterSidebar = !showFilterSidebar">
           <icon name="mdi-filter" class="h-4 w-4 mr-1" />
           Filter
         </base-btn>
