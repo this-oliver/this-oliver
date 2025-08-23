@@ -84,6 +84,10 @@ const getTagOptions = computed<{ label: string, active: boolean, action: () => v
         }
       }
     }))
+      // filter out duplicate tags
+      .filter((tag, index, self) => index === self.findIndex(t => t.label === tag.label))
+      // sort alphabetically
+      .sort((a, b) => a.label.localeCompare(b.label))
     : [];
 });
 
