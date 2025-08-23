@@ -29,8 +29,8 @@ export interface Experience {
   _id: string
   title: string
   org: string
-  startYear: number
-  endYear: number
+  startDate: string
+  endDate: string
   description: string
   type: ExperienceType
   link?: string

@@ -118,9 +118,9 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
     // sort experiences by start date:
     // experiences with the latest start year should be at the beginning of the array
 
-    if (a.startYear > b.startYear) {
+    if (a.startDate > b.startDate) {
       return -1;
-    } else if (a.startYear < b.startYear) {
+    } else if (a.startDate < b.startDate) {
       return 1;
     } else {
       return 0;
@@ -131,9 +131,9 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
     // sort experiences by end date:
     // experiences with the latest end year should be at the beginning of the array
 
-    if (a.endYear > b.endYear) {
+    if (a.endDate > b.endDate) {
       return -1;
-    } else if (a.endYear < b.endYear) {
+    } else if (a.endDate < b.endDate) {
       return 1;
     } else {
       return 0;
@@ -144,9 +144,9 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
     // sort experiences by context:
     // experiences with an empty end year (null or 'present') should be at the beginning of the array
 
-    if (a.endYear === null || a.endYear === undefined || a.endYear === 0) {
+    if (a.endDate === null || a.endDate === undefined || a.endDate === 0) {
       return -1;
-    } else if (b.endYear === null || b.endYear === undefined || b.endYear === 0) {
+    } else if (b.endDate === null || b.endDate === undefined || b.endDate === 0) {
       return 1;
     } else {
       return 0;
