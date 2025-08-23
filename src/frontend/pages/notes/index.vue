@@ -16,7 +16,7 @@ useSeoMeta({
   ogSiteName: "oliverrr's notes"
 });
 
-const query = useRouterQuery();
+const queryHelper = useRouterQuery();
 
 const { data, status, error } = await useAsyncData("notes", async () => {
   const [notesData, tags] = await Promise.all([
@@ -35,7 +35,7 @@ const { data, status, error } = await useAsyncData("notes", async () => {
 });
 
 const filter = reactive({
-  query: "",
+  search: "",
   tags: [] as string[]
 });
 
@@ -51,23 +51,35 @@ const showFilterSidebar = ref<boolean>(false);
 const loading = ref(false);
 const scrollYPosition = ref(0);
 
-const getFilteredNotes = computed<Note[]>(() => {
-  let filteredNotes = notes.value || [];
+/**
+ * removes duplicates and filters based on search and tags
+ */
+const getNotes = computed<Note[]>(() => {
+  // remove duplicates
+  const uniqueNotes = notes.value.filter((note, index, self) =>
+    index === self.findIndex(n => n._id === note._id)
+  );
 
-  if (filter.query) {
-    filteredNotes = filteredNotes.filter((note) => {
-      const matchesTitle = note.title.toLowerCase().includes(filter.query.toLowerCase());
-      const matchesContent = note.content.toLowerCase().includes(filter.query.toLowerCase());
-      return matchesTitle || matchesContent;
-    });
-  }
+  // filter based on search and tags
+  const filteredNotes = uniqueNotes.filter((note) => {
+    if (filter.search) {
+      const matchesTitle = note.title.toLowerCase().includes(filter.search.toLowerCase());
+      const matchesContent = note.content.toLowerCase().includes(filter.search.toLowerCase());
+      if (!matchesTitle && !matchesContent) {
+        return false;
+      }
+    }
 
-  if (filter.tags.length > 0) {
-    filteredNotes = filteredNotes.filter(note =>
-      filter.tags.every(tag => note.tags.includes(tag))
-    );
-  }
+    if (filter.tags.length > 0) {
+      if (!filter.tags.every(tag => note.tags.includes(tag))) {
+        return false;
+      }
+    }
 
+    return true;
+  });
+
+  // sorted notes
   return sortNotesByDate(filteredNotes);
 });
 
@@ -111,62 +123,100 @@ function addTagToFilter(tag: string): void {
 }
 
 function resetFilter(): void {
-  filter.query = "";
+  filter.search = "";
   filter.tags = [];
 }
 
-async function fetchMoreNotes(): Promise<void> {
-  if (pagination.currentPage > pagination.totalPages) {
-    return;
+async function fetchNotes(options: { search?: string, tags?: string[], pagination?: { page: number, limit?: number } }): Promise<Note[]> {
+  const urlQuerys: string[] = [];
+
+  if (options.search) {
+    urlQuerys.push(`search=${encodeURIComponent(options.search)}`);
   }
 
-  pagination.currentPage = pagination.currentPage + 1;
-  const newNotes = await $fetch(`/api/notes?page=${pagination.currentPage}`);
-  notes.value.push(...newNotes.notes);
+  if (options.tags && options.tags.length > 0) {
+    urlQuerys.push(`tags=${encodeURIComponent(options.tags.join(","))}`);
+  }
+
+  if (options.pagination?.page) {
+    urlQuerys.push(`page=${options.pagination.page}`);
+  }
+
+  if (options.pagination?.limit) {
+    urlQuerys.push(`limit=${options.pagination.limit}`);
+  }
+
+  const query: string | null = urlQuerys.length > 0 ? `${urlQuerys.join("&")}` : null;
+  const res = await $fetch(query ? `/api/notes?${query}` : "/api/notes");
+  return res.notes;
 }
 
-// deep watch filters and update route query
 watch(
-  () => filter,
-  async (newFilter) => {
-    if (newFilter.query.length > 0) {
-      await query.add("q", newFilter.query);
-    } else {
-      await query.remove("q");
+  () => filter.search,
+  async (newSearch, oldSearch) => {
+    const searchHasChanged = newSearch.trim() !== oldSearch.trim();
+
+    if (!searchHasChanged) {
+      return;
     }
 
-    if (newFilter.tags.length > 0) {
-      await query.add("tags", newFilter.tags.join(","));
+    if (newSearch && newSearch.trim().length > 0) {
+      await queryHelper.add("q", newSearch.trim());
+
+      const fetchedNotes = await fetchNotes({ search: newSearch });
+      notes.value.push(...fetchedNotes);
     } else {
-      await query.remove("tags");
+      await queryHelper.remove("q");
     }
-  },
-  { deep: true }
+  }
+);
+
+watch(
+  () => filter.tags,
+  async (newTags, oldTags) => {
+    const tagsHaveChanged = JSON.stringify(newTags) !== JSON.stringify(oldTags);
+
+    if (!tagsHaveChanged) {
+      return;
+    }
+
+    if (newTags.length > 0) {
+      await queryHelper.add("q", newTags.join(","));
+      const fetchedNotes = await fetchNotes({ tags: newTags });
+      notes.value.push(...fetchedNotes);
+    } else {
+      await queryHelper.remove("q");
+    }
+  }
 );
 
 onMounted(async () => {
-  if (query.has("q")) {
-    filter.query = query.get("q") as string;
+  if (queryHelper.has("q")) {
+    filter.search = queryHelper.get("q") as string;
     showSearchField.value = true;
   }
 
-  if (query.has("tags")) {
-    const tags = query.get("tags") as string;
+  if (queryHelper.has("tags")) {
+    const tags = queryHelper.get("tags") as string;
     filter.tags = tags.split(",").filter(tag => tag.length > 0);
   }
 
   // add event listener for scroll to fetch more notes
-  window.addEventListener("scroll", () => {
+  window.addEventListener("scroll", async () => {
     scrollYPosition.value = window.scrollY;
     const scrollPosition = window.innerHeight + scrollYPosition.value;
     const documentHeight = document.documentElement.scrollHeight;
 
     if (scrollPosition >= documentHeight - 100 && status.value !== "pending" && !loading.value) {
       loading.value = true;
-      fetchMoreNotes()
-        .finally(() => {
-          loading.value = false;
-        });
+
+      pagination.currentPage = pagination.currentPage + 1;
+      const fetchedNotes = await fetchNotes({
+        pagination: { page: pagination.currentPage }
+      });
+
+      notes.value.push(...fetchedNotes);
+      loading.value = false;
     }
   });
 });
@@ -178,10 +228,10 @@ onMounted(async () => {
       <div id="filter" class="h-10 mb-2 flex gap-2">
         <div v-if="showSearchField" class="p-1 flex gap-2 items-center brutalist-outline">
           <input
-            v-model="filter.query"
+            v-model="filter.search"
             placeholder="Search..."
-            :class="`w-full h-full ${filter.query.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
-          <button class="p-2 flex items-center cursor-pointer" @click="filter.query = ''; showSearchField = false;">
+            :class="`w-full h-full ${filter.search.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
+          <button class="p-2 flex items-center cursor-pointer" @click="filter.search = ''; showSearchField = false;">
             <icon name="mdi-close" class="text-lg" />
           </button>
         </div>
@@ -222,9 +272,9 @@ onMounted(async () => {
         <error-card message="An error occurred while fetching experiences. Please try again later." />
       </div>
 
-      <div v-else-if="getFilteredNotes.length > 0" class="flex flex-col gap-4">
+      <div v-else-if="getNotes.length > 0" class="flex flex-col gap-4">
         <NoteCard
-          v-for="note in getFilteredNotes"
+          v-for="note in getNotes"
           :key="note._id"
           :note="note" />
       </div>
