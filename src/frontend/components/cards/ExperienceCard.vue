@@ -32,6 +32,11 @@ function isEmpty(text: any): boolean {
 
   return text === null || text === undefined;
 }
+
+function getPrettyDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(undefined, { year: "numeric", month: "short" });
+}
 </script>
 
 <template>
@@ -47,7 +52,7 @@ function isEmpty(text: any): boolean {
     </client-only>
 
     <p>
-      {{ props.experience.startYear }} - {{ props.experience.endYear || 'present' }}
+      {{ getPrettyDate(props.experience.startDate) }} - {{ props.experience.endDate ? getPrettyDate(props.experience.endDate) : 'present' }}
     </p>
 
     <h4 v-if="!isEmpty(props.experience.org)">
