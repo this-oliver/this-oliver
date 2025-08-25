@@ -6,13 +6,36 @@ export default defineEventHandler(async (event): Promise<{ notes: Note[], curren
   const query = getQuery(event);
   const page: number = Number(query.page) || 1;
   const limit: number = Number(query.limit) || 10;
+  const search: string | null = query.search ? String(query.search) : null;
+  const tags: string[] = query.tags ? String(query.tags).split(",").map(tag => tag.trim()).filter(tag => tag.length > 0) : [];
 
   const list: unknown[] = [];
   let currentPage: number = 0;
   let totalPages: number = 0;
 
+  const filters: string[] = [
+    "populate=tags",
+    "sort=date:desc"
+  ];
+
+  if (search) {
+    filters.push(`filters[$or][0][title][$containsi]=${search}`);
+    filters.push(`filters[$or][1][content][$containsi]=${search}`);
+  }
+
+  if (tags.length > 0) {
+    tags.forEach((tag) => {
+      filters.push(`filters[tags][label][$containsi]=${tag}`);
+    });
+  }
+
+  if (!search && tags.length <= 0) {
+    filters.push(`pagination[page]=${page}`);
+    filters.push(`pagination[pageSize]=${limit}`);
+  }
+
   try {
-    const endpoint = `${cmsApiUrl}/api/notes?sort=date:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=tags`;
+    const endpoint = `${cmsApiUrl}/api/notes?${filters.join("&")}`;
     const res = await $fetch(endpoint, {
       headers: {
         Authorization: `Bearer ${cmsApiToken}`
