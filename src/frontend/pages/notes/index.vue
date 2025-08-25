@@ -172,20 +172,18 @@ watch(
 );
 
 watch(
-  () => filter.tags,
+  () => filter.tags.toString(),
   async (newTags, oldTags) => {
-    const tagsHaveChanged = JSON.stringify(newTags) !== JSON.stringify(oldTags);
-
-    if (!tagsHaveChanged) {
+    if (newTags === oldTags) {
       return;
     }
 
-    if (newTags.length > 0) {
-      await queryHelper.add("q", newTags.join(","));
-      const fetchedNotes = await fetchNotes({ tags: newTags });
+    if (filter.tags.length > 0) {
+      await queryHelper.add("tags", filter.tags.join(","));
+      const fetchedNotes = await fetchNotes({ tags: filter.tags });
       notes.value.push(...fetchedNotes);
     } else {
-      await queryHelper.remove("q");
+      await queryHelper.remove("tags");
     }
   }
 );
