@@ -84,6 +84,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ needs.release.outputs.released == 'true' && 'production' || 'development' }}
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
@@ -122,7 +125,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
             "kubectl create secret docker-registry ${{ steps.set-env.outputs.environment }}-oliverrr-regcred \
-              --docker-server=ghcr.io \
+              --docker-server=${{ vars.REGISTRY_SERVER }} \
               --docker-username=${{ vars.REGISTRY_USER }} \
               --docker-password=${{ secrets.REGISTRY_TOKEN }} \
               --dry-run=client -o yaml | kubectl apply -f -"
@@ -145,13 +148,15 @@ jobs:
               --dry-run=client -o yaml | kubectl apply -f -"
       - name: Update image tags
         run: |
+          tag="latest"
           if [[ "${{ needs.release.outputs.released }}" == "true" ]]; then
-            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-              "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/website-frontend:${{ needs.release.outputs.tag }} & kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend backend=ghcr.io/this-oliver/website-backend:${{ needs.release.outputs.tag }}"
-          else
-            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/website-frontend:${{ github.sha || 'latest' }} & kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend backend=ghcr.io/this-oliver/website-backend:${{ github.sha || 'latest' }}"
+            tag="${{ needs.release.outputs.tag }}"
+          elif [[ "${{ inputs.build }}" == "true" ]]; then
+            tag="${{ github.sha }}"
           fi
+
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/website-frontend:${tag} & kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend backend=ghcr.io/this-oliver/website-backend:${tag}"
       - name: Restart deployments
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
