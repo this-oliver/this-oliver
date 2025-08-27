@@ -111,6 +111,11 @@ spec:
           env:
             - name: NUXT_CMS_API_URL
               value: 'http://backend:1337'
+            - name: NUXT_PUBLIC_CMS_MEDIA_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend
+                  key: NUXT_PUBLIC_CMS_MEDIA_URL
             - name: NUXT_API_TOKEN
               valueFrom:
                 secretKeyRef:

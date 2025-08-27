@@ -4,6 +4,7 @@ metadata:
   name: oliverrr
 
 resources:
+  - configmap.yaml
   - deployment.yaml # defines the deployment for the backend and frontend services
   - pvc.yaml # defines the persistent volume claim that will be used to store the data for the backend
   - secrets.yaml # defines the environment variables that will be used in the deployment.yaml file

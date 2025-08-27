@@ -1,5 +1,8 @@
 export default defineEventHandler((event) => {
-  const { cmsApiToken, cmsApiUrl, cmsMediaUrl } = useRuntimeConfig(event);
+  const config = useRuntimeConfig(event);
+  const cmsApiToken = config.cmsApiToken;
+  const cmsApiUrl = config.cmsApiUrl;
+  const cmsMediaUrl = config.public.cmsMediaUrl;
 
   if (!cmsMediaUrl) {
     console.warn("Warning: NUXT_CMS_MEDIA_URL is not set in the runtime config. Media files might not load correctly.");

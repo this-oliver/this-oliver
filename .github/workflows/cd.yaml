@@ -146,6 +146,13 @@ jobs:
             "kubectl create secret generic ${{ steps.set-env.outputs.environment }}-oliverrr-frontend \
               --from-literal=FRONTEND_NUXT_API_TOKEN='${{ secrets.FRONTEND_NUXT_API_TOKEN }}' \
               --dry-run=client -o yaml | kubectl apply -f -"
+
+      - name: Update frontend configmap
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "kubectl create configmap ${{ steps.set-env.outputs.environment }}-oliverrr-frontend \
+              --from-literal=NUXT_PUBLIC_CMS_MEDIA_URL='${{ vars.NUXT_PUBLIC_CMS_MEDIA_URL }}' \
+              --dry-run=client -o yaml | kubectl apply -f -"
       - name: Update image tags
         run: |
           tag="latest"

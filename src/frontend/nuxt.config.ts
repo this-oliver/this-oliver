@@ -26,7 +26,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     cmsApiUrl: "",
     cmsApiToken: "",
-    cmsMediaUrl: ""
+    public: {
+      cmsMediaUrl: ""
+    }
   },
 
   vite: { plugins: [tailwindcss()] }

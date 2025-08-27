@@ -1,7 +1,10 @@
 import type { Experience } from "~/types";
 
 export default defineEventHandler(async (event): Promise<{ experiences: Experience[], currentPage: number, totalPages: number }> => {
-  const { cmsApiToken, cmsApiUrl, cmsMediaUrl } = useRuntimeConfig(event);
+  const config = useRuntimeConfig(event);
+  const cmsApiToken = config.cmsApiToken;
+  const cmsApiUrl = config.cmsApiUrl;
+  const cmsMediaUrl = config.public.cmsMediaUrl;
 
   const query = getQuery(event);
   const page: number = Number(query.page) || 0;
