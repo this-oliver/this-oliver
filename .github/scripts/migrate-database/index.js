@@ -30,6 +30,10 @@ function checkCommand(command) {
   }
 }
 
+function createSlug(text) {
+  return text.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]+/g, "");
+}
+
 async function uploadToStrapi(endpoint, data, published = true) {
   const url = `${STRAPI_URL}/api/${endpoint}?status=${published ? "published" : "draft"}`;
   const options = {
@@ -81,8 +85,12 @@ async function processCollection(collection) {
   if (collection === "notes") {
     const tags = [...new Set(data.flatMap(note => note.tags))];
     tags.forEach(async (tag) => {
-      await uploadToStrapi("tags", { label: tag });
-      console.log(`Uploaded tag: ${tag}`);
+      try {
+        await uploadToStrapi("tags", { label: tag });
+        console.log(`Uploaded tag: ${tag}`);
+      } catch (error) {
+        console.error(`Error uploading tag ${tag}: ${error}`);
+      }
     });
 
     data.forEach(async (note) => {
@@ -90,24 +98,39 @@ async function processCollection(collection) {
       const date = createdAt.$date.split("T")[0];
 
       const body = { title, content, slug, date };
-      await uploadToStrapi("notes", body, publish);
-      console.log(`Uploaded note: ${title}`);
+
+      if (!body.slug) {
+        body.slug = createSlug(title);
+      }
+
+      try {
+        await uploadToStrapi("notes", body, publish);
+        console.log(`Uploaded note: ${title}`);
+      } catch (error) {
+        console.error(`Error uploading note ${title}: ${error}`);
+      }
     });
   }
 
   if (collection === "experiences") {
     data.forEach(async (experience) => {
       const { title, org, startYear, endYear, description, type, link } = experience;
-      await uploadToStrapi("experiences", {
-        title,
-        org: type === "project" ? "personal" : org,
-        startDate: `${startYear}-01-01`,
-        endDate: endYear ? `${endYear}-01-01` : null,
-        description,
-        type,
-        link
-      });
-      console.log(`Uploaded experience "${title}"`);
+      const slug = `${createSlug(title)}-${createSlug(type === "project" ? "personal" : org)}`;
+      try {
+        await uploadToStrapi("experiences", {
+          title,
+          org: type === "project" ? "personal" : org,
+          startDate: `${startYear}-01-01`,
+          endDate: endYear ? `${endYear}-01-01` : null,
+          description,
+          type,
+          link,
+          slug
+        });
+        console.log(`Uploaded experience "${title}"`);
+      } catch (error) {
+        console.error(error);
+      }
     });
   }
 }
