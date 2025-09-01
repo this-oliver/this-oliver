@@ -111,11 +111,11 @@ spec:
           env:
             - name: NUXT_CMS_API_URL
               value: 'http://backend:1337'
-            - name: NUXT_API_TOKEN
+            - name: NUXT_CMS_API_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: frontend
-                  key: FRONTEND_NUXT_API_TOKEN
+                  key: FRONTEND_NUXT_CMS_API_TOKEN
           ports:
             - containerPort: 3000
               name: frontend-port
