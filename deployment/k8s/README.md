@@ -63,7 +63,7 @@ kubectl create secret generic backend \
 **Frontend secrets:**
 
 ```bash
-kubectl create secret generic frontend --from-literal=FRONTEND_NUXT_API_TOKEN='your-api-token' --namespace=oliverrr
+kubectl create secret generic frontend --from-literal=FRONTEND_NUXT_CMS_API_TOKEN='your-api-token' --namespace=oliverrr
 ```
 
 Replace the values with your actual secrets. The keys should match those defined in `common/secrets.yaml` for backend and frontend components.

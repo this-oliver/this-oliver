@@ -144,7 +144,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
             "kubectl create secret generic ${{ steps.set-env.outputs.environment }}-oliverrr-frontend \
-              --from-literal=FRONTEND_NUXT_API_TOKEN='${{ secrets.FRONTEND_NUXT_API_TOKEN }}' \
+              --from-literal=FRONTEND_NUXT_CMS_API_TOKEN='${{ secrets.FRONTEND_NUXT_CMS_API_TOKEN }}' \
               --dry-run=client -o yaml | kubectl apply -f -"
       - name: Update image tags
         run: |
@@ -161,7 +161,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
             "kubectl rollout restart deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend && kubectl rollout restart deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend"
-      - name: cleanup
+      - name: Cleanup
         if: ${{ always() }}
         run: |
           rm -rf ~/.ssh/deploy_key
