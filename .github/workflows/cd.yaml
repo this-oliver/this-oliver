@@ -117,7 +117,7 @@ jobs:
 
           # apply k8s resources on remote
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            'cd /tmp/oliverrr-k8s && kubectl apply -k env/${{ steps.set-env.outputs.environment }} -n oliverrr'
+            'cd /tmp/oliverrr-k8s && kubectl apply -k env/${{ steps.set-env.outputs.environment }}'
 
           # remove copied k8s directory
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'rm -rf /tmp/oliverrr-k8s'
