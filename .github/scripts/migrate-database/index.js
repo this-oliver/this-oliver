@@ -2,6 +2,7 @@
 const { execSync } = require("node:child_process");
 const fs = require("node:fs");
 const http = require("node:http");
+const https = require("node:https");
 const path = require("node:path");
 const process = require("node:process");
 
@@ -40,7 +41,8 @@ async function uploadToStrapi(endpoint, data, published = true) {
   };
 
   return new Promise((resolve, reject) => {
-    const req = http.request(url, options, (res) => {
+    const client = url.startsWith("https") ? https : http;
+    const req = client.request(url, options, (res) => {
       let data = "";
       res.on("data", (chunk) => {
         data += chunk;
