@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/this-oliver/this-oliver/compare/v4.0.0...v4.0.1) (2025-09-06)
+
+
+### Bug Fixes
+
+* lint chore ([#308](https://github.com/this-oliver/this-oliver/issues/308)) ([9b88f38](https://github.com/this-oliver/this-oliver/commit/9b88f384335aa8c7191df690ba010b01656c228c))
+
 ## [4.0.0](https://github.com/this-oliver/this-oliver/compare/3.3.18...v4.0.0) (2025-09-01)
 
 
