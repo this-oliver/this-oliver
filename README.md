@@ -6,14 +6,13 @@
 
 ## **About me**
 
-1. I've got an academic background in software engineering 💻 and information security 🔐
+1. I currently focus most of my professional work on application security
 2. I like jazz, art and competitive sports
 3. I failed my first startup
 
 ## **What I'm trying to do at the moment**
 
-- learning kubernetes
-- improving my linux skills
+- learning how to 3D model
 - building a homelab
 
 <br>
