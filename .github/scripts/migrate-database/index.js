@@ -61,7 +61,40 @@ async function uploadToStrapi(endpoint, data, published = true) {
     });
     req.write(JSON.stringify({ data }));
     req.on("error", (error) => {
-      reject(new Error(`Error fetching from Strapi: ${error.message}`));
+      reject(new Error(`Error posting to Strapi: ${error.message}`));
+    });
+    req.end();
+  });
+}
+
+async function existsInStrapi(endpoint) {
+  const url = `${STRAPI_URL}/api/${endpoint}`;
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${STRAPI_TOKEN}`
+    }
+  };
+
+  return new Promise((resolve, reject) => {
+    const client = url.startsWith("https") ? https : http;
+    const req = client.request(url, options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        data = JSON.parse(data);
+        if ((res.statusCode >= 200 && res.statusCode < 400) && data.meta && data.meta.pagination && data.meta.pagination.total > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+    req.on("error", (error) => {
+      reject(new Error(`Error checking existence in Strapi: ${error.message}`));
     });
     req.end();
   });
@@ -85,6 +118,19 @@ async function processCollection(collection) {
   if (collection === "notes") {
     const tags = [...new Set(data.flatMap(note => note.tags))];
     tags.forEach(async (tag) => {
+      let exists = false;
+
+      try {
+        exists = await existsInStrapi(`tags?filters[label][$eq]=${tag}`);
+      } catch (error) {
+        console.error(`Error checking existence of tag ${tag}: ${error}`);
+      }
+
+      if (exists) {
+        console.log(`Skipping tag upload - "${tag}" already exists.`);
+        return;
+      }
+
       try {
         await uploadToStrapi("tags", { label: tag });
         console.log(`Uploaded tag: ${tag}`);
@@ -103,6 +149,19 @@ async function processCollection(collection) {
         body.slug = createSlug(title);
       }
 
+      let exists = false;
+
+      try {
+        exists = await existsInStrapi(`notes?filters[slug][$eq]=${body.slug}&status=published&status=draft`);
+      } catch (error) {
+        console.error(`Error checking existence of note ${body.slug}: ${error}`);
+      }
+
+      if (exists) {
+        console.log(`Skipping note upload - "${title}" already exists.`);
+        return;
+      }
+
       try {
         await uploadToStrapi("notes", body, publish);
         console.log(`Uploaded note: ${title}`);
@@ -116,6 +175,20 @@ async function processCollection(collection) {
     data.forEach(async (experience) => {
       const { title, org, startYear, endYear, description, type, link } = experience;
       const slug = `${createSlug(title)}-${createSlug(type === "project" ? "personal" : org)}`;
+
+      let exists = false;
+
+      try {
+        exists = await existsInStrapi(`experiences?filters[slug][$eq]=${slug}`);
+      } catch (error) {
+        console.error(`Error checking existence of experience ${slug}: ${error}`);
+      }
+
+      if (exists) {
+        console.log(`Skipping experience upload - "${title}" already exists.`);
+        return;
+      }
+
       try {
         await uploadToStrapi("experiences", {
           title,
