@@ -1,5 +1,6 @@
 {
   "name": "oliverrr",
+  "version": "4.0.0",
   "description": "personal website",
   "author": "oliver <hello@oliverrr.net>",
   "license": "MIT",
@@ -19,6 +20,5 @@
   },
   "lint-staged": {
     "*": "npm run lint:fix"
-  },
-  "version": "4.0.0"
+  }
 }
