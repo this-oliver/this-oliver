@@ -1,4 +1,4 @@
-import type { Experience } from "~/types";
+import type { Experience, ExperienceType } from "~/types";
 
 export default defineEventHandler(async (event): Promise<{ experiences: Experience[], currentPage: number, totalPages: number }> => {
   const { cmsApiToken, cmsApiUrl, cmsMediaUrl } = useRuntimeConfig(event);
@@ -6,13 +6,19 @@ export default defineEventHandler(async (event): Promise<{ experiences: Experien
   const query = getQuery(event);
   const page: number = Number(query.page) || 0;
   const limit: number = Number(query.limit) || 10;
+  const type: ExperienceType | undefined = query.type as ExperienceType | undefined;
 
   const list: unknown[] = [];
   let currentPage: number = 0;
   let totalPages: number = 0;
 
   try {
-    const endpoint = `${cmsApiUrl}/api/experiences?sort=startDate:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
+    let endpoint = `${cmsApiUrl}/api/experiences?sort=startDate:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
+
+    if (type) {
+      endpoint += `&filters[type][$eq]=${type}`;
+    }
+
     const res = await $fetch(endpoint, {
       headers: {
         Authorization: `Bearer ${cmsApiToken}`

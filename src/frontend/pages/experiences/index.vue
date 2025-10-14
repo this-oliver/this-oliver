@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Experience } from "~/types";
+import type { Experience, ExperienceType } from "~/types";
 import { useRouterQuery } from "~/composables/useRouterQuery";
 
 const pageTitle = "Experiences - oliverrr";
@@ -42,28 +42,6 @@ const filter = reactive({
   work: false
 });
 
-const getExperiences = computed<Experience[]>(() => {
-  if (!data.value) {
-    return [];
-  }
-
-  const filteredExperiences = experiences.value.filter((experience) => {
-    if (!filter.education && !filter.projects && !filter.work) {
-      return true;
-    } else if (experience.type === "education") {
-      return filter.education;
-    } else if (experience.type === "job") {
-      return filter.work;
-    } else if (experience.type === "project") {
-      return filter.projects;
-    } else {
-      return true;
-    }
-  });
-
-  return sortLatestExperiencesByDate(filteredExperiences);
-});
-
 const getFilterOptions = computed<{ label: string, color?: string, active: boolean, toggle: () => void }[]>(() => {
   return [
     {
@@ -93,19 +71,49 @@ const getFilterOptions = computed<{ label: string, color?: string, active: boole
   ];
 });
 
-const activeExperienceTypes = computed<string[]>(() => {
-  const types: string[] = [];
+/**
+ * Returns a list of filtered, sorted and unique experiences
+ */
+const getProcessedExperiences = computed<Experience[]>(() => {
+  // filter
+  let processedExperiences = experiences.value.filter((experience) => {
+    if (!filter.education && !filter.projects && !filter.work) {
+      return true;
+    } else if (experience.type === "education") {
+      return filter.education;
+    } else if (experience.type === "job") {
+      return filter.work;
+    } else if (experience.type === "project") {
+      return filter.projects;
+    } else {
+      return true;
+    }
+  });
+
+  // sort
+  processedExperiences = sortLatestExperiencesByDate(processedExperiences);
+
+  // remove duplicates
+  return processedExperiences.filter((experience, index, self) =>
+    index === self.findIndex(e => (
+      e._id === experience._id
+    ))
+  );
+});
+
+const getActiveExperienceTypes = computed<ExperienceType[]>(() => {
+  const types: ExperienceType[] = [];
 
   if (filter.education) {
     types.push("education");
   }
 
   if (filter.work) {
-    types.push("work");
+    types.push("job");
   }
 
   if (filter.projects) {
-    types.push("projects");
+    types.push("project");
   }
 
   return types;
@@ -144,9 +152,9 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
     // sort experiences by context:
     // experiences with an empty end year (null or 'present') should be at the beginning of the array
 
-    if (a.endDate === null || a.endDate === undefined || a.endDate === 0) {
+    if (a.endDate === null || a.endDate === undefined) {
       return -1;
-    } else if (b.endDate === null || b.endDate === undefined || b.endDate === 0) {
+    } else if (b.endDate === null || b.endDate === undefined) {
       return 1;
     } else {
       return 0;
@@ -156,22 +164,43 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
   return xp;
 }
 
-async function fetchMoreExperiences(): Promise<void> {
+async function fetchExperiences(type?: ExperienceType): Promise<void> {
+  // stop fetching if we are already on the last page
   if (pagination.currentPage > pagination.totalPages) {
     return;
   }
 
-  pagination.currentPage = pagination.currentPage + 1;
-  const newExperiences = await $fetch(`/api/experiences?page=${pagination.currentPage}`);
-  experiences.value.push(...newExperiences.experiences);
+  // only fetch from a specific type if provided
+  if (type) {
+    const newExperiences = await $fetch(`/api/experiences?type=${type}`);
+    experiences.value.push(...newExperiences.experiences);
+  } else {
+    pagination.currentPage = pagination.currentPage + 1;
+    const newExperiences = await $fetch(`/api/experiences?page=${pagination.currentPage}`);
+    experiences.value.push(...newExperiences.experiences);
+  }
 }
 
-// watch filters and update the url query
+/**
+ * Try to fetch more experiences for the selected types if none are available
+ */
+async function hydrateExperiences(): Promise<void> {
+  if (getProcessedExperiences.value.length === 0) {
+    getActiveExperienceTypes.value.forEach(async (type) => {
+      if (getProcessedExperiences.value.filter(xp => xp.type === type).length === 0) {
+        await fetchExperiences(type);
+      }
+    });
+  }
+}
+
+// watch filters and update the url query and fetch experiences
 watch(
-  () => activeExperienceTypes.value,
-  async (newValue) => {
-    if (newValue.length > 0) {
-      await query.add("filter", newValue.join(","));
+  () => getActiveExperienceTypes.value,
+  async (newTypes: ExperienceType[]) => {
+    if (newTypes.length > 0) {
+      await query.add("filter", newTypes.join(","));
+      await hydrateExperiences();
     } else {
       await query.remove("filter");
     }
@@ -190,6 +219,8 @@ onMounted(async () => {
     }
   }
 
+  await hydrateExperiences();
+
   // add event listener for scroll to fetch more notes
   window.addEventListener("scroll", () => {
     scrollYPosition.value = window.scrollY;
@@ -198,7 +229,7 @@ onMounted(async () => {
 
     if (scrollPosition >= documentHeight - 100 && status.value !== "pending" && !loading.value) {
       loading.value = true;
-      fetchMoreExperiences()
+      fetchExperiences()
         .finally(() => {
           loading.value = false;
         });
@@ -228,8 +259,8 @@ onMounted(async () => {
         Fetching experiences...
       </div>
 
-      <div v-else-if="getExperiences.length === 0">
-        <span v-if="activeExperienceTypes.length > 0">
+      <div v-else-if="getProcessedExperiences.length === 0">
+        <span v-if="getActiveExperienceTypes.length > 0">
           No experiences found for the selected filters.
         </span>
         <span v-else>
@@ -237,9 +268,9 @@ onMounted(async () => {
         </span>
       </div>
 
-      <div v-else-if="getExperiences.length > 0" id="list" class="flex flex-col gap-4">
+      <div v-else-if="getProcessedExperiences.length > 0" id="list" class="flex flex-col gap-4">
         <ExperienceCard
-          v-for="experience in getExperiences"
+          v-for="experience in getProcessedExperiences"
           :key="experience._id"
           :experience="experience" />
       </div>
