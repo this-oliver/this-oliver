@@ -23,7 +23,7 @@ const { data } = await useAsyncData("welcome-banner", async () => {
         id="welcome-banner"
         :markdown="data?.about ?? DEFAULT_DESCRIPTION"
         disable-anchors
-        class="md:w-8/12" />
+        class="md:w-8/12 md:mt-[15vh]" />
     </div>
   </base-page>
 </template>
