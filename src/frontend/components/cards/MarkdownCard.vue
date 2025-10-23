@@ -6,7 +6,7 @@ import highlightPython from "highlight.js/lib/languages/python";
 import highlightTypescript from "highlight.js/lib/languages/typescript";
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
-// import 'highlight.js/styles/github.css' // light theme
+import "highlight.js/styles/github.css"; // light theme
 import "highlight.js/styles/github-dark.css"; // dark theme
 
 const props = defineProps({
@@ -25,23 +25,27 @@ marked.setOptions({
   mangle: false // deprecated
 });
 
+/**
+ * Returns rendered html from markdown.
+ */
 const renderedHtml = computed<string>(() => {
-  return _markdownToHtml(props.markdown);
+  // apply a custom renderer to the marked library
+  marked.use({ renderer: _getMarkdownRenderer() });
+
+  // convert markdown to html
+  const compiledHtml: string = marked.parse(props.markdown || "");
+
+  // returns sanitized html
+  return _sanitizeHtml(compiledHtml);
 });
 
 /**
- * Returns html string from markdown
+ * Returns a markdown renderer that has custom configurations (i.e. adds classes to parsed html tags)
  */
-function _markdownToHtml(markdown: string, sanitize?: boolean) {
-  if (!markdown) {
-    return "";
-  }
-
+function _getMarkdownRenderer() {
   const renderer = new marked.Renderer();
 
-  /**
-   * Adds highlight.js labels to pre & code tags
-   */
+  // Adds highlight.js labels to pre & code tags
   renderer.code = (code, language) => {
     if (language) {
       language = highlight.getLanguage(language)?.name?.toLowerCase() || "plaintext";
@@ -50,9 +54,7 @@ function _markdownToHtml(markdown: string, sanitize?: boolean) {
     return `<pre class="snippet"><code class="hljs language-${language}">${code}</code></pre>`;
   };
 
-  /**
-   * Adds ids to headings
-   */
+  // Adds ids to headings
   renderer.heading = (text, level) => {
     const escapedText = text.toLowerCase().replace(/\W+/g, "-");
     const anchor = `<span class="parsed-header-anchor"><a href="#${escapedText}" class="simple-link">#</a></span>`;
@@ -62,23 +64,12 @@ function _markdownToHtml(markdown: string, sanitize?: boolean) {
       : `<h${level} id="${escapedText}" class="parsed-header">${anchor} ${text}</h${level}>`;
   };
 
-  /**
-   * Opens external links in new tab
-   */
+  // Opens external links in new tab
   renderer.link = (href, _title, linkText) => {
     return `<a class="markdown-link" href="${href}" target="_blank">${linkText}</a>`;
   };
 
-  marked.use({ renderer });
-
-  // convert markdown to html
-  let compiledHtml: string = marked.parse(markdown);
-
-  if (sanitize) {
-    compiledHtml = _sanitizeHtml(compiledHtml);
-  }
-
-  return compiledHtml;
+  return renderer;
 }
 
 /**
@@ -86,24 +77,15 @@ function _markdownToHtml(markdown: string, sanitize?: boolean) {
  */
 function _sanitizeHtml(dirtyHtml: string): string {
   return sanitizeHtml(dirtyHtml, {
-
     allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
     allowedAttributes: {
-      a: ["href", "name", "target", "@click"],
-      img: ["src", "srcset", "alt", "title", "width", "height", "loading"],
-      pre: ["style", "class"],
-      code: ["style", "class"],
-      th: ["style"],
-      td: ["style"],
-      table: ["style"],
-      hr: ["id", "style"],
-      h1: ["id", "style"],
-      h2: ["id", "style"],
-      h3: ["id", "style"],
-      h4: ["id", "style"],
-      h5: ["id", "style"],
-      h6: ["id", "style"],
-      p: ["style"]
+      ...sanitizeHtml.defaults.allowedAttributes,
+      "a": ["href", "target", "name", "class"],
+      "p": ["class"],
+      "ul": ["class"],
+      "ol": ["class"],
+      "li": ["class"],
+      "h*": ["class"]
     }
   });
 }
@@ -142,61 +124,3 @@ onMounted(() => {
     <span v-html="renderedHtml" />
   </div>
 </template>
-
-<style>
-h1, h2, h3 {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-h4, h5, h6, p {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-pre {
-  margin: 0.5rem 0;
-  overflow: hidden;
-  border-radius: 0.5rem;
-}
-
-code {
-  font-size: small;
-  padding: 0 0.5rem;
-}
-
-code:not(pre code) {
-  padding: 0.15rem 0.25rem;
-  overflow: hidden;
-  border-radius: 0.25rem;
-  color: beige;
-  background-color: black;
-}
-
-hr {
-  margin: 0.5rem 0;
-}
-
-table {
-  display: block;
-  overflow-x: auto;
-  white-space: normal; /* alt: nowrap */
-  overflow-wrap: normal; /* alt: break-word */
-
-  color: beige;
-  background-color: black;
-}
-
-th, td {
-  border: 1px solid;
-  padding: 0 0.5rem;
-}
-
-ul > li {
-  margin-left: 2rem;
-}
-
-ol > li {
-  margin-left: 2rem;
-}
-</style>
