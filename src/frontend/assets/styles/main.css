@@ -9,3 +9,7 @@
 .brutalist-outline {
   @apply rounded border-t-1 border-l-1 border-slate-100 border-r-3 border-b-3 border-r-slate-200 border-b-slate-200;
 }
+
+.link {
+  @apply text-pinkish underline;
+}

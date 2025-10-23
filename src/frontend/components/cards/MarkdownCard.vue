@@ -66,7 +66,7 @@ function _getMarkdownRenderer() {
 
   // Opens external links in new tab
   renderer.link = (href, _title, linkText) => {
-    return `<a class="markdown-link" href="${href}" target="_blank">${linkText}</a>`;
+    return `<a class="link" href="${href}" target="_blank">${linkText}</a>`;
   };
 
   return renderer;
