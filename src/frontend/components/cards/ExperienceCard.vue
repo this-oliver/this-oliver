@@ -40,47 +40,51 @@ function getPrettyDate(dateString: string): string {
 </script>
 
 <template>
-  <base-card>
-    <client-only>
-      <div class="overflow-hidden">
-        <RothkoCard
-          :source="props.experience.title"
-          :color="experienceColor"
-          pattern="circle"
-          class="flex h-[6rem]" />
-      </div>
-    </client-only>
+  <base-card class="flex flex-col gap-1">
+    <div class="overflow-hidden">
+      <RothkoCard
+        :source="props.experience.title + props.experience.org + props.experience.startDate"
+        :color="experienceColor"
+        pattern="circle"
+        class="flex h-[6rem]" />
+    </div>
 
-    <p>
-      {{ getPrettyDate(props.experience.startDate) }} - {{ props.experience.endDate ? getPrettyDate(props.experience.endDate) : 'present' }}
-    </p>
+    <div id="details" class="flex justify-between text-sm my-2 gap-2 flex-wrap">
+      <span v-if="!isEmpty(props.experience.org)" class="font-semibold">
+        {{ props.experience.org }}
+      </span>
+      <span>
+        {{ getPrettyDate(props.experience.startDate) }} - {{ props.experience.endDate ? getPrettyDate(props.experience.endDate) : 'present' }}
+      </span>
+    </div>
 
-    <h4 v-if="!isEmpty(props.experience.org)">
-      {{ props.experience.org }}
-    </h4>
-
-    <h3 class="font-bold text-xl">
+    <span class="font-bold text-xl">
       {{ props.experience.title }}
-    </h3>
+    </span>
 
     <markdown-card :markdown="props.experience.description" />
 
-    <span v-if="props.experience.link">
+    <div
+      v-if="props.experience.link || props.experience.image"
+      id="external-links"
+      class="flex justify-between text-sm my-2 gap-2 flex-wrap">
       <a
+        v-if="props.experience.link"
         :href="props.experience.link"
-        target="_blank">
+        target="_blank"
+        class="flex items-center gap-1">
         <icon name="mdi-link-variant" />
         {{ props.experience.link }}
       </a>
-    </span>
 
-    <span v-if="props.experience.image">
       <a
+        v-if="props.experience.image"
         :href="props.experience.image"
-        target="_blank">
+        target="_blank"
+        class="flex items-center gap-1">
         <icon name="mdi-image-frame" />
         Preview
       </a>
-    </span>
+    </div>
   </base-card>
 </template>
