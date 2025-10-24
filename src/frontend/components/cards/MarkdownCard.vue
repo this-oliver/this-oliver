@@ -81,6 +81,11 @@ function _getMarkdownRenderer() {
     return `<a class="link" href="${href}" target="_blank">${linkText}</a>`;
   };
 
+  // Adds styling to paragraphs
+  renderer.paragraph = (text) => {
+    return `<p class="my-2">${text}</p>`;
+  };
+
   return renderer;
 }
 
@@ -96,7 +101,8 @@ function _sanitizeHtml(dirtyHtml: string): string {
       h2: ["class", "id"],
       h3: ["class", "id"],
       h4: ["class", "id"],
-      h5: ["class", "id"]
+      h5: ["class", "id"],
+      p: ["class"]
     }
   });
 }
