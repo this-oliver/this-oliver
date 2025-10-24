@@ -168,6 +168,7 @@ function _sanitizeHtml(dirtyHtml: string): string {
       h4: ["class", "id"],
       h5: ["class", "id"],
       input: ["class", "type", "disabled", "checked"],
+      img: ["class", "src", "alt", "width", "height"],
       li: ["class"],
       ol: ["class"],
       p: ["class"],
