@@ -55,9 +55,9 @@ function _getMarkdownRenderer() {
 
     const maxTextSize = 4;
     const textSize = maxTextSize - level;
-    let textClass = "text-lg";
+    let textClass = "text-lg underline";
 
-    if (textSize > 0) {
+    if (textSize > 1) {
       textClass = `text-${textSize}xl`;
     } else if (textSize === 0) {
       textClass = "text-xl";
