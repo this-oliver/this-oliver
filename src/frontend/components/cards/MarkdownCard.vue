@@ -82,6 +82,34 @@ function _getMarkdownRenderer() {
     return `<span class="line-through">${text}</span>`;
   };
 
+  // Adds styling to lists
+  renderer.list = (body, ordered) => {
+    const baseClass = "my-[1rem] pl-[1.5rem]";
+    const tag = ordered ? "ol" : "ul";
+
+    if (body.includes("<input")) {
+      return `<${tag} class="list-none ${baseClass}">${body}</${tag}>`;
+    }
+
+    return ordered
+      ? `<ol class="list-decimal ${baseClass}">${body}</ol>`
+      : `<ul class="list-disc ${baseClass}">${body}</ul>`;
+  };
+
+  // Adds styling to list items
+  renderer.listitem = (text) => {
+    const baseClass = "my-1";
+
+    return `<li class="${baseClass}">${text}</li>`;
+  };
+
+  // Supports checkboxes
+  renderer.checkbox = (checked) => {
+    return checked
+      ? "<input type=\"checkbox\" disabled checked class=\"mr-2\"/>"
+      : "<input type=\"checkbox\" disabled class=\"mr-2\"/>";
+  };
+
   // Adds highlight.js labels to code blocks
   renderer.code = (code, language) => {
     if (language) {
@@ -104,7 +132,7 @@ function _getMarkdownRenderer() {
  */
 function _sanitizeHtml(dirtyHtml: string): string {
   return sanitizeHtml(dirtyHtml, {
-    allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
+    allowedTags: [...sanitizeHtml.defaults.allowedTags, "img", "input"],
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       code: ["class"],
@@ -113,8 +141,13 @@ function _sanitizeHtml(dirtyHtml: string): string {
       h3: ["class", "id"],
       h4: ["class", "id"],
       h5: ["class", "id"],
+      input: ["class", "type", "disabled", "checked"],
+      li: ["class"],
+      ol: ["class"],
       p: ["class"],
-      pre: ["class"]
+      pre: ["class"],
+      span: ["class"],
+      ul: ["class"]
     }
   });
 }
