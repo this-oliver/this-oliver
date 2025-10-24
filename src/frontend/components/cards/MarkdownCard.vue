@@ -103,7 +103,7 @@ function _getMarkdownRenderer() {
     return `<li class="${baseClass}">${text}</li>`;
   };
 
-  // Supports checkboxes
+  // Supports checkboxes for task lists
   renderer.checkbox = (checked) => {
     return checked
       ? "<input type=\"checkbox\" disabled checked class=\"mr-2\"/>"
@@ -124,9 +124,28 @@ function _getMarkdownRenderer() {
     return `<code class="hljs text-sm rounded-lg">${code}</code>`;
   };
 
-  // Adds support for blockquotes
+  // Adds styling for blockquotes
   renderer.blockquote = (quote) => {
     return `<blockquote class="border-l-4 border-gray-300 pl-5 italic my-2">${quote}</blockquote>`;
+  };
+
+  // Adds styling for tables
+  renderer.table = (header, body) => {
+    const baseClass = "border border-gray-300";
+    const tableClass = `table-auto border-collapse my-4 w-full ${baseClass}`;
+    const headerClass = `${baseClass}`;
+    const bodyClass = `${baseClass}`;
+
+    return `<table class="${tableClass}"><thead class="${headerClass}">${header}</thead><tbody class="${bodyClass}">${body}</tbody></table>`;
+  };
+
+  // Adds styling for table cells
+  renderer.tablecell = (content, flags) => {
+    const baseClass = "border border-gray-300 p-2";
+
+    return flags.header === true
+      ? `<th class="font-bold text-left border-double border-2 ${baseClass}">${content}</th>`
+      : `<td class="${baseClass}">${content}</td>`;
   };
 
   return renderer;
@@ -153,6 +172,11 @@ function _sanitizeHtml(dirtyHtml: string): string {
       p: ["class"],
       pre: ["class"],
       span: ["class"],
+      table: ["class"],
+      tbody: ["class"],
+      td: ["class"],
+      th: ["class"],
+      thead: ["class"],
       ul: ["class"]
     }
   });
