@@ -32,11 +32,14 @@ const renderedHtml = computed<string>(() => {
   // apply a custom renderer to the marked library
   marked.use({ renderer: _getMarkdownRenderer() });
 
-  // convert markdown to html
-  const compiledHtml: string = marked.parse(props.markdown || "");
+  return marked.parse(props.markdown || "");
+});
 
-  // returns sanitized html
-  return _sanitizeHtml(compiledHtml);
+/**
+ * Returns santized html string
+ */
+const sanitizedHtml = computed<string>(() => {
+  return _sanitizeHtml(renderedHtml.value);
 });
 
 /**
@@ -215,6 +218,6 @@ onMounted(() => {
 <template>
   <div id="markdown-card">
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <span v-html="renderedHtml" />
+    <span v-html="sanitizedHtml" />
   </div>
 </template>
