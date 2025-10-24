@@ -159,6 +159,7 @@ function _sanitizeHtml(dirtyHtml: string): string {
     allowedTags: [...sanitizeHtml.defaults.allowedTags, "img", "input"],
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
+      a: ["href", "target", "name", "class"],
       blockquote: ["class"],
       code: ["class"],
       h1: ["class", "id"],
