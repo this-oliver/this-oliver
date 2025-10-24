@@ -87,7 +87,7 @@ function _getMarkdownRenderer() {
 
   // Adds styling to lists
   renderer.list = (body, ordered) => {
-    const baseClass = "my-[1rem] pl-[1.5rem]";
+    const baseClass = "mt-[0.5rem] mb-[1rem] pl-[1.5rem]";
     const tag = ordered ? "ol" : "ul";
 
     if (body.includes("<input")) {
