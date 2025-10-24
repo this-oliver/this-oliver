@@ -86,6 +86,11 @@ function _getMarkdownRenderer() {
     return `<p class="my-2">${text}</p>`;
   };
 
+  // Adds styling to strikethrough text
+  renderer.del = (text) => {
+    return `<span class="line-through">${text}</span>`;
+  };
+
   return renderer;
 }
 
@@ -102,7 +107,8 @@ function _sanitizeHtml(dirtyHtml: string): string {
       h3: ["class", "id"],
       h4: ["class", "id"],
       h5: ["class", "id"],
-      p: ["class"]
+      p: ["class"],
+      span: ["class"]
     }
   });
 }
