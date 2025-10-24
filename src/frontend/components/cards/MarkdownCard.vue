@@ -45,15 +45,6 @@ const renderedHtml = computed<string>(() => {
 function _getMarkdownRenderer() {
   const renderer = new marked.Renderer();
 
-  // Adds highlight.js labels to pre & code tags
-  renderer.code = (code, language) => {
-    if (language) {
-      language = highlight.getLanguage(language)?.name?.toLowerCase() || "plaintext";
-    }
-
-    return `<pre class="snippet"><code class="hljs language-${language}">${code}</code></pre>`;
-  };
-
   // Adds ids to headings
   renderer.heading = (text, level) => {
     const escapedText = text.toLowerCase().replace(/\W+/g, "-");
@@ -91,6 +82,20 @@ function _getMarkdownRenderer() {
     return `<span class="line-through">${text}</span>`;
   };
 
+  // Adds highlight.js labels to code blocks
+  renderer.code = (code, language) => {
+    if (language) {
+      language = highlight.getLanguage(language)?.name?.toLowerCase() || "plaintext";
+    }
+
+    return `<pre class="snippet"><code class="hljs language-${language} my-[1rem] rounded-lg text-sm">${code}</code></pre>`;
+  };
+
+  // Adds highlight.js labels to inline code
+  renderer.codespan = (code) => {
+    return `<code class="hljs text-sm rounded-lg">${code}</code>`;
+  };
+
   return renderer;
 }
 
@@ -102,13 +107,14 @@ function _sanitizeHtml(dirtyHtml: string): string {
     allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
+      code: ["class"],
       h1: ["class", "id"],
       h2: ["class", "id"],
       h3: ["class", "id"],
       h4: ["class", "id"],
       h5: ["class", "id"],
       p: ["class"],
-      span: ["class"]
+      pre: ["class"]
     }
   });
 }
