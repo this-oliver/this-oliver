@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.1](https://github.com/this-oliver/this-oliver/compare/v4.0.0...v4.0.1) (2025-10-24)
+
+
+### Bug Fixes
+
+* **frontend:** centers the welcome banner in the landing page ([#315](https://github.com/this-oliver/this-oliver/issues/315)) ([647e5bb](https://github.com/this-oliver/this-oliver/commit/647e5bb950c08c5ed2bac3d4999495d086d2a565))
+* **frontend:** improved markdown rendering ([#316](https://github.com/this-oliver/this-oliver/issues/316)) ([ba592ef](https://github.com/this-oliver/this-oliver/commit/ba592ef2df3dd23aa94aebc7f1198ae44726affa))
+* lint chore ([#308](https://github.com/this-oliver/this-oliver/issues/308)) ([9b88f38](https://github.com/this-oliver/this-oliver/commit/9b88f384335aa8c7191df690ba010b01656c228c))
+
 ## [4.0.0](https://github.com/this-oliver/this-oliver/compare/3.3.18...v4.0.0) (2025-09-01)
 
 
