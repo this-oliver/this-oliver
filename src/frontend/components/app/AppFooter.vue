@@ -20,11 +20,11 @@ const hasVisited = computed(() => {
 </script>
 
 <template>
-  <div class="px-2 pb-2 flex flex-col gap-2 md:flex-row text-center text-pinkish">
+  <div class="px-2 pb-2 flex flex-col gap-2 md:flex-row text-center">
     <a
       v-for="item in links"
       :key="item.link"
-      class="underline md:mx-2"
+      class="link md:mx-2"
       :href="item.link"
       target="_blank">
       {{ item.title }}
