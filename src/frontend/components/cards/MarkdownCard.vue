@@ -63,7 +63,7 @@ function _getMarkdownRenderer() {
       textClass = "text-xl";
     }
 
-    const baseClass = `${textClass} my-2`;
+    const baseClass = `${textClass} mt-5`;
 
     return props.disableAnchors
       ? `<h${level} id="${escapedText}" class="${baseClass}">${text}</h${level}>`
@@ -77,7 +77,7 @@ function _getMarkdownRenderer() {
 
   // Adds styling to paragraphs
   renderer.paragraph = (text) => {
-    return `<p class="my-2">${text}</p>`;
+    return `<p class="mt-5">${text}</p>`;
   };
 
   // Adds styling to strikethrough text
