@@ -57,11 +57,23 @@ function _getMarkdownRenderer() {
   // Adds ids to headings
   renderer.heading = (text, level) => {
     const escapedText = text.toLowerCase().replace(/\W+/g, "-");
-    const anchor = `<span class="parsed-header-anchor"><a href="#${escapedText}" class="simple-link">#</a></span>`;
+    const anchor = `<a class="link mr-1" href="#${escapedText}">#</a>`;
+
+    const maxTextSize = 4;
+    const textSize = maxTextSize - level;
+    let textClass = "text-lg";
+
+    if (textSize > 0) {
+      textClass = `text-${textSize}xl`;
+    } else if (textSize === 0) {
+      textClass = "text-xl";
+    }
+
+    const baseClass = `${textClass} my-2`;
 
     return props.disableAnchors
-      ? `<h${level} id="${escapedText}" class="parsed-header">${text}</h${level}>`
-      : `<h${level} id="${escapedText}" class="parsed-header">${anchor} ${text}</h${level}>`;
+      ? `<h${level} id="${escapedText}" class="${baseClass}">${text}</h${level}>`
+      : `<h${level} id="${escapedText}" class="${baseClass}">${anchor}${text}</h${level}>`;
   };
 
   // Opens external links in new tab
@@ -80,12 +92,11 @@ function _sanitizeHtml(dirtyHtml: string): string {
     allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
-      "a": ["href", "target", "name", "class"],
-      "p": ["class"],
-      "ul": ["class"],
-      "ol": ["class"],
-      "li": ["class"],
-      "h*": ["class"]
+      h1: ["class", "id"],
+      h2: ["class", "id"],
+      h3: ["class", "id"],
+      h4: ["class", "id"],
+      h5: ["class", "id"]
     }
   });
 }
