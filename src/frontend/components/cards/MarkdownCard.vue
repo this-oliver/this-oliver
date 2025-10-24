@@ -124,6 +124,11 @@ function _getMarkdownRenderer() {
     return `<code class="hljs text-sm rounded-lg">${code}</code>`;
   };
 
+  // Adds support for blockquotes
+  renderer.blockquote = (quote) => {
+    return `<blockquote class="border-l-4 border-gray-300 pl-5 italic my-2">${quote}</blockquote>`;
+  };
+
   return renderer;
 }
 
@@ -135,6 +140,7 @@ function _sanitizeHtml(dirtyHtml: string): string {
     allowedTags: [...sanitizeHtml.defaults.allowedTags, "img", "input"],
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
+      blockquote: ["class"],
       code: ["class"],
       h1: ["class", "id"],
       h2: ["class", "id"],
