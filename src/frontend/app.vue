@@ -14,6 +14,26 @@ useSeoMeta({
 
 const generalStore = useGeneralStore();
 const options = computed<ActionItem[]>(() => generalStore.getNavItems);
+
+const coordY = ref<number>(0);
+const showScrollUpBtn = ref<boolean>(false);
+
+function handleScroll() {
+  showScrollUpBtn.value = false;
+  window.scrollTo(0, 0);
+}
+
+watch(coordY, (newCoordY) => {
+  showScrollUpBtn.value = window && newCoordY > window.innerHeight + 250;
+});
+
+onMounted(() => {
+  if (window) {
+    window.addEventListener("scroll", () => {
+      coordY.value = window.window.scrollY;
+    });
+  }
+});
 </script>
 
 <template>
@@ -29,6 +49,13 @@ const options = computed<ActionItem[]>(() => generalStore.getNavItems);
     <main class="mt-4 flex flex-col min-h-screen w-full md:w-10/12">
       <NuxtPage />
     </main>
+
+    <div
+      v-if="showScrollUpBtn"
+      class="fixed bottom-10 right-10 cursor-pointer text-4xl"
+      @click="handleScroll">
+      <icon name="mdi-arrow-up" />
+    </div>
 
     <app-footer class="w-full md:w-10/12" />
   </div>
