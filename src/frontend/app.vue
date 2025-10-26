@@ -20,7 +20,7 @@ const showScrollUpBtn = ref<boolean>(false);
 
 function handleScroll() {
   showScrollUpBtn.value = false;
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 watch(coordY, (newCoordY) => {
