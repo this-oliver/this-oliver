@@ -14,6 +14,14 @@ useSeoMeta({
 
 const generalStore = useGeneralStore();
 const options = computed<ActionItem[]>(() => generalStore.getNavItems);
+
+const fixFooter = ref<boolean>(false);
+
+onMounted(() => {
+  window.addEventListener("scroll", () => {
+    fixFooter.value = window && window.scrollY > window.innerHeight * 1.5;
+  });
+});
 </script>
 
 <template>
@@ -30,6 +38,6 @@ const options = computed<ActionItem[]>(() => generalStore.getNavItems);
       <NuxtPage />
     </main>
 
-    <app-footer class="w-full md:w-10/12" />
+    <app-footer :class="`w-full md:w-10/12 ${fixFooter ? 'fixed bottom-0' : ''}`" />
   </div>
 </template>
