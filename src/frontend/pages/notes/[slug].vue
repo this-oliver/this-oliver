@@ -32,7 +32,11 @@ if (note.value) {
     ogUrl: `https://www.oliverrr.net/notes/${note.value.slug}`,
     ogTitle: note.value.title,
     ogDescription: note.value.content,
-    ogSiteName: "oliverrr's notes"
+    ogSiteName: "oliverrr's notes",
+    ogImageUrl: "https://www.oliverrr.net/images/rothko.jpg",
+    ogImageType: "image/jpeg",
+    ogImageAlt: "Rothko Card Thumbnail from rothko.oliverrr.net",
+    twitterCard: "summary_large_image"
   });
 }
 </script>

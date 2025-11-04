@@ -9,7 +9,11 @@ useSeoMeta({
   title,
   ogTitle: title,
   description,
-  ogDescription: description
+  ogDescription: description,
+  ogImageUrl: "https://www.oliverrr.net/images/rothko.jpg",
+  ogImageType: "image/jpeg",
+  ogImageAlt: "Rothko Card Thumbnail from rothko.oliverrr.net",
+  twitterCard: "summary_large_image"
 });
 
 const generalStore = useGeneralStore();
