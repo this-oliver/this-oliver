@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.2](https://github.com/this-oliver/this-oliver/compare/v4.0.1...v4.0.2) (2025-11-04)
+
+
+### Bug Fixes
+
+* **frontend:** footer is unreachable on infinite scroll ([#320](https://github.com/this-oliver/this-oliver/issues/320)) ([b2936fe](https://github.com/this-oliver/this-oliver/commit/b2936fe137b345ef3ec7e31d931f6a39b76fcd7d))
+* **frontend:** increments #s in notes based on header level ([#323](https://github.com/this-oliver/this-oliver/issues/323)) ([77833c1](https://github.com/this-oliver/this-oliver/commit/77833c156dd613c101d1f6526b9dc89e8f8c1c34))
+* **frontend:** makes rothko cards larger ([#321](https://github.com/this-oliver/this-oliver/issues/321)) ([9a187eb](https://github.com/this-oliver/this-oliver/commit/9a187ebf924dc039bacc9fab1e73d2e0847f7880))
+* **frontend:** markdown tables overflowing ([#325](https://github.com/this-oliver/this-oliver/issues/325)) ([99545aa](https://github.com/this-oliver/this-oliver/commit/99545aa4667b11cc002390d20bcf05b8d40b6c8f))
+* **frontend:** resolves responsiveness issues ([#324](https://github.com/this-oliver/this-oliver/issues/324)) ([126d59a](https://github.com/this-oliver/this-oliver/commit/126d59ae844756c6746d63a2fb59466f261912e2))
+* **frontend:** seo not working for singluar notes ([#319](https://github.com/this-oliver/this-oliver/issues/319)) ([b0b10f1](https://github.com/this-oliver/this-oliver/commit/b0b10f15933649d98135edfd02e2ff47c91d74a1))
+
 ## [4.0.1](https://github.com/this-oliver/this-oliver/compare/v4.0.0...v4.0.1) (2025-10-24)
 
 
