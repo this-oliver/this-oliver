@@ -134,8 +134,8 @@ function _getMarkdownRenderer() {
 
   // Adds styling for tables
   renderer.table = (header, body) => {
-    const baseClass = "border border-gray-300";
-    const tableClass = `table-auto border-collapse my-4 w-full ${baseClass}`;
+    const baseClass = "border border-gray-300 w-full max-w-12/12 overflow-scroll text-ellipsis";
+    const tableClass = `${baseClass} table-auto border-collapse my-4`;
     const headerClass = `${baseClass}`;
     const bodyClass = `${baseClass}`;
 
@@ -144,7 +144,7 @@ function _getMarkdownRenderer() {
 
   // Adds styling for table cells
   renderer.tablecell = (content, flags) => {
-    const baseClass = "border border-gray-300 p-2";
+    const baseClass = "border border-gray-300 p-2 text-balance text-ellipsis";
 
     return flags.header === true
       ? `<th class="font-bold text-left border-double border-2 ${baseClass}">${content}</th>`
