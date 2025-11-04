@@ -14,25 +14,31 @@ const { data, status } = await useAsyncData("note", async () => {
   const slug = router.currentRoute.value.params.slug as string;
   const note: Note = await $fetch(`/api/notes/${slug}`);
 
-  const title = `${note.title} - oliverrr`;
-  const description = note.content.substring(0, 150) + (note.content.length > 150 ? "..." : "");
+  return note;
+});
+
+const note = computed<Note | null>(() => data.value || null);
+const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : "");
+
+if (note.value) {
+  const title = `${note.value.title} - oliverrr`;
+  const description = note.value.content.substring(0, 150) + (note.value.content.length > 150 ? "..." : "");
 
   useSeoMeta({
     title,
     description,
     author: "oliverrr",
     ogType: "article",
-    ogUrl: `https://www.oliverrr.net/notes/${note.slug}`,
-    ogTitle: note.title,
-    ogDescription: note.content,
-    ogSiteName: "oliverrr's notes"
+    ogUrl: `https://www.oliverrr.net/notes/${note.value.slug}`,
+    ogTitle: note.value.title,
+    ogDescription: note.value.content,
+    ogSiteName: "oliverrr's notes",
+    ogImageUrl: "https://www.oliverrr.net/images/rothko.jpg",
+    ogImageType: "image/jpeg",
+    ogImageAlt: "Rothko Card Thumbnail from rothko.oliverrr.net",
+    twitterCard: "summary_large_image"
   });
-
-  return note;
-});
-
-const note = computed<Note | null>(() => data.value || null);
-const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : "");
+}
 </script>
 
 <template>
