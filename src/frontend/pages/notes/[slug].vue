@@ -73,7 +73,7 @@ const noteDate = computed<string>(() => note.value ? formatDate(note.value?.crea
         <div class="w-full overflow-hidden">
           <RothkoCard
             :source="note.title"
-            class="flex h-[6rem]" />
+            class="flex h-[6rem] md:h-[18rem]" />
         </div>
       </client-only>
 
