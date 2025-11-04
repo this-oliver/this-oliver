@@ -51,7 +51,13 @@ function _getMarkdownRenderer() {
   // Adds ids to headings
   renderer.heading = (text, level) => {
     const escapedText = text.toLowerCase().replace(/\W+/g, "-");
-    const anchor = `<a class="link mr-1" href="#${escapedText}">#</a>`;
+
+    let anchorText = "";
+    for (let i = 0; i < level; i++) {
+      anchorText += "#";
+    }
+
+    const anchor = `<a class="link mr-1" href="#${escapedText}">${anchorText}</a>`;
 
     const maxTextSize = 4;
     const textSize = maxTextSize - level;
