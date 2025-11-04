@@ -20,7 +20,7 @@ function isCurrentRoute(to: string): boolean {
     <!-- Centered Nuxt link on small screens, normal on md+ -->
     <nuxt-link
       to="/"
-      class="text-3xl font-bold mx-auto md:mx-0">
+      class="text-3xl md:text-4xl font-bold mx-auto md:mx-0">
       Oliverrr
     </nuxt-link>
 
@@ -28,7 +28,7 @@ function isCurrentRoute(to: string): boolean {
       <div
         v-for="option in generalStore.getNavItems"
         :key="option.label"
-        :class="`${option.to && isCurrentRoute(option.to) ? 'underline' : ''} text-xl cursor-pointer hover:underline`">
+        :class="`${option.to && isCurrentRoute(option.to) ? 'underline text-pinkish' : ''} text-xl md:text-2xl cursor-pointer hover:underline`">
         <nuxt-link v-if="option.to" :to="option.to">
           {{ option.label }}
         </nuxt-link>

@@ -16,10 +16,12 @@ useSeoMeta({
   twitterCard: "summary_large_image"
 });
 
+const route = useRoute();
 const generalStore = useGeneralStore();
-const options = computed<ActionItem[]>(() => generalStore.getNavItems);
 
 const fixFooter = ref<boolean>(false);
+const options = computed<ActionItem[]>(() => generalStore.getNavItems);
+const inLandingPage = computed<boolean>(() => route.path === "/");
 
 onMounted(() => {
   window.addEventListener("scroll", () => {
@@ -42,6 +44,6 @@ onMounted(() => {
       <NuxtPage />
     </main>
 
-    <app-footer :class="`w-full md:w-10/12 ${fixFooter ? 'fixed bottom-0' : ''}`" />
+    <app-footer :class="`w-full ${inLandingPage ? '' : 'mt-10'} md:mt-0 md:w-10/12 ${fixFooter ? 'md:fixed md:bottom-0' : ''}`" />
   </div>
 </template>
