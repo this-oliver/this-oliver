@@ -11,7 +11,7 @@ const props = defineProps({
   <div class="flex flex-col gap-4 md:items-center md:justify-center pb-2 px-2">
     <slot name="title">
       <div v-if="props.title" class="w-full md:w-auto">
-        <h1 class="text-2xl font-bold">
+        <h1 class="text-2xl lg:text-4xl font-bold">
           {{ props.title }}
         </h1>
       </div>

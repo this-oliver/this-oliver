@@ -20,22 +20,9 @@ const { data } = await useAsyncData("welcome-banner", async () => {
   <base-page>
     <div class="flex items-center justify-center">
       <markdown-card
-        id="welcome-banner"
+        class="mt-[10vh] md:mt-[15vh] md:w-8/12 text-2xl md:text-3xl"
         :markdown="data?.about ?? DEFAULT_DESCRIPTION"
-        disable-anchors
-        class="md:w-8/12 md:mt-[15vh]" />
+        :disable-anchors="true" />
     </div>
   </base-page>
 </template>
-
-<style>
-#welcome-banner {
-  font-size: 1.25rem;
-}
-
-@media (min-width: 768px) {
-  #welcome-banner {
-    font-size: 1.5rem;
-  }
-}
-</style>

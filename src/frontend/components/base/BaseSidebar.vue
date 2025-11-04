@@ -45,17 +45,17 @@ function getOptionColor(option: ActionItem): string {
       <slot name="label">
         <span class="text-3xl">{{ props.label }}</span>
       </slot>
-      <base-btn class="bg-red-400 ml-auto" @click="emit('close')">
+      <base-btn class="text-2xl md:text-4xl bg-red-400 ml-auto" @click="emit('close')">
         Close
       </base-btn>
     </div>
 
     <slot>
-      <div class="w-10/12 md:8/12 mx-auto flex flex-col gap-2">
+      <div class="h-full w-10/12 md:8/12 mx-auto flex flex-col gap-2">
         <div
           v-for="item in props.items"
           :key="item.label"
-          :class="`text-2xl flex items-center ${getOptionColor(item)}`"
+          :class="`text-3xl flex items-center ${getOptionColor(item)}`"
           @click="item.action">
           <nuxt-link
             v-if="item.to"
