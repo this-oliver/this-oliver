@@ -1,10 +1,51 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directories:
-      - /
-      - /src/backend
-      - /src/frontend
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: 'chore(deps): '
+    # Disable version updates for npm dependencies
+    open-pull-requests-limit: 0
+    groups:
+      strapi:
+        patterns:
+          - '@strapi/'
+        dependency-type: production
+      security:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+        applies-to: security-updates
+        dependency-type: production
+
+  - package-ecosystem: npm
+    directory: /src/backend
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: 'chore(deps): '
+    # Disable version updates for npm dependencies
+    open-pull-requests-limit: 0
+    groups:
+      strapi:
+        patterns:
+          - '@strapi/'
+        dependency-type: production
+      security:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+        applies-to: security-updates
+        dependency-type: production
+
+  - package-ecosystem: npm
+    directory: /src/frontend
     schedule:
       interval: daily
     commit-message:
@@ -26,9 +67,29 @@ updates:
         dependency-type: production
 
   - package-ecosystem: docker
-    directories:
-      - /src/backend
-      - /src/frontend
+    directory: /src/backend
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: 'chore(deps): '
+    groups:
+      security:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+        applies-to: security-updates
+        dependency-type: production
+      major:
+        patterns:
+          - '*'
+        update-types:
+          - major
+        dependency-type: production
+
+  - package-ecosystem: docker
+    directory: /src/frontend
     schedule:
       interval: daily
     commit-message:
