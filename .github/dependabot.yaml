@@ -8,9 +8,22 @@ updates:
     schedule:
       interval: daily
     commit-message:
-      prefix: 'chore(security): '
+      prefix: 'chore(deps): '
     # Disable version updates for npm dependencies
     open-pull-requests-limit: 0
+    groups:
+      strapi:
+        patterns:
+          - '@strapi/'
+        dependency-type: production
+      security:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+        applies-to: security-updates
+        dependency-type: production
 
   - package-ecosystem: docker
     directories:
