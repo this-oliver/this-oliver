@@ -20,8 +20,8 @@
         "frontend",
         "backend",
         "cicd",
-        "k8s",
-        "security"
+        "security",
+        "deps"
       ]
     ]
   }
