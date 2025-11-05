@@ -1,4 +1,4 @@
-FROM node:22.17.0-alpine
+FROM node:25.1.0-alpine
 
 # Define build arguments (with defaults) and set environment variables
 ARG HOST=0.0.0.0
