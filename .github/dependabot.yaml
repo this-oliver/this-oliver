@@ -32,15 +32,41 @@ updates:
     schedule:
       interval: daily
     commit-message:
-      prefix: 'chore(security): '
-    # Disable version updates for docker dependencies
-    open-pull-requests-limit: 0
+      prefix: 'chore(deps): '
+    groups:
+      security:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+        applies-to: security-updates
+        dependency-type: production
+      major:
+        patterns:
+          - '*'
+        update-types:
+          - major
+        dependency-type: production
 
   - package-ecosystem: github-actions
     directory: /.github/workflows
     schedule:
       interval: daily
     commit-message:
-      prefix: 'chore(security): '
-    # Disable version updates for GitHub Actions dependencies
-    open-pull-requests-limit: 0
+      prefix: 'chore(deps): '
+    groups:
+      security:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+        applies-to: security-updates
+        dependency-type: production
+      major:
+        patterns:
+          - '*'
+        update-types:
+          - major
+        dependency-type: production
