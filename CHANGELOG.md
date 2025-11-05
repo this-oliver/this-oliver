@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.3](https://github.com/this-oliver/this-oliver/compare/v4.0.2...v4.0.3) (2025-11-05)
+
+
+### Bug Fixes
+
+* **backend:** cannot login because of session cookie issues ([#327](https://github.com/this-oliver/this-oliver/issues/327)) ([8c3caa1](https://github.com/this-oliver/this-oliver/commit/8c3caa10b40200af5af170bfa0dbbfd12dbc2c62))
+* cannot login because of session cookie issues ([8c3caa1](https://github.com/this-oliver/this-oliver/commit/8c3caa10b40200af5af170bfa0dbbfd12dbc2c62))
+
 ## [4.0.2](https://github.com/this-oliver/this-oliver/compare/v4.0.1...v4.0.2) (2025-11-04)
 
 
