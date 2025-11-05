@@ -15,7 +15,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "highlight.js": "^11.8.0",
     "marked": "^5.1.2",
-    "nuxt": "3.18.1",
+    "nuxt": "4.2.0",
     "pinia": "^2.1.1",
     "rothko-js": "0.7.4",
     "sanitize-html": "^2.12.1",
