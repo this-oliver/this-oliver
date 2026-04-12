@@ -1,5 +1,27 @@
 version: 2
 updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: 'chore(dep): '
+    labels:
+      - dependencies
+    # IMPORTANT: The group IDs are used in auto-merge workflow. Make sure to update the
+    # references in your workflow to match the group IDs if you decide to change them.
+    groups:
+      safe-updates-version:
+        applies-to: version-updates
+        update-types:
+          - patch
+          - minor
+      safe-updates-security:
+        applies-to: security-updates
+        update-types:
+          - patch
+          - minor
+
   - package-ecosystem: npm
     directories:
       - /
@@ -8,20 +30,29 @@ updates:
     schedule:
       interval: daily
     commit-message:
-      prefix: 'chore(deps): '
+      prefix: 'chore(dep): '
+    labels:
+      - dependencies
+    # IMPORTANT: The group IDs are used in auto-merge workflow. Make sure to update the
+    # references in your workflow to match the group IDs if you decide to change them.
     groups:
-      strapi:
-        patterns:
-          - '@strapi/'
-        dependency-type: production
-      security:
-        patterns:
-          - '*'
+      safe-updates-version:
+        applies-to: version-updates
         update-types:
-          - minor
           - patch
+      safe-updates-security:
         applies-to: security-updates
-        dependency-type: production
+        update-types:
+          - patch
+          - minor
+      safe-updates-packages:
+        applies-to: version-updates
+        patterns:
+          - '@antfu/eslint-config'
+          - '@commitlint/*'
+          - '@nuxt/eslint'
+          - eslint
+          - lint-staged
 
   - package-ecosystem: docker
     directories:
@@ -30,41 +61,18 @@ updates:
     schedule:
       interval: daily
     commit-message:
-      prefix: 'chore(deps): '
+      prefix: 'chore(dep): '
+    labels:
+      - dependencies
+    # IMPORTANT: The group IDs are used in auto-merge workflow. Make sure to update the
+    # references in your workflow to match the group IDs if you decide to change them.
     groups:
-      security:
-        patterns:
-          - '*'
+      safe-updates-version:
+        applies-to: version-updates
         update-types:
-          - minor
           - patch
+      safe-updates-security:
         applies-to: security-updates
-        dependency-type: production
-      major:
-        patterns:
-          - '*'
         update-types:
-          - major
-        dependency-type: production
-
-  - package-ecosystem: github-actions
-    directory: /.github/workflows
-    schedule:
-      interval: daily
-    commit-message:
-      prefix: 'chore(deps): '
-    groups:
-      security:
-        patterns:
-          - '*'
-        update-types:
-          - minor
           - patch
-        applies-to: security-updates
-        dependency-type: production
-      major:
-        patterns:
-          - '*'
-        update-types:
-          - major
-        dependency-type: production
+          - minor
