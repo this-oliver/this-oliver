@@ -11,7 +11,7 @@ on:
       - main
 
   schedule:
-    - cron: "30 2 * * *"
+    - cron: '30 2 * * *'
 
 jobs:
   merge-prs:
@@ -26,7 +26,7 @@ jobs:
         run: |
           for pr_number in $(gh pr list --state open --author 'dependabot[bot]' --json number | jq -r '.[] | .number'); do
             TITLE=$(gh pr view $pr_number --json title --jq '.title')
-            
+
             if [[ "$TITLE" == *'safe-updates'* ]]; then
               echo "::notice :: Merging PR ${pr_number}"
               gh pr merge --squash --delete-branch $pr_number
