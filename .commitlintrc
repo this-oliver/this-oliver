@@ -21,7 +21,7 @@
         "backend",
         "cicd",
         "security",
-        "deps"
+        "dep"
       ]
     ]
   }
