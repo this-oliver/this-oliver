@@ -89,28 +89,28 @@ const getNotes = computed<Note[]>(() => {
 const getTagOptions = computed<
   { label: string, active: boolean, action: () => void }[]
 >(() => {
-      return data.value
-        ? data.value?.tags
-          .map((tag: string) => ({
-            label: tag,
-            active: filter.tags.includes(tag),
-            action: () => {
-              if (filter.tags.includes(tag)) {
-                removeTagFromFilter(tag);
-              } else {
-                addTagToFilter(tag);
-              }
-            }
-          }))
-        // filter out duplicate tags
-          .filter(
-            (tag, index, self) =>
-              index === self.findIndex(t => t.label === tag.label)
-          )
-        // sort alphabetically
-          .sort((a, b) => a.label.localeCompare(b.label))
-        : [];
-    });
+  return data.value
+    ? data.value?.tags
+      .map((tag: string) => ({
+        label: tag,
+        active: filter.tags.includes(tag),
+        action: () => {
+          if (filter.tags.includes(tag)) {
+            removeTagFromFilter(tag);
+          } else {
+            addTagToFilter(tag);
+          }
+        }
+      }))
+    // filter out duplicate tags
+      .filter(
+        (tag, index, self) =>
+          index === self.findIndex(t => t.label === tag.label)
+      )
+    // sort alphabetically
+      .sort((a, b) => a.label.localeCompare(b.label))
+    : [];
+});
 
 function sortNotesByDate(notes: Note[]) {
   return notes.sort((a, b) => {

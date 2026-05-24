@@ -67,33 +67,33 @@ const getExperiences = computed<Experience[]>(() => {
 const getFilterOptions = computed<
   { label: string, color?: string, active: boolean, toggle: () => void }[]
 >(() => {
-      return [
-        {
-          label: "Education",
-          active: filter.education,
-          color: "bg-green-500",
-          toggle: () => {
-            filter.education = !filter.education;
-          }
-        },
-        {
-          label: "Work",
-          color: "bg-blue-500",
-          active: filter.work,
-          toggle: () => {
-            filter.work = !filter.work;
-          }
-        },
-        {
-          label: "Projects",
-          color: "bg-yellow-500",
-          active: filter.projects,
-          toggle: () => {
-            filter.projects = !filter.projects;
-          }
-        }
-      ];
-    });
+  return [
+    {
+      label: "Education",
+      active: filter.education,
+      color: "bg-green-500",
+      toggle: () => {
+        filter.education = !filter.education;
+      }
+    },
+    {
+      label: "Work",
+      color: "bg-blue-500",
+      active: filter.work,
+      toggle: () => {
+        filter.work = !filter.work;
+      }
+    },
+    {
+      label: "Projects",
+      color: "bg-yellow-500",
+      active: filter.projects,
+      toggle: () => {
+        filter.projects = !filter.projects;
+      }
+    }
+  ];
+});
 
 const activeExperienceTypes = computed<string[]>(() => {
   const types: string[] = [];
