@@ -1,5 +1,3 @@
-import type { Note } from "~/types";
-
 export default defineEventHandler(async (event): Promise<Note> => {
   const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
   const noteId = getRouterParam(event, "note");

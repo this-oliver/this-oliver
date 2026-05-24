@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { Note } from "~/types";
 
 const props = defineProps({
   note: {
@@ -18,9 +17,7 @@ const noteDate = computed<string>(() => formatDate(props.note.createdAt));
     <nuxt-link :to="`/notes/${props.note.slug}`" class="flex flex-col gap-2">
       <client-only>
         <div class="overflow-hidden">
-          <RothkoCard
-            :source="props.note.title"
-            class="flex h-[6rem]" />
+          <RothkoCard :source="props.note.title" class="flex h-[6rem]" />
         </div>
       </client-only>
 

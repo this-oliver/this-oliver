@@ -1,4 +1,3 @@
-import type { ActionItem } from "~/types";
 import { defineStore } from "pinia";
 
 export const useGeneralStore = defineStore("general", () => {
@@ -37,7 +36,7 @@ export const useNotificationStore = defineStore("notification", () => {
 
   function addMessage(message: string) {
     messages.value.push({
-      id: (1 + messages.value.length + errors.value.length),
+      id: 1 + messages.value.length + errors.value.length,
       message,
       seen: false
     });
@@ -45,7 +44,7 @@ export const useNotificationStore = defineStore("notification", () => {
 
   function addError(err: Error) {
     errors.value.push({
-      id: (1 + messages.value.length + errors.value.length),
+      id: 1 + messages.value.length + errors.value.length,
       error: err,
       seen: false
     });

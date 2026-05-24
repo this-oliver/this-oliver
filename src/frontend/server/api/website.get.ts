@@ -1,5 +1,3 @@
-import type { Website } from "~/types";
-
 export default defineEventHandler(async (event): Promise<Website> => {
   const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
 

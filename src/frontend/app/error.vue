@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { NuxtError } from "#app";
-import type { ActionItem } from "~/types";
 import { useGeneralStore } from "~/stores/app";
 
 const props = defineProps({
@@ -26,7 +25,8 @@ const options = computed<ActionItem[]>(() => generalStore.getNavItems);
     <main class="mt-4 flex flex-col min-h-screen w-full md:w-10/12 items-center">
       <error-card>
         <h2 class="text-lg font-semibold text-center">
-          {{ props.error?.statusCode || "Error" }} - {{ props.error?.statusMessage || "An error occurred" }}
+          {{ props.error?.statusCode || "Error" }} -
+          {{ props.error?.statusMessage || "An error occurred" }}
         </h2>
         <template #actions>
           <base-btn class="bg-red-400" @click="handleError">

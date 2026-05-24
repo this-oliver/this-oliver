@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ActionItem } from "~/types";
-
 const props = defineProps({
   id: {
     type: String,
@@ -41,11 +39,13 @@ function getOptionColor(option: ActionItem): string {
     v-if="props.show"
     :id="props.id"
     :class="`${props.show ? '' : 'hidden'} ${props.position}-0 fixed flex flex-col gap-4 h-full`">
-    <div class="flex items-center justify-between p-4 ">
+    <div class="flex items-center justify-between p-4">
       <slot name="label">
         <span class="text-3xl">{{ props.label }}</span>
       </slot>
-      <base-btn class="text-2xl md:text-4xl bg-red-400 ml-auto" @click="emit('close')">
+      <base-btn
+        class="text-2xl md:text-4xl bg-red-400 ml-auto"
+        @click="emit('close')">
         Close
       </base-btn>
     </div>
@@ -69,7 +69,14 @@ function getOptionColor(option: ActionItem): string {
           <base-btn
             v-else
             class="flex items-center gap-2"
-            @click="item && item.action ? () => { item.action!(); emit('close') } : emit('close')">
+            @click="
+              item && item.action
+                ? () => {
+                  item.action!();
+                  emit('close');
+                }
+                : emit('close')
+            ">
             <icon v-if="item.icon" :name="item.icon" />
             <span>{{ item.label }}</span>
           </base-btn>
