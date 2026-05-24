@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Experience } from "~/types";
 import { useRouterQuery } from "~/composables/useRouterQuery";
 
 const pageTitle = "Experiences - oliverrr";
@@ -16,7 +15,8 @@ useSeoMeta({
 const query = useRouterQuery();
 
 const { data, status } = await useAsyncData("experiences", async () => {
-  const { experiences, currentPage, totalPages } = await $fetch("/api/experiences");
+  const { experiences, currentPage, totalPages }
+    = await $fetch("/api/experiences");
 
   return {
     experiences,
@@ -64,7 +64,9 @@ const getExperiences = computed<Experience[]>(() => {
   return sortLatestExperiencesByDate(filteredExperiences);
 });
 
-const getFilterOptions = computed<{ label: string, color?: string, active: boolean, toggle: () => void }[]>(() => {
+const getFilterOptions = computed<
+  { label: string, color?: string, active: boolean, toggle: () => void }[]
+>(() => {
   return [
     {
       label: "Education",
@@ -146,7 +148,11 @@ function sortLatestExperiencesByDate(experiences: Experience[]) {
 
     if (a.endDate === null || a.endDate === undefined || a.endDate === 0) {
       return -1;
-    } else if (b.endDate === null || b.endDate === undefined || b.endDate === 0) {
+    } else if (
+      b.endDate === null
+      || b.endDate === undefined
+      || b.endDate === 0
+    ) {
       return 1;
     } else {
       return 0;
@@ -162,7 +168,9 @@ async function fetchMoreExperiences(): Promise<void> {
   }
 
   pagination.currentPage = pagination.currentPage + 1;
-  const newExperiences = await $fetch(`/api/experiences?page=${pagination.currentPage}`);
+  const newExperiences = await $fetch(
+    `/api/experiences?page=${pagination.currentPage}`
+  );
   experiences.value.push(...newExperiences.experiences);
 }
 
@@ -196,12 +204,15 @@ onMounted(async () => {
     const scrollPosition = window.innerHeight + scrollYPosition.value;
     const documentHeight = document.documentElement.scrollHeight;
 
-    if (scrollPosition >= documentHeight - 100 && status.value !== "pending" && !loading.value) {
+    if (
+      scrollPosition >= documentHeight - 100
+      && status.value !== "pending"
+      && !loading.value
+    ) {
       loading.value = true;
-      fetchMoreExperiences()
-        .finally(() => {
-          loading.value = false;
-        });
+      fetchMoreExperiences().finally(() => {
+        loading.value = false;
+      });
     }
   });
 });
@@ -232,12 +243,13 @@ onMounted(async () => {
         <span v-if="activeExperienceTypes.length > 0">
           No experiences found for the selected filters.
         </span>
-        <span v-else>
-          No experiences found.
-        </span>
+        <span v-else> No experiences found. </span>
       </div>
 
-      <div v-else-if="getExperiences.length > 0" id="list" class="flex flex-col gap-4">
+      <div
+        v-else-if="getExperiences.length > 0"
+        id="list"
+        class="flex flex-col gap-4">
         <ExperienceCard
           v-for="experience in getExperiences"
           :key="experience._id"

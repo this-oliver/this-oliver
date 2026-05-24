@@ -11,9 +11,7 @@ export default defineNuxtConfig({
     { path: "~/components/cards" }
   ],
 
-  css: [
-    "~/assets/styles/main.css"
-  ],
+  css: ["~/assets/styles/main.css"],
 
   icon: {
     mode: "css",
@@ -29,5 +27,20 @@ export default defineNuxtConfig({
     cmsMediaUrl: ""
   },
 
-  vite: { plugins: [tailwindcss()] }
+  vite: {
+    optimizeDeps: {
+      include: [
+        "highlight.js",
+        "highlight.js/lib/languages/bash",
+        "highlight.js/lib/languages/javascript",
+        "highlight.js/lib/languages/python",
+        "highlight.js/lib/languages/typescript",
+        "marked",
+        "rothko-js",
+        "sanitize-html", // CJS
+        "simple-analytics-vue"
+      ]
+    },
+    plugins: [tailwindcss()]
+  }
 });

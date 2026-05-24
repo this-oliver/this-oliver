@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Note } from "~/types";
 import { useRouterQuery } from "~/composables/useRouterQuery";
 
 // set seo meta
@@ -56,15 +55,19 @@ const scrollYPosition = ref(0);
  */
 const getNotes = computed<Note[]>(() => {
   // remove duplicates
-  const uniqueNotes = notes.value.filter((note, index, self) =>
-    index === self.findIndex(n => n._id === note._id)
+  const uniqueNotes = notes.value.filter(
+    (note, index, self) => index === self.findIndex(n => n._id === note._id)
   );
 
   // filter based on search and tags
   const filteredNotes = uniqueNotes.filter((note) => {
     if (filter.search) {
-      const matchesTitle = note.title.toLowerCase().includes(filter.search.toLowerCase());
-      const matchesContent = note.content.toLowerCase().includes(filter.search.toLowerCase());
+      const matchesTitle = note.title
+        .toLowerCase()
+        .includes(filter.search.toLowerCase());
+      const matchesContent = note.content
+        .toLowerCase()
+        .includes(filter.search.toLowerCase());
       if (!matchesTitle && !matchesContent) {
         return false;
       }
@@ -83,22 +86,28 @@ const getNotes = computed<Note[]>(() => {
   return sortNotesByDate(filteredNotes);
 });
 
-const getTagOptions = computed<{ label: string, active: boolean, action: () => void }[]>(() => {
+const getTagOptions = computed<
+  { label: string, active: boolean, action: () => void }[]
+>(() => {
   return data.value
-    ? data.value?.tags.map((tag: string) => ({
-      label: tag,
-      active: filter.tags.includes(tag),
-      action: () => {
-        if (filter.tags.includes(tag)) {
-          removeTagFromFilter(tag);
-        } else {
-          addTagToFilter(tag);
+    ? data.value?.tags
+      .map((tag: string) => ({
+        label: tag,
+        active: filter.tags.includes(tag),
+        action: () => {
+          if (filter.tags.includes(tag)) {
+            removeTagFromFilter(tag);
+          } else {
+            addTagToFilter(tag);
+          }
         }
-      }
-    }))
-      // filter out duplicate tags
-      .filter((tag, index, self) => index === self.findIndex(t => t.label === tag.label))
-      // sort alphabetically
+      }))
+    // filter out duplicate tags
+      .filter(
+        (tag, index, self) =>
+          index === self.findIndex(t => t.label === tag.label)
+      )
+    // sort alphabetically
       .sort((a, b) => a.label.localeCompare(b.label))
     : [];
 });
@@ -127,7 +136,11 @@ function resetFilter(): void {
   filter.tags = [];
 }
 
-async function fetchNotes(options: { search?: string, tags?: string[], pagination?: { page: number, limit?: number } }): Promise<Note[]> {
+async function fetchNotes(options: {
+  search?: string
+  tags?: string[]
+  pagination?: { page: number, limit?: number }
+}): Promise<Note[]> {
   const urlQuerys: string[] = [];
 
   if (options.search) {
@@ -146,7 +159,8 @@ async function fetchNotes(options: { search?: string, tags?: string[], paginatio
     urlQuerys.push(`limit=${options.pagination.limit}`);
   }
 
-  const query: string | null = urlQuerys.length > 0 ? `${urlQuerys.join("&")}` : null;
+  const query: string | null
+    = urlQuerys.length > 0 ? `${urlQuerys.join("&")}` : null;
   const res = await $fetch(query ? `/api/notes?${query}` : "/api/notes");
   return res.notes;
 }
@@ -205,7 +219,11 @@ onMounted(async () => {
     const scrollPosition = window.innerHeight + scrollYPosition.value;
     const documentHeight = document.documentElement.scrollHeight;
 
-    if (scrollPosition >= documentHeight - 100 && status.value !== "pending" && !loading.value) {
+    if (
+      scrollPosition >= documentHeight - 100
+      && status.value !== "pending"
+      && !loading.value
+    ) {
       loading.value = true;
 
       pagination.currentPage = pagination.currentPage + 1;
@@ -224,12 +242,19 @@ onMounted(async () => {
   <base-page title="Notes">
     <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
       <div id="filter" class="h-10 mb-2 flex gap-2">
-        <div v-if="showSearchField" class="p-1 flex gap-2 items-center brutalist-outline">
+        <div
+          v-if="showSearchField"
+          class="p-1 flex gap-2 items-center brutalist-outline">
           <input
             v-model="filter.search"
             placeholder="Search..."
             :class="`w-full h-full ${filter.search.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
-          <button class="p-2 flex items-center cursor-pointer" @click="filter.search = ''; showSearchField = false;">
+          <button
+            class="p-2 flex items-center cursor-pointer"
+            @click="
+              filter.search = '';
+              showSearchField = false;
+            ">
             <icon name="mdi-close" class="text-lg" />
           </button>
         </div>
@@ -271,10 +296,7 @@ onMounted(async () => {
       </div>
 
       <div v-else-if="getNotes.length > 0" class="flex flex-col gap-4">
-        <NoteCard
-          v-for="note in getNotes"
-          :key="note._id"
-          :note="note" />
+        <NoteCard v-for="note in getNotes" :key="note._id" :note="note" />
       </div>
 
       <div v-else>
@@ -291,7 +313,10 @@ onMounted(async () => {
       @close="showFilterSidebar = false">
       <div class="p-2 flex flex-col gap-2">
         <span class="text-xl mb-2">Tags</span>
-        <div v-for="tag in getTagOptions" :key="tag.label" class="flex justify-between pr-2">
+        <div
+          v-for="tag in getTagOptions"
+          :key="tag.label"
+          class="flex justify-between pr-2">
           <span>{{ tag.label }}</span>
 
           <input

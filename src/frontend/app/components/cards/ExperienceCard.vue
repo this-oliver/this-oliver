@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { Experience } from "~/types";
 
 const props = defineProps({
   experience: {
@@ -35,7 +34,10 @@ function isEmpty(text: any): boolean {
 
 function getPrettyDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, { year: "numeric", month: "short" });
+  return date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short"
+  });
 }
 </script>
 
@@ -52,7 +54,12 @@ function getPrettyDate(dateString: string): string {
     </client-only>
 
     <p>
-      {{ getPrettyDate(props.experience.startDate) }} - {{ props.experience.endDate ? getPrettyDate(props.experience.endDate) : 'present' }}
+      {{ getPrettyDate(props.experience.startDate) }} -
+      {{
+        props.experience.endDate
+          ? getPrettyDate(props.experience.endDate)
+          : "present"
+      }}
     </p>
 
     <h4 v-if="!isEmpty(props.experience.org)">
@@ -66,18 +73,14 @@ function getPrettyDate(dateString: string): string {
     <markdown-card :markdown="props.experience.description" />
 
     <span v-if="props.experience.link">
-      <a
-        :href="props.experience.link"
-        target="_blank">
+      <a :href="props.experience.link" target="_blank">
         <icon name="mdi-link-variant" />
         {{ props.experience.link }}
       </a>
     </span>
 
     <span v-if="props.experience.image">
-      <a
-        :href="props.experience.image"
-        target="_blank">
+      <a :href="props.experience.image" target="_blank">
         <icon name="mdi-image-frame" />
         Preview
       </a>

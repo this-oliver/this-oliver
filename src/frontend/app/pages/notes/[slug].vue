@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Note } from "~/types";
-
 const errorReasons: string[] = [
   "The note may have been deleted",
   "The note may have been unpublished",
@@ -18,11 +16,15 @@ const { data, status } = await useAsyncData("note", async () => {
 });
 
 const note = computed<Note | null>(() => data.value || null);
-const noteDate = computed<string>(() => note.value ? formatDate(note.value?.createdAt) : "");
+const noteDate = computed<string>(() =>
+  note.value ? formatDate(note.value?.createdAt) : ""
+);
 
 if (note.value) {
   const title = `${note.value.title} - oliverrr`;
-  const description = note.value.content.substring(0, 150) + (note.value.content.length > 150 ? "..." : "");
+  const description
+    = note.value.content.substring(0, 150)
+      + (note.value.content.length > 150 ? "..." : "");
 
   useSeoMeta({
     title,
@@ -54,13 +56,13 @@ if (note.value) {
         </h2>
 
         <p>
-          We couldn't find the note <span class="underline">"{{ router.currentRoute.value.params.slug }}"</span> and there are a few possible reasons for this:
+          We couldn't find the note
+          <span class="underline">"{{ router.currentRoute.value.params.slug }}"</span>
+          and there are a few possible reasons for this:
         </p>
 
         <ul class="list-disc">
-          <li
-            v-for="reason in errorReasons"
-            :key="reason">
+          <li v-for="reason in errorReasons" :key="reason">
             {{ reason }}
           </li>
         </ul>
@@ -77,9 +79,7 @@ if (note.value) {
 
       <client-only>
         <div class="w-full overflow-hidden">
-          <RothkoCard
-            :source="note.title"
-            class="flex h-[6rem] md:h-[18rem]" />
+          <RothkoCard :source="note.title" class="flex h-[6rem] md:h-[18rem]" />
         </div>
       </client-only>
 
