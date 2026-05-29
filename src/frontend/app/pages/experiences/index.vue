@@ -221,7 +221,7 @@ onMounted(async () => {
 <template>
   <base-page title="Experiences" class="w-full">
     <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
-      <div id="filter" class="flex gap-2">
+      <div id="filter" class="h-10 mb-2 flex gap-2">
         <base-btn
           v-for="option in getFilterOptions"
           :key="option.label"
