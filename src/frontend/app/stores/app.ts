@@ -8,12 +8,12 @@ export const useGeneralStore = defineStore("general", () => {
   const getNavItems = computed<ActionItem[]>(() => {
     return [
       {
-        label: "notes",
+        label: "Notes",
         icon: "mdi-newspaper-variant-outline",
         to: "/notes"
       },
       {
-        label: "experiences",
+        label: "Experiences",
         icon: "mdi-briefcase-outline",
         to: "/experiences"
       }
