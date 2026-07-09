@@ -1,4 +1,4 @@
-FROM node:24.16.0-alpine@sha256:2bdb65ed1dab192432bc31c95f94155ca5ad7fc1392fb7eb7526ab682fa5bf14
+FROM node:26.5.0-alpine@sha256:e88a35be04478413b7c71c455cd9865de9b9360e1f43456be5951032d7ac1a66
 
 # Define build arguments (with defaults) and set environment variables
 ARG HOST=0.0.0.0
