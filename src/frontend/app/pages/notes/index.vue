@@ -44,7 +44,6 @@ const pagination = reactive({
 });
 
 const notes = ref<Note[]>(data.value?.notes || []);
-const showSearchField = ref<boolean>(false);
 const showFilterSidebar = ref<boolean>(false);
 
 const loading = ref(false);
@@ -205,7 +204,6 @@ watch(
 onMounted(async () => {
   if (queryHelper.has("q")) {
     filter.search = queryHelper.get("q") as string;
-    showSearchField.value = true;
   }
 
   if (queryHelper.has("tags")) {
@@ -241,31 +239,18 @@ onMounted(async () => {
 <template>
   <base-page title="Notes">
     <div class="w-full md:w-6/12 md:mx-auto flex flex-col gap-2">
-      <div id="filter" class="h-10 mb-2 flex gap-2">
-        <div
-          v-if="showSearchField"
-          class="p-1 flex gap-2 items-center brutalist-outline">
+      <div id="filter" class="h-10 mb-2 flex gap-2 justify-between">
+        <div class="grow p-1 flex gap-2 items-center brutalist-outline">
           <input
             v-model="filter.search"
             placeholder="Search..."
             :class="`w-full h-full ${filter.search.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
           <button
             class="p-2 flex items-center cursor-pointer"
-            @click="
-              filter.search = '';
-              showSearchField = false;
-            ">
+            @click="filter.search = '';">
             <icon name="mdi-close" class="text-lg" />
           </button>
         </div>
-
-        <base-btn
-          v-else
-          class="flex items-center gap-2"
-          @click="showSearchField = true">
-          <icon name="mdi-magnify" class="h-4 w-4 mr-1" />
-          Search
-        </base-btn>
 
         <base-btn
           :class="`flex items-center gap-2 ${filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''} ${showFilterSidebar ? 'font-bold' : ''}`"
