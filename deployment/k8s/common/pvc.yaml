@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: backend-storage
+  name: oliverrr
   labels:
-    app: backend
+    app: oliverrr
 spec:
   accessModes:
     - ReadWriteOnce

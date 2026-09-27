@@ -1,63 +1,145 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: oliverrr-frontend
   labels:
-    app: backend
+    app: oliverrr
+    type: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: oliverrr
+      type: frontend
   template:
     metadata:
       labels:
-        app: backend
+        app: oliverrr
+        type: frontend
     spec:
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
-        fsGroup: 1001
-      imagePullSecrets:
-        - name: regcred
+      containers:
+        - name: frontend
+          image: ghcr.io/this-oliver/website-frontend:latest
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+          env:
+            - name: NUXT_CMS_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: oliverrr
+                  key: FRONTEND_NUXT_CMS_API_URL
+            - name: NUXT_CMS_MEDIA_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: oliverrr
+                  key: FRONTEND_NUXT_CMS_MEDIA_URL
+            - name: NUXT_CMS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: oliverrr
+                  key: FRONTEND_NUXT_CMS_API_TOKEN
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          ports:
+            - containerPort: 3000
+              name: frontend-port
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: '0.5'
+            requests:
+              memory: 128Mi
+              cpu: '0.1'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oliverrr-backend
+  labels:
+    app: oliverrr
+    type: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oliverrr
+      type: backend
+  template:
+    metadata:
+      labels:
+        app: oliverrr
+        type: backend
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
       containers:
         - name: backend
           image: ghcr.io/this-oliver/website-backend:latest
           imagePullPolicy: Always
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+          # securityContext:
+          #   allowPrivilegeEscalation: true
+          #   readOnlyRootFilesystem: false
+          #   runAsNonRoot: false
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: oliverrr
                   key: BACKEND_ADMIN_JWT_SECRET
             - name: API_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: oliverrr
                   key: BACKEND_API_TOKEN_SALT
             - name: APP_KEYS
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: oliverrr
                   key: BACKEND_APP_KEYS
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: oliverrr
                   key: BACKEND_ENCRYPTION_KEY
             - name: TRANSFER_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: oliverrr
                   key: BACKEND_TRANSFER_TOKEN_SALT
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: oliverrr
                   key: BACKEND_JWT_SECRET
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
           ports:
             - containerPort: 1337
               name: backend-port
@@ -69,60 +151,19 @@ spec:
               memory: 2Gi
               cpu: '1'
           volumeMounts:
-            - name: backend-storage
-              mountPath: /app/.database
-            - name: backend-storage
+            - name: oliverrr-database
+              mountPath: /app/.database/data.db
+            - name: oliverrr-public
               mountPath: /app/public/uploads
       volumes:
-        - name: backend-storage
-          persistentVolumeClaim:
-            claimName: backend-storage
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-  labels:
-    app: frontend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
-      imagePullSecrets:
-        - name: regcred
-      containers:
-        - name: frontend
-          image: ghcr.io/this-oliver/website-frontend:latest
-          imagePullPolicy: Always
-          securityContext:
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-          env:
-            - name: NUXT_CMS_API_URL
-              value: 'http://backend:1337'
-            - name: NUXT_CMS_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: frontend
-                  key: FRONTEND_NUXT_CMS_API_TOKEN
-          ports:
-            - containerPort: 3000
-              name: frontend-port
-          resources:
-            limits:
-              memory: 256Mi
-              cpu: '0.5'
-            requests:
-              memory: 128Mi
-              cpu: '0.1'
+        - name: oliverrr-database
+          hostPath:
+            path: /home/mechanic/deployment/oliverrr/data.db
+            type: DirectoryOrCreate
+        - name: oliverrr-public
+          hostPath:
+            path: /home/mechanic/deployment/oliverrr/public
+            type: DirectoryOrCreate
+        # - name: oliverrr-public
+        #   persistentVolumeClaim:
+        #     claimName: oliverrr

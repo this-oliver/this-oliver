@@ -1,58 +1,20 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: website
-  labels:
-    app: frontend
-  annotations:
-    cert-manager.io/issuer: cloudflare-issuer
-    cert-manager.io/issuer-kind: OriginIssuer
-    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+  name: oliverrr
 spec:
-  ingressClassName: nginx
-  rules:
-    - host: dev.oliverrr.net
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: dev-oliverrr-frontend
-                port:
-                  name: frontend
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dev.oliverr.net`)
+      kind: Rule
+      services:
+        - name: oliverrr-frontend-dev
+          port: frontend
+    - match: Host(`dev-cms.oliverr.net`)
+      kind: Rule
+      services:
+        - name: oliverrr-frontend-dev
+          port: backend
   tls:
-    - hosts:
-        - dev.oliverrr.net
-      secretName: dev-oliverrr-tls
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: cms
-  labels:
-    app: backend
-  annotations:
-    cert-manager.io/issuer: cloudflare-issuer
-    cert-manager.io/issuer-kind: OriginIssuer
-    cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
-    nginx.ingress.kubernetes.io/proxy-body-size: 5m
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: cms-dev.oliverrr.net
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: dev-oliverrr-backend
-                port:
-                  name: backend
-  tls:
-    - hosts:
-        - cms-dev.oliverrr.net
-      secretName: dev-oliverrr-cms-tls
+    certResolver: defaultCertResolver

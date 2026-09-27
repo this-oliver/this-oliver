@@ -7,10 +7,10 @@ resources:
   - ../../common/
   - ingress.yaml
 
-namePrefix: dev-oliverrr-
+nameSuffix: -dev
 
 commonLabels:
   env: dev
 
 patchesStrategicMerge:
-  - overlay-deployment.yaml
+  - overlay-configmap.yaml
