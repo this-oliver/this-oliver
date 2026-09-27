@@ -1,6 +1,6 @@
 # Auto-merge Dependabot PRs
 
-name: Auto Merge Dependabot PRs
+name: Dependabot Auto Merge
 
 on:
   pull_request:
@@ -9,6 +9,8 @@ on:
       - labeled
     branches:
       - main
+
+  workflow_dispatch: 
 
   schedule:
     - cron: '30 2 * * *'
