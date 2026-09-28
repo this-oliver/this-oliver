@@ -19,6 +19,6 @@
     "lint-staged": "^17.5.1"
   },
   "lint-staged": {
-    "*": "npm run lint:fix"
+    "*": "pnpm lint:fix"
   }
 }

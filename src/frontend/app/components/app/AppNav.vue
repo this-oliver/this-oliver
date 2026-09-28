@@ -28,7 +28,8 @@ function isCurrentRoute(to: string): boolean {
       <div
         v-for="option in generalStore.getNavItems"
         :key="option.label"
-        :class="`${option.to && isCurrentRoute(option.to) ? 'underline text-pinkish' : ''} text-xl md:text-2xl cursor-pointer hover:underline`">
+        :class="`${option.to && isCurrentRoute(option.to) ? 'underline text-pinkish' : ''}`"
+        class="text-xl md:text-2xl cursor-pointer hover:underline">
         <nuxt-link v-if="option.to" :to="option.to">
           {{ option.label }}
         </nuxt-link>

@@ -1,4 +1,4 @@
-FROM node:24.16.0-alpine@sha256:2bdb65ed1dab192432bc31c95f94155ca5ad7fc1392fb7eb7526ab682fa5bf14
+FROM node:24-bookworm-slim@sha256:2c87ef9bd3c6a3bd4b472b4bec2ce9d16354b0c574f736c476489d09f560a203
 
 # Define build arguments (with defaults) and set environment variables
 ARG HOST=0.0.0.0
@@ -13,27 +13,30 @@ ARG PORT=1337
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
 
 # Install dependencies
-RUN npm install --production
+RUN npm install -g pnpm@11.5.0 \
+  && pnpm install
 
 # Copy the rest of the application code
 COPY config/ ./config/
-COPY public/favicon.png ./public/favicon.png
-COPY public/robots.txt ./public/robots.txt
+COPY database/ ./database/
+COPY public/ ./public/
 COPY src/ ./src/
 COPY tsconfig.json ./
 
 # Build the application
-RUN npm run build
+RUN pnpm build
 
 # Expose the port the app runs on
 EXPOSE $PORT
 
 # Set user to run the application and give them permissions to the app directory
-RUN chown -R 1001:1001 /app
-USER 1001
+RUN chown -R node:node /app
+USER node
 
 # Start the application
-CMD ["npm", "start"]
+ENTRYPOINT ["pnpm", "start"]

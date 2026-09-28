@@ -1,29 +1,42 @@
-FROM node:24.16.0-alpine@sha256:2bdb65ed1dab192432bc31c95f94155ca5ad7fc1392fb7eb7526ab682fa5bf14
+FROM node:24-bookworm-slim@sha256:2c87ef9bd3c6a3bd4b472b4bec2ce9d16354b0c574f736c476489d09f560a203
 
-WORKDIR /app
+# Set the working directory
+WORKDIR /web
 
-COPY package*.json ./
+# Copy package.json and package-lock.json
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
 
-RUN npm install
+# Install dependencies
+RUN npm install -g pnpm@11.5.0 && pnpm install
 
-COPY assets/ ./assets/
-COPY components/ ./components/
-COPY composables/ ./composables/
-COPY pages/ ./pages/
-COPY plugins/ ./plugins/
+# Build-time args for provenance
+ARG APP_VERSION
+ARG APP_COMMIT_SHA
+ARG APP_BUILD_TIMESTAMP
+
+ENV NUXT_PUBLIC_APP_VERSION=$APP_VERSION \
+    NUXT_PUBLIC_APP_COMMIT_SHA=$APP_COMMIT_SHA \
+    NUXT_PUBLIC_APP_BUILD_TIMESTAMP=$APP_BUILD_TIMESTAMP
+
+# Copy the rest of the application code
+COPY app/ ./app/
 COPY public/ ./public/
 COPY server/ ./server/
-COPY stores/ ./stores/
-COPY types/ ./types/
-COPY app.vue ./
+COPY shared/ ./shared/
 COPY nuxt.config.ts ./
 COPY tsconfig.json ./
 
-RUN npm run build
+# Build the application
+RUN pnpm build
 
+# Expose the port the app runs on
 EXPOSE 3000
 
-RUN chown -R 1001:1001 /app
-USER 1001
+# Set user to run the application and give them permissions to the app directory
+RUN chown -R node:node /web
+USER node
 
-CMD ["npm", "start"]
+# Start the application
+ENTRYPOINT ["node", ".output/server/index.mjs"]
