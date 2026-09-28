@@ -1,2 +1,2 @@
 #!/bin/bash
-npx commitlint --config .commitlintrc --edit
+pnx commitlint --config .commitlintrc --edit
