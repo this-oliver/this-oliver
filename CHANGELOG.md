@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.5](https://github.com/this-oliver/this-oliver/compare/v4.0.4...v4.0.5) (2026-10-01)
+
+
+### Bug Fixes
+
+* **backend:** resolves docker build issues ([#532](https://github.com/this-oliver/this-oliver/issues/532)) ([8e69734](https://github.com/this-oliver/this-oliver/commit/8e697341a467cf59c6a5d94848480a84cc7db3a5))
+
 ## [4.0.4](https://github.com/this-oliver/this-oliver/compare/v4.0.3...v4.0.4) (2026-10-01)
 
 
