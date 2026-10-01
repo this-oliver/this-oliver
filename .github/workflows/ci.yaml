@@ -35,29 +35,28 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [src/frontend, src/backend]
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PNPM + Node
         uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
+        with:
+          working-directory: ${{ matrix.app }}
 
-      - name: Install root dependencies
+      - name: Install dependencies
         run: pnpm install
-
-      - name: Install frontend dependencies
-        run: pnpm install
-        working-directory: src/frontend
-
-      - name: Install backend dependencies
-        run: pnpm install
-        working-directory: src/backend
+        working-directory: ${{ matrix.app }}
 
       - name: Check for vulnerable dependencies, misconfigurations, and secrets
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # 0.36.0
         with:
           scan-type: fs
-          scan-ref: .
+          scan-ref: ${{ matrix.app }}
           scanners: 'vuln,misconfig,secret'
           severity: 'HIGH,CRITICAL'
           ignore-unfixed: true
