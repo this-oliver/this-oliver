@@ -248,7 +248,8 @@ onMounted(async () => {
           <input
             v-model="filter.search"
             placeholder="Search..."
-            :class="`w-full h-full ${filter.search.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
+            class="w-full h-full"
+            :class="`${filter.search.length > 0 ? 'bg-pinkish text-slate-800' : ''}`">
           <button
             class="p-2 flex items-center cursor-pointer"
             @click="
@@ -268,7 +269,8 @@ onMounted(async () => {
         </base-btn>
 
         <base-btn
-          :class="`flex items-center gap-2 ${filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''} ${showFilterSidebar ? 'font-bold' : ''}`"
+          class="flex items-center gap-2"
+          :class="`${filter.tags.length > 0 ? 'bg-pinkish text-slate-800' : ''} ${showFilterSidebar ? 'font-bold' : ''}`"
           @click="showFilterSidebar = !showFilterSidebar">
           <icon name="mdi-filter" class="h-4 w-4 mr-1" />
           Filter

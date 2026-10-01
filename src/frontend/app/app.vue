@@ -45,6 +45,8 @@ onMounted(() => {
       <NuxtPage />
     </main>
 
-    <app-footer :class="`w-full ${inLandingPage ? '' : 'mt-10'} md:mt-0 md:w-10/12 ${fixFooter ? 'md:fixed md:bottom-0' : ''}`" />
+    <app-footer
+      class="w-full md:mt-0 md:w-10/12"
+      :class="`${inLandingPage ? '' : 'mt-10'} ${fixFooter ? 'md:fixed md:bottom-0' : ''}`" />
   </div>
 </template>

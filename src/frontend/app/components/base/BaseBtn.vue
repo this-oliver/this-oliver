@@ -16,14 +16,16 @@ const emit = defineEmits(["click"]);
 <template>
   <nuxt-link
     v-if="props.to"
-    :class="`${props.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} p-2 brutalist-outline`"
+    class="p-2 brutalist-outline"
+    :class="`${props.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`"
     :to="props.to">
     <slot />
   </nuxt-link>
 
   <div
     v-else
-    :class="`${props.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} p-2 brutalist-outline`"
+    class="p-2 brutalist-outline"
+    :class="`${props.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`"
     @click="props.disabled ? null : emit('click')">
     <slot />
   </div>

@@ -1,9 +1,8 @@
 {
   "name": "backend",
-  "description": "headless cms powered by Strapi",
-  "engines": {
-    "node": "24.x.x",
-    "npm": ">=6.0.0"
+  "packageManager": "pnpm@12.4.1",
+  "devEngines": {
+    "runtime": { "name": "node", "version": "^22.0.0" }
   },
   "scripts": {
     "build": "strapi build",
@@ -11,9 +10,9 @@
     "dev": "strapi develop",
     "start": "strapi start",
     "strapi": "strapi",
-    "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry",
-    "token": "npx ts-node ./scripts/tokens.ts"
+    "upgrade": "pnx @strapi/upgrade latest",
+    "upgrade:dry": "pnx @strapi/upgrade latest --dry",
+    "token": "pnx ts-node ./scripts/tokens.ts"
   },
   "dependencies": {
     "@strapi/plugin-users-permissions": "5.55.1",

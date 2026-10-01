@@ -55,7 +55,8 @@ function getOptionColor(option: ActionItem): string {
         <div
           v-for="item in props.items"
           :key="item.label"
-          :class="`text-3xl flex items-center ${getOptionColor(item)}`"
+          :class="`${getOptionColor(item)}`"
+          class="text-3xl flex items-center"
           @click="item.action">
           <nuxt-link
             v-if="item.to"
