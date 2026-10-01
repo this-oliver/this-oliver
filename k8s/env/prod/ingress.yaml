@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: oliverrr
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`oliverr.net`)
+      kind: Rule
+      services:
+        - name: oliverrr-frontend-prod
+          port: frontend
+    - match: Host(`cms.oliverr.net`)
+      kind: Rule
+      services:
+        - name: oliverrr-backend-prod
+          port: backend
+  tls:
+    certResolver: defaultCertResolver

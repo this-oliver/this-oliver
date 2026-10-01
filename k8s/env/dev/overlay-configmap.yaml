@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oliverrr
+data:
+  FRONTEND_NUXT_CMS_API_URL: 'https://dev-cms.oliverr.net'
+  FRONTEND_NUXT_CMS_MEDIA_URL: 'https://dev-cms.oliverr.net/uploads'
