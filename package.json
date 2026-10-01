@@ -3,8 +3,14 @@
   "version": "4.0.3",
   "description": "personal website",
   "devEngines": {
-    "runtime": { "name": "node", "version": "24.x.x" },
-    "packageManager": { "name": "pnpm", "version": "12.4.1" }
+    "runtime": {
+      "name": "node",
+      "version": "24.x.x"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.8.1"
+    }
   },
   "author": "oliver <hello@oliverrr.net>",
   "license": "MIT",
