@@ -23,7 +23,6 @@ RUN npm install -g pnpm@11.5.0 \
 
 # Copy the rest of the application code
 COPY config/ ./config/
-COPY database/ ./database/
 COPY public/ ./public/
 COPY src/ ./src/
 COPY tsconfig.json ./
