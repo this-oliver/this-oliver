@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.4](https://github.com/this-oliver/this-oliver/compare/v4.0.3...v4.0.4) (2026-10-01)
+
+
+### Bug Fixes
+
+* improves k8s structure ([#509](https://github.com/this-oliver/this-oliver/issues/509)) ([3d65e06](https://github.com/this-oliver/this-oliver/commit/3d65e0605719be1ac96c020b132ddb56229a7adf))
+
 ## [4.0.3](https://github.com/this-oliver/this-oliver/compare/v4.0.2...v4.0.3) (2025-11-05)
 
 
