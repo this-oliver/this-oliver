@@ -1,10 +1,13 @@
 {
   "name": "oliverrr",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "packageManager": "pnpm@12.4.1",
   "description": "personal website",
   "devEngines": {
-    "runtime": { "name": "node", "version": "^22.0.0" }
+    "runtime": {
+      "name": "node",
+      "version": "^22.0.0"
+    }
   },
   "author": "oliver <hello@oliverrr.net>",
   "license": "MIT",
