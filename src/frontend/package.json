@@ -1,8 +1,8 @@
 {
   "name": "frontend",
+  "packageManager": "pnpm@12.4.1",
   "devEngines": {
-    "runtime": { "name": "node", "version": "24.x.x" },
-    "packageManager": { "name": "pnpm", "version": "12.4.1" }
+    "runtime": { "name": "node", "version": "^22.0.0" }
   },
   "scripts": {
     "start": "node .output/server/index.mjs",
