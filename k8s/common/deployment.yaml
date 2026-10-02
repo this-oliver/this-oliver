@@ -87,16 +87,14 @@ spec:
         type: backend
     spec:
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
         - name: backend
           image: ghcr.io/this-oliver/website-backend:latest
           imagePullPolicy: Always
-          # securityContext:
-          #   allowPrivilegeEscalation: true
-          #   readOnlyRootFilesystem: false
-          #   runAsNonRoot: false
+          securityContext:
+            readOnlyRootFilesystem: true
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
