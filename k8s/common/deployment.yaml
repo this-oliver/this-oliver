@@ -152,18 +152,13 @@ spec:
               cpu: '1'
           volumeMounts:
             - name: oliverrr-database
-              mountPath: /app/.database/data.db
-            - name: oliverrr-public
+              mountPath: /app/.database
+            - name: oliverrr-media
               mountPath: /app/public/uploads
       volumes:
         - name: oliverrr-database
-          hostPath:
-            path: /home/mechanic/deployment/oliverrr/data.db
-            type: DirectoryOrCreate
-        - name: oliverrr-public
-          hostPath:
-            path: /home/mechanic/deployment/oliverrr/public
-            type: DirectoryOrCreate
-        # - name: oliverrr-public
-        #   persistentVolumeClaim:
-        #     claimName: oliverrr
+          persistentVolumeClaim:
+            claimName: oliverrr-database
+        - name: oliverrr-media
+          persistentVolumeClaim:
+            claimName: oliverrr-media
