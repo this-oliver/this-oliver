@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: oliverrr-media
   labels:
-    app: oliverrr
+    app: backend
 spec:
   storageClassName: homelab-hostpath
   accessModes:
@@ -18,7 +18,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: oliverrr-database
   labels:
-    app: oliverrr
+    app: backend
 spec:
   storageClassName: homelab-hostpath
   accessModes:

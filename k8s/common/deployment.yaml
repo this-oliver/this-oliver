@@ -1,21 +1,19 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oliverrr-frontend
   labels:
-    app: oliverrr
-    type: frontend
+    app: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oliverrr
-      type: frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: oliverrr
-        type: frontend
+        app: frontend
     spec:
       securityContext:
         runAsUser: 1001
@@ -72,19 +70,16 @@ kind: Deployment
 metadata:
   name: oliverrr-backend
   labels:
-    app: oliverrr
-    type: backend
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oliverrr
-      type: backend
+      app: backend
   template:
     metadata:
       labels:
-        app: oliverrr
-        type: backend
+        app: backend
     spec:
       securityContext:
         runAsUser: 1000
