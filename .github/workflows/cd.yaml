@@ -113,7 +113,7 @@ jobs:
           kubectl config set-cluster "${CLUSTER_CONTEXT}-cluster" --server="https://${CLUSTER_SERVER_IP}:${CLUSTER_PORT}" --insecure-skip-tls-verify
           kubectl config set-credentials "${CLUSTER_CONTEXT}-user" --token "$SERVICE_ACCOUNT_TOKEN"
           kubectl config set-context "${CLUSTER_CONTEXT}-context" --cluster="${CLUSTER_CONTEXT}-cluster" --user="${CLUSTER_CONTEXT}-user" --namespace="$NAMESPACE"
-          kubectl use-context "${CLUSTER_CONTEXT}-context"
+          kubectl config use-context "${CLUSTER_CONTEXT}-context"
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
