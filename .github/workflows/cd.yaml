@@ -20,10 +20,12 @@ on:
         type: boolean
         required: false
         default: true
+  pull_request:
+    branches:
+      - main
 
 jobs:
   release:
-    if: ${{ github.event_name == 'push'}}
     runs-on: ubuntu-latest
     # see https://github.com/googleapis/release-please-action/tree/a02a34c4d625f9be7cb89156071d8567266a2445/?tab=readme-ov-file#workflow-permissions
     permissions:
@@ -35,13 +37,14 @@ jobs:
       released: ${{ steps.release.outputs.releases_created}}
     steps:
       - name: Create release
+        if: ${{ github.event_name == 'push'}}
         id: release
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           release-type: node
 
   build:
-    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.build == true) }}
+    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.build == true || github.event_name == 'pull_request') }}
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -80,11 +83,11 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   deploy:
-    if: ${{ needs.release.outputs.released == 'true' || inputs.deploy == true }}
+    if: ${{ needs.release.outputs.released == 'true' || inputs.deploy == true || github.event_name == 'pull_request' }}
     needs: [release, build]
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.release.outputs.released == 'true' && 'production' || 'development' }}
+      name: ${{ (needs.release.outputs.released == 'true' && github.event_name != 'pull_request') && 'production' || 'development' }}
     permissions:
       contents: read
       packages: read
