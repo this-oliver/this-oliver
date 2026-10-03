@@ -23,6 +23,7 @@ rules:
   - apiGroups: [''] # "" indicates the core API group
     resources:
       - configmaps
+      - persistentvolumeclaims
       - pods
       - services
       - secrets
@@ -33,18 +34,12 @@ rules:
   - apiGroups: [''] # "" indicates the core API group
     resources:
       - configmaps
+      - persistentvolumeclaims
       - pods
       - services
     verbs:
       - get
       - list
-  - apiGroups: [storage]
-    resources:
-      - volumeattachmentsource
-    verbs:
-      - create
-      - update
-      - patch
   - apiGroups: [traefik.io]
     resources:
       - ingressroutes
