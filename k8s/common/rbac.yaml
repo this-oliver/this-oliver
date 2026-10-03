@@ -28,18 +28,11 @@ rules:
       - services
       - secrets
     verbs:
+      - get
+      - list
       - create
       - update
       - patch
-  - apiGroups: [''] # "" indicates the core API group
-    resources:
-      - configmaps
-      - persistentvolumeclaims
-      - pods
-      - services
-    verbs:
-      - get
-      - list
   - apiGroups: [traefik.io]
     resources:
       - ingressroutes
