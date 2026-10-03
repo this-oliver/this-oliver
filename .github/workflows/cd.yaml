@@ -110,7 +110,7 @@ jobs:
           CLUSTER_PORT: ${{ secrets.CLUSTER_PORT }}
           SERVICE_ACCOUNT_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
         run: |
-          kubectl config set-cluster "${CLUSTER_CONTEXT}-cluster" --server="https://${CLUSTER_SERVER_IP}:${CLUSTER_PORT}" --insecure-skip-tls-verify
+          kubectl config set-cluster "${CLUSTER_CONTEXT}-cluster" --server="https://${CLUSTER_HOST}:${CLUSTER_PORT}" --insecure-skip-tls-verify
           kubectl config set-credentials "${CLUSTER_CONTEXT}-user" --token "$SERVICE_ACCOUNT_TOKEN"
           kubectl config set-context "${CLUSTER_CONTEXT}-context" --cluster="${CLUSTER_CONTEXT}-cluster" --user="${CLUSTER_CONTEXT}-user" --namespace="$NAMESPACE"
           kubectl config use-context "${CLUSTER_CONTEXT}-context"
