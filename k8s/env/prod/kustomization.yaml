@@ -9,8 +9,10 @@ resources:
 
 nameSuffix: -prod
 
-commonLabels:
-  env: prod
+labels:
+  - includeSelectors: true
+    pairs:
+      env: prod
 
-patchesStrategicMerge:
-  - overlay-configmap.yaml
+patches:
+  - path: overlay-configmap.yaml

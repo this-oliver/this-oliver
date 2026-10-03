@@ -7,5 +7,10 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - pvc.yaml
+  # NOTE: Create the rbac.yaml resources directly on the
+  # cluster. Why? Because, the cicd service account in
+  # .github/workflows/cd.yaml does not have the permission
+  # to create other service accounts or roles.
+  # - rbac.yaml
   - secrets.yaml
   - service.yaml

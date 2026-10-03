@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - src/**
-      - deployment/k8s/**
+      - k8s/**
       - package*.json
   workflow_dispatch:
     inputs:
@@ -20,10 +20,12 @@ on:
         type: boolean
         required: false
         default: true
+  pull_request:
+    branches:
+      - main
 
 jobs:
   release:
-    if: ${{ github.event_name == 'push'}}
     runs-on: ubuntu-latest
     # see https://github.com/googleapis/release-please-action/tree/a02a34c4d625f9be7cb89156071d8567266a2445/?tab=readme-ov-file#workflow-permissions
     permissions:
@@ -35,13 +37,14 @@ jobs:
       released: ${{ steps.release.outputs.releases_created}}
     steps:
       - name: Create release
+        if: ${{ github.event_name == 'push'}}
         id: release
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           release-type: node
 
   build:
-    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.build == true) }}
+    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.build == true || github.event_name == 'pull_request') }}
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -80,74 +83,60 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   deploy:
-    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.deploy == true) }}
+    if: ${{ needs.release.outputs.released == 'true' || inputs.deploy == true || github.event_name == 'pull_request' }}
     needs: [release, build]
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.release.outputs.released == 'true' && 'production' || 'development' }}
+      name: ${{ (needs.release.outputs.released == 'true' && github.event_name != 'pull_request') && 'production' || 'development' }}
     permissions:
       contents: read
       packages: read
+    env:
+      NAMESPACE: ${{ vars.NAMESPACE }}
+      DEPLOYMENT_ENV: ${{ needs.release.outputs.released == 'true' && 'prod' || 'dev' }}
     steps:
+      - name: Install Kubectl
+        run: |
+          sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+          curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+          sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+          echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+          sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+          sudo apt-get update && sudo apt-get install -y kubectl
+
+          kubectl version --client
+
+      - name: Configure Kubectl
+        env:
+          CLUSTER_CONTEXT: k8s
+          CLUSTER_HOST: ${{ secrets.CLUSTER_HOST }}
+          CLUSTER_PORT: ${{ secrets.CLUSTER_PORT }}
+          SERVICE_ACCOUNT_TOKEN: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          kubectl config set-cluster "${CLUSTER_CONTEXT}-cluster" --server="https://${CLUSTER_HOST}:${CLUSTER_PORT}" --insecure-skip-tls-verify
+          kubectl config set-credentials "${CLUSTER_CONTEXT}-user" --token "$SERVICE_ACCOUNT_TOKEN"
+          kubectl config set-context "${CLUSTER_CONTEXT}-context" --cluster="${CLUSTER_CONTEXT}-cluster" --user="${CLUSTER_CONTEXT}-user" --namespace="$NAMESPACE"
+          kubectl config use-context "${CLUSTER_CONTEXT}-context"
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set environment
-        id: set-env
+      - name: Apply resources
         run: |
-          if [[ "${{ needs.release.outputs.released }}" == "true" ]]; then
-            echo "environment=prod" >> "$GITHUB_OUTPUT"
-          else
-            echo "environment=dev" >> "$GITHUB_OUTPUT"
-          fi
+          kubectl -n "$NAMESPACE" apply -k "k8s/env/${DEPLOYMENT_ENV}"
 
-      - name: Prepare deployment
+      - name: Patch secrets
         run: |
-          echo "Preparing deployment environment..."
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          echo "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          kubectl create secret generic "oliverrr-${DEPLOYMENT_ENV}" \
+            --from-literal=BACKEND_ADMIN_JWT_SECRET='${{ secrets.BACKEND_ADMIN_JWT_SECRET }}' \
+            --from-literal=BACKEND_API_TOKEN_SALT='${{ secrets.BACKEND_API_TOKEN_SALT }}' \
+            --from-literal=BACKEND_APP_KEYS='${{ secrets.BACKEND_APP_KEYS }}' \
+            --from-literal=BACKEND_JWT_SECRET='${{ secrets.BACKEND_JWT_SECRET }}' \
+            --from-literal=BACKEND_ENCRYPTION_KEY='${{ secrets.BACKEND_ENCRYPTION_KEY }}' \
+            --from-literal=BACKEND_TRANSFER_TOKEN_SALT='${{ secrets.BACKEND_TRANSFER_TOKEN_SALT }}' \
+            --from-literal=FRONTEND_NUXT_CMS_API_TOKEN='${{ secrets.FRONTEND_NUXT_CMS_API_TOKEN }}' \
+            --dry-run=client -o yaml | kubectl -n "$NAMESPACE" apply -f -
 
-      - name: Apply k8s resources
-        run: |
-          # remove existing k8s directory
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'rm -rf /tmp/oliverrr-k8s'
-
-          # copy k8s directory to remote
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -P ${{ secrets.DEPLOY_PORT }} -r deployment/k8s ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/oliverrr-k8s
-
-          # apply k8s resources on remote
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            'cd /tmp/oliverrr-k8s && kubectl apply -k env/${{ steps.set-env.outputs.environment }}'
-
-          # remove copied k8s directory
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} 'rm -rf /tmp/oliverrr-k8s'
-      - name: Update registry secret
-        run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl create secret docker-registry ${{ steps.set-env.outputs.environment }}-oliverrr-regcred \
-              --docker-server=${{ vars.REGISTRY_SERVER }} \
-              --docker-username=${{ vars.REGISTRY_USER }} \
-              --docker-password=${{ secrets.REGISTRY_TOKEN }} \
-              --dry-run=client -o yaml | kubectl apply -f -"
-      - name: Update backend secrets
-        run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl create secret generic ${{ steps.set-env.outputs.environment }}-oliverrr-backend \
-              --from-literal=BACKEND_ADMIN_JWT_SECRET='${{ secrets.BACKEND_ADMIN_JWT_SECRET }}' \
-              --from-literal=BACKEND_API_TOKEN_SALT='${{ secrets.BACKEND_API_TOKEN_SALT }}' \
-              --from-literal=BACKEND_APP_KEYS='${{ secrets.BACKEND_APP_KEYS }}' \
-              --from-literal=BACKEND_JWT_SECRET='${{ secrets.BACKEND_JWT_SECRET }}' \
-              --from-literal=BACKEND_ENCRYPTION_KEY='${{ secrets.BACKEND_ENCRYPTION_KEY }}' \
-              --from-literal=BACKEND_TRANSFER_TOKEN_SALT='${{ secrets.BACKEND_TRANSFER_TOKEN_SALT }}' \
-              --dry-run=client -o yaml | kubectl apply -f -"
-      - name: Update frontend secrets
-        run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl create secret generic ${{ steps.set-env.outputs.environment }}-oliverrr-frontend \
-              --from-literal=FRONTEND_NUXT_CMS_API_TOKEN='${{ secrets.FRONTEND_NUXT_CMS_API_TOKEN }}' \
-              --dry-run=client -o yaml | kubectl apply -f -"
-      - name: Update image tags
+      - name: Patch container images
         run: |
           tag="latest"
           if [[ "${{ needs.release.outputs.released }}" == "true" ]]; then
@@ -156,14 +145,10 @@ jobs:
             tag="${{ github.sha }}"
           fi
 
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend frontend=ghcr.io/this-oliver/website-frontend:${tag} & kubectl set image deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend backend=ghcr.io/this-oliver/website-backend:${tag}"
+          kubectl -n "$NAMESPACE" set image deployment/oliverrr-frontend-${{ steps.set-env.outputs.environment }} frontend=ghcr.io/this-oliver/website-frontend:${tag}
+          kubectl -n "$NAMESPACE" set image deployment/oliverrr-backend-${{ steps.set-env.outputs.environment }} backend=ghcr.io/this-oliver/website-backend:${tag}
+
       - name: Restart deployments
         run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "kubectl rollout restart deployment/${{ steps.set-env.outputs.environment }}-oliverrr-frontend && kubectl rollout restart deployment/${{ steps.set-env.outputs.environment }}-oliverrr-backend"
-      - name: Cleanup
-        if: ${{ always() }}
-        run: |
-          rm -rf ~/.ssh/deploy_key
-          sed -i '/${{ secrets.DEPLOY_HOST }}/d' ~/.ssh/known_hosts
+          kubectl rollout restart deployment/oliverrr-frontend-${{ steps.set-env.outputs.environment }}
+          kubectl rollout restart deployment/oliverrr-backend-${{ steps.set-env.outputs.environment }}
