@@ -1,21 +1,19 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oliverrr-frontend
   labels:
-    app: oliverrr
-    type: frontend
+    app: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oliverrr
-      type: frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: oliverrr
-        type: frontend
+        app: frontend
     spec:
       securityContext:
         runAsUser: 1001
@@ -72,31 +70,26 @@ kind: Deployment
 metadata:
   name: oliverrr-backend
   labels:
-    app: oliverrr
-    type: backend
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: oliverrr
-      type: backend
+      app: backend
   template:
     metadata:
       labels:
-        app: oliverrr
-        type: backend
+        app: backend
     spec:
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
         - name: backend
           image: ghcr.io/this-oliver/website-backend:latest
           imagePullPolicy: Always
-          # securityContext:
-          #   allowPrivilegeEscalation: true
-          #   readOnlyRootFilesystem: false
-          #   runAsNonRoot: false
+          securityContext:
+            readOnlyRootFilesystem: true
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
@@ -131,13 +124,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 3000
+              port: 1337
             initialDelaySeconds: 3
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /
-              port: 3000
+              port: 1337
             initialDelaySeconds: 3
             periodSeconds: 3
           ports:
@@ -152,18 +145,13 @@ spec:
               cpu: '1'
           volumeMounts:
             - name: oliverrr-database
-              mountPath: /app/.database/data.db
-            - name: oliverrr-public
+              mountPath: /app/.database
+            - name: oliverrr-media
               mountPath: /app/public/uploads
       volumes:
         - name: oliverrr-database
-          hostPath:
-            path: /home/mechanic/deployment/oliverrr/data.db
-            type: DirectoryOrCreate
-        - name: oliverrr-public
-          hostPath:
-            path: /home/mechanic/deployment/oliverrr/public
-            type: DirectoryOrCreate
-        # - name: oliverrr-public
-        #   persistentVolumeClaim:
-        #     claimName: oliverrr
+          persistentVolumeClaim:
+            claimName: oliverrr-database
+        - name: oliverrr-media
+          persistentVolumeClaim:
+            claimName: oliverrr-media
