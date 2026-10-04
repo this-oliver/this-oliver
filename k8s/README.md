@@ -69,12 +69,12 @@ Replace the values with your actual secrets. The keys should match those defined
 To update image tags in deployments, run the following command:
 
 ```bash
-kubectl set image deployment/frontend-dev frontend=ghcr.io/this-oliver/this-oliver:v1.0.0 --namespace=oliverrr
+kubectl set image deployment/frontend-dev frontend=ghcr.io/this-oliver/website-frontend:v1.0.0 --namespace=oliverrr
 ```
 
   - `frontend-dev` is the deployment name (see `common/deployment.yaml` and the suffix label applied in `env/prod` or `env/dev`)
 - `frontend` is the container name in the deployment spec
-- `ghcr.io/this-oliver/this-oliver:v1.0.0` is the new image and tag
+- `ghcr.io/this-oliver/website-frontend:v1.0.0` is the new image and tag
 
 ## Step 3: Restart deployment
 
