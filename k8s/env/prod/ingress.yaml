@@ -6,12 +6,12 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`oliverr.net`)
+    - match: Host(`www.oliverrr.net`)
       kind: Rule
       services:
         - name: oliverrr-frontend-prod
           port: frontend
-    - match: Host(`cms.oliverr.net`)
+    - match: Host(`cms.oliverrr.net`)
       kind: Rule
       services:
         - name: oliverrr-backend-prod

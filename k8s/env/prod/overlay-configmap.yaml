@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: oliverrr
 data:
-  FRONTEND_NUXT_BACKEND_BASE_URL: 'https://cms.oliverr.net'
+  FRONTEND_NUXT_BACKEND_BASE_URL: 'https://cms.oliverrr.net'
