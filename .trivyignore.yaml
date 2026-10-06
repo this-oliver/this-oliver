@@ -3,6 +3,10 @@ misconfigurations:
     paths:
       - k8s/common/deployment.yaml
     statement: The backend deployment needs to write to sqlite database.
+  - id: AVD-KSV-0056
+    paths:
+      - k8s/common/rbac.yaml
+    statement: The role is namespaced to mitigate risks (the devops role in needed to apply deployments from outside the cluster).
 
 secrets:
   - id: dockerconfig-secret
