@@ -60,10 +60,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        app: [./, ./src/frontend, ./src/backend]
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -73,9 +69,17 @@ jobs:
         with:
           working-directory: ${{ matrix.app }}
 
-      - name: Install dependencies
+      - name: Install dependencies in root
         run: pnpm install
-        working-directory: ${{ matrix.app }}
+        working-directory: .
+
+      - name: Install dependencies in frontend
+        run: pnpm install
+        working-directory: src/frontend
+        
+      - name: Install dependencies in backend
+        run: pnpm install
+        working-directory: src/backend
 
       - name: Check for vulnerable dependencies, misconfigurations, and secrets
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # 0.36.0
