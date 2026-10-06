@@ -76,7 +76,7 @@ jobs:
       - name: Install dependencies in frontend
         run: pnpm install
         working-directory: src/frontend
-        
+
       - name: Install dependencies in backend
         run: pnpm install
         working-directory: src/backend
