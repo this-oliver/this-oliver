@@ -16,8 +16,8 @@ spec:
         app: frontend
     spec:
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
         - name: frontend
           image: ghcr.io/this-oliver/website-frontend:latest
@@ -84,7 +84,7 @@ spec:
           image: ghcr.io/this-oliver/website-backend:latest
           imagePullPolicy: Always
           securityContext:
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
           env:
             - name: ADMIN_JWT_SECRET
               valueFrom:
