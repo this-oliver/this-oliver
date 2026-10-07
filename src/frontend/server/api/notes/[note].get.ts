@@ -1,12 +1,12 @@
 export default defineEventHandler(async (event): Promise<Note> => {
-  const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
+  const { backendToken, backendBaseUrl } = useRuntimeConfig(event);
   const noteId = getRouterParam(event, "note");
 
   try {
-    const endpoint = `${cmsApiUrl}/api/notes?filters[slug][$eq]=${noteId}`;
+    const endpoint = `${backendBaseUrl}/api/notes?filters[slug][$eq]=${noteId}`;
     const res = await $fetch(endpoint, {
       headers: {
-        Authorization: `Bearer ${cmsApiToken}`
+        Authorization: `Bearer ${backendToken}`
       }
     });
 

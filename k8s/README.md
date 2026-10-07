@@ -58,7 +58,7 @@ kubectl create secret generic backend \
   --from-literal=BACKEND_JWT_SECRET='your-jwt-secret' \
   --from-literal=BACKEND_ENCRYPTION_KEY='your-encryption-key' \
   --from-literal=BACKEND_TRANSFER_TOKEN_SALT='your-transfer-token' \
-  --from-literal=FRONTEND_NUXT_CMS_API_TOKEN='your-api-token' \
+  --from-literal=FRONTEND_NUXT_BACKEND_TOKEN='your-api-token' \
   --namespace=oliverrr
 ```
 

@@ -22,9 +22,8 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt", "@nuxt/icon"],
 
   runtimeConfig: {
-    cmsApiUrl: "",
-    cmsApiToken: "",
-    cmsMediaUrl: ""
+    backendBaseUrl: "",
+    backendToken: ""
   },
 
   vite: {
