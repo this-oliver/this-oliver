@@ -1,2 +1,2 @@
 #!/bin/bash
-pnx lint-staged
+pnpm lint-staged

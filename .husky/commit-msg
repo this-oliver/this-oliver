@@ -1,2 +1,2 @@
 #!/bin/bash
-pnx commitlint --config .commitlintrc --edit
+pnpm commitlint --config .commitlintrc --edit
