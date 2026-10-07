@@ -4,7 +4,7 @@ services:
     env_file:
       - ../src/frontend/.env
     environment:
-      - NUXT_CMS_API_URL=http://backend:1337
+      - NUXT_BACKEND_BASE_URL=http://backend:1337
     ports:
       - '3000:3000'
 

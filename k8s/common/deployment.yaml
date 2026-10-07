@@ -27,21 +27,16 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
           env:
-            - name: NUXT_CMS_API_URL
+            - name: NUXT_BACKEND_BASE_URL
               valueFrom:
                 configMapKeyRef:
                   name: oliverrr
-                  key: FRONTEND_NUXT_CMS_API_URL
-            - name: NUXT_CMS_MEDIA_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: oliverrr
-                  key: FRONTEND_NUXT_CMS_MEDIA_URL
-            - name: NUXT_CMS_API_TOKEN
+                  key: FRONTEND_NUXT_BACKEND_BASE_URL
+            - name: NUXT_BACKEND_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: oliverrr
-                  key: FRONTEND_NUXT_CMS_API_TOKEN
+                  key: FRONTEND_NUXT_BACKEND_TOKEN
           livenessProbe:
             httpGet:
               path: /

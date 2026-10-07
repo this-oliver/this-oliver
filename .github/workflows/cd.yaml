@@ -123,7 +123,7 @@ jobs:
             --from-literal=BACKEND_JWT_SECRET='${{ secrets.BACKEND_JWT_SECRET }}' \
             --from-literal=BACKEND_ENCRYPTION_KEY='${{ secrets.BACKEND_ENCRYPTION_KEY }}' \
             --from-literal=BACKEND_TRANSFER_TOKEN_SALT='${{ secrets.BACKEND_TRANSFER_TOKEN_SALT }}' \
-            --from-literal=FRONTEND_NUXT_CMS_API_TOKEN='${{ secrets.FRONTEND_NUXT_CMS_API_TOKEN }}' \
+            --from-literal=FRONTEND_NUXT_BACKEND_TOKEN='${{ secrets.FRONTEND_NUXT_BACKEND_TOKEN }}' \
             --dry-run=client -o yaml | kubectl -n "$NAMESPACE" apply -f -
 
       - name: Patch container images

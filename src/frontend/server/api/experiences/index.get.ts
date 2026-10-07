@@ -6,7 +6,7 @@ export default defineEventHandler(
     currentPage: number
     totalPages: number
   }> => {
-    const { cmsApiToken, cmsApiUrl, cmsMediaUrl } = useRuntimeConfig(event);
+    const { backendToken, backendBaseUrl } = useRuntimeConfig(event);
 
     const query = getQuery(event);
     const page: number = Number(query.page) || 0;
@@ -17,10 +17,10 @@ export default defineEventHandler(
     let totalPages: number = 0;
 
     try {
-      const endpoint = `${cmsApiUrl}/api/experiences?sort=startDate:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
+      const endpoint = `${backendBaseUrl}/api/experiences?sort=startDate:desc&pagination[page]=${page}&pagination[pageSize]=${limit}&populate=images`;
       const res = await $fetch(endpoint, {
         headers: {
-          Authorization: `Bearer ${cmsApiToken}`
+          Authorization: `Bearer ${backendToken}`
         }
       });
 
@@ -50,7 +50,7 @@ export default defineEventHandler(
         name: image.name,
         alt: image.alt,
         caption: image.caption,
-        url: cmsMediaUrl ? `${cmsMediaUrl}${image.url}` : image.url
+        url: `${backendBaseUrl}/uploads/${image.url}`
       }))
     }));
 

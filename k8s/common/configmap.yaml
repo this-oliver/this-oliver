@@ -3,5 +3,4 @@ kind: ConfigMap
 metadata:
   name: oliverrr
 data:
-  FRONTEND_NUXT_CMS_API_URL: 'http://backend:1337'
-  FRONTEND_NUXT_CMS_MEDIA_URL: 'http://backend:1337/uploads'
+  FRONTEND_NUXT_BACKEND_BASE_URL: 'http://backend:1337'

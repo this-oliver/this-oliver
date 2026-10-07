@@ -2,7 +2,7 @@ export default defineEventHandler(
   async (
     event
   ): Promise<{ notes: Note[], currentPage: number, totalPages: number }> => {
-    const { cmsApiToken, cmsApiUrl } = useRuntimeConfig(event);
+    const { backendToken, backendBaseUrl } = useRuntimeConfig(event);
 
     const query = getQuery(event);
     const page: number = Number(query.page) || 1;
@@ -38,10 +38,10 @@ export default defineEventHandler(
     }
 
     try {
-      const endpoint = `${cmsApiUrl}/api/notes?${filters.join("&")}`;
+      const endpoint = `${backendBaseUrl}/api/notes?${filters.join("&")}`;
       const res = await $fetch(endpoint, {
         headers: {
-          Authorization: `Bearer ${cmsApiToken}`
+          Authorization: `Bearer ${backendToken}`
         }
       });
 
