@@ -121,6 +121,8 @@ spec:
                 secretKeyRef:
                   name: oliverrr
                   key: BACKEND_JWT_SECRET
+            - name: DATABASE_FILENAME
+              value: /app/.database/data.db
           livenessProbe:
             httpGet:
               path: /
