@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.6](https://github.com/this-oliver/this-oliver/compare/v4.0.5...v4.0.6) (2026-10-08)
+
+
+### Bug Fixes
+
+* **backend:** backend broken for strapi &gt;5.56.0 ([#540](https://github.com/this-oliver/this-oliver/issues/540)) ([fa54170](https://github.com/this-oliver/this-oliver/commit/fa54170efd1e4543860b0a4f8bf799c2f175dd3b))
+* **frontend:** updates deployment url ([#546](https://github.com/this-oliver/this-oliver/issues/546)) ([7b9cab4](https://github.com/this-oliver/this-oliver/commit/7b9cab4327fbd8b38ee5ffa1904b0cbfc316e640))
+* **frontend:** use backend base url for cms api and media ([#544](https://github.com/this-oliver/this-oliver/issues/544)) ([8b89928](https://github.com/this-oliver/this-oliver/commit/8b89928f76a36aebd2e42027a1ba9642f8c2b46b))
+* **k8s:** adds service accounts, cleans up resources and updates deployment workflow ([#538](https://github.com/this-oliver/this-oliver/issues/538)) ([c5674b2](https://github.com/this-oliver/this-oliver/commit/c5674b2a5c0a13c8c347d64c695acd6e5c50ceb7))
+* **security:** updates uid and gid for frontend k8s deployment + updates trivyignore ([#545](https://github.com/this-oliver/this-oliver/issues/545)) ([cda5936](https://github.com/this-oliver/this-oliver/commit/cda593684acbe243efa7ebdeec53cf2de4c77941))
+
 ## [4.0.5](https://github.com/this-oliver/this-oliver/compare/v4.0.4...v4.0.5) (2026-10-01)
 
 
