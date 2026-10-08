@@ -1,8 +1,7 @@
 {
   "name": "backend",
-  "engines": {
-    "node": ">=20.0.0 <=26.x.x",
-    "npm": ">=6.0.0"
+  "devEngines": {
+    "runtime": { "name": "node", "version": "^24.0.0" }
   },
   "scripts": {
     "build": "strapi build",
