@@ -1,34 +1,38 @@
 {
   "name": "backend",
-  "packageManager": "pnpm@12.4.1",
   "devEngines": {
-    "runtime": { "name": "node", "version": "^22.0.0" }
+    "runtime": { "name": "node", "version": "^24.0.0" }
   },
   "scripts": {
     "build": "strapi build",
     "console": "strapi console",
+    "deploy": "strapi deploy",
     "dev": "strapi develop",
     "start": "strapi start",
     "strapi": "strapi",
-    "upgrade": "pnx @strapi/upgrade latest",
-    "upgrade:dry": "pnx @strapi/upgrade latest --dry",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
     "token": "pnx ts-node ./scripts/tokens.ts"
   },
   "dependencies": {
-    "@strapi/plugin-users-permissions": "5.55.1",
-    "@strapi/strapi": "5.55.1",
-    "better-sqlite3": "11.3.0",
-    "fs-extra": "^10.0.0",
-    "mime-types": "^2.1.27",
+    "@strapi/database": "5.56.0",
+    "@strapi/plugin-cloud": "5.56.0",
+    "@strapi/plugin-users-permissions": "5.56.0",
+    "@strapi/strapi": "5.56.0",
+    "better-sqlite3": "12.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
-    "styled-components": "^6.4.1"
+    "react-router-dom": "^6.30.3",
+    "styled-components": "^6.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24",
+    "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
+  },
+  "strapi": {
+    "uuid": "6370a866-bb41-4d91-bf6d-60f10daea6d0",
+    "installId": "ea06f6f157e68c35e2c7a5c44ed9022fdff402913f3ce3cc9d256a0f82e79239"
   }
 }
