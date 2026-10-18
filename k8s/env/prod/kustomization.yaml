@@ -13,6 +13,9 @@ labels:
   - includeSelectors: true
     pairs:
       env: prod
+  - includeSelectors: true
+    pairs:
+      app: oliverrr
 
 patches:
   - path: overlay-configmap.yaml
