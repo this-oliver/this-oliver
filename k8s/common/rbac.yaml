@@ -2,22 +2,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cicd
+  name: devops
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: devops
 rules:
-  - apiGroups: [apps]
-    resources:
-      - deployments
-    verbs:
-      - create
-      - update
-      - patch
-      - get
-      - list
   - apiGroups: [''] # "" indicates the core API group
     resources:
       - configmaps
@@ -31,6 +22,24 @@ rules:
       - create
       - update
       - patch
+  - apiGroups: [apps]
+    resources:
+      - deployments
+    verbs:
+      - create
+      - update
+      - patch
+      - get
+      - list
+  - apiGroups: [networking.k8s.io]
+    resources:
+      - ingresses
+    verbs:
+      - create
+      - update
+      - patch
+      - list
+      - get
   - apiGroups: [traefik.io]
     resources:
       - ingressroutes
@@ -48,10 +57,10 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: deploy-apps
+  name: devops
 subjects:
   - kind: ServiceAccount
-    name: cicd
+    name: devops
 roleRef:
   kind: Role
   name: devops

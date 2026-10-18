@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oliverrr-frontend
+  name: frontend
   labels:
-    app: frontend
+    component: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      component: frontend
   template:
     metadata:
       labels:
-        app: frontend
+        component: frontend
     spec:
       securityContext:
         runAsUser: 1000
@@ -30,25 +30,25 @@ spec:
             - name: NUXT_BACKEND_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: oliverrr
+                  name: configs
                   key: FRONTEND_NUXT_BACKEND_BASE_URL
             - name: NUXT_BACKEND_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: FRONTEND_NUXT_BACKEND_TOKEN
           livenessProbe:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 300
           readinessProbe:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
           ports:
             - containerPort: 3000
               name: frontend-port
@@ -63,18 +63,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oliverrr-backend
+  name: backend
   labels:
-    app: backend
+    component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      component: backend
   template:
     metadata:
       labels:
-        app: backend
+        component: backend
     spec:
       securityContext:
         runAsUser: 1000
@@ -89,45 +89,45 @@ spec:
             - name: ADMIN_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_ADMIN_JWT_SECRET
             - name: API_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_API_TOKEN_SALT
             - name: APP_KEYS
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_APP_KEYS
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_ENCRYPTION_KEY
             - name: TRANSFER_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_TRANSFER_TOKEN_SALT
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_JWT_SECRET
           livenessProbe:
             httpGet:
               path: /
               port: 1337
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 300
           readinessProbe:
             httpGet:
               path: /
               port: 1337
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
           ports:
             - containerPort: 1337
               name: backend-port
@@ -139,14 +139,14 @@ spec:
               memory: 2Gi
               cpu: '1'
           volumeMounts:
-            - name: oliverrr-database
+            - name: database
               mountPath: /app/.database
-            - name: oliverrr-media
+            - name: media
               mountPath: /app/public/uploads
       volumes:
-        - name: oliverrr-database
+        - name: database
           persistentVolumeClaim:
-            claimName: oliverrr-database
-        - name: oliverrr-media
+            claimName: database
+        - name: media
           persistentVolumeClaim:
-            claimName: oliverrr-media
+            claimName: media

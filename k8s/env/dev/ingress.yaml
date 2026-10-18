@@ -1,20 +1,32 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: oliverrr
+  name: ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+    traefik.ingress.kubernetes.io/router.tls.certresolver: defaultCertResolver
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`dev.oliverrr.net`)
-      kind: Rule
-      services:
-        - name: oliverrr-frontend-dev
-          port: frontend
-    - match: Host(`dev-cms.oliverrr.net`)
-      kind: Rule
-      services:
-        - name: oliverrr-frontend-dev
-          port: backend
-  tls:
-    certResolver: defaultCertResolver
+  ingressClassName: traefik
+  rules:
+    - host: dev.oliverrrdruant.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-dev
+                port:
+                  name: frontend
+    - host: dev-cms.oliverrrdruant.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-dev
+                port:
+                  name: backend
