@@ -1,3 +1,20 @@
+# === Required variables
+#
+# - NAMESPACE
+#
+# === Required Secrets:
+#
+# - CLUSTER_HOST
+# - CLUSTER_PORT
+# - SERVICE_ACCOUNT_TOKEN
+# - BACKEND_ADMIN_JWT_SECRET
+# - BACKEND_API_TOKEN_SALT
+# - BACKEND_APP_KEYS
+# - BACKEND_JWT_SECRET
+# - BACKEND_ENCRYPTION_KEY
+# - BACKEND_TRANSFER_TOKEN_SALT
+# - FRONTEND_NUXT_BACKEND_TOKEN
+
 name: Continous Deployment
 
 on:
@@ -7,7 +24,8 @@ on:
     paths:
       - src/**
       - k8s/**
-      - package*.json
+      - package.json
+      - CHANGELOG.md
   workflow_dispatch:
     inputs:
       build:
@@ -20,10 +38,23 @@ on:
         type: boolean
         required: false
         default: true
+      deploy_env:
+        description: Environment for deployment
+        type: choice
+        options:
+          - development
+          - production
+        required: false
+      deploy_tag:
+        description: Tag for deployment
+        type: string
+        required: false
+
+env:
+  REGISTRY: ghcr.io
 
 jobs:
   release:
-    if: ${{ github.event_name == 'push'}}
     runs-on: ubuntu-latest
     # see https://github.com/googleapis/release-please-action/tree/a02a34c4d625f9be7cb89156071d8567266a2445/?tab=readme-ov-file#workflow-permissions
     permissions:
@@ -41,7 +72,7 @@ jobs:
           release-type: node
 
   build:
-    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.build == true) }}
+    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.build == true || github.event_name == 'push') }}
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -53,10 +84,14 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: Get version from package.json
+        id: pkg
+        run: echo "version=$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+
       - name: Login to registry
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
-          registry: ${{ vars.REGISTRY_SERVER }}
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
@@ -69,16 +104,17 @@ jobs:
       - name: Gather timestamp
         run: echo "TIMESTAMP=$(date)>>GITHUB_ENV"
 
-      - name: Build ${{ matrix.app }} container image
+      - name: Build ${{ matrix.app }} container image for release
+        if: needs.release.outputs.released == 'true'
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           push: true
           context: ./src/${{ matrix.app }}
           file: ./src/${{ matrix.app }}/Dockerfile
           tags: |
-            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ needs.release.outputs.tag || 'latest' }}
-            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
-            ${{ vars.REGISTRY_SERVER }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:${{ needs.release.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:latest
+            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:${{ github.sha }}
           build-args: |
             APP_VERSION=${{ needs.release.outputs.tag || github.sha }}
             APP_COMMIT_SHA=${{ github.sha }}
@@ -86,22 +122,41 @@ jobs:
           labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           platforms: linux/amd64,linux/arm64
 
+      - name: Build ${{ matrix.app }} container image for dev
+        if: needs.release.outputs.released != 'true'
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          push: true
+          context: ./src/${{ matrix.app }}
+          file: ./src/${{ matrix.app }}/Dockerfile
+          tags: ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:${{ github.sha }}
+          build-args: |
+            APP_VERSION=${{ github.sha }}
+            APP_COMMIT_SHA=${{ github.sha }}
+            APP_BUILD_TIMESTAMP=$TIMESTAMP
+          labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          platforms: linux/amd64,linux/arm64
+
   deploy:
-    if: ${{ needs.release.outputs.released == 'true' || inputs.deploy == true }}
+    if: ${{ always() && (needs.release.outputs.released == 'true' || inputs.deploy == true || github.event_name == 'push') }}
     needs: [release, build]
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.release.outputs.released == 'true' && 'production' || 'development' }}
+      name: ${{ (needs.release.outputs.released == 'true' || (inputs.deploy == true && inputs.deploy_env == 'production')) && 'production' || 'development' }}
     permissions:
       contents: read
       packages: read
     env:
       NAMESPACE: ${{ vars.NAMESPACE }}
-      DEPLOYMENT_ENV: ${{ needs.release.outputs.released == 'true' && 'prod' || 'dev' }}
+      DEPLOYMENT_ENV: ${{ (needs.release.outputs.released == 'true' || (inputs.deploy == true && inputs.deploy_env == 'production')) && 'prod' || 'dev' }}
     steps:
-      - name: Setup Kubectl
+      - name: Overview
         run: |
-          kubectl version --client
+          echo "::notice::Namespace: ${{ env.NAMESPACE }}"
+          echo "::notice::Environment: ${{ env.DEPLOYMENT_ENV }}"
+
+      - name: Setup Kubectl
+        run: kubectl version --client
 
       - name: Configure Kubectl
         env:
@@ -112,40 +167,51 @@ jobs:
         run: |
           kubectl config set-cluster "${CLUSTER_CONTEXT}-cluster" --server="https://${CLUSTER_HOST}:${CLUSTER_PORT}" --insecure-skip-tls-verify
           kubectl config set-credentials "${CLUSTER_CONTEXT}-user" --token "$SERVICE_ACCOUNT_TOKEN"
-          kubectl config set-context "${CLUSTER_CONTEXT}-context" --cluster="${CLUSTER_CONTEXT}-cluster" --user="${CLUSTER_CONTEXT}-user" --namespace="$NAMESPACE"
+          kubectl config set-context "${CLUSTER_CONTEXT}-context" --cluster="${CLUSTER_CONTEXT}-cluster" --user="${CLUSTER_CONTEXT}-user" --namespace=${{ env.NAMESPACE }}
           kubectl config use-context "${CLUSTER_CONTEXT}-context"
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Apply resources
         run: |
-          kubectl -n "$NAMESPACE" apply -k "k8s/env/${DEPLOYMENT_ENV}"
+          kubectl -n ${{ env.NAMESPACE }} apply -k "k8s/env/${DEPLOYMENT_ENV}"
 
       - name: Patch secrets
         run: |
-          kubectl create secret generic "oliverrr-${DEPLOYMENT_ENV}" \
+          kubectl create secret generic "secrets-${DEPLOYMENT_ENV}" \
             --from-literal=BACKEND_ADMIN_JWT_SECRET='${{ secrets.BACKEND_ADMIN_JWT_SECRET }}' \
             --from-literal=BACKEND_API_TOKEN_SALT='${{ secrets.BACKEND_API_TOKEN_SALT }}' \
             --from-literal=BACKEND_APP_KEYS='${{ secrets.BACKEND_APP_KEYS }}' \
             --from-literal=BACKEND_JWT_SECRET='${{ secrets.BACKEND_JWT_SECRET }}' \
             --from-literal=BACKEND_ENCRYPTION_KEY='${{ secrets.BACKEND_ENCRYPTION_KEY }}' \
             --from-literal=BACKEND_TRANSFER_TOKEN_SALT='${{ secrets.BACKEND_TRANSFER_TOKEN_SALT }}' \
-            --from-literal=FRONTEND_NUXT_BACKEND_TOKEN='${{ secrets.FRONTEND_NUXT_BACKEND_TOKEN }}' \
-            --dry-run=client -o yaml | kubectl -n "$NAMESPACE" apply -f -
+            --from-literal=FRONTEND_NUXT_API_TOKEN='${{ secrets.FRONTEND_NUXT_BACKEND_TOKEN }}' \
+            --dry-run=client -o yaml | kubectl -n ${{ env.NAMESPACE }} apply -f -
 
       - name: Patch container images
         run: |
-          tag="latest"
+          TAG="latest"
+
           if [[ "${{ needs.release.outputs.released }}" == "true" ]]; then
-            tag="${{ needs.release.outputs.tag }}"
+            TAG="${{ needs.release.outputs.tag }}"
           elif [[ "${{ inputs.build }}" == "true" ]]; then
-            tag="${{ github.sha }}"
+            TAG="${{ github.sha }}"
+          elif [[ "${{ inputs.deploy }}" == "true" && -n "${{ inputs.deploy_tag }}" ]]; then
+            TAG="${{ inputs.deploy_tag }}"
           fi
 
-          kubectl -n "$NAMESPACE" set image "deployment/oliverrr-frontend-${DEPLOYMENT_ENV}" frontend="ghcr.io/this-oliver/website-frontend:${tag}"
-          kubectl -n "$NAMESPACE" set image "deployment/oliverrr-backend-${DEPLOYMENT_ENV}" backend="ghcr.io/this-oliver/website-backend:${tag}"
+          echo "::notice::Tag: ${TAG}"
+
+          APPS=("backend" "frontend")
+          for APP in ${APPS[@]}; do
+            IMAGE="${{ env.REGISTRY }}/${{ github.repository }}-${APP}:${TAG}"
+            echo "::notice::Applying $IMAGE to $APP deployment"
+            kubectl -n ${{ env.NAMESPACE }} set image deployments --selector="component=${APP}" ${APP}="$IMAGE"
+          done
 
       - name: Restart deployments
         run: |
-          kubectl rollout restart "deployment/oliverrr-frontend-${DEPLOYMENT_ENV}"
-          kubectl rollout restart "deployment/oliverrr-backend-${DEPLOYMENT_ENV}"
+          APPS=("backend" "frontend")
+          for APP in ${APPS[@]}; do
+            kubectl -n ${{ env.NAMESPACE }} rollout restart deployments --selector="component=${APP},env=${DEPLOYMENT_ENV}"
+          done
