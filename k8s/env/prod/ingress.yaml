@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: www.oliverrrdruant.com
+    - host: www.oliverrr.net
       http:
         paths:
           - path: /
@@ -20,7 +20,7 @@ spec:
                 name: frontend-prod
                 port:
                   name: frontend
-    - host: cms.oliverrrdruant.com
+    - host: cms.oliverrr.net
       http:
         paths:
           - path: /
