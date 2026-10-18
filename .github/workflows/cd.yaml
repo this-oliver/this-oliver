@@ -125,7 +125,7 @@ jobs:
           push: true
           context: ./src/${{ matrix.app }}
           file: ./src/${{ matrix.app }}/Dockerfile
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
           build-args: |
             APP_VERSION=${{ github.sha }}
             APP_COMMIT_SHA=${{ github.sha }}
