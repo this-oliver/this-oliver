@@ -41,14 +41,14 @@ spec:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 300
           readinessProbe:
             httpGet:
               path: /
               port: 3000
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
           ports:
             - containerPort: 3000
               name: frontend-port
@@ -120,14 +120,14 @@ spec:
             httpGet:
               path: /
               port: 1337
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 300
           readinessProbe:
             httpGet:
               path: /
               port: 1337
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
           ports:
             - containerPort: 1337
               name: backend-port
