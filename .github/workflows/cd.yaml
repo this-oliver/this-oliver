@@ -112,9 +112,9 @@ jobs:
           context: ./src/${{ matrix.app }}
           file: ./src/${{ matrix.app }}/Dockerfile
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:${{ needs.release.outputs.tag }}
-            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:latest
-            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.app }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ needs.release.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:latest
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${{ matrix.app }}:${{ github.sha }}
           build-args: |
             APP_VERSION=${{ needs.release.outputs.tag || github.sha }}
             APP_COMMIT_SHA=${{ github.sha }}
@@ -204,7 +204,7 @@ jobs:
 
           APPS=("backend" "frontend")
           for APP in ${APPS[@]}; do
-            IMAGE="${{ env.REGISTRY }}/${{ github.repository }}-${APP}:${TAG}"
+            IMAGE="${{ env.REGISTRY }}/${{ github.repository_owner }}/website-${APP}:${TAG}"
             echo "::notice::Applying $IMAGE to $APP deployment"
             kubectl -n ${{ env.NAMESPACE }} set image deployments --selector="component=${APP}" ${APP}="$IMAGE"
           done
