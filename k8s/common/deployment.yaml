@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oliverrr-frontend
+  name: frontend
   labels:
     app: frontend
 spec:
@@ -30,12 +30,12 @@ spec:
             - name: NUXT_BACKEND_BASE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: oliverrr
+                  name: configs
                   key: FRONTEND_NUXT_BACKEND_BASE_URL
             - name: NUXT_BACKEND_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: FRONTEND_NUXT_BACKEND_TOKEN
           livenessProbe:
             httpGet:
@@ -63,7 +63,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oliverrr-backend
+  name: backend
   labels:
     app: backend
 spec:
@@ -89,32 +89,32 @@ spec:
             - name: ADMIN_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_ADMIN_JWT_SECRET
             - name: API_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_API_TOKEN_SALT
             - name: APP_KEYS
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_APP_KEYS
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_ENCRYPTION_KEY
             - name: TRANSFER_TOKEN_SALT
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_TRANSFER_TOKEN_SALT
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: oliverrr
+                  name: secrets
                   key: BACKEND_JWT_SECRET
           livenessProbe:
             httpGet:
@@ -139,14 +139,14 @@ spec:
               memory: 2Gi
               cpu: '1'
           volumeMounts:
-            - name: oliverrr-database
+            - name: database
               mountPath: /app/.database
-            - name: oliverrr-media
+            - name: media
               mountPath: /app/public/uploads
       volumes:
-        - name: oliverrr-database
+        - name: database
           persistentVolumeClaim:
-            claimName: oliverrr-database
-        - name: oliverrr-media
+            claimName: database
+        - name: media
           persistentVolumeClaim:
-            claimName: oliverrr-media
+            claimName: media
