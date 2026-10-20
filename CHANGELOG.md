@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.7](https://github.com/this-oliver/this-oliver/compare/v4.0.6...v4.0.7) (2026-10-20)
+
+
+### Bug Fixes
+
+* **backend:** define default database file path ([#562](https://github.com/this-oliver/this-oliver/issues/562)) ([be44148](https://github.com/this-oliver/this-oliver/commit/be4414828874160f341e3c94f4dd9028934446c2))
+* **cicd:** broken container image name and ref ([#559](https://github.com/this-oliver/this-oliver/issues/559)) ([91b4e7a](https://github.com/this-oliver/this-oliver/commit/91b4e7accc52b047783a68333b561af886cdec87))
+* **cicd:** create k8s secret with wrong frontend key ([#561](https://github.com/this-oliver/this-oliver/issues/561)) ([9f752b0](https://github.com/this-oliver/this-oliver/commit/9f752b0609686f3583e1928a8edf39e790248ed2))
+* **k8s:** configure database file path for backend deployment ([#560](https://github.com/this-oliver/this-oliver/issues/560)) ([4e25ead](https://github.com/this-oliver/this-oliver/commit/4e25ead9bc71c7211b67922cdbec9ecda9f40764))
+* **k8s:** corrects route hostname ([#563](https://github.com/this-oliver/this-oliver/issues/563)) ([dd7e2d7](https://github.com/this-oliver/this-oliver/commit/dd7e2d7852f73628e29fcea61390637dc2c8a479))
+* **k8s:** improves k8s resource structure and deployment workflow ([#557](https://github.com/this-oliver/this-oliver/issues/557)) ([f859bf3](https://github.com/this-oliver/this-oliver/commit/f859bf3ce295f8d6cb457abbb26cc2246fb413a4))
+
 ## [4.0.6](https://github.com/this-oliver/this-oliver/compare/v4.0.5...v4.0.6) (2026-10-08)
 
 
